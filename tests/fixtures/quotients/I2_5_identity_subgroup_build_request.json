@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "sourceSystem": {
+    "schemaVersion": 1,
+    "name": "I2(5)",
+    "description": "Dihedral Coxeter group with m=5. The full group has 10 elements.",
+    "dataStatus": "toy",
+    "rank": 2,
+    "generators": [
+      {
+        "id": "s0",
+        "label": "s0",
+        "colorHint": "#2563eb"
+      },
+      {
+        "id": "s1",
+        "label": "s1",
+        "colorHint": "#dc2626"
+      }
+    ],
+    "coxeterMatrix": [
+      [1, 5],
+      [5, 1]
+    ],
+    "notes": ["Toy source system embedded in the quotient/game workflow demo."]
+  },
+  "subgroupName": "identity subgroup",
+  "requestedBackend": "sage",
+  "includeGamePreset": "i2-5-height",
+  "subgroupGenerators": [],
+  "subgroupGeneratorRecords": [],
+  "maxCosets": 16,
+  "notes": [
+    "Identity subgroup request for the quotient/game golden workflow. The resulting quotient has one vertex for each element of I2(5).",
+    "The demo cocycle labels s0 by +1 and s1 by -1."
+  ]
+}

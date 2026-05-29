@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "contractKind": "coxeter-viewer-tauri-v2-contract",
+  "status": "rust-wrapper-scaffold",
+  "tauriMajorVersion": 2,
+  "productName": "CoxeterViewer5D",
+  "identifier": "org.coxeterviewer5d.app",
+  "frontendDist": "../dist",
+  "devUrl": "http://localhost:5173",
+  "beforeDevCommand": "corepack pnpm dev",
+  "beforeBuildCommand": "corepack pnpm build",
+  "sessionFileName": ".coxeter-session.json",
+  "releaseScript": "scripts/release_desktop.mjs",
+  "localCommands": ["read_project_session", "write_project_session"],
+  "optionalTooling": ["Rust Cargo", "@tauri-apps/cli"],
+  "notes": [
+    "The Rust wrapper exists, but release packaging remains optional until @tauri-apps/cli is installed.",
+    "Do not add desktop-only math paths; the Tauri shell should wrap the same viewer build.",
+    "Local session commands only read or write .coxeter-session.json files; imported mathematical JSON is still validated by the web app."
+  ]
+}

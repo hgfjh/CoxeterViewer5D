@@ -1,0 +1,233 @@
+{
+  "edges": [
+    {
+      "generator": 0,
+      "id": "e:e:w:0:s0",
+      "source": "e",
+      "target": "w:0"
+    },
+    {
+      "generator": 1,
+      "id": "e:e:w:1:s1",
+      "source": "e",
+      "target": "w:1"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.1.0:w:1.0:s1",
+      "source": "w:1.0",
+      "target": "w:0.1.0"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.1:w:0.1.0:s0",
+      "source": "w:0.1",
+      "target": "w:0.1.0"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0:w:0.1:s1",
+      "source": "w:0",
+      "target": "w:0.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:1:w:1.0:s0",
+      "source": "w:1",
+      "target": "w:1.0"
+    }
+  ],
+  "metadata": {
+    "backend": {
+      "command": {
+        "argv": [
+          "scripts/sage_export_backend.py",
+          "--input",
+          "public/examples/A2.json",
+          "--radius",
+          "3",
+          "--created-at",
+          "2026-01-01T00:00:00.000Z",
+          "--output",
+          "tests/fixtures/generated/A2_sage_radius_3.json"
+        ],
+        "note": "Captured from sys.argv inside the exporter process."
+      },
+      "id": "sageExportBackend",
+      "input": {
+        "path": "public/examples/A2.json",
+        "sha256": "b67fd708847d92b901a29712ff223b0b3d7af5eb91503b5cd3876f971e73f95f"
+      },
+      "requiredRuntime": "SageMath",
+      "version": "1.0.0"
+    },
+    "capStatus": {
+      "edgeCapHit": false,
+      "nodeCapHit": false,
+      "radiusCapped": false,
+      "truncated": false
+    },
+    "caps": {
+      "maxEdges": 200000,
+      "maxNodes": 50000,
+      "maxRadius": 8
+    },
+    "certification": {
+      "backend": "sageExportBackend",
+      "backendVersion": "1.0.0",
+      "diagnostics": {
+        "edgeCount": 6,
+        "edgeReferencesPresentNodes": true,
+        "metadataHasBackend": true,
+        "metadataHasCapStatus": true,
+        "metadataHasCompleteness": true,
+        "metadataHasNormalFormRecords": true,
+        "metadataHasRelationProofSummaries": true,
+        "nodeCount": 6,
+        "nodeLengthsMatchWords": true,
+        "twoCellBoundariesClosed": true,
+        "twoCellCount": 1,
+        "uniqueEdgeIds": true,
+        "uniqueNodeIds": true,
+        "uniqueTwoCellIds": true
+      },
+      "errors": [],
+      "status": "passed"
+    },
+    "completeness": {
+      "blockingReasons": [],
+      "effectiveRadiusBallComplete": true,
+      "rankTwoCells": {
+        "allFinitePairBoundariesComplete": true,
+        "clippedGeneratorPairs": []
+      },
+      "requestedBallComplete": true
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "deduplication": "external-sage",
+    "generatorConvention": "right-multiplication",
+    "normalFormRecords": {
+      "convention": "right-multiplication preferred reduced words",
+      "lengthMultiset": {
+        "0": 1,
+        "1": 2,
+        "2": 2,
+        "3": 1
+      },
+      "maxLength": 3,
+      "nodeCount": 6,
+      "records": [
+        {
+          "length": 0,
+          "nodeId": "e",
+          "reducedByBackend": true,
+          "word": []
+        },
+        {
+          "length": 1,
+          "nodeId": "w:0",
+          "reducedByBackend": true,
+          "word": [0]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:0.1",
+          "reducedByBackend": true,
+          "word": [0, 1]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:0.1.0",
+          "reducedByBackend": true,
+          "word": [0, 1, 0]
+        },
+        {
+          "length": 1,
+          "nodeId": "w:1",
+          "reducedByBackend": true,
+          "word": [1]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:1.0",
+          "reducedByBackend": true,
+          "word": [1, 0]
+        }
+      ],
+      "status": "derived-from-exact-export"
+    },
+    "radius": 3,
+    "relationProofSummaries": {
+      "finitePairCount": 1,
+      "limitations": [
+        "These summaries certify exported visible rank-two boundaries only.",
+        "They are not a standalone proof of the full Coxeter presentation."
+      ],
+      "status": "derived-from-visible-rank-two-cells",
+      "summaries": [
+        {
+          "clipped": false,
+          "completeTwoCellCount": 1,
+          "expectedBoundaryLength": 6,
+          "generatorPair": [0, 1],
+          "m": 3,
+          "relationWord": [0, 1, 0, 1, 0, 1],
+          "sampleCellIds": ["cell:0-1:e"],
+          "status": "complete-visible-witnesses"
+        }
+      ]
+    },
+    "requestedRadius": 3,
+    "warnings": [
+      "Exact Sage backend: nodes are deduplicated by Sage algebraic real reflection matrices."
+    ]
+  },
+  "nodes": [
+    {
+      "id": "e",
+      "length": 0,
+      "matrixKey": "sage-aa:26a557ad740d6a5905c93d7d",
+      "word": []
+    },
+    {
+      "id": "w:0",
+      "length": 1,
+      "matrixKey": "sage-aa:8d786693bf227084eee879b7",
+      "word": [0]
+    },
+    {
+      "id": "w:1",
+      "length": 1,
+      "matrixKey": "sage-aa:74c9a5ce4e238741878b90bf",
+      "word": [1]
+    },
+    {
+      "id": "w:0.1",
+      "length": 2,
+      "matrixKey": "sage-aa:c77b84155486fc5a4fb517f0",
+      "word": [0, 1]
+    },
+    {
+      "id": "w:1.0",
+      "length": 2,
+      "matrixKey": "sage-aa:5758cfd756bd77d8577117ec",
+      "word": [1, 0]
+    },
+    {
+      "id": "w:0.1.0",
+      "length": 3,
+      "matrixKey": "sage-aa:607d0400b985d18b803330f2",
+      "word": [0, 1, 0]
+    }
+  ],
+  "rank": 2,
+  "systemName": "A2",
+  "twoCells": [
+    {
+      "boundaryNodeIds": ["e", "w:0", "w:0.1", "w:0.1.0", "w:1.0", "w:1"],
+      "generatorPair": [0, 1],
+      "id": "cell:0-1:e",
+      "m": 3
+    }
+  ]
+}

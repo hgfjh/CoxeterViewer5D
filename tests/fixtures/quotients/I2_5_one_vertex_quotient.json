@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "name": "One vertex I2(5) quotient fixture",
+  "sourceSystem": {
+    "schemaVersion": 1,
+    "name": "I2(5)",
+    "dataStatus": "toy",
+    "rank": 2,
+    "generators": [
+      {
+        "id": "s0",
+        "label": "s0",
+        "colorHint": "#2f80ed"
+      },
+      {
+        "id": "s1",
+        "label": "s1",
+        "colorHint": "#eb5757"
+      }
+    ],
+    "coxeterMatrix": [
+      [1, 5],
+      [5, 1]
+    ],
+    "notes": [
+      "Toy source system embedded in the quotient fixture for script tests."
+    ]
+  },
+  "vertices": [
+    {
+      "id": "q"
+    }
+  ],
+  "edges": [
+    {
+      "id": "s0",
+      "source": "q",
+      "target": "q",
+      "generator": 0,
+      "inverseEdgeId": "s0"
+    },
+    {
+      "id": "s1",
+      "source": "q",
+      "target": "q",
+      "generator": 1,
+      "inverseEdgeId": "s1"
+    }
+  ],
+  "permutationAction": [
+    {
+      "generator": 0,
+      "images": {
+        "q": "q"
+      }
+    },
+    {
+      "generator": 1,
+      "images": {
+        "q": "q"
+      }
+    }
+  ],
+  "twoCells": [
+    {
+      "id": "cell",
+      "generatorPair": [0, 1],
+      "m": 5,
+      "boundaryVertexIds": ["q", "q", "q", "q", "q", "q", "q", "q", "q", "q"],
+      "boundaryEdgeIds": [
+        "s0",
+        "s1",
+        "s0",
+        "s1",
+        "s0",
+        "s1",
+        "s0",
+        "s1",
+        "s0",
+        "s1"
+      ]
+    }
+  ],
+  "game": {
+    "activeAssignmentId": "zero",
+    "activeCocycleId": "zero-cocycle",
+    "assignments": [
+      {
+        "id": "zero",
+        "label": "Zero test cocycle",
+        "kind": "integer-edge-labeling",
+        "edgeStates": [
+          {
+            "edgeId": "s0",
+            "value": 0
+          },
+          {
+            "edgeId": "s1",
+            "value": 0
+          }
+        ]
+      }
+    ],
+    "cocycles": [
+      {
+        "id": "zero-cocycle",
+        "assignmentId": "zero",
+        "coefficientRing": "Z"
+      }
+    ],
+    "experimentLogs": [
+      {
+        "id": "baseline",
+        "assignmentId": "zero",
+        "cocycleId": "zero-cocycle",
+        "inputHash": "fixture"
+      }
+    ]
+  },
+  "warnings": [
+    "Toy quotient fixture for validator and UI tests; torsion-free manifold language must remain disabled."
+  ]
+}

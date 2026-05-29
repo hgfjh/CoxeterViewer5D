@@ -1,0 +1,11 @@
+node_modules
+.pnpm-store
+.serena
+dist
+AGENTS.md
+playwright-report
+test-results
+src-tauri/gen
+src-tauri/target
+pnpm-lock.yaml
+dev-server.log

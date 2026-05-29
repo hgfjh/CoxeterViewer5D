@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "I2(5)",
+  "description": "Dihedral Coxeter group with m=5. The full group has 10 elements.",
+  "rank": 2,
+  "generators": [
+    {
+      "id": "s0",
+      "label": "s0",
+      "colorHint": "#2563eb"
+    },
+    {
+      "id": "s1",
+      "label": "s1",
+      "colorHint": "#dc2626"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, 5],
+    [5, 1]
+  ],
+  "notes": [
+    "The rank-two Davis cell for the full group is a decagon.",
+    "This example is finite and useful for checking duplicate-node handling."
+  ],
+  "dataStatus": "toy"
+}

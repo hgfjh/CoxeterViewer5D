@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "contractName": "coxeter-viewer-exact-export",
+  "purpose": "External exact exporters produce generated Cayley-ball JSON that the browser app imports and validates.",
+  "browserAvailability": false,
+  "cli": {
+    "requiredArguments": [
+      "--input <coxeter-system.json>",
+      "--radius <nonnegative-integer>",
+      "--output <generated-ball.json>"
+    ],
+    "inspectionArguments": [
+      "--help",
+      "--contract",
+      "--check-runtime",
+      "--certify-output <generated-ball.json>..."
+    ],
+    "optionalArguments": [
+      "--max-radius <positive-integer>",
+      "--max-nodes <positive-integer>",
+      "--max-edges <positive-integer>",
+      "--created-at <iso-timestamp>",
+      "--gap-executable <path-or-command>",
+      "--gap-timeout <positive-integer>",
+      "--runtime-timeout <nonnegative-integer>"
+    ],
+    "exitCodes": {
+      "0": "Inspection command succeeded, or export succeeded.",
+      "2": "Required external runtime is missing or unavailable.",
+      "3": "Runtime was found, but external exact enumeration failed or timed out.",
+      "4": "Input, output, or CLI arguments are invalid."
+    }
+  },
+  "input": {
+    "format": "CoxeterSystemInput",
+    "source": "docs/data-format.md#coxeter-system-input",
+    "requiredFields": [
+      "schemaVersion",
+      "name",
+      "rank",
+      "generators",
+      "coxeterMatrix"
+    ],
+    "notes": [
+      "The exporter treats input JSON as data and must not evaluate formulas.",
+      "Right multiplication is the viewer convention for generated edges."
+    ]
+  },
+  "output": {
+    "format": "GeneratedCayleyBall",
+    "source": "docs/data-format.md#generated-cayley-ball",
+    "requiredFields": [
+      "systemName",
+      "rank",
+      "nodes",
+      "edges",
+      "twoCells",
+      "metadata"
+    ],
+    "metadata": {
+      "generatorConvention": "right-multiplication",
+      "deduplication": ["external-sage", "external-gap-kbmag"],
+      "requiredFields": [
+        "radius",
+        "requestedRadius",
+        "generatorConvention",
+        "deduplication",
+        "backend",
+        "caps",
+        "capStatus",
+        "completeness",
+        "normalFormRecords",
+        "relationProofSummaries",
+        "certification",
+        "createdAt",
+        "warnings"
+      ],
+      "backendRequiredFields": [
+        "id",
+        "version",
+        "requiredRuntime",
+        "command",
+        "input"
+      ],
+      "capStatusRequiredFields": [
+        "radiusCapped",
+        "nodeCapHit",
+        "edgeCapHit",
+        "truncated"
+      ],
+      "completenessRequiredFields": [
+        "requestedBallComplete",
+        "effectiveRadiusBallComplete",
+        "blockingReasons",
+        "rankTwoCells"
+      ],
+      "certificationRequiredFields": [
+        "status",
+        "backend",
+        "backendVersion",
+        "diagnostics",
+        "errors"
+      ],
+      "normalFormRecordsRequiredFields": [
+        "status",
+        "convention",
+        "nodeCount",
+        "maxLength",
+        "lengthMultiset",
+        "records"
+      ],
+      "relationProofSummariesRequiredFields": [
+        "status",
+        "finitePairCount",
+        "summaries",
+        "limitations"
+      ]
+    },
+    "node": {
+      "requiredFields": ["id", "word", "length"],
+      "notes": [
+        "id must be stable across repeated exports with the same input and radius.",
+        "word is a preferred reduced word using generator indices."
+      ]
+    },
+    "edge": {
+      "requiredFields": ["id", "source", "target", "generator"],
+      "notes": [
+        "source and target must refer to exported node ids.",
+        "generator is a zero-based generator index."
+      ]
+    },
+    "twoCell": {
+      "requiredFields": ["id", "generatorPair", "m", "boundaryNodeIds"],
+      "notes": [
+        "Rank-two Davis cells are emitted only when every boundary node is present.",
+        "boundaryNodeIds has length 2*m in cyclic order."
+      ]
+    }
+  },
+  "exporters": [
+    {
+      "id": "sageExportBackend",
+      "kind": "sage",
+      "script": "scripts/sage_export_backend.py",
+      "runtime": "SageMath",
+      "deduplication": "external-sage",
+      "status": "implemented-local-cli"
+    },
+    {
+      "id": "gapKbmagExportBackend",
+      "kind": "gap-kbmag",
+      "script": "scripts/gap_kbmag_export_backend.py",
+      "runtime": "GAP with KBMAG",
+      "deduplication": "external-gap-kbmag",
+      "status": "implemented-finite-spherical-cli"
+    }
+  ]
+}

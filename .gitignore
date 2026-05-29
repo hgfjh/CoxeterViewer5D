@@ -1,0 +1,16 @@
+node_modules
+.pnpm-store
+dist
+src-tauri/target
+src-tauri/gen
+.env
+.env.*
+playwright-report
+test-results
+coverage
+__pycache__
+*.pyc
+*.tsbuildinfo
+dev-server.log
+*.log
+.DS_Store

@@ -1,0 +1,785 @@
+{
+  "edges": [
+    {
+      "generator": 0,
+      "id": "e:e:w:0:s0",
+      "source": "e",
+      "target": "w:0"
+    },
+    {
+      "generator": 1,
+      "id": "e:e:w:1:s1",
+      "source": "e",
+      "target": "w:1"
+    },
+    {
+      "generator": 2,
+      "id": "e:e:w:2:s2",
+      "source": "e",
+      "target": "w:2"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.1.0.2.1.0:w:0.1.2.1.0:s1",
+      "source": "w:0.1.2.1.0",
+      "target": "w:0.1.0.2.1.0"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:0.1.0.2.1.0:w:1.0.2.1.0:s2",
+      "source": "w:1.0.2.1.0",
+      "target": "w:0.1.0.2.1.0"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.1.0.2.1:w:0.1.0.2.1.0:s0",
+      "source": "w:0.1.0.2.1",
+      "target": "w:0.1.0.2.1.0"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:0.1.0.2.1:w:1.0.2.1:s2",
+      "source": "w:1.0.2.1",
+      "target": "w:0.1.0.2.1"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.1.0.2:w:0.1.0.2.1:s1",
+      "source": "w:0.1.0.2",
+      "target": "w:0.1.0.2.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.1.0.2:w:0.1.2:s0",
+      "source": "w:0.1.2",
+      "target": "w:0.1.0.2"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:0.1.0:w:0.1.0.2:s2",
+      "source": "w:0.1.0",
+      "target": "w:0.1.0.2"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.1.0:w:1.0:s1",
+      "source": "w:1.0",
+      "target": "w:0.1.0"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:0.1.2.1.0:w:0.2.1.0:s2",
+      "source": "w:0.2.1.0",
+      "target": "w:0.1.2.1.0"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.1.2.1:w:0.1.2.1.0:s0",
+      "source": "w:0.1.2.1",
+      "target": "w:0.1.2.1.0"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:0.1.2.1:w:0.2.1:s2",
+      "source": "w:0.2.1",
+      "target": "w:0.1.2.1"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.1.2:w:0.1.2.1:s1",
+      "source": "w:0.1.2",
+      "target": "w:0.1.2.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.1:w:0.1.0:s0",
+      "source": "w:0.1",
+      "target": "w:0.1.0"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:0.1:w:0.1.2:s2",
+      "source": "w:0.1",
+      "target": "w:0.1.2"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.2.1.0:w:2.1.0:s1",
+      "source": "w:2.1.0",
+      "target": "w:0.2.1.0"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.2.1:w:0.2.1.0:s0",
+      "source": "w:0.2.1",
+      "target": "w:0.2.1.0"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.2:w:0.2.1:s1",
+      "source": "w:0.2",
+      "target": "w:0.2.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.2:w:2:s0",
+      "source": "w:2",
+      "target": "w:0.2"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0:w:0.1:s1",
+      "source": "w:0",
+      "target": "w:0.1"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:0:w:0.2:s2",
+      "source": "w:0",
+      "target": "w:0.2"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:1.0.2.1.0:w:1.2.1.0:s1",
+      "source": "w:1.2.1.0",
+      "target": "w:1.0.2.1.0"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:1.0.2.1:w:1.0.2.1.0:s0",
+      "source": "w:1.0.2.1",
+      "target": "w:1.0.2.1.0"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:1.0.2:w:1.0.2.1:s1",
+      "source": "w:1.0.2",
+      "target": "w:1.0.2.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:1.0.2:w:1.2:s0",
+      "source": "w:1.2",
+      "target": "w:1.0.2"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:1.0:w:1.0.2:s2",
+      "source": "w:1.0",
+      "target": "w:1.0.2"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:1.2.1.0:w:2.1.0:s2",
+      "source": "w:2.1.0",
+      "target": "w:1.2.1.0"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:1.2.1:w:1.2.1.0:s0",
+      "source": "w:1.2.1",
+      "target": "w:1.2.1.0"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:1.2.1:w:2.1:s2",
+      "source": "w:2.1",
+      "target": "w:1.2.1"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:1.2:w:1.2.1:s1",
+      "source": "w:1.2",
+      "target": "w:1.2.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:1:w:1.0:s0",
+      "source": "w:1",
+      "target": "w:1.0"
+    },
+    {
+      "generator": 2,
+      "id": "e:w:1:w:1.2:s2",
+      "source": "w:1",
+      "target": "w:1.2"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:2.1:w:2.1.0:s0",
+      "source": "w:2.1",
+      "target": "w:2.1.0"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:2:w:2.1:s1",
+      "source": "w:2",
+      "target": "w:2.1"
+    }
+  ],
+  "metadata": {
+    "backend": {
+      "command": {
+        "argv": [
+          "scripts/sage_export_backend.py",
+          "--input",
+          "public/examples/A3.json",
+          "--radius",
+          "6",
+          "--created-at",
+          "2026-01-01T00:00:00.000Z",
+          "--output",
+          "tests/fixtures/generated/A3_sage_radius_6.json"
+        ],
+        "note": "Captured from sys.argv inside the exporter process."
+      },
+      "id": "sageExportBackend",
+      "input": {
+        "path": "public/examples/A3.json",
+        "sha256": "dd44e4de43245b8ff99cf8f5609773dbcdedbc0f068fb729d43f6e42c6a1169e"
+      },
+      "requiredRuntime": "SageMath",
+      "version": "1.0.0"
+    },
+    "capStatus": {
+      "edgeCapHit": false,
+      "nodeCapHit": false,
+      "radiusCapped": false,
+      "truncated": false
+    },
+    "caps": {
+      "maxEdges": 200000,
+      "maxNodes": 50000,
+      "maxRadius": 8
+    },
+    "certification": {
+      "backend": "sageExportBackend",
+      "backendVersion": "1.0.0",
+      "diagnostics": {
+        "edgeCount": 36,
+        "edgeReferencesPresentNodes": true,
+        "metadataHasBackend": true,
+        "metadataHasCapStatus": true,
+        "metadataHasCompleteness": true,
+        "metadataHasNormalFormRecords": true,
+        "metadataHasRelationProofSummaries": true,
+        "nodeCount": 24,
+        "nodeLengthsMatchWords": true,
+        "twoCellBoundariesClosed": true,
+        "twoCellCount": 14,
+        "uniqueEdgeIds": true,
+        "uniqueNodeIds": true,
+        "uniqueTwoCellIds": true
+      },
+      "errors": [],
+      "status": "passed"
+    },
+    "completeness": {
+      "blockingReasons": [],
+      "effectiveRadiusBallComplete": true,
+      "rankTwoCells": {
+        "allFinitePairBoundariesComplete": true,
+        "clippedGeneratorPairs": []
+      },
+      "requestedBallComplete": true
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "deduplication": "external-sage",
+    "generatorConvention": "right-multiplication",
+    "normalFormRecords": {
+      "convention": "right-multiplication preferred reduced words",
+      "lengthMultiset": {
+        "0": 1,
+        "1": 3,
+        "2": 5,
+        "3": 6,
+        "4": 5,
+        "5": 3,
+        "6": 1
+      },
+      "maxLength": 6,
+      "nodeCount": 24,
+      "records": [
+        {
+          "length": 0,
+          "nodeId": "e",
+          "reducedByBackend": true,
+          "word": []
+        },
+        {
+          "length": 1,
+          "nodeId": "w:0",
+          "reducedByBackend": true,
+          "word": [0]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:0.1",
+          "reducedByBackend": true,
+          "word": [0, 1]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:0.1.0",
+          "reducedByBackend": true,
+          "word": [0, 1, 0]
+        },
+        {
+          "length": 4,
+          "nodeId": "w:0.1.0.2",
+          "reducedByBackend": true,
+          "word": [0, 1, 0, 2]
+        },
+        {
+          "length": 5,
+          "nodeId": "w:0.1.0.2.1",
+          "reducedByBackend": true,
+          "word": [0, 1, 0, 2, 1]
+        },
+        {
+          "length": 6,
+          "nodeId": "w:0.1.0.2.1.0",
+          "reducedByBackend": true,
+          "word": [0, 1, 0, 2, 1, 0]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:0.1.2",
+          "reducedByBackend": true,
+          "word": [0, 1, 2]
+        },
+        {
+          "length": 4,
+          "nodeId": "w:0.1.2.1",
+          "reducedByBackend": true,
+          "word": [0, 1, 2, 1]
+        },
+        {
+          "length": 5,
+          "nodeId": "w:0.1.2.1.0",
+          "reducedByBackend": true,
+          "word": [0, 1, 2, 1, 0]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:0.2",
+          "reducedByBackend": true,
+          "word": [0, 2]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:0.2.1",
+          "reducedByBackend": true,
+          "word": [0, 2, 1]
+        },
+        {
+          "length": 4,
+          "nodeId": "w:0.2.1.0",
+          "reducedByBackend": true,
+          "word": [0, 2, 1, 0]
+        },
+        {
+          "length": 1,
+          "nodeId": "w:1",
+          "reducedByBackend": true,
+          "word": [1]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:1.0",
+          "reducedByBackend": true,
+          "word": [1, 0]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:1.0.2",
+          "reducedByBackend": true,
+          "word": [1, 0, 2]
+        },
+        {
+          "length": 4,
+          "nodeId": "w:1.0.2.1",
+          "reducedByBackend": true,
+          "word": [1, 0, 2, 1]
+        },
+        {
+          "length": 5,
+          "nodeId": "w:1.0.2.1.0",
+          "reducedByBackend": true,
+          "word": [1, 0, 2, 1, 0]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:1.2",
+          "reducedByBackend": true,
+          "word": [1, 2]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:1.2.1",
+          "reducedByBackend": true,
+          "word": [1, 2, 1]
+        },
+        {
+          "length": 4,
+          "nodeId": "w:1.2.1.0",
+          "reducedByBackend": true,
+          "word": [1, 2, 1, 0]
+        },
+        {
+          "length": 1,
+          "nodeId": "w:2",
+          "reducedByBackend": true,
+          "word": [2]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:2.1",
+          "reducedByBackend": true,
+          "word": [2, 1]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:2.1.0",
+          "reducedByBackend": true,
+          "word": [2, 1, 0]
+        }
+      ],
+      "status": "derived-from-exact-export"
+    },
+    "radius": 6,
+    "relationProofSummaries": {
+      "finitePairCount": 3,
+      "limitations": [
+        "These summaries certify exported visible rank-two boundaries only.",
+        "They are not a standalone proof of the full Coxeter presentation."
+      ],
+      "status": "derived-from-visible-rank-two-cells",
+      "summaries": [
+        {
+          "clipped": false,
+          "completeTwoCellCount": 4,
+          "expectedBoundaryLength": 6,
+          "generatorPair": [0, 1],
+          "m": 3,
+          "relationWord": [0, 1, 0, 1, 0, 1],
+          "sampleCellIds": [
+            "cell:0-1:e",
+            "cell:0-1:w:0.1.0.2",
+            "cell:0-1:w:0.2"
+          ],
+          "status": "complete-visible-witnesses"
+        },
+        {
+          "clipped": false,
+          "completeTwoCellCount": 6,
+          "expectedBoundaryLength": 4,
+          "generatorPair": [0, 2],
+          "m": 2,
+          "relationWord": [0, 2, 0, 2],
+          "sampleCellIds": [
+            "cell:0-2:e",
+            "cell:0-2:w:0.1",
+            "cell:0-2:w:0.1.0.2.1"
+          ],
+          "status": "complete-visible-witnesses"
+        },
+        {
+          "clipped": false,
+          "completeTwoCellCount": 4,
+          "expectedBoundaryLength": 6,
+          "generatorPair": [1, 2],
+          "m": 3,
+          "relationWord": [1, 2, 1, 2, 1, 2],
+          "sampleCellIds": ["cell:1-2:e", "cell:1-2:w:0", "cell:1-2:w:0.1.0"],
+          "status": "complete-visible-witnesses"
+        }
+      ]
+    },
+    "requestedRadius": 6,
+    "warnings": [
+      "Exact Sage backend: nodes are deduplicated by Sage algebraic real reflection matrices."
+    ]
+  },
+  "nodes": [
+    {
+      "id": "e",
+      "length": 0,
+      "matrixKey": "sage-aa:ab3b00d8742abba159d88d5a",
+      "word": []
+    },
+    {
+      "id": "w:0",
+      "length": 1,
+      "matrixKey": "sage-aa:9036b49fb5f36a335b19c061",
+      "word": [0]
+    },
+    {
+      "id": "w:1",
+      "length": 1,
+      "matrixKey": "sage-aa:0c4ff70e564bffb104c5ae4b",
+      "word": [1]
+    },
+    {
+      "id": "w:2",
+      "length": 1,
+      "matrixKey": "sage-aa:7167c9ff11ba0df05a7b2610",
+      "word": [2]
+    },
+    {
+      "id": "w:0.1",
+      "length": 2,
+      "matrixKey": "sage-aa:9dd072c262e7a0df07b3bdc9",
+      "word": [0, 1]
+    },
+    {
+      "id": "w:0.2",
+      "length": 2,
+      "matrixKey": "sage-aa:f338cbf8c85a10228c18f54c",
+      "word": [0, 2]
+    },
+    {
+      "id": "w:1.0",
+      "length": 2,
+      "matrixKey": "sage-aa:b24def943dee16afa8256e9b",
+      "word": [1, 0]
+    },
+    {
+      "id": "w:1.2",
+      "length": 2,
+      "matrixKey": "sage-aa:092c2d842581af2495c79923",
+      "word": [1, 2]
+    },
+    {
+      "id": "w:2.1",
+      "length": 2,
+      "matrixKey": "sage-aa:68531139804cc96c722f0cc4",
+      "word": [2, 1]
+    },
+    {
+      "id": "w:0.1.0",
+      "length": 3,
+      "matrixKey": "sage-aa:d2f453ec49927a9f6e0d97e4",
+      "word": [0, 1, 0]
+    },
+    {
+      "id": "w:0.1.2",
+      "length": 3,
+      "matrixKey": "sage-aa:0aeece4c190a1ce4bb2eb815",
+      "word": [0, 1, 2]
+    },
+    {
+      "id": "w:0.2.1",
+      "length": 3,
+      "matrixKey": "sage-aa:c316ba62761031c881b4c948",
+      "word": [0, 2, 1]
+    },
+    {
+      "id": "w:1.0.2",
+      "length": 3,
+      "matrixKey": "sage-aa:f67e4ba980a29bac458ad8b9",
+      "word": [1, 0, 2]
+    },
+    {
+      "id": "w:1.2.1",
+      "length": 3,
+      "matrixKey": "sage-aa:7521e7ecc44f66edd894c662",
+      "word": [1, 2, 1]
+    },
+    {
+      "id": "w:2.1.0",
+      "length": 3,
+      "matrixKey": "sage-aa:32b0160a79bba60dfb93dcea",
+      "word": [2, 1, 0]
+    },
+    {
+      "id": "w:0.1.0.2",
+      "length": 4,
+      "matrixKey": "sage-aa:3bc8b5c68f405958f43ca42a",
+      "word": [0, 1, 0, 2]
+    },
+    {
+      "id": "w:0.1.2.1",
+      "length": 4,
+      "matrixKey": "sage-aa:538ec234731e86a5ef6a514e",
+      "word": [0, 1, 2, 1]
+    },
+    {
+      "id": "w:0.2.1.0",
+      "length": 4,
+      "matrixKey": "sage-aa:e39f24abae0b3dc82a278598",
+      "word": [0, 2, 1, 0]
+    },
+    {
+      "id": "w:1.0.2.1",
+      "length": 4,
+      "matrixKey": "sage-aa:809ce815850ae5a656eaec61",
+      "word": [1, 0, 2, 1]
+    },
+    {
+      "id": "w:1.2.1.0",
+      "length": 4,
+      "matrixKey": "sage-aa:52a386ae9326a81b456ad0f0",
+      "word": [1, 2, 1, 0]
+    },
+    {
+      "id": "w:0.1.0.2.1",
+      "length": 5,
+      "matrixKey": "sage-aa:d08d79d518ea181de9c4d633",
+      "word": [0, 1, 0, 2, 1]
+    },
+    {
+      "id": "w:0.1.2.1.0",
+      "length": 5,
+      "matrixKey": "sage-aa:109b668d61b4712ba6caa5d8",
+      "word": [0, 1, 2, 1, 0]
+    },
+    {
+      "id": "w:1.0.2.1.0",
+      "length": 5,
+      "matrixKey": "sage-aa:94e1d6a80b5ce7adf05e1249",
+      "word": [1, 0, 2, 1, 0]
+    },
+    {
+      "id": "w:0.1.0.2.1.0",
+      "length": 6,
+      "matrixKey": "sage-aa:b7e2e97ef4278fe2b15144f7",
+      "word": [0, 1, 0, 2, 1, 0]
+    }
+  ],
+  "rank": 3,
+  "systemName": "A3",
+  "twoCells": [
+    {
+      "boundaryNodeIds": ["e", "w:0", "w:0.1", "w:0.1.0", "w:1.0", "w:1"],
+      "generatorPair": [0, 1],
+      "id": "cell:0-1:e",
+      "m": 3
+    },
+    {
+      "boundaryNodeIds": [
+        "w:0.1.0.2",
+        "w:0.1.0.2.1",
+        "w:0.1.0.2.1.0",
+        "w:0.1.2.1.0",
+        "w:0.1.2.1",
+        "w:0.1.2"
+      ],
+      "generatorPair": [0, 1],
+      "id": "cell:0-1:w:0.1.0.2",
+      "m": 3
+    },
+    {
+      "boundaryNodeIds": [
+        "w:0.2",
+        "w:0.2.1",
+        "w:0.2.1.0",
+        "w:2.1.0",
+        "w:2.1",
+        "w:2"
+      ],
+      "generatorPair": [0, 1],
+      "id": "cell:0-1:w:0.2",
+      "m": 3
+    },
+    {
+      "boundaryNodeIds": [
+        "w:1.0.2",
+        "w:1.0.2.1",
+        "w:1.0.2.1.0",
+        "w:1.2.1.0",
+        "w:1.2.1",
+        "w:1.2"
+      ],
+      "generatorPair": [0, 1],
+      "id": "cell:0-1:w:1.0.2",
+      "m": 3
+    },
+    {
+      "boundaryNodeIds": ["e", "w:0", "w:0.2", "w:2"],
+      "generatorPair": [0, 2],
+      "id": "cell:0-2:e",
+      "m": 2
+    },
+    {
+      "boundaryNodeIds": ["w:0.1", "w:0.1.0", "w:0.1.0.2", "w:0.1.2"],
+      "generatorPair": [0, 2],
+      "id": "cell:0-2:w:0.1",
+      "m": 2
+    },
+    {
+      "boundaryNodeIds": [
+        "w:0.1.0.2.1",
+        "w:0.1.0.2.1.0",
+        "w:1.0.2.1.0",
+        "w:1.0.2.1"
+      ],
+      "generatorPair": [0, 2],
+      "id": "cell:0-2:w:0.1.0.2.1",
+      "m": 2
+    },
+    {
+      "boundaryNodeIds": ["w:0.1.2.1", "w:0.1.2.1.0", "w:0.2.1.0", "w:0.2.1"],
+      "generatorPair": [0, 2],
+      "id": "cell:0-2:w:0.1.2.1",
+      "m": 2
+    },
+    {
+      "boundaryNodeIds": ["w:1", "w:1.0", "w:1.0.2", "w:1.2"],
+      "generatorPair": [0, 2],
+      "id": "cell:0-2:w:1",
+      "m": 2
+    },
+    {
+      "boundaryNodeIds": ["w:1.2.1", "w:1.2.1.0", "w:2.1.0", "w:2.1"],
+      "generatorPair": [0, 2],
+      "id": "cell:0-2:w:1.2.1",
+      "m": 2
+    },
+    {
+      "boundaryNodeIds": ["e", "w:1", "w:1.2", "w:1.2.1", "w:2.1", "w:2"],
+      "generatorPair": [1, 2],
+      "id": "cell:1-2:e",
+      "m": 3
+    },
+    {
+      "boundaryNodeIds": [
+        "w:0",
+        "w:0.1",
+        "w:0.1.2",
+        "w:0.1.2.1",
+        "w:0.2.1",
+        "w:0.2"
+      ],
+      "generatorPair": [1, 2],
+      "id": "cell:1-2:w:0",
+      "m": 3
+    },
+    {
+      "boundaryNodeIds": [
+        "w:0.1.0",
+        "w:0.1.0.2",
+        "w:0.1.0.2.1",
+        "w:1.0.2.1",
+        "w:1.0.2",
+        "w:1.0"
+      ],
+      "generatorPair": [1, 2],
+      "id": "cell:1-2:w:0.1.0",
+      "m": 3
+    },
+    {
+      "boundaryNodeIds": [
+        "w:0.1.0.2.1.0",
+        "w:0.1.2.1.0",
+        "w:0.2.1.0",
+        "w:2.1.0",
+        "w:1.2.1.0",
+        "w:1.0.2.1.0"
+      ],
+      "generatorPair": [1, 2],
+      "id": "cell:1-2:w:0.1.0.2.1.0",
+      "m": 3
+    }
+  ]
+}

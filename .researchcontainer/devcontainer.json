@@ -1,0 +1,18 @@
+{
+  "name": "CoxeterViewer5D research tools",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/CoxeterViewer5D",
+  "postCreateCommand": "corepack pnpm install --frozen-lockfile && python3 scripts/check_external_tools.py || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-python.python"
+      ]
+    }
+  }
+}

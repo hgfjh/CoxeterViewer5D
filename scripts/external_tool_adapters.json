@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "adapters": [
+    {
+      "id": "sage-cayley-ball",
+      "tool": "SageMath",
+      "status": "implemented",
+      "input": "CoxeterSystemInput JSON plus radius",
+      "output": "GeneratedCayleyBall JSON",
+      "script": "scripts/run_sage_export.mjs"
+    },
+    {
+      "id": "gap-kbmag-cayley-ball",
+      "tool": "GAP/KBMAG",
+      "status": "implemented",
+      "input": "finite spherical CoxeterSystemInput JSON plus radius",
+      "output": "GeneratedCayleyBall JSON",
+      "script": "scripts/run_gap_export.mjs"
+    },
+    {
+      "id": "coxiter-diagram-check",
+      "tool": "CoxIter",
+      "status": "implemented",
+      "input": "compact Coxeter example JSON",
+      "output": "External checker summary JSON or hash-matched stored artifact",
+      "script": "scripts/coxiter_check_compact.py"
+    },
+    {
+      "id": "sage-quotient-workflow",
+      "tool": "SageMath",
+      "status": "implemented",
+      "input": "QuotientBuildInput JSON",
+      "output": "QuotientComplex JSON or deterministic skipped-status artifact",
+      "script": "scripts/run_quotient_export.mjs --backend sage"
+    },
+    {
+      "id": "gap-quotient-workflow",
+      "tool": "GAP/KBMAG",
+      "status": "implemented",
+      "input": "QuotientBuildInput JSON",
+      "output": "QuotientComplex JSON or deterministic skipped-status artifact",
+      "script": "scripts/run_quotient_export.mjs --backend gap"
+    },
+    {
+      "id": "polymake-topology",
+      "tool": "polymake",
+      "status": "contract-only",
+      "input": "finite incidence poset or quotient complex JSON",
+      "output": "topology diagnostic artifact with tool version, command, input hash, and output hash",
+      "script": null
+    },
+    {
+      "id": "regina-link-topology",
+      "tool": "Regina",
+      "status": "contract-only",
+      "input": "finite local-link or quotient-link simplicial complex JSON",
+      "output": "homology/link diagnostic artifact with tool version, command, input hash, and output hash",
+      "script": null
+    }
+  ]
+}

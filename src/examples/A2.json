@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "name": "A2",
+  "description": "Rank-two spherical Coxeter group of type A2, isomorphic to S3.",
+  "rank": 2,
+  "generators": [
+    {
+      "id": "s0",
+      "label": "s0",
+      "colorHint": "#2563eb"
+    },
+    {
+      "id": "s1",
+      "label": "s1",
+      "colorHint": "#16a34a"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, 3],
+    [3, 1]
+  ],
+  "notes": [
+    "The full group has 6 elements.",
+    "The rank-two Davis cell for the full group is a hexagon."
+  ],
+  "dataStatus": "toy"
+}

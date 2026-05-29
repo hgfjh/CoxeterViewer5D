@@ -1,0 +1,318 @@
+{
+  "edges": [
+    {
+      "generator": 0,
+      "id": "e:e:w:0:s0",
+      "source": "e",
+      "target": "w:0"
+    },
+    {
+      "generator": 1,
+      "id": "e:e:w:1:s1",
+      "source": "e",
+      "target": "w:1"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.1.0.1.0:w:1.0.1.0:s1",
+      "source": "w:1.0.1.0",
+      "target": "w:0.1.0.1.0"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.1.0.1:w:0.1.0.1.0:s0",
+      "source": "w:0.1.0.1",
+      "target": "w:0.1.0.1.0"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0.1.0:w:0.1.0.1:s1",
+      "source": "w:0.1.0",
+      "target": "w:0.1.0.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:0.1:w:0.1.0:s0",
+      "source": "w:0.1",
+      "target": "w:0.1.0"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:0:w:0.1:s1",
+      "source": "w:0",
+      "target": "w:0.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:1.0.1:w:1.0.1.0:s0",
+      "source": "w:1.0.1",
+      "target": "w:1.0.1.0"
+    },
+    {
+      "generator": 1,
+      "id": "e:w:1.0:w:1.0.1:s1",
+      "source": "w:1.0",
+      "target": "w:1.0.1"
+    },
+    {
+      "generator": 0,
+      "id": "e:w:1:w:1.0:s0",
+      "source": "w:1",
+      "target": "w:1.0"
+    }
+  ],
+  "metadata": {
+    "backend": {
+      "command": {
+        "argv": [
+          "scripts/sage_export_backend.py",
+          "--input",
+          "public/examples/I2_5.json",
+          "--radius",
+          "5",
+          "--created-at",
+          "2026-01-01T00:00:00.000Z",
+          "--output",
+          "tests/fixtures/generated/I2_5_sage_radius_5.json"
+        ],
+        "note": "Captured from sys.argv inside the exporter process."
+      },
+      "id": "sageExportBackend",
+      "input": {
+        "path": "public/examples/I2_5.json",
+        "sha256": "c1d7277e741bb53f73eee1cf8cf9d13a9b44054bb1997b154f5f8324277a2789"
+      },
+      "requiredRuntime": "SageMath",
+      "version": "1.0.0"
+    },
+    "capStatus": {
+      "edgeCapHit": false,
+      "nodeCapHit": false,
+      "radiusCapped": false,
+      "truncated": false
+    },
+    "caps": {
+      "maxEdges": 200000,
+      "maxNodes": 50000,
+      "maxRadius": 8
+    },
+    "certification": {
+      "backend": "sageExportBackend",
+      "backendVersion": "1.0.0",
+      "diagnostics": {
+        "edgeCount": 10,
+        "edgeReferencesPresentNodes": true,
+        "metadataHasBackend": true,
+        "metadataHasCapStatus": true,
+        "metadataHasCompleteness": true,
+        "metadataHasNormalFormRecords": true,
+        "metadataHasRelationProofSummaries": true,
+        "nodeCount": 10,
+        "nodeLengthsMatchWords": true,
+        "twoCellBoundariesClosed": true,
+        "twoCellCount": 1,
+        "uniqueEdgeIds": true,
+        "uniqueNodeIds": true,
+        "uniqueTwoCellIds": true
+      },
+      "errors": [],
+      "status": "passed"
+    },
+    "completeness": {
+      "blockingReasons": [],
+      "effectiveRadiusBallComplete": true,
+      "rankTwoCells": {
+        "allFinitePairBoundariesComplete": true,
+        "clippedGeneratorPairs": []
+      },
+      "requestedBallComplete": true
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "deduplication": "external-sage",
+    "generatorConvention": "right-multiplication",
+    "normalFormRecords": {
+      "convention": "right-multiplication preferred reduced words",
+      "lengthMultiset": {
+        "0": 1,
+        "1": 2,
+        "2": 2,
+        "3": 2,
+        "4": 2,
+        "5": 1
+      },
+      "maxLength": 5,
+      "nodeCount": 10,
+      "records": [
+        {
+          "length": 0,
+          "nodeId": "e",
+          "reducedByBackend": true,
+          "word": []
+        },
+        {
+          "length": 1,
+          "nodeId": "w:0",
+          "reducedByBackend": true,
+          "word": [0]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:0.1",
+          "reducedByBackend": true,
+          "word": [0, 1]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:0.1.0",
+          "reducedByBackend": true,
+          "word": [0, 1, 0]
+        },
+        {
+          "length": 4,
+          "nodeId": "w:0.1.0.1",
+          "reducedByBackend": true,
+          "word": [0, 1, 0, 1]
+        },
+        {
+          "length": 5,
+          "nodeId": "w:0.1.0.1.0",
+          "reducedByBackend": true,
+          "word": [0, 1, 0, 1, 0]
+        },
+        {
+          "length": 1,
+          "nodeId": "w:1",
+          "reducedByBackend": true,
+          "word": [1]
+        },
+        {
+          "length": 2,
+          "nodeId": "w:1.0",
+          "reducedByBackend": true,
+          "word": [1, 0]
+        },
+        {
+          "length": 3,
+          "nodeId": "w:1.0.1",
+          "reducedByBackend": true,
+          "word": [1, 0, 1]
+        },
+        {
+          "length": 4,
+          "nodeId": "w:1.0.1.0",
+          "reducedByBackend": true,
+          "word": [1, 0, 1, 0]
+        }
+      ],
+      "status": "derived-from-exact-export"
+    },
+    "radius": 5,
+    "relationProofSummaries": {
+      "finitePairCount": 1,
+      "limitations": [
+        "These summaries certify exported visible rank-two boundaries only.",
+        "They are not a standalone proof of the full Coxeter presentation."
+      ],
+      "status": "derived-from-visible-rank-two-cells",
+      "summaries": [
+        {
+          "clipped": false,
+          "completeTwoCellCount": 1,
+          "expectedBoundaryLength": 10,
+          "generatorPair": [0, 1],
+          "m": 5,
+          "relationWord": [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+          "sampleCellIds": ["cell:0-1:e"],
+          "status": "complete-visible-witnesses"
+        }
+      ]
+    },
+    "requestedRadius": 5,
+    "warnings": [
+      "Exact Sage backend: nodes are deduplicated by Sage algebraic real reflection matrices."
+    ]
+  },
+  "nodes": [
+    {
+      "id": "e",
+      "length": 0,
+      "matrixKey": "sage-aa:26a557ad740d6a5905c93d7d",
+      "word": []
+    },
+    {
+      "id": "w:0",
+      "length": 1,
+      "matrixKey": "sage-aa:08be5ba55eba96882245e7fe",
+      "word": [0]
+    },
+    {
+      "id": "w:1",
+      "length": 1,
+      "matrixKey": "sage-aa:c110af811bb5091f0f7f79db",
+      "word": [1]
+    },
+    {
+      "id": "w:0.1",
+      "length": 2,
+      "matrixKey": "sage-aa:9e4073efae9c35b760d7cb32",
+      "word": [0, 1]
+    },
+    {
+      "id": "w:1.0",
+      "length": 2,
+      "matrixKey": "sage-aa:b9b5d8ae80fe1c67c9c56943",
+      "word": [1, 0]
+    },
+    {
+      "id": "w:0.1.0",
+      "length": 3,
+      "matrixKey": "sage-aa:cf02bc2a7f42735145888487",
+      "word": [0, 1, 0]
+    },
+    {
+      "id": "w:1.0.1",
+      "length": 3,
+      "matrixKey": "sage-aa:1c6a71d160b14c72e0eacc53",
+      "word": [1, 0, 1]
+    },
+    {
+      "id": "w:0.1.0.1",
+      "length": 4,
+      "matrixKey": "sage-aa:423e1920b9bf588f00c0e055",
+      "word": [0, 1, 0, 1]
+    },
+    {
+      "id": "w:1.0.1.0",
+      "length": 4,
+      "matrixKey": "sage-aa:be43790ea9f596d4ea83c6c0",
+      "word": [1, 0, 1, 0]
+    },
+    {
+      "id": "w:0.1.0.1.0",
+      "length": 5,
+      "matrixKey": "sage-aa:607d0400b985d18b803330f2",
+      "word": [0, 1, 0, 1, 0]
+    }
+  ],
+  "rank": 2,
+  "systemName": "I2(5)",
+  "twoCells": [
+    {
+      "boundaryNodeIds": [
+        "e",
+        "w:0",
+        "w:0.1",
+        "w:0.1.0",
+        "w:0.1.0.1",
+        "w:0.1.0.1.0",
+        "w:1.0.1.0",
+        "w:1.0.1",
+        "w:1.0",
+        "w:1"
+      ],
+      "generatorPair": [0, 1],
+      "id": "cell:0-1:e",
+      "m": 5
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "manifestKind": "coxeter-viewer-external-artifact-manifest",
+  "createdAt": "2026-05-28T00:00:00.000Z",
+  "createdBy": "research-environment-scaffold",
+  "purpose": "Record external Sage/GAP/KBMAG/CoxIter artifacts without making the browser responsible for external runtimes.",
+  "artifacts": [
+    {
+      "id": "coxiter-compact-5-cube-gamma1-2026-05-28",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/compact_5_cube_gamma1.coxiter.json",
+      "sha256": "f840c9f15f0bdf5a7c7628d8e94a2252fce9df42c9a7017da8c1cdc25c30c256",
+      "input": {
+        "example": "public/examples/compact_5_cube_gamma1.json",
+        "sha256": "17d5d1e2f88f7c9447fe4c1feee2fc8eb11d216273c21557d1625c84f9a78cc0"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated compact_5_cube_gamma1 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for the compact 5-cube example.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-compact-5-prism-makarov-2026-05-28",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/compact_5_prism_makarov.coxiter.json",
+      "sha256": "ad0d900d0e205ab55fea3619a1148fcd64e7ba929cc43bbdf9c7c75817f29719",
+      "input": {
+        "example": "public/examples/compact_5_prism_makarov.json",
+        "sha256": "52887bcd62c758f26539d9bcb686a1659054aec68d19e4ab41b536206a18e039"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated compact_5_prism_makarov graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for the Makarov compact 5-prism example.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "name": "Universal rank 3",
+  "description": "Rank-three Coxeter group with all off-diagonal entries infinite.",
+  "rank": 3,
+  "generators": [
+    {
+      "id": "s0",
+      "label": "s0",
+      "colorHint": "#2563eb"
+    },
+    {
+      "id": "s1",
+      "label": "s1",
+      "colorHint": "#16a34a"
+    },
+    {
+      "id": "s2",
+      "label": "s2",
+      "colorHint": "#dc2626"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, "inf", "inf"],
+    ["inf", 1, "inf"],
+    ["inf", "inf", 1]
+  ],
+  "notes": [
+    "This example is useful for testing tree-like Cayley-ball growth.",
+    "There are no finite rank-two Davis cells."
+  ],
+  "dataStatus": "toy"
+}

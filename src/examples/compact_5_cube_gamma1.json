@@ -1,0 +1,641 @@
+{
+  "schemaVersion": 1,
+  "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+  "description": "Coxeter matrix transcribed from Jacquemet and Tschantz, Figure 3, for the unique compact hyperbolic Coxeter 5-cube.",
+  "rank": 10,
+  "generators": [
+    {
+      "id": "g0",
+      "label": "g0"
+    },
+    {
+      "id": "g1",
+      "label": "g1"
+    },
+    {
+      "id": "g2",
+      "label": "g2"
+    },
+    {
+      "id": "g3",
+      "label": "g3"
+    },
+    {
+      "id": "g4",
+      "label": "g4"
+    },
+    {
+      "id": "g5",
+      "label": "g5"
+    },
+    {
+      "id": "g6",
+      "label": "g6"
+    },
+    {
+      "id": "g7",
+      "label": "g7"
+    },
+    {
+      "id": "g8",
+      "label": "g8"
+    },
+    {
+      "id": "g9",
+      "label": "g9"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, "inf", 3, 3, 2, 2, 2, 2, 2, 2],
+    ["inf", 1, 2, 2, 2, 3, 3, 2, 2, 2],
+    [3, 2, 1, 2, 3, 3, 2, 2, "inf", 2],
+    [3, 2, 2, 1, "inf", 2, 3, 2, 2, 2],
+    [2, 2, 3, "inf", 1, 2, 2, 3, 2, 2],
+    [2, 3, 3, 2, 2, 1, 2, "inf", 2, 2],
+    [2, 3, 2, 3, 2, 2, 1, 3, 2, "inf"],
+    [2, 2, 2, 2, 3, "inf", 3, 1, 2, 2],
+    [2, 2, "inf", 2, 2, 2, 2, 2, 1, 3],
+    [2, 2, 2, 2, 2, 2, "inf", 2, 3, 1]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 5,
+    "certifiedModel": {
+      "status": "passed",
+      "coordinateSystem": "hyperboloid",
+      "coordinateType": "interval-certified-numeric",
+      "lorentzPreservationResidual": {
+        "kind": "interval-real",
+        "lower": 0,
+        "upper": 1.1e-12,
+        "decimal": 8.881784197001252e-16
+      },
+      "reflectionInvolutionResidual": {
+        "kind": "interval-real",
+        "lower": 0,
+        "upper": 1.1e-12,
+        "decimal": 8.881784197001252e-16
+      },
+      "certificate": {
+        "status": "passed",
+        "backend": "in-repo-interval-geometry-checker",
+        "scopes": [
+          "geometry-intervals",
+          "geometry-interval-coordinates",
+          "geometry-interval-reflections",
+          "projection-bounds"
+        ],
+        "command": "python scripts/certify_geometry_intervals.py public/examples/compact_5_cube_gamma1.json",
+        "checkedAt": "1970-01-01T00:00:00.000Z",
+        "diagnostics": {
+          "signature": {
+            "positive": 5,
+            "negative": 1,
+            "zero": 4
+          },
+          "factorizationResidual": 2.3856472353145364e-12,
+          "basepointMaxFacetValue": -0.16154116562912996,
+          "tolerance": 1e-8
+        },
+        "warnings": [
+          "This certificate encloses numerical Lorentz residuals in intervals. PCA projections remain visualization-only."
+        ]
+      },
+      "warnings": [
+        "Interval-certified reflection residuals are available; browser rendering still uses numerical coordinates."
+      ]
+    },
+    "normalGram": [
+      [
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1513878188659974,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.1513878188659974,
+            "minimalPolynomial": [4, -2, -3],
+            "isolatingInterval": [1.1513, 1.1514]
+          }
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1513878188659974,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.1513878188659974,
+            "minimalPolynomial": [4, -2, -3],
+            "isolatingInterval": [1.1513, 1.1514]
+          }
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.0371566465259714,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.0371566465259714,
+            "minimalPolynomial": [16, 0, -20, 0, 3],
+            "isolatingInterval": [1.0371, 1.0372]
+          }
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1513878188659974,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.1513878188659974,
+            "minimalPolynomial": [4, -2, -3],
+            "isolatingInterval": [1.1513, 1.1514]
+          }
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1513878188659974,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.1513878188659974,
+            "minimalPolynomial": [4, -2, -3],
+            "isolatingInterval": [1.1513, 1.1514]
+          }
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1513878188659974,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.1513878188659974,
+            "minimalPolynomial": [4, -2, -3],
+            "isolatingInterval": [1.1513, 1.1514]
+          }
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.0371566465259714,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.0371566465259714,
+            "minimalPolynomial": [16, 0, -20, 0, 3],
+            "isolatingInterval": [1.0371, 1.0372]
+          }
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1513878188659974,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.1513878188659974,
+            "minimalPolynomial": [4, -2, -3],
+            "isolatingInterval": [1.1513, 1.1514]
+          }
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.0371566465259714,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.0371566465259714,
+            "minimalPolynomial": [16, 0, -20, 0, 3],
+            "isolatingInterval": [1.0371, 1.0372]
+          }
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.0371566465259714,
+          "sourceRefId": "jacquemet-tschantz-2018-cube",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.0371566465259714,
+            "minimalPolynomial": [16, 0, -20, 0, 3],
+            "isolatingInterval": [1.0371, 1.0372]
+          }
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        }
+      ]
+    ],
+    "source": "Jacquemet and Tschantz, All hyperbolic Coxeter n-cubes, arXiv:1803.10462, Figure 3 and Section 4.2.2."
+  },
+  "notes": [
+    "The graph is the unique compact hyperbolic Coxeter 5-cube Gamma_1 from Jacquemet-Tschantz, Figure 3.",
+    "Node ids g0..g9 follow the LaTeX source drawing coordinate order: (30,0), (110,0), (30,80), (70,40), (70,120), (110,80), (150,40), (150,120), (60,70), (120,50).",
+    "Unlabeled solid Coxeter graph edges are m=3; omitted edges are m=2; dotted edges are represented as Coxeter-matrix 'inf' entries.",
+    "Dotted diagonal edges (g2,g8) and (g6,g9) use cosh d = sqrt(2(5+sqrt(13)))/4.",
+    "Dotted boundary edges (g0,g1), (g3,g4), and (g5,g7) use cosh e = (1+sqrt(13))/4."
+  ],
+  "warnings": [
+    "Certified source transcription, algebraic dotted weights, and exact Gram rank/signature are included. Lorentzian normal coordinates and a chamber basepoint are computed numerically from normalGram for visualization."
+  ],
+  "dataStatus": "certified",
+  "sourceRefs": [
+    {
+      "id": "jacquemet-tschantz-2018-cube",
+      "citation": "Matthieu Jacquemet and Steven T. Tschantz, All hyperbolic Coxeter n-cubes, Journal of Combinatorial Theory, Series A 158 (2018), 387-406.",
+      "url": "https://arxiv.org/abs/1803.10462",
+      "locator": "Theorem 1, Figure 3, and Section 4.2.2",
+      "notes": "Supports the compact 5-cube Coxeter graph Gamma_1 and its dotted-edge weights."
+    }
+  ],
+  "certificate": {
+    "status": "passed",
+    "backend": "compact5CubeGamma1ExactChecker",
+    "backendVersion": "1.0.0",
+    "command": "python scripts/certify_compact_5_cube.py public/examples/compact_5_cube_gamma1.json",
+    "inputHash": "49527f5bfa7ca8f7733e4bb490c2b5a20e2602191be6cb2ca29c931d7e800fb9",
+    "sourceRefIds": ["jacquemet-tschantz-2018-cube"],
+    "diagnostics": {
+      "certifiedClaims": [
+        "Gamma_1 source transcription table",
+        "algebraic dotted values e=(1+sqrt(13))/4 and d=sqrt(2(5+sqrt(13)))/4",
+        "exact normal Gram rank and signature"
+      ],
+      "checkedFields": [
+        "rank",
+        "generators",
+        "coxeterMatrix",
+        "geometry.model",
+        "geometry.dimension",
+        "geometry.normalGram",
+        "sourceRefs"
+      ],
+      "sourceTranscription": {
+        "sourceRefId": "jacquemet-tschantz-2018-cube",
+        "rank": 10,
+        "generatorIds": [
+          "g0",
+          "g1",
+          "g2",
+          "g3",
+          "g4",
+          "g5",
+          "g6",
+          "g7",
+          "g8",
+          "g9"
+        ],
+        "boundaryDottedPairs": [
+          [0, 1],
+          [3, 4],
+          [5, 7]
+        ],
+        "diagonalDottedPairs": [
+          [2, 8],
+          [6, 9]
+        ]
+      },
+      "dottedValues": {
+        "field": "Q(sqrt(13), sqrt(10 + 2 sqrt(13)))",
+        "boundary": {
+          "symbol": "e",
+          "value": "(1 + sqrt(13)) / 4",
+          "minimalPolynomial": [4, -2, -3],
+          "isolatingInterval": [1.1513, 1.1514]
+        },
+        "diagonal": {
+          "symbol": "d",
+          "value": "sqrt(2(5 + sqrt(13))) / 4",
+          "minimalPolynomial": [16, 0, -20, 0, 3],
+          "isolatingInterval": [1.0371, 1.0372]
+        }
+      },
+      "gram": {
+        "field": "Q(sqrt(13), sqrt(10 + 2 sqrt(13)))",
+        "rank": 6,
+        "signature": {
+          "positive": 5,
+          "negative": 1,
+          "zero": 4
+        },
+        "expectedForFacetNormalsInH5": {
+          "positive": 5,
+          "negative": 1,
+          "zero": 4,
+          "rank": 6
+        }
+      }
+    }
+  }
+}

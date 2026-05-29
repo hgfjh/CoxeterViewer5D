@@ -1,0 +1,347 @@
+{
+  "ok": true,
+  "benchmark": "timed-browser-v1",
+  "schemaVersion": 1,
+  "totalElapsedMs": 36360.357,
+  "cases": [
+    {
+      "exampleId": "I2_5",
+      "radius": 5,
+      "elapsedMs": 240.534,
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 10,
+      "renderedCells": 1,
+      "lastGraphUpdateMs": 4.6,
+      "frameDeltaMedianMs": 24.3,
+      "frameDeltaP95Ms": 110.4,
+      "frameDeltaMaxMs": 110.4
+    },
+    {
+      "exampleId": "A3",
+      "radius": 4,
+      "elapsedMs": 478.777,
+      "renderedNodes": 23,
+      "renderedEdgeSegments": 33,
+      "renderedCells": 3,
+      "lastGraphUpdateMs": 4.1,
+      "frameDeltaMedianMs": 24.3,
+      "frameDeltaP95Ms": 110.4,
+      "frameDeltaMaxMs": 110.4
+    },
+    {
+      "exampleId": "universal_rank3",
+      "radius": 4,
+      "elapsedMs": 443.752,
+      "renderedNodes": 46,
+      "renderedEdgeSegments": 45,
+      "renderedCells": 0,
+      "lastGraphUpdateMs": 4.1,
+      "frameDeltaMedianMs": 25.1,
+      "frameDeltaP95Ms": 110.4,
+      "frameDeltaMaxMs": 110.4
+    },
+    {
+      "exampleId": "compact_5_cube_gamma1",
+      "radius": 2,
+      "elapsedMs": 912.774,
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 9,
+      "renderedCells": 0,
+      "lastGraphUpdateMs": 0.8,
+      "frameDeltaMedianMs": 25.1,
+      "frameDeltaP95Ms": 110.4,
+      "frameDeltaMaxMs": 110.4
+    },
+    {
+      "exampleId": "compact_5_cube_gamma1",
+      "radius": 3,
+      "elapsedMs": 2946.793,
+      "renderedNodes": 71,
+      "renderedEdgeSegments": 100,
+      "renderedCells": 30,
+      "lastGraphUpdateMs": 4.6,
+      "frameDeltaMedianMs": 25.1,
+      "frameDeltaP95Ms": 110.4,
+      "frameDeltaMaxMs": 110.4
+    }
+  ],
+  "interactions": [
+    {
+      "id": "label-toggle",
+      "status": "measured",
+      "elapsedMs": 287.765,
+      "details": {
+        "toggled": ["group-element labels", "generator labels on edges"]
+      },
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 10,
+      "renderedCells": 1,
+      "renderedNodeLabels": 0,
+      "renderedEdgeLabels": 0,
+      "drawCalls": 8,
+      "lastGraphUpdateMs": 0.4,
+      "renderCountDelta": 3,
+      "frameDeltaMedianMs": 24,
+      "frameDeltaP95Ms": 24,
+      "frameDeltaMaxMs": 24
+    },
+    {
+      "id": "rank-two-pair-focus",
+      "status": "measured",
+      "elapsedMs": 446.255,
+      "details": {
+        "pair": "s0-s1",
+        "expectedRelation": "m=3 hexagon"
+      },
+      "renderedNodes": 6,
+      "renderedEdgeSegments": 6,
+      "renderedCells": 1,
+      "renderedNodeLabels": 6,
+      "renderedEdgeLabels": 6,
+      "drawCalls": 19,
+      "lastGraphUpdateMs": 0.5,
+      "renderCountDelta": 14,
+      "frameDeltaMedianMs": 24.3,
+      "frameDeltaP95Ms": 25.4,
+      "frameDeltaMaxMs": 25.4
+    },
+    {
+      "id": "ygamma-preset-switch",
+      "status": "measured",
+      "elapsedMs": 752.073,
+      "details": {
+        "preset": "Full 2-skeleton"
+      },
+      "renderedNodes": 3,
+      "renderedEdgeSegments": 2,
+      "renderedCells": 1,
+      "renderedNodeLabels": 1,
+      "renderedEdgeLabels": 2,
+      "drawCalls": 9,
+      "lastGraphUpdateMs": 0.8,
+      "renderCountDelta": 14,
+      "frameDeltaMedianMs": 26.1,
+      "frameDeltaP95Ms": 29.1,
+      "frameDeltaMaxMs": 29.1
+    },
+    {
+      "id": "quotient-link-lens",
+      "status": "measured",
+      "elapsedMs": 440.915,
+      "details": {
+        "lens": "ascending-link"
+      },
+      "renderedNodes": 3,
+      "renderedEdgeSegments": 2,
+      "renderedCells": 0,
+      "renderedNodeLabels": 3,
+      "renderedEdgeLabels": 2,
+      "drawCalls": 10,
+      "lastGraphUpdateMs": 0.4,
+      "renderCountDelta": 14,
+      "frameDeltaMedianMs": 24.7,
+      "frameDeltaP95Ms": 25.5,
+      "frameDeltaMaxMs": 25.5
+    },
+    {
+      "id": "topology-generator-star",
+      "status": "measured",
+      "elapsedMs": 620.507,
+      "details": {
+        "lens": "generator-star",
+        "example": "A3"
+      },
+      "renderedNodes": 1,
+      "renderedEdgeSegments": 3,
+      "renderedCells": 3,
+      "renderedNodeLabels": 1,
+      "renderedEdgeLabels": 3,
+      "drawCalls": 19,
+      "lastGraphUpdateMs": 1.2,
+      "renderCountDelta": 12,
+      "frameDeltaMedianMs": 23.4,
+      "frameDeltaP95Ms": 57,
+      "frameDeltaMaxMs": 57
+    },
+    {
+      "id": "edge-star",
+      "status": "measured",
+      "elapsedMs": 1214.121,
+      "details": {
+        "lens": "edge-star",
+        "example": "A3"
+      },
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 19,
+      "renderedCells": 3,
+      "renderedNodeLabels": 1,
+      "renderedEdgeLabels": 12,
+      "drawCalls": 20,
+      "lastGraphUpdateMs": 2.2,
+      "renderCountDelta": 28,
+      "frameDeltaMedianMs": 25.5,
+      "frameDeltaP95Ms": 61.5,
+      "frameDeltaMaxMs": 61.5
+    },
+    {
+      "id": "cell-star",
+      "status": "measured",
+      "elapsedMs": 737.753,
+      "details": {
+        "lens": "cell-star",
+        "generator": "s1",
+        "example": "A3"
+      },
+      "renderedNodes": 13,
+      "renderedEdgeSegments": 16,
+      "renderedCells": 1,
+      "renderedNodeLabels": 7,
+      "renderedEdgeLabels": 7,
+      "drawCalls": 20,
+      "lastGraphUpdateMs": 0.8,
+      "renderCountDelta": 13,
+      "frameDeltaMedianMs": 24.2,
+      "frameDeltaP95Ms": 71.9,
+      "frameDeltaMaxMs": 71.9
+    },
+    {
+      "id": "rank-k-lens",
+      "status": "measured",
+      "elapsedMs": 678.464,
+      "details": {
+        "lens": "rank-k-family",
+        "rank": 3
+      },
+      "renderedNodes": 1,
+      "renderedEdgeSegments": 3,
+      "renderedCells": 3,
+      "renderedNodeLabels": 1,
+      "renderedEdgeLabels": 3,
+      "drawCalls": 19,
+      "lastGraphUpdateMs": 1.3,
+      "renderCountDelta": 13,
+      "frameDeltaMedianMs": 24,
+      "frameDeltaP95Ms": 25.9,
+      "frameDeltaMaxMs": 25.9
+    },
+    {
+      "id": "comparison-view",
+      "status": "measured",
+      "elapsedMs": 642.944,
+      "details": {
+        "view": "experiment comparison summary"
+      },
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 10,
+      "renderedCells": 1,
+      "renderedNodeLabels": 10,
+      "renderedEdgeLabels": 10,
+      "drawCalls": 25,
+      "lastGraphUpdateMs": 1.8,
+      "renderCountDelta": 12,
+      "frameDeltaMedianMs": 24.1,
+      "frameDeltaP95Ms": 24.1,
+      "frameDeltaMaxMs": 24.1
+    },
+    {
+      "id": "annotation-toggle",
+      "status": "measured",
+      "elapsedMs": 158.86,
+      "details": {
+        "toggled": "label-scope-off"
+      },
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 10,
+      "renderedCells": 1,
+      "renderedNodeLabels": 0,
+      "renderedEdgeLabels": 0,
+      "drawCalls": 8,
+      "lastGraphUpdateMs": 0.3,
+      "renderCountDelta": 1,
+      "frameDeltaMedianMs": 28.1,
+      "frameDeltaP95Ms": 28.1,
+      "frameDeltaMaxMs": 28.1
+    },
+    {
+      "id": "bookmark-restore",
+      "status": "measured",
+      "elapsedMs": 798.185,
+      "details": {
+        "bookmarks": ["top", "front"]
+      },
+      "renderedNodes": 3,
+      "renderedEdgeSegments": 12,
+      "renderedCells": 1,
+      "renderedNodeLabels": 1,
+      "renderedEdgeLabels": 10,
+      "drawCalls": 13,
+      "lastGraphUpdateMs": 2,
+      "renderCountDelta": 25,
+      "frameDeltaMedianMs": 24.6,
+      "frameDeltaP95Ms": 28.3,
+      "frameDeltaMaxMs": 28.3
+    },
+    {
+      "id": "progressive-quotient-load",
+      "status": "measured",
+      "elapsedMs": 664.624,
+      "details": {
+        "load": "demo quotient workflow artifact"
+      },
+      "renderedNodes": 3,
+      "renderedEdgeSegments": 4,
+      "renderedCells": 0,
+      "renderedNodeLabels": 3,
+      "renderedEdgeLabels": 4,
+      "drawCalls": 12,
+      "lastGraphUpdateMs": 0.7,
+      "renderCountDelta": 16,
+      "frameDeltaMedianMs": 23.9,
+      "frameDeltaP95Ms": 32.8,
+      "frameDeltaMaxMs": 32.8
+    },
+    {
+      "id": "import-repair",
+      "status": "measured",
+      "elapsedMs": 499.194,
+      "details": {
+        "import": "invalid Coxeter JSON repaired by valid A2 import"
+      },
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 10,
+      "renderedCells": 1,
+      "renderedNodeLabels": 10,
+      "renderedEdgeLabels": 10,
+      "drawCalls": 25,
+      "lastGraphUpdateMs": 0.4,
+      "renderCountDelta": 11,
+      "frameDeltaMedianMs": 23.9,
+      "frameDeltaP95Ms": 23.9,
+      "frameDeltaMaxMs": 23.9
+    },
+    {
+      "id": "screenshot-export",
+      "status": "measured",
+      "elapsedMs": 410.263,
+      "details": {
+        "export": "png screenshot"
+      },
+      "renderedNodes": 10,
+      "renderedEdgeSegments": 10,
+      "renderedCells": 1,
+      "renderedNodeLabels": 10,
+      "renderedEdgeLabels": 10,
+      "drawCalls": 25,
+      "lastGraphUpdateMs": 1.8,
+      "renderCountDelta": 10,
+      "frameDeltaMedianMs": 24.6,
+      "frameDeltaP95Ms": 24.6,
+      "frameDeltaMaxMs": 24.6
+    },
+    {
+      "id": "idle-render-count",
+      "status": "measured",
+      "renderCountDelta": 0
+    }
+  ]
+}

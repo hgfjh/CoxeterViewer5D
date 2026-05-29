@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "name": "Hyperbolic toy rank 2",
+  "description": "Toy rank-two hyperboloid fixture with explicit normals and a chamber basepoint.",
+  "rank": 2,
+  "generators": [
+    {
+      "id": "a",
+      "label": "a",
+      "colorHint": "#2563eb"
+    },
+    {
+      "id": "b",
+      "label": "b",
+      "colorHint": "#dc2626"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, "inf"],
+    ["inf", 1]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 2,
+    "normalGram": [
+      [
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.25
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.25
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        }
+      ]
+    ],
+    "normalCoordinates": [
+      [0, 1, 0],
+      [0.75, -1.25, 0]
+    ],
+    "basepoint": [1.118033988749895, -0.3, 0.4],
+    "projection": "poincare-axes",
+    "source": "Constructed fixture: J=diag(-1,1,1), n0=(0,1,0), n1=(3/4,-5/4,0), <n0,n1>_J=-5/4."
+  },
+  "notes": [
+    "This is a self-contained toy fixture for testing geometric mode.",
+    "It is not compact hyperbolic 5-prism or compact 5-cube data.",
+    "The basepoint lies on the upper sheet <x,x>_J=-1 with x0>0."
+  ],
+  "warnings": [
+    "Toy visualization fixture only; do not use it as classified compact Coxeter polytope data."
+  ],
+  "dataStatus": "toy"
+}

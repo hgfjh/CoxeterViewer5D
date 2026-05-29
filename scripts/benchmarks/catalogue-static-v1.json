@@ -1,0 +1,138 @@
+{
+  "ok": true,
+  "benchmark": "catalogue-static-v1",
+  "schemaVersion": 1,
+  "examples": [
+    {
+      "file": "A2.json",
+      "name": "A2",
+      "dataStatus": "toy",
+      "rank": 2,
+      "finitePairs": 1,
+      "infinitePairs": 0
+    },
+    {
+      "file": "A3.json",
+      "name": "A3",
+      "dataStatus": "toy",
+      "rank": 3,
+      "finitePairs": 3,
+      "infinitePairs": 0
+    },
+    {
+      "file": "I2_5.json",
+      "name": "I2(5)",
+      "dataStatus": "toy",
+      "rank": 2,
+      "finitePairs": 1,
+      "infinitePairs": 0
+    },
+    {
+      "file": "compact_5_cube_gamma1.json",
+      "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+      "dataStatus": "certified",
+      "rank": 10,
+      "finitePairs": 40,
+      "infinitePairs": 5
+    },
+    {
+      "file": "compact_5_prism_makarov.json",
+      "name": "Compact hyperbolic Coxeter 5-prism (Makarov)",
+      "dataStatus": "certified",
+      "rank": 7,
+      "finitePairs": 20,
+      "infinitePairs": 1
+    },
+    {
+      "file": "hyperbolic_toy_rank2.json",
+      "name": "Hyperbolic toy rank 2",
+      "dataStatus": "toy",
+      "rank": 2,
+      "finitePairs": 0,
+      "infinitePairs": 1
+    },
+    {
+      "file": "universal_rank3.json",
+      "name": "Universal rank 3",
+      "dataStatus": "toy",
+      "rank": 3,
+      "finitePairs": 0,
+      "infinitePairs": 3
+    }
+  ],
+  "generated": [
+    {
+      "file": "A2_gap_radius_3.json",
+      "systemName": "A2",
+      "radius": 3,
+      "deduplication": "external-gap-kbmag",
+      "certification": "passed",
+      "nodes": 6,
+      "edges": 6,
+      "twoCells": 1,
+      "higherCells": 0
+    },
+    {
+      "file": "A2_sage_radius_3.json",
+      "systemName": "A2",
+      "radius": 3,
+      "deduplication": "external-sage",
+      "certification": "passed",
+      "nodes": 6,
+      "edges": 6,
+      "twoCells": 1,
+      "higherCells": 0
+    },
+    {
+      "file": "A3_gap_radius_6.json",
+      "systemName": "A3",
+      "radius": 6,
+      "deduplication": "external-gap-kbmag",
+      "certification": "passed",
+      "nodes": 24,
+      "edges": 36,
+      "twoCells": 14,
+      "higherCells": 0
+    },
+    {
+      "file": "A3_sage_radius_6.json",
+      "systemName": "A3",
+      "radius": 6,
+      "deduplication": "external-sage",
+      "certification": "passed",
+      "nodes": 24,
+      "edges": 36,
+      "twoCells": 14,
+      "higherCells": 0
+    },
+    {
+      "file": "I2_5_gap_radius_5.json",
+      "systemName": "I2(5)",
+      "radius": 5,
+      "deduplication": "external-gap-kbmag",
+      "certification": "passed",
+      "nodes": 10,
+      "edges": 10,
+      "twoCells": 1,
+      "higherCells": 0
+    },
+    {
+      "file": "I2_5_sage_radius_5.json",
+      "systemName": "I2(5)",
+      "radius": 5,
+      "deduplication": "external-sage",
+      "certification": "passed",
+      "nodes": 10,
+      "edges": 10,
+      "twoCells": 1,
+      "higherCells": 0
+    }
+  ],
+  "totals": {
+    "examples": 7,
+    "generated": 6,
+    "generatedNodes": 80,
+    "generatedEdges": 104,
+    "generatedTwoCells": 32
+  }
+}

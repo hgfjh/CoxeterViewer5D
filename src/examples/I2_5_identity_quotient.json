@@ -1,0 +1,463 @@
+{
+  "schemaVersion": 1,
+  "name": "I2(5) quotient (identity subgroup)",
+  "sourceSystem": {
+    "schemaVersion": 1,
+    "name": "I2(5)",
+    "description": "Dihedral Coxeter group with m=5. The full group has 10 elements.",
+    "dataStatus": "toy",
+    "rank": 2,
+    "generators": [
+      {
+        "id": "s0",
+        "label": "s0",
+        "colorHint": "#2563eb"
+      },
+      {
+        "id": "s1",
+        "label": "s1",
+        "colorHint": "#dc2626"
+      }
+    ],
+    "coxeterMatrix": [
+      [1, 5],
+      [5, 1]
+    ],
+    "notes": ["Toy source system embedded in the quotient/game workflow demo."]
+  },
+  "generatorRank": 2,
+  "permutationAction": [
+    {
+      "generator": 0,
+      "images": {
+        "q0": "q1",
+        "q1": "q0",
+        "q2": "q4",
+        "q3": "q5",
+        "q4": "q2",
+        "q5": "q3",
+        "q6": "q8",
+        "q7": "q9",
+        "q8": "q6",
+        "q9": "q7"
+      }
+    },
+    {
+      "generator": 1,
+      "images": {
+        "q0": "q2",
+        "q1": "q3",
+        "q2": "q0",
+        "q3": "q1",
+        "q4": "q6",
+        "q5": "q7",
+        "q6": "q4",
+        "q7": "q5",
+        "q8": "q9",
+        "q9": "q8"
+      }
+    }
+  ],
+  "vertices": [
+    {
+      "id": "q0",
+      "label": "q0",
+      "representativeWord": []
+    },
+    {
+      "id": "q1",
+      "label": "q1",
+      "representativeWord": [0]
+    },
+    {
+      "id": "q2",
+      "label": "q2",
+      "representativeWord": [1]
+    },
+    {
+      "id": "q3",
+      "label": "q3",
+      "representativeWord": [0, 1]
+    },
+    {
+      "id": "q4",
+      "label": "q4",
+      "representativeWord": [1, 0]
+    },
+    {
+      "id": "q5",
+      "label": "q5",
+      "representativeWord": [0, 1, 0]
+    },
+    {
+      "id": "q6",
+      "label": "q6",
+      "representativeWord": [1, 0, 1]
+    },
+    {
+      "id": "q7",
+      "label": "q7",
+      "representativeWord": [0, 1, 0, 1]
+    },
+    {
+      "id": "q8",
+      "label": "q8",
+      "representativeWord": [1, 0, 1, 0]
+    },
+    {
+      "id": "q9",
+      "label": "q9",
+      "representativeWord": [0, 1, 0, 1, 0]
+    }
+  ],
+  "edges": [
+    {
+      "id": "qe:q0:q1:s0",
+      "source": "q0",
+      "target": "q1",
+      "generator": 0,
+      "inverseEdgeId": "qe:q1:q0:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q0:q2:s1",
+      "source": "q0",
+      "target": "q2",
+      "generator": 1,
+      "inverseEdgeId": "qe:q2:q0:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q1:q0:s0",
+      "source": "q1",
+      "target": "q0",
+      "generator": 0,
+      "inverseEdgeId": "qe:q0:q1:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q1:q3:s1",
+      "source": "q1",
+      "target": "q3",
+      "generator": 1,
+      "inverseEdgeId": "qe:q3:q1:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q2:q4:s0",
+      "source": "q2",
+      "target": "q4",
+      "generator": 0,
+      "inverseEdgeId": "qe:q4:q2:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q2:q0:s1",
+      "source": "q2",
+      "target": "q0",
+      "generator": 1,
+      "inverseEdgeId": "qe:q0:q2:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q3:q5:s0",
+      "source": "q3",
+      "target": "q5",
+      "generator": 0,
+      "inverseEdgeId": "qe:q5:q3:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q3:q1:s1",
+      "source": "q3",
+      "target": "q1",
+      "generator": 1,
+      "inverseEdgeId": "qe:q1:q3:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q4:q2:s0",
+      "source": "q4",
+      "target": "q2",
+      "generator": 0,
+      "inverseEdgeId": "qe:q2:q4:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q4:q6:s1",
+      "source": "q4",
+      "target": "q6",
+      "generator": 1,
+      "inverseEdgeId": "qe:q6:q4:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q5:q3:s0",
+      "source": "q5",
+      "target": "q3",
+      "generator": 0,
+      "inverseEdgeId": "qe:q3:q5:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q5:q7:s1",
+      "source": "q5",
+      "target": "q7",
+      "generator": 1,
+      "inverseEdgeId": "qe:q7:q5:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q6:q8:s0",
+      "source": "q6",
+      "target": "q8",
+      "generator": 0,
+      "inverseEdgeId": "qe:q8:q6:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q6:q4:s1",
+      "source": "q6",
+      "target": "q4",
+      "generator": 1,
+      "inverseEdgeId": "qe:q4:q6:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q7:q9:s0",
+      "source": "q7",
+      "target": "q9",
+      "generator": 0,
+      "inverseEdgeId": "qe:q9:q7:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q7:q5:s1",
+      "source": "q7",
+      "target": "q5",
+      "generator": 1,
+      "inverseEdgeId": "qe:q5:q7:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q8:q6:s0",
+      "source": "q8",
+      "target": "q6",
+      "generator": 0,
+      "inverseEdgeId": "qe:q6:q8:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q8:q9:s1",
+      "source": "q8",
+      "target": "q9",
+      "generator": 1,
+      "inverseEdgeId": "qe:q9:q8:s1",
+      "label": "s1"
+    },
+    {
+      "id": "qe:q9:q7:s0",
+      "source": "q9",
+      "target": "q7",
+      "generator": 0,
+      "inverseEdgeId": "qe:q7:q9:s0",
+      "label": "s0"
+    },
+    {
+      "id": "qe:q9:q8:s1",
+      "source": "q9",
+      "target": "q8",
+      "generator": 1,
+      "inverseEdgeId": "qe:q8:q9:s1",
+      "label": "s1"
+    }
+  ],
+  "twoCells": [
+    {
+      "id": "qcell:0-1:0",
+      "generatorPair": [0, 1],
+      "m": 5,
+      "boundaryVertexIds": [
+        "q0",
+        "q1",
+        "q3",
+        "q5",
+        "q7",
+        "q9",
+        "q8",
+        "q6",
+        "q4",
+        "q2"
+      ],
+      "boundaryEdgeIds": [
+        "qe:q0:q1:s0",
+        "qe:q1:q3:s1",
+        "qe:q3:q5:s0",
+        "qe:q5:q7:s1",
+        "qe:q7:q9:s0",
+        "qe:q9:q8:s1",
+        "qe:q8:q6:s0",
+        "qe:q6:q4:s1",
+        "qe:q4:q2:s0",
+        "qe:q2:q0:s1"
+      ]
+    }
+  ],
+  "subgroup": {
+    "name": "identity subgroup",
+    "index": 10,
+    "generators": [],
+    "source": "sageQuotientExportBackend",
+    "certificate": {
+      "status": "passed",
+      "backend": "sageQuotientExportBackend",
+      "backendVersion": "1.1.0",
+      "scopes": ["quotient-action"],
+      "command": "node scripts/quotient_export_backend.mjs --backend sage",
+      "checkedAt": "1970-01-01T00:00:00.000Z",
+      "inputHash": "1516949a050148f9d5f723c44c482c27d93b340b640af4bf9612c4bebcc7f666",
+      "diagnostics": {
+        "groupElements": 10,
+        "subgroupElements": 1,
+        "cosets": 10,
+        "finitePairCells": 1,
+        "cosetConvention": "left cosets H\\W with right multiplication by Coxeter generators",
+        "matrixKeyPrecision": 10
+      },
+      "warnings": [
+        "Quotient was produced by deterministic finite left-coset enumeration from the request file. Infinite or large-index subgroup enumeration still belongs in Sage/GAP."
+      ],
+      "outputHash": "5b3eb7be44aedec17436a7dafd8bb1d554771e03ec631fc78ef48db79e146a41"
+    },
+    "notes": [
+      "Identity subgroup request for the quotient/game golden workflow. The resulting quotient has one vertex for each element of I2(5).",
+      "The demo cocycle labels s0 by +1 and s1 by -1."
+    ]
+  },
+  "verifier": {
+    "status": "passed",
+    "backend": "sageQuotientExportBackend",
+    "backendVersion": "1.1.0",
+    "scopes": ["quotient-action"],
+    "command": "node scripts/quotient_export_backend.mjs --backend sage",
+    "checkedAt": "1970-01-01T00:00:00.000Z",
+    "inputHash": "1516949a050148f9d5f723c44c482c27d93b340b640af4bf9612c4bebcc7f666",
+    "diagnostics": {
+      "groupElements": 10,
+      "subgroupElements": 1,
+      "cosets": 10,
+      "finitePairCells": 1,
+      "cosetConvention": "left cosets H\\W with right multiplication by Coxeter generators",
+      "matrixKeyPrecision": 10
+    },
+    "warnings": [
+      "Quotient was produced by deterministic finite left-coset enumeration from the request file. Infinite or large-index subgroup enumeration still belongs in Sage/GAP."
+    ],
+    "outputHash": "5b3eb7be44aedec17436a7dafd8bb1d554771e03ec631fc78ef48db79e146a41"
+  },
+  "schreierCertificate": {
+    "status": "passed",
+    "method": "in-repo-permutation-action",
+    "checkedAt": "1970-01-01T00:00:00.000Z",
+    "generatorRank": 2,
+    "vertexCount": 10,
+    "checks": {
+      "generatorRegularity": true,
+      "bijectiveActions": true,
+      "involutiveGenerators": true,
+      "edgeCompatibility": true,
+      "coxeterRelations": true,
+      "rankTwoCellCoverage": true,
+      "duplicateRankTwoCells": true
+    },
+    "rankTwoOrbits": [
+      {
+        "generatorPair": [0, 1],
+        "m": 5,
+        "orbitKey": "0,1:q0>q1>q3>q5>q7>q9>q8>q6>q4>q2",
+        "boundaryVertexIds": [
+          "q0",
+          "q1",
+          "q3",
+          "q5",
+          "q7",
+          "q9",
+          "q8",
+          "q6",
+          "q4",
+          "q2"
+        ],
+        "matchedCellIds": ["qcell:0-1:0"]
+      }
+    ],
+    "errors": [],
+    "warnings": [
+      "Quotient was produced by deterministic finite left-coset enumeration from the request file. Infinite or large-index subgroup enumeration still belongs in Sage/GAP."
+    ]
+  },
+  "game": {
+    "activeAssignmentId": "i2-5-height-generators",
+    "activeCocycleId": "i2-5-height-cocycle",
+    "assignments": [
+      {
+        "id": "i2-5-height-generators",
+        "label": "I2(5) height cocycle s0=+1, s1=-1",
+        "description": "Integer generator labeling used by the quotient/game demo.",
+        "kind": "integer-generator-labeling",
+        "generatorStates": [
+          {
+            "generator": 0,
+            "value": 1
+          },
+          {
+            "generator": 1,
+            "value": -1
+          }
+        ],
+        "notes": [
+          "For the identity-subgroup I2(5) quotient, the alternating decagon has zero boundary sum."
+        ]
+      }
+    ],
+    "cocycles": [
+      {
+        "id": "i2-5-height-cocycle",
+        "label": "I2(5) demo cocycle",
+        "assignmentId": "i2-5-height-generators",
+        "coefficientRing": "Z",
+        "certificate": {
+          "status": "passed",
+          "backend": "sageQuotientExportBackend",
+          "scopes": ["morse-cocycle"],
+          "inputHash": "1516949a050148f9d5f723c44c482c27d93b340b640af4bf9612c4bebcc7f666",
+          "outputHash": "5b3eb7be44aedec17436a7dafd8bb1d554771e03ec631fc78ef48db79e146a41"
+        },
+        "notes": [
+          "The app and certifier scripts re-check the rank-two boundary sums before treating this as passed."
+        ]
+      }
+    ],
+    "experimentLogs": [
+      {
+        "id": "i2-5-workflow-demo",
+        "label": "I2(5) quotient/game demo",
+        "inputHash": "1516949a050148f9d5f723c44c482c27d93b340b640af4bf9612c4bebcc7f666",
+        "assignmentId": "i2-5-height-generators",
+        "cocycleId": "i2-5-height-cocycle",
+        "diagnostics": {
+          "intendedLenses": [
+            "ascending-link",
+            "descending-link",
+            "full-local-link"
+          ]
+        }
+      }
+    ],
+    "notes": [
+      "This block is a demo game assignment, not a torsion-free or manifold certificate."
+    ]
+  },
+  "warnings": [
+    "Quotient was produced by deterministic finite left-coset enumeration from the request file. Infinite or large-index subgroup enumeration still belongs in Sage/GAP."
+  ]
+}

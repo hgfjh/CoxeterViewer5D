@@ -1,0 +1,27 @@
+{
+  "name": "Coxeter Viewer 5D Research",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "PNPM_VERSION": "11.3.0"
+    }
+  },
+  "remoteUser": "node",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-playwright.playwright"
+      ]
+    }
+  },
+  "postCreateCommand": "pnpm install --frozen-lockfile",
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite dev server",
+      "onAutoForward": "notify"
+    }
+  }
+}
