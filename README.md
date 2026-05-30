@@ -71,21 +71,24 @@ installers and app packages live under `src-tauri/target/release/bundle/`.
 
 ## One-Click Desktop Download
 
-Yes. The public alpha release includes Windows desktop artifacts on GitHub:
+Yes. The public alpha release includes desktop artifacts on GitHub:
 
 - [CoxeterViewer5D v0.1.0 research preview](https://github.com/hgfjh/CoxeterViewer5D/releases/tag/v0.1.0)
 - `CoxeterViewer5D_0.1.0_x64-setup.exe`: easiest Windows installer-style
   download.
 - `CoxeterViewer5D_0.1.0_x64_en-US.msi`: Windows MSI package.
+- macOS `.dmg` and `.app.tar.gz` artifacts for Apple Silicon and Intel Macs.
+- Linux `.AppImage`, `.deb`, and `.rpm` artifacts for x64 Linux systems.
 - `CoxeterViewer5D-v0.1.0-web.zip`: static web build for people who want to
   host or inspect the built app.
 - `v0.1.0-public-alpha.coxeter-session.json`: a sample session file.
 
-The Windows desktop artifacts are unsigned. Windows may show a warning the
-first time you launch them; that is expected for this research preview. The app
-does not need network access after installation, and the bundled examples work
-without Sage, GAP, KBMAG, or CoxIter. Those external tools are only needed for
-regenerating or independently checking some research artifacts.
+The desktop artifacts are unsigned, and macOS artifacts are not notarized yet.
+Windows and macOS may show a warning the first time you launch them; that is
+expected for this research preview. The app does not need network access after
+installation, and the bundled examples work without Sage, GAP, KBMAG, or
+CoxIter. Those external tools are only needed for regenerating or independently
+checking some research artifacts.
 
 ## What Am I Seeing?
 

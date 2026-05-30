@@ -1,0 +1,143 @@
+name: desktop-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to build and attach artifacts to"
+        required: true
+        default: "v0.1.0"
+      upload_to_release:
+        description: "Attach built artifacts to the GitHub Release"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: build ${{ matrix.artifactName }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifactName: desktop-windows-x64
+            tauriArgs: ""
+            rustTargets: ""
+          - os: ubuntu-22.04
+            artifactName: desktop-linux-x64
+            tauriArgs: ""
+            rustTargets: ""
+          - os: macos-latest
+            artifactName: desktop-macos-aarch64
+            tauriArgs: "--target aarch64-apple-darwin"
+            rustTargets: "aarch64-apple-darwin"
+          - os: macos-latest
+            artifactName: desktop-macos-x86_64
+            tauriArgs: "--target x86_64-apple-darwin"
+            rustTargets: "x86_64-apple-darwin"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - name: Install Linux Tauri dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            curl \
+            file \
+            libayatana-appindicator3-dev \
+            libfuse2 \
+            libgtk-3-dev \
+            libssl-dev \
+            libwebkit2gtk-4.1-dev \
+            librsvg2-dev \
+            patchelf \
+            rpm \
+            wget
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install Rust stable
+        if: matrix.rustTargets == ''
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Rust stable with target
+        if: matrix.rustTargets != ''
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rustTargets }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Install frontend dependencies
+        run: corepack pnpm install --frozen-lockfile
+
+      - name: Build desktop bundle
+        shell: bash
+        run: corepack pnpm exec tauri build ${{ matrix.tauriArgs }}
+
+      - name: Upload desktop artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifactName }}
+          if-no-files-found: error
+          path: |
+            src-tauri/target/**/release/bundle/**/*.AppImage
+            src-tauri/target/**/release/bundle/**/*.app.tar.gz
+            src-tauri/target/**/release/bundle/**/*.deb
+            src-tauri/target/**/release/bundle/**/*.dmg
+            src-tauri/target/**/release/bundle/**/*.exe
+            src-tauri/target/**/release/bundle/**/*.msi
+            src-tauri/target/**/release/bundle/**/*.rpm
+
+  publish:
+    name: attach desktop artifacts
+    needs: build
+    if: ${{ inputs.upload_to_release }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: desktop-release-artifacts
+
+      - name: Attach artifacts to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release view "$RELEASE_TAG" >/dev/null
+          mapfile -d '' files < <(find desktop-release-artifacts -type f \( \
+            -name '*.AppImage' -o \
+            -name '*.app.tar.gz' -o \
+            -name '*.deb' -o \
+            -name '*.dmg' -o \
+            -name '*.exe' -o \
+            -name '*.msi' -o \
+            -name '*.rpm' \
+          \) -print0 | sort -z)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No desktop release artifacts found."
+            exit 1
+          fi
+          printf 'Uploading %s artifact(s) to %s:\n' "${#files[@]}" "$RELEASE_TAG"
+          printf '  %s\n' "${files[@]}"
+          gh release upload "$RELEASE_TAG" "${files[@]}" --clobber

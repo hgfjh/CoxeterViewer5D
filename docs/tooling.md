@@ -240,6 +240,14 @@ scaffold, signing environment, updater environment, and packaging readiness.
 The desktop shell must wrap the same viewer and artifact pipeline as the web
 app; it is not a separate math runtime.
 
+Cross-platform desktop release artifacts are built by the
+`desktop-release.yml` GitHub Actions workflow. It checks out the requested tag,
+builds Tauri on Windows, macOS, and Linux runners, and can attach the resulting
+`.exe`, `.msi`, `.dmg`, `.app.tar.gz`, `.AppImage`, `.deb`, and `.rpm` files to
+the GitHub Release. macOS signing/notarization and Windows signing remain
+credential-gated release steps; unsigned artifacts are acceptable for research
+preview builds but should be labeled as such.
+
 Both release scripts include a `releaseOperations` object. For web releases,
 code signing and native updater work are `not-applicable`. For desktop releases,
 code signing is reported from platform environment variables and updater signing
