@@ -61,16 +61,23 @@ corepack pnpm desktop:build
 Tauri writes platform-specific output under `src-tauri/target/release/`; bundled
 installers and app packages live under `src-tauri/target/release/bundle/`.
 
-## Is There A One-Click Executable?
+## One-Click Desktop Download
 
-Not from the source tree itself. Source checkouts are meant for developers and
-researchers who can run the commands above.
+Yes. The public alpha release includes Windows desktop artifacts on GitHub:
 
-For a public release, the maintainer should attach built desktop artifacts to a
-GitHub Release. Until those artifacts are published, there is no installer or
-portable executable that other people can simply double-click. Unsigned local
-desktop builds are supported for testing, but a polished public Windows release
-still needs signing credentials and release notes.
+- [CoxeterViewer5D v0.1.0 research preview](https://github.com/hgfjh/CoxeterViewer5D/releases/tag/v0.1.0)
+- `CoxeterViewer5D_0.1.0_x64-setup.exe`: easiest Windows installer-style
+  download.
+- `CoxeterViewer5D_0.1.0_x64_en-US.msi`: Windows MSI package.
+- `CoxeterViewer5D-v0.1.0-web.zip`: static web build for people who want to
+  host or inspect the built app.
+- `v0.1.0-public-alpha.coxeter-session.json`: a sample session file.
+
+The Windows desktop artifacts are unsigned. Windows may show a warning the
+first time you launch them; that is expected for this research preview. The app
+does not need network access after installation, and the bundled examples work
+without Sage, GAP, KBMAG, or CoxIter. Those external tools are only needed for
+regenerating or independently checking some research artifacts.
 
 ## What Am I Seeing?
 
