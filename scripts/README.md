@@ -69,7 +69,9 @@ Current status:
   solves the hidden dotted-edge weights from the determinant/rank equations.
   `certify_tumarkin_8facet.py` writes and validates the 15 bundled
   `tumarkin_5d_8facet_g11411_*.json` examples, checking the transcription,
-  algebraic dotted weights, and normal-Gram rank/signature diagnostics.
+  algebraic dotted weights, and normal-Gram rank/signature diagnostics. Install
+  `requirements-ci.txt` first if the local Python does not already provide
+  SymPy.
 - `coxiter_check_compact.py` prepares deterministic CoxIter graph input for the
   bundled compact examples. It runs a live `coxiter` executable when available
   and otherwise accepts only hash-matched stored CoxIter artifacts from

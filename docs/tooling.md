@@ -130,6 +130,7 @@ Tumarkin's 15 compact 5D eight-facet `G11411` examples are regenerated and
 checked by a dedicated in-repo certifier:
 
 ```bash
+python -m pip install -r requirements-ci.txt
 python scripts/tumarkin_8facet_eps.py
 python scripts/tumarkin_8facet_solve.py
 python scripts/certify_tumarkin_8facet.py --write-examples
@@ -138,9 +139,12 @@ python scripts/certify_tumarkin_8facet.py
 
 The first command parses the arXiv EPS artwork into source-vector diagram
 records, the second solves the dotted weights, and the certifier writes or
-validates the bundled `tumarkin_5d_8facet_g11411_*.json` files. These scripts
-certify the source transcription and normal-Gram diagnostics; rendered
-coordinates remain numerical visualization data.
+validates the bundled `tumarkin_5d_8facet_g11411_*.json` files. The pinned
+Python requirements are intentionally small: SymPy is used for the exact
+algebraic equations, while the rank/signature check uses an in-repo numerical
+Jacobi routine so CI does not depend on NumPy. These scripts certify the source
+transcription and normal-Gram diagnostics; rendered coordinates remain
+numerical visualization data.
 
 External tool jobs should be treated as finite, inspectable jobs, not as hidden
 desktop services. A job is ready for release only when it has a stable launcher
