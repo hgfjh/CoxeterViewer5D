@@ -7,6 +7,10 @@ const MATRIX_KEY_PRECISION = 10;
 const DEFAULT_MAX_COSETS = 256;
 const MAX_GROUP_ELEMENTS = 50_000;
 
+// This fallback backend is deterministic and finite-scope. It is useful for
+// demos and tests, but artifacts must say "in-repo checked" rather than
+// claiming an external Sage/GAP enumeration.
+
 function arg(name, fallback) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : fallback;
@@ -144,6 +148,8 @@ function validateBuildRequest(request) {
   return { errors, source };
 }
 
+// The in-repo quotient builder enumerates a finite reflection representation by
+// rounded matrix keys. Infinite Coxeter entries are rejected before this path.
 function hasInfiniteEntry(matrix) {
   return matrix.some((row) => row.some((entry) => entry === "inf"));
 }

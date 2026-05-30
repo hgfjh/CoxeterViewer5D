@@ -13,6 +13,7 @@ python scripts/sage_export_backend.py --check-runtime
 python scripts/sage_export_backend.py --certify-output tests/fixtures/generated/I2_5_sage_radius_5.json
 python scripts/certify_compact_5_cube.py public/examples/compact_5_cube_gamma1.json
 python scripts/certify_compact_5_prism.py public/examples/compact_5_prism_makarov.json
+python scripts/certify_tumarkin_8facet.py
 node scripts/check_independent.mjs
 python scripts/gap_kbmag_export_backend.py --help
 python scripts/gap_kbmag_export_backend.py --contract
@@ -23,6 +24,8 @@ node scripts/compare_backends.mjs
 node scripts/benchmark_catalogue.mjs
 node scripts/benchmark_timed.mjs
 node scripts/validate_research_grade.mjs
+node scripts/release_web.mjs --check
+node scripts/release_desktop.mjs --check
 ```
 
 The Sage exporter is implemented when run in a Sage Python process. This Sage
@@ -61,6 +64,12 @@ Current status:
   rank/signature over `Q(sqrt(5), sqrt((7 + sqrt(5)) / 2))`. Its certificate is
   intentionally narrow: it does not certify numerical normal coordinates,
   chamber basepoints, quotient data, or generated Cayley balls.
+- `tumarkin_8facet_eps.py` parses Tumarkin's arXiv EPS artwork for Table 4.10
+  into `scripts/data/tumarkin_8facet_transcription.json`. `tumarkin_8facet_solve.py`
+  solves the hidden dotted-edge weights from the determinant/rank equations.
+  `certify_tumarkin_8facet.py` writes and validates the 15 bundled
+  `tumarkin_5d_8facet_g11411_*.json` examples, checking the transcription,
+  algebraic dotted weights, and normal-Gram rank/signature diagnostics.
 - `coxiter_check_compact.py` prepares deterministic CoxIter graph input for the
   bundled compact examples. It runs a live `coxiter` executable when available
   and otherwise accepts only hash-matched stored CoxIter artifacts from
@@ -94,6 +103,13 @@ Current status:
 - `validate_research_grade.mjs` is the final hard gate for bundled catalogue
   provenance and deterministic benchmarks. GAP fixture generation still depends
   on the optional external GAP/KBMAG runtime.
+- `release_web.mjs` builds and hashes `dist/` unless `--check` or
+  `--skip-build` is passed. Its report marks native code signing and updater
+  work as `not-applicable`.
+- `release_desktop.mjs` checks and, when requested, builds the optional Tauri v2
+  bundle. Its report includes `releaseOperations.codeSigning` and
+  `releaseOperations.updater`. Missing signing or updater environment variables
+  are reported as `skipped` without failing unsigned local builds.
 - `certify_quotient.mjs` checks an imported quotient action: generator
   regularity, bijective involutions, directed edge compatibility, finite
   Coxeter relations, rank-two orbit cell coverage, and duplicate rank-two

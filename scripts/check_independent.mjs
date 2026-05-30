@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
 
+// Research-grade validation is a gate over independent artifacts, not a single
+// theorem prover. Each child command returns JSON so CI can show which scope
+// failed: source transcription, interval geometry, or CoxIter diagram checking.
 function run(command, args) {
   const startedAt = performance.now();
   const result = spawnSync(command, args, {
@@ -36,12 +39,25 @@ const checks = [
     "public/examples/compact_5_prism_makarov.json",
   ]),
   run("python", [
+    "scripts/certify_compact_5_prism_family.py",
+    "public/examples/compact_5_polytope_p1_double_makarov.json",
+    "public/examples/compact_5_prism_makarov_p2.json",
+  ]),
+  run("python", [
     "scripts/certify_geometry_intervals.py",
     "public/examples/compact_5_cube_gamma1.json",
   ]),
   run("python", [
     "scripts/certify_geometry_intervals.py",
     "public/examples/compact_5_prism_makarov.json",
+  ]),
+  run("python", [
+    "scripts/certify_geometry_intervals.py",
+    "public/examples/compact_5_polytope_p1_double_makarov.json",
+  ]),
+  run("python", [
+    "scripts/certify_geometry_intervals.py",
+    "public/examples/compact_5_prism_makarov_p2.json",
   ]),
   run("python", [
     "scripts/coxiter_check_compact.py",
@@ -51,17 +67,33 @@ const checks = [
   run("python", [
     "scripts/coxiter_check_compact.py",
     "public/examples/compact_5_prism_makarov.json",
+    "--require-external",
+  ]),
+  run("python", [
+    "scripts/coxiter_check_compact.py",
+    "public/examples/compact_5_polytope_p1_double_makarov.json",
+    "--require-external",
+  ]),
+  run("python", [
+    "scripts/coxiter_check_compact.py",
+    "public/examples/compact_5_prism_makarov_p2.json",
     "--require-external",
   ]),
 ];
 
+for (let index = 1; index <= 15; index += 1) {
+  checks.push(
+    run("python", [
+      "scripts/coxiter_check_compact.py",
+      `public/examples/tumarkin_5d_8facet_g11411_${String(index).padStart(2, "0")}.json`,
+      "--require-external",
+    ]),
+  );
+}
+
 const coxiterAvailability =
   process.platform === "win32"
-    ? run("powershell.exe", [
-        "-NoProfile",
-        "-Command",
-        'wsl -d Ubuntu-24.04 -- bash -lc "which coxiter"',
-      ])
+    ? run("wsl", ["which", "coxiter"])
     : run("bash", ["-lc", "which coxiter"]);
 
 const result = {

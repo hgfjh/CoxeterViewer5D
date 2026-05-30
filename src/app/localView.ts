@@ -122,6 +122,13 @@ export interface LocalNeighborhoodExport {
   warnings: string[];
 }
 
+/**
+ * Computes the chamber-centered 3D layout used by local topology mode.
+ *
+ * Distance-one generator neighbors sit on stable non-coplanar directions;
+ * deeper nodes move onto separated shells. This is deliberately a readable
+ * graph drawing, not Coxeter or hyperbolic geometry.
+ */
 export function computeLocalChamber3DLayout(
   nodes: CayleyNode[],
   edges: CayleyEdge[],
@@ -218,6 +225,9 @@ const adjacencyCache = new WeakMap<
   Map<string, AdjacencyEntry[]>
 >();
 
+/**
+ * Breadth-first local layout data before the 3D chamber-specific placement.
+ */
 export function computeLocalLayout(
   nodes: CayleyNode[],
   edges: CayleyEdge[],
@@ -312,6 +322,9 @@ export function computeLocalLayout(
   };
 }
 
+/**
+ * Describes which generator buttons can step from the selected chamber.
+ */
 export function generatorStepOptions(
   edges: CayleyEdge[],
   selectedNodeId: string | undefined,
@@ -357,6 +370,9 @@ export function generatorStepOptions(
   });
 }
 
+/**
+ * Builds the selected word breadcrumb and marks only visible prefixes clickable.
+ */
 export function wordBreadcrumb(
   nodes: CayleyNode[],
   selectedNode: CayleyNode | undefined,
@@ -425,6 +441,12 @@ export function parsePairKey(
     : undefined;
 }
 
+/**
+ * Deterministic sidecar for a local view export.
+ *
+ * It records what was visible and why, but it is not a replacement for the
+ * source dataset or exact backend artifact.
+ */
 export function buildLocalNeighborhoodExport(input: {
   datasetId: string;
   datasetLabel: string;

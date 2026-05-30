@@ -23,6 +23,9 @@ export interface SegmentLabelCandidate {
   priority: number;
 }
 
+/**
+ * Shortens long algebraic/word labels without changing their stable identity.
+ */
 export function compactLabelText(label: string, maxCharacters: number): string {
   if (maxCharacters < 4 || label.length <= maxCharacters) {
     return label;
@@ -33,6 +36,13 @@ export function compactLabelText(label: string, maxCharacters: number): string {
   return `${label.slice(0, headLength)}...${label.slice(-tailLength)}`;
 }
 
+/**
+ * Chooses at most one label for each drawn segment.
+ *
+ * This matters for Y_Gamma, where several relation boundaries can share the
+ * same geometric segment. The highest-priority semantic label wins and the
+ * renderer avoids stacking different generator names on one edge.
+ */
 export function selectSegmentLabelBudget<T extends SegmentLabelCandidate>(
   entries: T[],
   maxLabels: number,
@@ -54,6 +64,9 @@ export function selectSegmentLabelBudget<T extends SegmentLabelCandidate>(
     .slice(0, maxLabels);
 }
 
+/**
+ * Stable priority budget for node and edge labels.
+ */
 export function selectLabelBudget<T extends { id: string }>(
   items: T[],
   options: LabelBudgetOptions<T>,

@@ -41,6 +41,12 @@ const fallbackColors = [
   "#4f46e5",
 ];
 
+/**
+ * Builds a render-only Coxeter shell for generated graph imports.
+ *
+ * Without the source Coxeter matrix the app can render nodes and generator
+ * labels, but it must not infer spherical subsets or local-link mathematics.
+ */
 export function syntheticSystemForGeneratedBall(
   ball: GeneratedCayleyBall,
 ): CoxeterSystemInput {
@@ -62,6 +68,9 @@ export function syntheticSystemForGeneratedBall(
   };
 }
 
+/**
+ * Builds a render-only source shell when a quotient lacks its source system.
+ */
 export function syntheticSystemForQuotient(
   quotient: QuotientComplex,
 ): CoxeterSystemInput {
@@ -85,6 +94,12 @@ export function syntheticSystemForQuotient(
   };
 }
 
+/**
+ * Converts a quotient complex into the scene contract used by the renderer.
+ *
+ * The resulting ball is not the universal Cayley ball; metadata says so because
+ * quotient scenes have different mathematical meaning and validation rules.
+ */
 export function quotientToGeneratedBall(
   quotient: QuotientComplex,
 ): GeneratedCayleyBall {
@@ -137,6 +152,13 @@ export function quotientToGeneratedBall(
   };
 }
 
+/**
+ * Constructs the one-vertex base complex Y_Gamma from a Coxeter system.
+ *
+ * Rank-two cells attach as relation faces at the single base vertex; higher
+ * cells are incidence records for spherical subsets. The 3D model drawn later
+ * is a readability embedding of this combinatorial object.
+ */
 export function baseOrbicomplexForSystem(
   system: CoxeterSystemInput,
 ): QuotientComplex {
@@ -241,7 +263,7 @@ export function baseOrbicomplexForSystem(
       "Y_Gamma is modeled as a fundamental-domain cell complex with one base vertex and oriented generator arrows.",
       "The internal quotient edge references keep source and target at the base vertex for validation, but the primary drawing shows arrows rather than literal loops.",
       "The 3D scene for Y_Gamma draws singular relation sheets glued to the generator arrows, not an affine coordinate realization.",
-      "Use the Y_Gamma cell atlas for the affine/polytope-complex incidence data.",
+      "Use the Y_Gamma cell inventory for the affine/polytope-complex incidence data.",
       ...spherical.warnings,
     ],
   };

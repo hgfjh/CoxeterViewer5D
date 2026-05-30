@@ -60,7 +60,13 @@ export interface FigureExportBundle {
 export interface ExampleGalleryEntry {
   id: string;
   label: string;
-  family: "toy" | "compact" | "generated" | "quotient" | "walkthrough";
+  family:
+    | "toy"
+    | "compact"
+    | "generated"
+    | "quotient"
+    | "walkthrough"
+    | "catalogue";
   summary: string;
   actionLabel: string;
 }
@@ -97,6 +103,9 @@ export const viewComparisonOptions: Array<{
   },
 ];
 
+/**
+ * Gallery entries are navigation affordances, not a source catalogue.
+ */
 export function defaultGalleryEntries(): ExampleGalleryEntry[] {
   return [
     {
@@ -129,15 +138,65 @@ export function defaultGalleryEntries(): ExampleGalleryEntry[] {
     },
     {
       id: "compact:5-prism",
-      label: "Makarov 5-prism",
+      label: "Makarov 5-prism P0",
       family: "compact",
       summary:
-        "Inspect the certified prism source with local/projection views.",
+        "Inspect the certified [5,3,3,3,3] prism source with local/projection views.",
       actionLabel: "Open example",
+    },
+    {
+      id: "compact:5-polytope-p1",
+      label: "P1 double of P0",
+      family: "compact",
+      summary: "Open the verified-source Coxeter double from Emery-Kellerhals.",
+      actionLabel: "Open example",
+    },
+    {
+      id: "compact:5-prism-p2",
+      label: "Makarov 5-prism P2",
+      family: "compact",
+      summary:
+        "Open the verified-source [5,3,3,3,4] prism from Emery-Kellerhals.",
+      actionLabel: "Open example",
+    },
+    {
+      id: "catalogue:8facet:all",
+      label: "15 eight-facet 5D cases",
+      family: "catalogue",
+      summary:
+        "Browse the certified Tumarkin Table 4.10 G11411 examples without crowding the main gallery.",
+      actionLabel: "Open catalogue",
+    },
+    {
+      id: "catalogue:8facet:01",
+      label: "Eight-facet case #1",
+      family: "catalogue",
+      summary:
+        "Representative certified G11411 entry with exact algebraic dotted weights.",
+      actionLabel: "Open catalogue",
+    },
+    {
+      id: "catalogue:8facet:08",
+      label: "Eight-facet case #8",
+      family: "catalogue",
+      summary:
+        "Middle representative certified G11411 entry from Tumarkin Table 4.10.",
+      actionLabel: "Open catalogue",
+    },
+    {
+      id: "catalogue:8facet:15",
+      label: "Eight-facet case #15",
+      family: "catalogue",
+      summary:
+        "Final representative certified G11411 entry from Tumarkin Table 4.10.",
+      actionLabel: "Open catalogue",
     },
   ];
 }
 
+/**
+ * Deterministic annotation ids keep figure bundles diffable.
+ */
 export function createAnnotation(input: {
   label: string;
   body: string;
@@ -163,6 +222,9 @@ export function createAnnotation(input: {
   };
 }
 
+/**
+ * Captures a named view state for experiments and paper/talk figures.
+ */
 export function createCameraBookmark(input: {
   label: string;
   preset: ViewPresetId;

@@ -39,6 +39,15 @@ export interface ProjectSessionProject {
   rootPathHint?: string;
 }
 
+export interface ProjectSessionWorkspaceState {
+  id: string;
+  label: string;
+  runtime: "browser" | "tauri";
+  rootPathHint?: string;
+  sessionPath?: string;
+  lastOpenedAt?: string;
+}
+
 export interface ProjectSessionDatasetState {
   activeDatasetId?: string;
   activeExampleId?: string;
@@ -105,6 +114,7 @@ export interface ProjectSession {
   schemaVersion: ProjectSessionSchemaVersion;
   sessionKind: typeof PROJECT_SESSION_KIND;
   project: ProjectSessionProject;
+  workspace?: ProjectSessionWorkspaceState;
   createdAt: string;
   updatedAt: string;
   appVersion?: string;
@@ -139,6 +149,7 @@ export type ProjectSessionValidationResult =
 
 export interface CreateProjectSessionInput {
   project?: Partial<ProjectSessionProject>;
+  workspace?: Partial<ProjectSessionWorkspaceState>;
   createdAt?: string;
   updatedAt?: string;
   appVersion?: string;
@@ -156,6 +167,12 @@ export interface ProjectSessionExport {
   fileName: typeof PROJECT_SESSION_FILE_NAME;
   mediaType: typeof PROJECT_SESSION_MEDIA_TYPE;
   contents: string;
+}
+
+export interface ProjectSessionSnapshot {
+  fingerprint: string;
+  serialized: string;
+  updatedAt: string;
 }
 
 const deterministicTimestamp = "1970-01-01T00:00:00.000Z";
@@ -198,6 +215,13 @@ const recentFileKinds = [
   "session",
 ] as const satisfies readonly ProjectSessionRecentFileKind[];
 
+/**
+ * Builds a deterministic session object for save files and tests.
+ *
+ * Session files remember user state and artifact references. They do not embed
+ * generated balls or certificates; those stay in import/export artifacts with
+ * their own hashes.
+ */
 export function createProjectSession(
   input: CreateProjectSessionInput = {},
 ): ProjectSession {
@@ -210,6 +234,9 @@ export function createProjectSession(
       label: input.project?.label ?? "CoxeterViewer5D",
       rootPathHint: input.project?.rootPathHint,
     },
+    workspace: input.workspace
+      ? createProjectSessionWorkspace(input.workspace, createdAt)
+      : undefined,
     createdAt,
     updatedAt: input.updatedAt ?? createdAt,
     appVersion: input.appVersion,
@@ -266,6 +293,9 @@ export function createProjectSession(
   return result.value;
 }
 
+/**
+ * Validates a project session without loading referenced datasets or artifacts.
+ */
 export function validateProjectSession(
   input: unknown,
 ): ProjectSessionValidationResult {
@@ -293,6 +323,10 @@ export function validateProjectSession(
   }
 
   const project = validateProject(input.project, "$.project", errors);
+  const workspace =
+    input.workspace === undefined
+      ? undefined
+      : validateWorkspace(input.workspace, "$.workspace", errors);
   const createdAt = requireIsoTimestamp(input.createdAt, "$.createdAt", errors);
   const updatedAt = requireIsoTimestamp(input.updatedAt, "$.updatedAt", errors);
   const appVersion = optionalString(input.appVersion, "$.appVersion", errors);
@@ -346,6 +380,7 @@ export function validateProjectSession(
       schemaVersion: 1,
       sessionKind: PROJECT_SESSION_KIND,
       project,
+      workspace,
       createdAt,
       updatedAt,
       appVersion,
@@ -383,6 +418,9 @@ export function parseProjectSessionJson(
   }
 }
 
+/**
+ * Stable serializer so session files are readable and diffable in git.
+ */
 export function serializeProjectSession(session: ProjectSession): string {
   const result = validateProjectSession(session);
   if (!result.ok) {
@@ -401,6 +439,58 @@ export function createProjectSessionExport(
     mediaType: PROJECT_SESSION_MEDIA_TYPE,
     contents: serializeProjectSession(session),
   };
+}
+
+export function createProjectSessionWorkspace(
+  input: Partial<ProjectSessionWorkspaceState> = {},
+  lastOpenedAt = deterministicTimestamp,
+): ProjectSessionWorkspaceState {
+  return {
+    id: input.id ?? "browser-workspace",
+    label: input.label ?? "Browser workspace",
+    runtime: input.runtime ?? "browser",
+    rootPathHint: input.rootPathHint,
+    sessionPath: input.sessionPath,
+    lastOpenedAt: input.lastOpenedAt ?? lastOpenedAt,
+  };
+}
+
+/**
+ * Snapshot used for dirty-state prompts. The fingerprint is local UI state, not
+ * a certificate hash.
+ */
+export function createProjectSessionSnapshot(
+  session: ProjectSession,
+): ProjectSessionSnapshot {
+  const serialized = serializeProjectSession(session);
+  return {
+    fingerprint: stableStringFingerprint(serialized),
+    serialized,
+    updatedAt: session.updatedAt,
+  };
+}
+
+export function hasProjectSessionChanges(
+  saved: ProjectSessionSnapshot | undefined,
+  current: ProjectSessionSnapshot,
+): boolean {
+  return saved !== undefined && saved.fingerprint !== current.fingerprint;
+}
+
+export function upsertRecentProjectSession(
+  recent: readonly ProjectSessionRecentFile[],
+  entry: Omit<ProjectSessionRecentFile, "kind"> & { kind?: "session" },
+  limit = 8,
+): ProjectSessionRecentFile[] {
+  const normalized: ProjectSessionRecentFile = {
+    ...entry,
+    kind: "session",
+  };
+  const dedupeKey = normalized.path ?? normalized.id;
+  return [
+    normalized,
+    ...recent.filter((item) => (item.path ?? item.id) !== dedupeKey),
+  ].slice(0, Math.max(1, limit));
 }
 
 export function importProjectSession(
@@ -433,6 +523,42 @@ function validateProject(
       `${path}.rootPathHint`,
       errors,
     ),
+  };
+}
+
+function validateWorkspace(
+  input: unknown,
+  path: string,
+  errors: ProjectSessionValidationIssue[],
+): ProjectSessionWorkspaceState {
+  if (!isRecord(input)) {
+    errors.push({ path, message: "workspace must be an object." });
+    return { id: "", label: "", runtime: "browser" };
+  }
+  const lastOpenedAt =
+    input.lastOpenedAt === undefined
+      ? undefined
+      : requireIsoTimestamp(input.lastOpenedAt, `${path}.lastOpenedAt`, errors);
+  return {
+    id: requireNonEmptyString(input.id, `${path}.id`, errors),
+    label: requireNonEmptyString(input.label, `${path}.label`, errors),
+    runtime: requireEnum(
+      input.runtime,
+      `${path}.runtime`,
+      ["browser", "tauri"] as const,
+      errors,
+    ),
+    rootPathHint: optionalString(
+      input.rootPathHint,
+      `${path}.rootPathHint`,
+      errors,
+    ),
+    sessionPath: optionalString(
+      input.sessionPath,
+      `${path}.sessionPath`,
+      errors,
+    ),
+    lastOpenedAt,
   };
 }
 
@@ -898,4 +1024,13 @@ function stableNormalize(value: unknown): unknown {
     );
   }
   return value;
+}
+
+function stableStringFingerprint(value: string): string {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `fnv1a32:${(hash >>> 0).toString(16).padStart(8, "0")}`;
 }

@@ -36,8 +36,24 @@
       "infinitePairs": 5
     },
     {
+      "file": "compact_5_polytope_p1_double_makarov.json",
+      "name": "Compact hyperbolic Coxeter 5-polytope P1 (double of P0)",
+      "dataStatus": "certified",
+      "rank": 7,
+      "finitePairs": 20,
+      "infinitePairs": 1
+    },
+    {
       "file": "compact_5_prism_makarov.json",
       "name": "Compact hyperbolic Coxeter 5-prism (Makarov)",
+      "dataStatus": "certified",
+      "rank": 7,
+      "finitePairs": 20,
+      "infinitePairs": 1
+    },
+    {
+      "file": "compact_5_prism_makarov_p2.json",
+      "name": "Compact hyperbolic Coxeter 5-prism P2 (Makarov)",
       "dataStatus": "certified",
       "rank": 7,
       "finitePairs": 20,
@@ -50,6 +66,126 @@
       "rank": 2,
       "finitePairs": 0,
       "infinitePairs": 1
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_01.json",
+      "name": "Tumarkin 5D eight-facet G11411 #01",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_02.json",
+      "name": "Tumarkin 5D eight-facet G11411 #02",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_03.json",
+      "name": "Tumarkin 5D eight-facet G11411 #03",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_04.json",
+      "name": "Tumarkin 5D eight-facet G11411 #04",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_05.json",
+      "name": "Tumarkin 5D eight-facet G11411 #05",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_06.json",
+      "name": "Tumarkin 5D eight-facet G11411 #06",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_07.json",
+      "name": "Tumarkin 5D eight-facet G11411 #07",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_08.json",
+      "name": "Tumarkin 5D eight-facet G11411 #08",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_09.json",
+      "name": "Tumarkin 5D eight-facet G11411 #09",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_10.json",
+      "name": "Tumarkin 5D eight-facet G11411 #10",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_11.json",
+      "name": "Tumarkin 5D eight-facet G11411 #11",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_12.json",
+      "name": "Tumarkin 5D eight-facet G11411 #12",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_13.json",
+      "name": "Tumarkin 5D eight-facet G11411 #13",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_14.json",
+      "name": "Tumarkin 5D eight-facet G11411 #14",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
+    },
+    {
+      "file": "tumarkin_5d_8facet_g11411_15.json",
+      "name": "Tumarkin 5D eight-facet G11411 #15",
+      "dataStatus": "certified",
+      "rank": 8,
+      "finitePairs": 25,
+      "infinitePairs": 3
     },
     {
       "file": "universal_rank3.json",
@@ -129,7 +265,7 @@
     }
   ],
   "totals": {
-    "examples": 7,
+    "examples": 24,
     "generated": 6,
     "generatedNodes": 80,
     "generatedEdges": 104,

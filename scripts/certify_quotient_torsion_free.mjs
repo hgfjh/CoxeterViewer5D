@@ -9,6 +9,9 @@ const quotient = JSON.parse(text);
 const supplied = quotient.torsionFreeCertificate;
 const inputHash = createHash("sha256").update(text).digest("hex");
 
+// This script is intentionally a certificate normalizer for the browser demo:
+// it never invents torsion-free evidence. Missing metadata becomes a skipped
+// certificate so the UI keeps manifold language disabled.
 const report = {
   ok:
     supplied?.status === "passed" ||

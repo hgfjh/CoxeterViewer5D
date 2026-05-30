@@ -35,6 +35,13 @@ function shellPoint(
   ];
 }
 
+/**
+ * Places nodes on deterministic word-length shells.
+ *
+ * This is a drawing convention for stable screenshots and tests. It does not
+ * use Coxeter geometry, and it should not be interpreted as preserving metric
+ * data from the Cayley graph or any reflection representation.
+ */
 export function assignShellLayout(
   nodes: CayleyNode[],
   options: ShellLayoutOptions = {},

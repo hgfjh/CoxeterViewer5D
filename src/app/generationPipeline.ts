@@ -15,6 +15,13 @@ export interface GenerationPipelineResult {
   warnings: string[];
 }
 
+/**
+ * Browser-side generation pipeline for the viewer.
+ *
+ * It combines approximate Cayley-ball enumeration, exact-in-ball rank-two
+ * Davis cells, numerical spherical-subset checks, and deterministic shell
+ * layout. External Sage/GAP fixtures bypass this path through generated JSON.
+ */
 export function generateViewerBall(
   system: CoxeterSystemInput,
   options: CayleyGenerationOptions,

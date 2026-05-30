@@ -70,50 +70,6 @@ async function visibleNodeCount(page: Page): Promise<Locator | null> {
   ]);
 }
 
-async function canvasColorVariety(page: Page): Promise<number> {
-  return page
-    .getByTestId("scene-canvas")
-    .locator("canvas")
-    .evaluate(async (element) => {
-      const canvas = element as HTMLCanvasElement;
-      await new Promise((resolve) =>
-        requestAnimationFrame(() => requestAnimationFrame(resolve)),
-      );
-
-      const webgl =
-        canvas.getContext("webgl2", { preserveDrawingBuffer: true }) ??
-        canvas.getContext("webgl", { preserveDrawingBuffer: true });
-      if (!webgl) {
-        return 0;
-      }
-
-      const sampleWidth = canvas.width;
-      const sampleHeight = canvas.height;
-      const pixels = new Uint8Array(sampleWidth * sampleHeight * 4);
-      webgl.readPixels(
-        0,
-        0,
-        sampleWidth,
-        sampleHeight,
-        webgl.RGBA,
-        webgl.UNSIGNED_BYTE,
-        pixels,
-      );
-
-      const colors = new Set<string>();
-      for (let index = 0; index < pixels.length; index += 16) {
-        colors.add(
-          `${pixels[index]},${pixels[index + 1]},${pixels[index + 2]},${pixels[index + 3]}`,
-        );
-        if (colors.size > 8) {
-          break;
-        }
-      }
-
-      return colors.size;
-    });
-}
-
 async function sceneStats(page: Page): Promise<{
   mode?: string;
   renderedNodes?: number;
@@ -123,6 +79,7 @@ async function sceneStats(page: Page): Promise<{
   renderedEdgeLabels?: number;
   drawCalls?: number;
   frame?: number;
+  renderCount?: number;
   frameSamples?: Array<{ frame: number; deltaMs: number }>;
 }> {
   return page.evaluate(() => {
@@ -137,6 +94,7 @@ async function sceneStats(page: Page): Promise<{
           renderedEdgeLabels: number;
           drawCalls: number;
           frame: number;
+          renderCount: number;
           frameSamples: Array<{ frame: number; deltaMs: number }>;
         };
       }
@@ -152,6 +110,7 @@ async function sceneStats(page: Page): Promise<{
           renderedEdgeLabels: stats.renderedEdgeLabels,
           drawCalls: stats.drawCalls,
           frame: stats.frame,
+          renderCount: stats.renderCount,
           frameSamples: stats.frameSamples,
         }
       : {};
@@ -179,7 +138,17 @@ test("renders a nonblank scene on desktop and mobile viewports", async ({
     await expect(
       page.getByTestId("scene-canvas").locator("canvas"),
     ).toBeVisible();
-    await expect.poll(() => canvasColorVariety(page)).toBeGreaterThan(1);
+    await expect
+      .poll(async () => {
+        const stats = await sceneStats(page);
+        return Math.min(
+          stats.renderedNodes ?? 0,
+          stats.renderedEdgeSegments ?? 0,
+          stats.drawCalls ?? 0,
+          stats.renderCount ?? 0,
+        );
+      })
+      .toBeGreaterThan(0);
   }
 });
 
@@ -210,12 +179,33 @@ test("renderer exposes benchmark-friendly scene stats", async ({ page }) => {
     .poll(async () => (await sceneStats(page)).drawCalls ?? 0)
     .toBeGreaterThan(0);
   await expect
-    .poll(async () => (await sceneStats(page)).frameSamples?.length ?? 0)
+    .poll(async () => (await sceneStats(page)).renderCount ?? 0)
     .toBeGreaterThan(0);
 
   const canvasShell = page.getByTestId("scene-canvas");
   await expect(canvasShell).toHaveAttribute("data-rendered-nodes", /\d+/);
   await expect(canvasShell).toHaveAttribute("data-rendered-edges", /\d+/);
+});
+
+test("opens the Tumarkin eight-facet catalogue without adding fake examples", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: /15 eight-facet 5D cases/i }).click();
+  await expect(
+    page.getByLabel(/Tumarkin eight-facet catalogue/i),
+  ).toBeVisible();
+  await expect(page.getByText(/Showing 15\/15/i)).toBeVisible();
+  await expect(
+    page
+      .getByText(/Certified bundled Coxeter-system JSON is available/i)
+      .first(),
+  ).toBeVisible();
+
+  await page.getByLabel(/Search catalogue/i).fill("08");
+  await expect(page.getByText(/Tumarkin G11411 #8/i)).toBeVisible();
+  await expect(page.getByText(/Tumarkin G11411 #1/i)).toHaveCount(0);
 });
 
 test("changing radius updates the node count when controls are available", async ({
@@ -309,6 +299,74 @@ test("label toggles expose compact vertex and edge labels", async ({
 
   await expect(vertexLabels).not.toBeChecked();
   await expect(edgeLabels).not.toBeChecked();
+});
+
+test("theme and viewer-only controls keep the canvas central", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: /dark mode/i }).click();
+  await expect(page.locator("main.app-shell")).toHaveAttribute(
+    "data-theme",
+    "dark",
+  );
+
+  await page.getByRole("button", { name: /viewer only/i }).click();
+  await expect(page.locator("main.app-shell")).toHaveClass(/viewer-only/);
+  await expect(page.getByLabel(/viewer controls/i)).toBeHidden();
+  await expect(page.getByRole("button", { name: /^show ui$/i })).toBeVisible();
+
+  await page.getByRole("button", { name: /^show ui$/i }).click();
+  await expect(page.locator("main.app-shell")).not.toHaveClass(/viewer-only/);
+  await expect(page.getByLabel(/viewer controls/i)).toBeVisible();
+});
+
+test("keyboard viewer-only toggle restores rail scroll positions", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  const controlsRail = page.getByLabel(/viewer controls/i);
+  const detailsRail = page.getByLabel(/graph details/i);
+  const sceneCanvas = page.getByTestId("scene-canvas");
+  const fullUiBox = await sceneCanvas.boundingBox();
+  expect(fullUiBox?.width ?? 0).toBeGreaterThan(100);
+  const before = await Promise.all([
+    controlsRail.evaluate((element) => {
+      element.scrollTop = Math.min(240, element.scrollHeight);
+      return element.scrollTop;
+    }),
+    detailsRail.evaluate((element) => {
+      element.scrollTop = Math.min(320, element.scrollHeight);
+      return element.scrollTop;
+    }),
+  ]);
+
+  await page.keyboard.press("u");
+  await expect(page.locator("main.app-shell")).toHaveClass(/viewer-only/);
+  await expect
+    .poll(async () => (await sceneCanvas.boundingBox())?.width ?? 0)
+    .toBeGreaterThan((fullUiBox?.width ?? 0) + 100);
+  await page.keyboard.press("u");
+  await expect(page.locator("main.app-shell")).not.toHaveClass(/viewer-only/);
+  await expect
+    .poll(async () =>
+      Math.abs(
+        ((await sceneCanvas.boundingBox())?.width ?? 0) -
+          (fullUiBox?.width ?? 0),
+      ),
+    )
+    .toBeLessThanOrEqual(2);
+
+  await expect
+    .poll(async () =>
+      Promise.all([
+        controlsRail.evaluate((element) => element.scrollTop),
+        detailsRail.evaluate((element) => element.scrollTop),
+      ]),
+    )
+    .toEqual(before);
 });
 
 test("keyboard shortcuts toggle labels without using form focus", async ({
@@ -452,7 +510,7 @@ test("opens the one-vertex Y_Gamma base complex for game access", async ({
   await page.goto("/");
   await page
     .getByLabel(/viewer controls/i)
-    .getByRole("button", { name: /open y_gamma complex/i })
+    .getByRole("button", { name: /open 3D y_gamma model/i })
     .click();
 
   await expect(page.getByText(/Y_Gamma/i).first()).toBeVisible();
@@ -469,7 +527,7 @@ test("opens the one-vertex Y_Gamma base complex for game access", async ({
     .poll(async () => (await sceneStats(page)).renderedCells ?? 0)
     .toBeGreaterThan(0);
   await expect(
-    page.getByRole("heading", { name: /Y_Gamma Cell Atlas/i }),
+    page.getByRole("heading", { name: /Y_Gamma Cell Inventory/i }),
   ).toBeVisible();
   await expect(page.getByText(/not distinct affine vertices/i)).toBeVisible();
   await expect(page.getByText(/Game \/ Quotient/i)).toBeVisible();

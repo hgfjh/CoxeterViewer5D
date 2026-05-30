@@ -164,6 +164,10 @@ for (const guide of guideDefinitions) {
   }
 }
 
+/**
+ * Static guide definitions. Guides change view state and text only; they never
+ * mutate Coxeter data, quotient artifacts, or certificates.
+ */
 export function guidedInspectionDefinitions(): GuidedInspectionDefinition[] {
   return guideDefinitions;
 }

@@ -1,0 +1,541 @@
+{
+  "schemaVersion": 1,
+  "name": "Tumarkin 5D eight-facet G11411 #07",
+  "description": "Compact hyperbolic Coxeter 5-polytope with 8 facets from Tumarkin Table 4.10.",
+  "rank": 8,
+  "generators": [
+    {
+      "id": "t07_0",
+      "label": "u1"
+    },
+    {
+      "id": "t07_1",
+      "label": "u2"
+    },
+    {
+      "id": "t07_2",
+      "label": "u3"
+    },
+    {
+      "id": "t07_3",
+      "label": "u4"
+    },
+    {
+      "id": "t07_4",
+      "label": "u5"
+    },
+    {
+      "id": "t07_5",
+      "label": "u6"
+    },
+    {
+      "id": "t07_6",
+      "label": "u7"
+    },
+    {
+      "id": "t07_7",
+      "label": "u8"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, 2, 4, "inf", 2, 2, 2, 3],
+    [2, 1, "inf", 4, 2, 2, 2, 3],
+    [4, "inf", 1, "inf", 2, 2, 2, 2],
+    ["inf", 4, "inf", 1, 2, 2, 2, 2],
+    [2, 2, 2, 2, 1, 5, 2, 2],
+    [2, 2, 2, 2, 5, 1, 3, 2],
+    [2, 2, 2, 2, 2, 3, 1, 3],
+    [3, 3, 2, 2, 2, 2, 3, 1]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 5,
+    "projection": "klein-pca",
+    "normalGram": [
+      [
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 4,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.995352392457285,
+          "sourceRefId": "tumarkin-2007-n-plus-3",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2.995352392457285,
+            "minimalPolynomial": [4, 0, -36, 0, 1],
+            "isolatingInterval": [2.995352392357285, 2.995352392557285]
+          }
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ],
+      [
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.995352392457285,
+          "sourceRefId": "tumarkin-2007-n-plus-3",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2.995352392457285,
+            "minimalPolynomial": [4, 0, -36, 0, 1],
+            "isolatingInterval": [2.995352392357285, 2.995352392557285]
+          }
+        },
+        {
+          "kind": "coxeter",
+          "m": 4,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 4,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.995352392457285,
+          "sourceRefId": "tumarkin-2007-n-plus-3",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2.995352392457285,
+            "minimalPolynomial": [4, 0, -36, 0, 1],
+            "isolatingInterval": [2.995352392357285, 2.995352392557285]
+          }
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.23606797749979,
+          "sourceRefId": "tumarkin-2007-n-plus-3",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 4.23606797749979,
+            "minimalPolynomial": [1, -4, -1],
+            "isolatingInterval": [4.23606797739979, 4.23606797759979]
+          }
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2.995352392457285,
+          "sourceRefId": "tumarkin-2007-n-plus-3",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2.995352392457285,
+            "minimalPolynomial": [4, 0, -36, 0, 1],
+            "isolatingInterval": [2.995352392357285, 2.995352392557285]
+          }
+        },
+        {
+          "kind": "coxeter",
+          "m": 4,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.23606797749979,
+          "sourceRefId": "tumarkin-2007-n-plus-3",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 4.23606797749979,
+            "minimalPolynomial": [1, -4, -1],
+            "isolatingInterval": [4.23606797739979, 4.23606797759979]
+          }
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ],
+      [
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 5,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ],
+      [
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 5,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ],
+      [
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 0,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "tumarkin-2007-n-plus-3"
+        }
+      ]
+    ]
+  },
+  "dataStatus": "certified",
+  "sourceRefs": [
+    {
+      "id": "tumarkin-2007-n-plus-3",
+      "citation": "Pavel Tumarkin, Compact Hyperbolic Coxeter n-Polytopes with n+3 Facets, Electronic Journal of Combinatorics 14 (2007), R69.",
+      "url": "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v14i1r69",
+      "locator": "Lemma 4.7 and Table 4.10, G11411 diagram 7 of 15",
+      "notes": "Lemma 4.7 states that there are 15 compact hyperbolic Coxeter 5-polytopes with 8 facets and Gale diagram G11411. The repository transcription is taken from the arXiv EPS artwork pic/5/5_n.eps."
+    }
+  ],
+  "certificate": {
+    "status": "passed",
+    "backend": "tumarkin8FacetExactChecker",
+    "backendVersion": "1.0.0",
+    "scopes": ["source-transcription", "gram-signature"],
+    "command": "python scripts/certify_tumarkin_8facet.py public/examples/tumarkin_5d_8facet_g11411_07.json",
+    "sourceRefIds": ["tumarkin-2007-n-plus-3"],
+    "diagnostics": {
+      "table": "4.10",
+      "galeDiagram": "G11411",
+      "tableIndex": 7,
+      "sourceTranscription": "scripts/data/tumarkin_8facet_transcription.json",
+      "rankChecks": {
+        "rank": 6,
+        "rankMethod": "eigenvalue check after exact determinant-equation solve",
+        "determinantEquationsSolved": true,
+        "smallestAbsoluteEigenvalues": [
+          2.257288724624267e-16, 2.7809583739383834e-16, 0.535339079503965
+        ]
+      },
+      "signature": {
+        "positive": 5,
+        "negative": 1,
+        "zero": 2
+      },
+      "dottedWeights": [
+        {
+          "edge": ["v0", "v3"],
+          "variable": "d7_1",
+          "decimal": 2.995352392457285,
+          "minimalPolynomial": [4, 0, -36, 0, 1],
+          "isolatingInterval": [2.995352392357285, 2.995352392557285]
+        },
+        {
+          "edge": ["v1", "v2"],
+          "variable": "d7_2",
+          "decimal": 2.995352392457285,
+          "minimalPolynomial": [4, 0, -36, 0, 1],
+          "isolatingInterval": [2.995352392357285, 2.995352392557285]
+        },
+        {
+          "edge": ["v2", "v3"],
+          "variable": "d7_3",
+          "decimal": 4.23606797749979,
+          "minimalPolynomial": [1, -4, -1],
+          "isolatingInterval": [4.23606797739979, 4.23606797759979]
+        }
+      ],
+      "claims": [
+        "Tumarkin Table 4.10 source-vector transcription",
+        "dotted weights solved from determinant equations",
+        "normal Gram rank 6 and inertia (5,1,2)"
+      ],
+      "nonClaims": [
+        "not a generated Cayley-ball certificate",
+        "not a quotient, manifold, or PL Morse certificate",
+        "geometric coordinates are still produced numerically by the viewer"
+      ]
+    }
+  },
+  "notes": [
+    "The generator labels u1..u8 are repository labels for the transcribed Coxeter diagram; the source table diagrams are unlabeled.",
+    "The dotted weights are not printed in Table 4.10; the certificate solves them from the determinant/rank equations described in Lemma 4.7.",
+    "Normal coordinates and chamber basepoints are computed numerically from normalGram; geometric mode is visualization-grade."
+  ],
+  "warnings": [
+    "Geometric rendering factors normalGram numerically for visualization.",
+    "The 3D projection is a drawing convention and does not certify hyperbolic distances or intersections."
+  ],
+  "checkerSummaries": [
+    {
+      "status": "passed",
+      "backend": "coxiterCompactDiagramChecker",
+      "backendVersion": "1.0.0",
+      "checker": "CoxIter",
+      "scopes": ["coxiter-diagram"],
+      "command": "python scripts/coxiter_check_compact.py public/examples/tumarkin_5d_8facet_g11411_07.json --require-external",
+      "inputHash": "d1854a5564e697b0176933ee37acf14159ba9c2fbcd4c577bbd9c881eb540e0d",
+      "outputHash": "d24086a173c46717ce056a3c906ca8568d903e10bc124e675c7a6ae1030721cf",
+      "sourceRefIds": ["tumarkin-2007-n-plus-3"],
+      "diagnostics": {
+        "artifactPath": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_07.coxiter.json",
+        "coxiterGraphSha256": "b4434ff4c77fc6397d4c3a2a5d009f16b287bff3cea40515e75c54867a9f1bba",
+        "parsed": {
+          "cocompact": "yes",
+          "dimension": 5,
+          "eulerCharacteristic": "0",
+          "fVector": "14, 35, 40, 25, 8, 1",
+          "finiteCovolume": "yes",
+          "growthRate": "3.2215406245941695851052501459134073100",
+          "signature": "6,2,0",
+          "vertices": 8,
+          "verticesAtInfinity": 0
+        },
+        "nonClaims": [
+          "CoxIter checks the prepared diagram input, not exact dotted-weight algebra.",
+          "The in-repo Tumarkin certifier owns source transcription and normal-Gram diagnostics."
+        ]
+      },
+      "warnings": []
+    }
+  ]
+}

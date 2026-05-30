@@ -28,6 +28,12 @@ export interface LorentzGramFactorizationResult {
   warnings: string[];
 }
 
+/**
+ * Evaluates structured Gram entries into their decimal matrix values.
+ *
+ * Exact algebraic fields, when present, are checked elsewhere. The matrix here
+ * is the numerical bridge used by browser visualization and residual checks.
+ */
 export function geometricNormalGramToMatrix(
   normalGram: GeometricEntry[][],
 ): Matrix {
@@ -36,8 +42,12 @@ export function geometricNormalGramToMatrix(
 
 /**
  * Factors a symmetric normal Gram matrix G as N J N^T with
- * J = diag(-1, 1, ..., 1). This is a numerical visualization step, so the
- * residual and signature are returned as product data rather than hidden.
+ * J = diag(-1, 1, ..., 1).
+ *
+ * The result supplies Lorentz normal coordinates for visualization when an
+ * input has a normalGram but no normalCoordinates. It is intentionally not an
+ * exact certificate; callers must display the residual, signature, tolerance,
+ * and warning text when they enable geometric mode from this path.
  */
 export function factorLorentzianNormalGram(
   normalGram: GeometricEntry[][] | Matrix,
@@ -135,6 +145,9 @@ export function factorLorentzianNormalGram(
   };
 }
 
+/**
+ * Recomputes <n_i,n_j>_J from factored normals for residual diagnostics.
+ */
 export function reconstructLorentzGram(normals: Vector[]): Matrix {
   return normals.map((left) => normals.map((right) => lorentzDot(left, right)));
 }

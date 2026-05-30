@@ -381,14 +381,30 @@ function validateExactReal(
     Array.isArray(value.minimalPolynomial) &&
     value.minimalPolynomial.every(isFiniteNumber) &&
     isFiniteNumber(value.decimal) &&
-    Math.abs(evaluatePolynomial(value.minimalPolynomial, value.decimal)) > 1e-8
+    scaledPolynomialResidual(value.minimalPolynomial, value.decimal) > 1e-12
   ) {
     errors.push(
-      `${path}.decimal is not a root of minimalPolynomial within tolerance 1e-8.`,
+      `${path}.decimal is not a root of minimalPolynomial within scaled tolerance 1e-12.`,
     );
   }
 
   return errors.length === 0;
+}
+
+function scaledPolynomialResidual(coefficients: number[], x: number): number {
+  const degree = Math.max(0, coefficients.length - 1);
+  const base = Math.max(1, Math.abs(x));
+  const scale = coefficients.reduce(
+    (total, coefficient, index) =>
+      total + Math.abs(coefficient) * base ** (degree - index),
+    0,
+  );
+
+  // High-degree algebraic dotted weights can have large coefficients. The raw
+  // polynomial value at a rounded decimal cache is therefore a poor error
+  // measure; this scaled residual checks the cache relative to the polynomial's
+  // evaluated size.
+  return Math.abs(evaluatePolynomial(coefficients, x)) / Math.max(1, scale);
 }
 
 function validateCertificateSummary(

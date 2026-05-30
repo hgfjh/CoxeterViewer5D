@@ -83,6 +83,8 @@ export interface ExperimentBundleInput {
 
 const deterministicTimestamp = "1970-01-01T00:00:00.000Z";
 
+// Notebook records are meant to survive source-control diffs, so user-provided
+// objects are normalized before ids and comparison hashes are derived.
 function stableNormalize(value: unknown): unknown {
   if (Array.isArray(value)) {
     return value.map(stableNormalize);
@@ -188,6 +190,13 @@ function statusFromInputs(input: {
   return "passed";
 }
 
+/**
+ * Builds a deterministic notebook run from the current viewer state.
+ *
+ * Runs may include screenshots and topology summaries, but they do not certify
+ * new mathematics. Their value is reproducibility: selected object, warnings,
+ * counts, and hashes can be compared later.
+ */
 export function createExperimentRun(input: ExperimentRunInput): ExperimentRun {
   const notes = normalizeNotes(input.notes);
   const warnings = uniqueSorted([
@@ -234,6 +243,9 @@ export function createExperimentRun(input: ExperimentRunInput): ExperimentRun {
   };
 }
 
+/**
+ * Packs one or more runs into the portable experiment-bundle format.
+ */
 export function createExperimentBundle(
   input: ExperimentBundleInput,
 ): ExperimentBundle {
@@ -282,6 +294,9 @@ export function createExperimentBundle(
   };
 }
 
+/**
+ * Compares two saved runs by status, counts, and warning text.
+ */
 export function compareExperimentRuns(
   baseline: ExperimentRun,
   candidate: ExperimentRun,

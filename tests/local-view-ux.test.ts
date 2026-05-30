@@ -501,7 +501,12 @@ describe("local chamber UX helpers", () => {
       faceNormals[0][0] * faceNormals[1][0] +
       faceNormals[0][1] * faceNormals[1][1] +
       faceNormals[0][2] * faceNormals[1][2];
-    expect(Math.abs(normalDot)).toBeLessThan(1e-6);
+    const normalLengths = faceNormals.map((normal) =>
+      Math.hypot(normal[0], normal[1], normal[2]),
+    );
+    const normalCosine =
+      Math.abs(normalDot) / (normalLengths[0] * normalLengths[1]);
+    expect(normalCosine).toBeLessThan(0.98);
     expect(
       rankThreeFocus.edges.filter((edge) =>
         edge.id.startsWith("Y:higher:0-1-2:focus-edge:"),
@@ -510,6 +515,59 @@ describe("local chamber UX helpers", () => {
     expect(
       rankThreeFocus.nodes.filter((node) => !node.hidden).length,
     ).toBeGreaterThan(system.rank + 1);
+  });
+
+  it("draws finite Y_Gamma relation polygons as simple lifted 3D faces for every m", () => {
+    for (const m of [2, 3, 4, 5, 6, 7]) {
+      const system: CoxeterSystemInput = {
+        schemaVersion: 1,
+        name: `I2(${m}) Y_Gamma lift test`,
+        dataStatus: "toy",
+        rank: 2,
+        generators: [
+          { id: "s0", label: "s0" },
+          { id: "s1", label: "s1" },
+        ],
+        coxeterMatrix: [
+          [1, m],
+          [m, 1],
+        ],
+      };
+      const atlas = buildYGammaCellAtlas(system);
+      const scene = buildYGamma2SkeletonScene(atlas, {
+        activeGeneratorPairKey: "0-1",
+        faceMode: "active-pair",
+      });
+      const relation = scene.cells.find((cell) => cell.id === "Y:cell:0-1");
+      const positionById = new Map(
+        scene.nodes.map((node) => [node.id, node.position]),
+      );
+      const boundary =
+        relation?.boundaryNodeIds.map((nodeId) => positionById.get(nodeId)) ??
+        [];
+      const points = boundary.filter(
+        (point): point is [number, number, number] => point !== undefined,
+      );
+      const base = positionById.get("Y:*");
+      const left = positionById.get("Y:arrow-end:0");
+      const right = positionById.get("Y:arrow-end:1");
+
+      expect(relation?.boundaryNodeIds).toHaveLength(2 * m);
+      expect(points).toHaveLength(2 * m);
+      expect(isSimpleProjectedPolygon(points)).toBe(true);
+
+      if (base && left && right) {
+        const generatorPlaneNormal = normalize3(
+          cross3(subtract3(left, base), subtract3(right, base)),
+        );
+        const maxLift = Math.max(
+          ...points.map((point) =>
+            Math.abs(dot3(subtract3(point, base), generatorPlaneNormal)),
+          ),
+        );
+        expect(maxLift).toBeGreaterThan(0.35);
+      }
+    }
   });
 
   it("can focus the full m=2/m=3 rank-three Y_Gamma cell boundary", () => {

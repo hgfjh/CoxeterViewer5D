@@ -10,6 +10,9 @@ import {
 
 export const DEFAULT_GEOMETRY_TOLERANCE = 1e-9;
 
+/**
+ * Lorentz form used throughout geometric mode: J = diag(-1, 1, ..., 1).
+ */
 export function lorentzDot(left: Vector, right: Vector): number {
   if (left.length !== right.length) {
     throw new Error(
@@ -20,7 +23,6 @@ export function lorentzDot(left: Vector, right: Vector): number {
     throw new Error("Lorentz dot needs at least one coordinate.");
   }
 
-  // Convention: J = diag(-1, 1, ..., 1), so the first coordinate is time-like.
   let total = -left[0] * right[0];
   for (let index = 1; index < left.length; index += 1) {
     total += left[index] * right[index];
@@ -28,6 +30,9 @@ export function lorentzDot(left: Vector, right: Vector): number {
   return total;
 }
 
+/**
+ * Normalizes a timelike vector onto the upper hyperboloid sheet.
+ */
 export function lorentzNormalizeTimelike(vector: Vector): Vector {
   const normSquared = lorentzDot(vector, vector);
   if (normSquared >= 0) {
@@ -39,12 +44,14 @@ export function lorentzNormalizeTimelike(vector: Vector): Vector {
   const scale = 1 / Math.sqrt(-normSquared);
   const normalized = vector.map((coordinate) => coordinate * scale);
 
-  // We use the upper sheet of the hyperboloid model: <x,x>_J = -1 and x0 > 0.
   return normalized[0] >= 0
     ? normalized
     : normalized.map((coordinate) => -coordinate);
 }
 
+/**
+ * Reflects a point across the hyperplane with spacelike normal n.
+ */
 export function reflectInSpacelikeNormal(
   point: Vector,
   normal: Vector,
@@ -68,6 +75,9 @@ export function reflectInSpacelikeNormal(
   return point.map((coordinate, index) => coordinate - factor * normal[index]);
 }
 
+/**
+ * Builds the column-vector matrix for x -> x - 2<x,n>_J n/<n,n>_J.
+ */
 export function reflectionMatrixFromNormal(normal: Vector): Matrix {
   const normalNorm = lorentzDot(normal, normal);
   if (normalNorm <= 0) {

@@ -3,9 +3,11 @@ import {
   Download,
   FileJson,
   FileUp,
+  FolderOpen,
   Home,
   ImageDown,
   Package,
+  Save,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Panel } from "../components/Panel";
@@ -45,6 +47,17 @@ import {
   type SceneNode,
   type SceneRenderStats,
 } from "../render/SceneView";
+import {
+  createDesktopBridge,
+  readStoredRecentSessions,
+  writeStoredRecentSessions,
+  type DesktopBridgeResult,
+  type DesktopBridgeStatus,
+  type DesktopExportRequest,
+  type DesktopJobRecord,
+  type DesktopMenuCommand,
+  type ExternalToolStatus,
+} from "../desktop";
 import type {
   CoxeterSystemInput,
   DavisHigherCell,
@@ -149,14 +162,30 @@ import {
 } from "./researchUi";
 import { importRepairSuggestions } from "./importRepair";
 import {
+  createProjectSessionSnapshot,
   createProjectSession,
   createProjectSessionExport,
+  hasProjectSessionChanges,
+  importProjectSession,
+  upsertRecentProjectSession,
+  type ProjectSession,
+  type ProjectSessionRecentFile,
+  type ProjectSessionSnapshot,
 } from "./projectSession";
+import {
+  countCertificationBlockedEntries,
+  filterTumarkinEightFacetCatalogue,
+  tumarkinEightFacetCatalogue,
+  tumarkinEightFacetSourceRef,
+  type EightFacetCatalogueFilter,
+} from "../catalogue/eightFacet5d";
 
 import A2 from "../examples/A2.json";
 import A3 from "../examples/A3.json";
 import compact5CubeGamma1 from "../examples/compact_5_cube_gamma1.json";
+import compact5PolytopeP1DoubleMakarov from "../examples/compact_5_polytope_p1_double_makarov.json";
 import compact5PrismMakarov from "../examples/compact_5_prism_makarov.json";
+import compact5PrismMakarovP2 from "../examples/compact_5_prism_makarov_p2.json";
 import hyperbolicToyRank2 from "../examples/hyperbolic_toy_rank2.json";
 import I2_5 from "../examples/I2_5.json";
 import I2_5IdentityQuotient from "../examples/I2_5_identity_quotient.json";
@@ -234,7 +263,9 @@ const graphPresets = {
 const generationDebounceMs = 120;
 const geometricDisplayScale = 12;
 type GraphPresetId = keyof typeof graphPresets;
+type ColorScheme = "light" | "dark";
 const viewPresetStorageKey = "coxeter-viewer:view-preset";
+const colorSchemeStorageKey = "coxeter-viewer:color-scheme";
 
 const bundledExamples: ExampleRecord[] = [
   { id: "I2_5", label: "I2(5)", input: parseCoxeterSystemInput(I2_5) },
@@ -252,8 +283,18 @@ const bundledExamples: ExampleRecord[] = [
   },
   {
     id: "compact_5_prism_makarov",
-    label: "Compact 5-prism Makarov",
+    label: "Compact 5-prism P0 Makarov",
     input: parseCoxeterSystemInput(compact5PrismMakarov),
+  },
+  {
+    id: "compact_5_polytope_p1_double_makarov",
+    label: "Compact 5-polytope P1 double",
+    input: parseCoxeterSystemInput(compact5PolytopeP1DoubleMakarov),
+  },
+  {
+    id: "compact_5_prism_makarov_p2",
+    label: "Compact 5-prism P2 Makarov",
+    input: parseCoxeterSystemInput(compact5PrismMakarovP2),
   },
   {
     id: "compact_5_cube_gamma1",
@@ -319,6 +360,9 @@ function sceneNumber(value: number | undefined): string {
   return Number.isFinite(value) ? Number(value).toFixed(4) : "";
 }
 
+// SceneView treats this value as the boundary between topology rebuilds and
+// cheap appearance updates. Include only data that changes object identity,
+// incidence, visibility, or positions; labels and colors belong elsewhere.
 function sceneStructureVersion(
   nodes: SceneNode[],
   edges: SceneEdge[],
@@ -406,6 +450,7 @@ const firstPaintBall: GeneratedCayleyBall = {
 };
 
 export function App() {
+  const desktopBridge = useMemo(() => createDesktopBridge(), []);
   const initialViewPreset = readStoredViewPreset() ?? "global";
   const [exampleId, setExampleId] = useState(bundledExamples[0].id);
   const [importedExample, setImportedExample] = useState<ExampleRecord | null>(
@@ -417,6 +462,19 @@ export function App() {
   const [radius, setRadius] = useState(5);
   const [graphPresetId, setGraphPresetId] = useState<GraphPresetId>("small");
   const [uiMode, setUiMode] = useState<UiMode>("research");
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(
+    () => readStoredColorScheme() ?? "light",
+  );
+  const [viewerOnly, setViewerOnly] = useState(false);
+  const [sceneLayoutSignal, setSceneLayoutSignal] = useState(0);
+  const sidebarRef = useRef<HTMLElement | null>(null);
+  const rightRailRef = useRef<HTMLElement | null>(null);
+  const viewerOnlyScrollSnapshotRef = useRef({
+    sidebarTop: 0,
+    rightRailTop: 0,
+    windowX: 0,
+    windowY: 0,
+  });
   const [viewComparisonMode, setViewComparisonMode] =
     useState<ViewComparisonMode>("single");
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -497,10 +555,26 @@ export function App() {
     string | null
   >(null);
   const [sceneStats, setSceneStats] = useState<SceneRenderStats | null>(null);
+  const [desktopStatus, setDesktopStatus] =
+    useState<DesktopBridgeStatus | null>(null);
+  const [desktopMessage, setDesktopMessage] = useState<string | null>(null);
+  const [desktopTools, setDesktopTools] = useState<ExternalToolStatus[]>([]);
+  const [desktopJobs, setDesktopJobs] = useState<DesktopJobRecord[]>([]);
+  const [recentSessions, setRecentSessions] = useState<
+    ProjectSessionRecentFile[]
+  >(() => readStoredRecentSessions());
   const captureScenePngRef = useRef<(() => Promise<string>) | undefined>(
     undefined,
   );
+  const desktopMenuCommandHandlerRef = useRef<
+    (command: DesktopMenuCommand) => Promise<void>
+  >(async () => undefined);
+  const initialSessionBaselineRef = useRef(false);
   const [showAdvancedPanels, setShowAdvancedPanels] = useState(false);
+  const [eightFacetCatalogueOpen, setEightFacetCatalogueOpen] = useState(false);
+  const [eightFacetCatalogueQuery, setEightFacetCatalogueQuery] = useState("");
+  const [eightFacetCatalogueFilter, setEightFacetCatalogueFilter] =
+    useState<EightFacetCatalogueFilter>("all");
   const [yGammaMainView, setYGammaMainView] =
     useState<YGammaMainView>("complex");
   const [yGammaShowAllFaces, setYGammaShowAllFaces] = useState(false);
@@ -533,6 +607,101 @@ export function App() {
 
   useEffect(() => {
     let cancelled = false;
+    void desktopBridge.getStatus().then((status) => {
+      if (!cancelled) {
+        setDesktopStatus(status);
+        if (status.message) {
+          setDesktopMessage(status.message);
+        }
+      }
+    });
+    void desktopBridge.detectExternalTools().then((tools) => {
+      if (!cancelled) {
+        setDesktopTools(tools);
+      }
+    });
+    void desktopBridge.listDesktopJobs().then((jobs) => {
+      if (!cancelled) {
+        setDesktopJobs(jobs);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [desktopBridge]);
+
+  useEffect(() => {
+    writeStoredRecentSessions(recentSessions);
+  }, [recentSessions]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = colorScheme;
+    window.localStorage?.setItem(colorSchemeStorageKey, colorScheme);
+  }, [colorScheme]);
+
+  // CSS grid changes, fullscreen transitions, and desktop WebView resizes can
+  // settle over more than one frame. Bumping the layout version at staggered
+  // times lets Three.js remeasure the canvas without returning to a RAF loop.
+  const scheduleSceneLayoutRefresh = useCallback(() => {
+    const bump = () => setSceneLayoutSignal((value) => value + 1);
+    window.requestAnimationFrame(() => window.requestAnimationFrame(bump));
+    window.setTimeout(bump, 80);
+    window.setTimeout(bump, 240);
+  }, []);
+
+  useEffect(() => {
+    scheduleSceneLayoutRefresh();
+  }, [scheduleSceneLayoutRefresh, viewerOnly]);
+
+  // Viewer-only mode removes the side rails from layout. Preserve their scroll
+  // positions so returning to the full cockpit does not feel like navigation.
+  const captureViewerOnlyScrollState = useCallback(() => {
+    viewerOnlyScrollSnapshotRef.current = {
+      sidebarTop: sidebarRef.current?.scrollTop ?? 0,
+      rightRailTop: rightRailRef.current?.scrollTop ?? 0,
+      windowX: window.scrollX,
+      windowY: window.scrollY,
+    };
+  }, []);
+
+  const restoreViewerOnlyScrollState = useCallback(() => {
+    const snapshot = viewerOnlyScrollSnapshotRef.current;
+    const restore = () => {
+      if (sidebarRef.current) {
+        sidebarRef.current.scrollTop = snapshot.sidebarTop;
+      }
+      if (rightRailRef.current) {
+        rightRailRef.current.scrollTop = snapshot.rightRailTop;
+      }
+      window.scrollTo(snapshot.windowX, snapshot.windowY);
+    };
+    window.requestAnimationFrame(() => window.requestAnimationFrame(restore));
+    window.setTimeout(restore, 80);
+    window.setTimeout(restore, 240);
+    window.setTimeout(restore, 500);
+  }, []);
+
+  const setViewerOnlyMode = useCallback(
+    (nextValue: boolean | ((current: boolean) => boolean)) => {
+      setViewerOnly((current) => {
+        const resolved =
+          typeof nextValue === "function" ? nextValue(current) : nextValue;
+        if (resolved === current) {
+          return current;
+        }
+        if (resolved) {
+          captureViewerOnlyScrollState();
+        } else {
+          restoreViewerOnlyScrollState();
+        }
+        return resolved;
+      });
+    },
+    [captureViewerOnlyScrollState, restoreViewerOnlyScrollState],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
     void readNotebookBundles().then((bundles) => {
       if (!cancelled && bundles.length > 0) {
         setSavedExperiments(bundles.slice(0, 24));
@@ -548,6 +717,14 @@ export function App() {
     () =>
       importedExample ? [...bundledExamples, importedExample] : bundledExamples,
     [importedExample],
+  );
+  const visibleEightFacetCatalogue = useMemo(
+    () =>
+      filterTumarkinEightFacetCatalogue({
+        query: eightFacetCatalogueQuery,
+        filter: eightFacetCatalogueFilter,
+      }),
+    [eightFacetCatalogueFilter, eightFacetCatalogueQuery],
   );
   const selectedExample =
     examples.find((example) => example.id === exampleId) ?? examples[0];
@@ -1107,6 +1284,9 @@ export function App() {
         : activeGeneratorPairKey
           ? "active-pair"
           : "one-skeleton";
+  const yGammaIncludeRankThreeCells =
+    showHigherCells &&
+    (yGammaRankThreeFocusEnabled || yGammaFocusPreset !== "one-relation");
   const effectiveYGammaRankThreeFocus = useMemo(
     () =>
       yGammaRankThreeFocusEnabled && yGammaRankThreeFocus
@@ -1122,7 +1302,7 @@ export function App() {
     () => ({
       activeGeneratorPairKey,
       faceMode: yGammaFaceMode,
-      includeRankThreeCells: showHigherCells,
+      includeRankThreeCells: yGammaIncludeRankThreeCells,
       rankThreeFocus: effectiveYGammaRankThreeFocus,
       focusGenerator: yGammaEffectiveFocusGenerator,
       relationOrderFilter: yGammaRelationOrderFilter,
@@ -1131,9 +1311,9 @@ export function App() {
     [
       activeGeneratorPairKey,
       effectiveYGammaRankThreeFocus,
-      showHigherCells,
       yGammaEffectiveFocusGenerator,
       yGammaFaceMode,
+      yGammaIncludeRankThreeCells,
       yGammaPeelMode,
       yGammaRelationOrderFilter,
     ],
@@ -1439,17 +1619,11 @@ export function App() {
       return undefined;
     }
 
-    const bookmark = yGammaCameraBookmark;
-    const offset: [number, number, number] =
-      bookmark === "front"
-        ? [0, -15, 4.5]
-        : bookmark === "top"
-          ? [0.2, -0.2, 17]
-          : bookmark === "square-family"
-            ? [6, 4, 13]
-            : bookmark === "hexagon-family"
-              ? [7, -12, 7]
-              : [10, -12, 8];
+    const offset = yGammaCameraOffsetForFocus(
+      yGammaCameraBookmark,
+      focusCells,
+      positionsByNodeId,
+    );
     return { target, offset };
   }, [
     activeGeneratorPairKey,
@@ -1629,6 +1803,8 @@ export function App() {
       ),
     [activeSceneCells, activeSceneEdges, activeSceneNodes],
   );
+  // Appearance changes can reuse meshes: selected ids, label budgets, colors,
+  // opacity, and camera-facing helpers should not invalidate topology buffers.
   const activeSceneAppearanceVersion = useMemo(
     () =>
       hashVersionParts([
@@ -1655,6 +1831,7 @@ export function App() {
         `semantic:${showingYGammaComplex}`,
         `reference:${geometricReferenceBallVisible}`,
         `reference-radius:${geometricDisplayScale}`,
+        `theme:${colorScheme}`,
         `camera:${showingYGammaComplex ? "global" : graphView}`,
         `max-node-labels:${showingYGammaComplex ? 80 : effectiveMaxNodeLabels}`,
         `max-edge-labels:${showingYGammaComplex ? 80 : effectiveMaxEdgeLabels}`,
@@ -1668,6 +1845,7 @@ export function App() {
       bringFocusedCellsForward,
       cellOpacity,
       cellRenderMode,
+      colorScheme,
       effectiveMaxEdgeLabels,
       effectiveMaxNodeLabels,
       geometricReferenceBallVisible,
@@ -1952,6 +2130,159 @@ export function App() {
       }),
     [effectiveMode, system, topologyInspectorSubject],
   );
+
+  const currentProjectSession = useMemo(
+    () =>
+      createProjectSession({
+        project: {
+          label: `${activeDataset.label} session`,
+          rootPathHint: desktopStatus?.workspace.rootPathHint,
+        },
+        workspace: desktopStatus?.workspace,
+        dataset: {
+          sourceKind:
+            activeDataset.kind === "quotient-complex"
+              ? "quotient-complex"
+              : activeDataset.kind === "generated-graph"
+                ? "generated-ball"
+                : "example",
+          activeDatasetId: activeDataset.id,
+          activeExampleId: selectedExample.id,
+        },
+        generation: {
+          radius,
+          backend:
+            backendId === "sageExportBackend" || backendId === "gapKbmagBackend"
+              ? backendId
+              : "browserApproxBackend",
+          maxRadius: graphPreset.maxRadius,
+          maxNodes: graphPreset.maxNodes,
+          maxEdges: graphPreset.maxEdges,
+        },
+        view: {
+          mode: activeIsYGammaBaseComplex
+            ? "y-gamma"
+            : graphView === "on-graph"
+              ? "local-topology"
+              : effectiveMode === "geometric"
+                ? "geometric-projection"
+                : "combinatorial-shell",
+          labelScope:
+            labelScope === "off"
+              ? "none"
+              : labelScope === "budgeted"
+                ? "all"
+                : labelScope,
+          selectedNodeId: selectedNode?.id,
+          selectedCellId,
+          activeGeneratorPairKey,
+          showRankTwoCells: showCells,
+          showHigherCells,
+          showNodeLabels,
+          showEdgeLabels,
+        },
+        files: {
+          recent: recentSessions,
+        },
+        experiments: {
+          activeBundleId: savedExperiments[0]?.id,
+          bundleIds: savedExperiments.map((bundle) => bundle.id),
+        },
+        desktop: {
+          preferredRuntime:
+            desktopStatus?.runtime === "tauri" ? "tauri" : "web",
+        },
+        warnings,
+        notes: annotations.map((annotation) => annotation.body),
+      }),
+    [
+      activeDataset.id,
+      activeDataset.kind,
+      activeDataset.label,
+      activeGeneratorPairKey,
+      activeIsYGammaBaseComplex,
+      annotations,
+      backendId,
+      desktopStatus?.runtime,
+      desktopStatus?.workspace,
+      effectiveMode,
+      graphPreset.maxEdges,
+      graphPreset.maxNodes,
+      graphPreset.maxRadius,
+      graphView,
+      labelScope,
+      radius,
+      recentSessions,
+      savedExperiments,
+      selectedCellId,
+      selectedExample.id,
+      selectedNode?.id,
+      showCells,
+      showEdgeLabels,
+      showHigherCells,
+      showNodeLabels,
+      warnings,
+    ],
+  );
+  const currentSessionSnapshot = useMemo(
+    () => createProjectSessionSnapshot(currentProjectSession),
+    [currentProjectSession],
+  );
+  const [savedSessionSnapshot, setSavedSessionSnapshot] =
+    useState<ProjectSessionSnapshot>(() => currentSessionSnapshot);
+  const [sessionBaselineReady, setSessionBaselineReady] = useState(false);
+  const sessionDirty =
+    sessionBaselineReady &&
+    hasProjectSessionChanges(savedSessionSnapshot, currentSessionSnapshot);
+
+  useEffect(() => {
+    if (
+      initialSessionBaselineRef.current ||
+      desktopStatus === null ||
+      generationPending ||
+      workerGeneration.pending ||
+      yGammaSceneState.pending
+    ) {
+      return;
+    }
+    initialSessionBaselineRef.current = true;
+    setSavedSessionSnapshot(currentSessionSnapshot);
+    setSessionBaselineReady(true);
+  }, [
+    currentSessionSnapshot,
+    desktopStatus,
+    generationPending,
+    workerGeneration.pending,
+    yGammaSceneState.pending,
+  ]);
+
+  useEffect(() => {
+    if (!sessionDirty) {
+      return;
+    }
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [sessionDirty]);
+
+  const confirmSessionDiscard = useCallback(
+    async (reason: string) => {
+      const result = await desktopBridge.confirmDiscardUnsavedChanges({
+        isDirty: sessionDirty,
+        reason,
+        sessionLabel: activeDataset.label,
+      });
+      if (result.message) {
+        setDesktopMessage(result.message);
+      }
+      return result.confirmed;
+    },
+    [activeDataset.label, desktopBridge, sessionDirty],
+  );
+
   useEffect(() => {
     if (!denseExample || denseAutoAppliedIds.current.has(activeDataset.id)) {
       return;
@@ -1963,7 +2294,10 @@ export function App() {
     return () => window.clearTimeout(timeoutId);
   }, [activeDataset.id, applyViewPreset, denseExample]);
 
-  const handleExampleChange = (nextId: string) => {
+  const handleExampleChange = async (nextId: string) => {
+    if (nextId === selectedExample.id) {
+      return;
+    }
     setExampleId(nextId);
     setImportedDataset(null);
     setImportError(null);
@@ -1979,6 +2313,42 @@ export function App() {
     setYGammaPeelMode("same-rank-three");
     setYGammaCameraBookmark("rank-three-cell");
     setHoveredCellId(undefined);
+  };
+
+  const handleLoadEightFacetEntry = async (
+    entry: (typeof tumarkinEightFacetCatalogue)[number],
+  ) => {
+    if (!entry.renderable || !entry.exampleFile) {
+      setImportError(
+        `${entry.label} is source-located but not available as a certified bundled example.`,
+      );
+      return;
+    }
+
+    try {
+      const response = await fetch(`/examples/${entry.exampleFile}`);
+      if (!response.ok) {
+        throw new Error(`Could not load ${entry.exampleFile}.`);
+      }
+      const input = parseCoxeterSystemInput(await response.json());
+      setImportedExample({
+        id: entry.id,
+        label: input.name,
+        input,
+      });
+      setImportedDataset(null);
+      setExampleId(entry.id);
+      setImportError(null);
+      resetSelectionForImport();
+    } catch (error) {
+      if (error instanceof CoxeterValidationError) {
+        setImportError(error.errors.join(" "));
+      } else if (error instanceof Error) {
+        setImportError(error.message);
+      } else {
+        setImportError(String(error));
+      }
+    }
   };
 
   const resetSelectionForImport = () => {
@@ -2195,6 +2565,9 @@ export function App() {
     if (!file) {
       return;
     }
+    if (!(await confirmSessionDiscard("import another Coxeter system"))) {
+      return;
+    }
 
     try {
       const parsed = JSON.parse(await file.text()) as unknown;
@@ -2218,6 +2591,9 @@ export function App() {
   const handleImportGeneratedFile = async (file: File | undefined) => {
     setImportError(null);
     if (!file) {
+      return;
+    }
+    if (!(await confirmSessionDiscard("import another generated graph"))) {
       return;
     }
 
@@ -2247,6 +2623,9 @@ export function App() {
     if (!file) {
       return;
     }
+    if (!(await confirmSessionDiscard("import another quotient"))) {
+      return;
+    }
 
     try {
       const parsed = JSON.parse(await file.text()) as unknown;
@@ -2271,6 +2650,178 @@ export function App() {
     }
   };
 
+  const requestNativeExport = useCallback(
+    async (request: DesktopExportRequest): Promise<DesktopBridgeResult> => {
+      const result = await desktopBridge.exportFile(request);
+      if (result.fallbackDownload || !result.ok) {
+        if (request.contentEncoding === "data-url") {
+          downloadDataUrl(request.fileName, request.contents);
+        } else {
+          downloadText(request.fileName, request.contents);
+        }
+      }
+      setDesktopMessage(
+        result.ok
+          ? `Saved ${request.fileName}${result.path ? ` to ${result.path}` : ""}.`
+          : (result.message ?? `Downloaded ${request.fileName}.`),
+      );
+      return result;
+    },
+    [desktopBridge],
+  );
+
+  const applyProjectSessionState = useCallback(
+    (session: ProjectSession) => {
+      const exampleIdFromSession = session.dataset.activeExampleId;
+      if (
+        exampleIdFromSession &&
+        examples.some((example) => example.id === exampleIdFromSession)
+      ) {
+        setExampleId(exampleIdFromSession);
+        setImportedDataset(null);
+      }
+      setRadius(
+        clampInteger(session.generation.radius, 0, graphPreset.maxRadius),
+      );
+      setBackendId(session.generation.backend);
+      setMode(
+        session.view.mode === "geometric-projection" ? "geometric" : "shell",
+      );
+      setGraphView(
+        session.view.mode === "local-topology" ? "on-graph" : "global",
+      );
+      setLabelScope(
+        session.view.labelScope === "none"
+          ? "off"
+          : session.view.labelScope === "all"
+            ? "budgeted"
+            : "focused",
+      );
+      setSelectedNodeId(session.view.selectedNodeId ?? "e");
+      setSelectedCellId(session.view.selectedCellId);
+      setActiveGeneratorPairKey(session.view.activeGeneratorPairKey);
+      setShowCells(session.view.showRankTwoCells);
+      setShowHigherCells(session.view.showHigherCells);
+      setShowNodeLabels(session.view.showNodeLabels);
+      setShowEdgeLabels(session.view.showEdgeLabels);
+      setRecentSessions(session.files.recent);
+      setSavedSessionSnapshot(createProjectSessionSnapshot(session));
+      setSessionBaselineReady(true);
+      setDesktopMessage(`Opened ${session.project.label}.`);
+    },
+    [examples, graphPreset.maxRadius],
+  );
+
+  const openNativeProjectSession = useCallback(async () => {
+    if (!(await confirmSessionDiscard("open another session"))) {
+      return;
+    }
+    const result = await desktopBridge.openProjectSession();
+    if (!result.ok || !result.contents) {
+      setDesktopMessage(result.message ?? "No project session was opened.");
+      return;
+    }
+    const parsed = importProjectSession(
+      result.contents,
+      result.path ?? ".coxeter-session.json",
+    );
+    if (!parsed.ok) {
+      setDesktopMessage(parsed.errors.map((issue) => issue.message).join(" "));
+      return;
+    }
+    applyProjectSessionState(parsed.value);
+  }, [applyProjectSessionState, confirmSessionDiscard, desktopBridge]);
+
+  const chooseNativeWorkspace = useCallback(async () => {
+    const status = await desktopBridge.pickWorkspace();
+    setDesktopStatus(status);
+    setDesktopMessage(
+      status.message ?? `Workspace: ${status.workspace.label}.`,
+    );
+  }, [desktopBridge]);
+
+  const refreshDesktopTools = useCallback(async () => {
+    const tools = await desktopBridge.detectExternalTools();
+    setDesktopTools(tools);
+    setDesktopMessage(
+      tools.length > 0
+        ? `${tools.filter((tool) => tool.found).length}/${tools.length} optional tools detected.`
+        : "External tool detection is available in the desktop app.",
+    );
+  }, [desktopBridge]);
+
+  const startDesktopJob = useCallback(
+    async (
+      kind:
+        | "detectTools"
+        | "collectDiagnostics"
+        | "validateWorkspace"
+        | "backendComparison",
+    ) => {
+      const job = await desktopBridge.startDesktopJob({
+        kind,
+        workspacePath: desktopStatus?.workspace.rootPathHint,
+      });
+      setDesktopJobs((jobs) => [
+        job,
+        ...jobs.filter((item) => item.id !== job.id),
+      ]);
+      setDesktopMessage(`Desktop job ${job.id}: ${job.message}`);
+    },
+    [desktopBridge, desktopStatus?.workspace.rootPathHint],
+  );
+
+  const revealWorkspaceArtifacts = useCallback(async () => {
+    const path = desktopStatus?.workspace.rootPathHint;
+    if (!path) {
+      setDesktopMessage(
+        "Choose a research workspace before opening artifacts.",
+      );
+      return;
+    }
+    const result = await desktopBridge.revealPath(path);
+    setDesktopMessage(
+      result.message ??
+        (result.ok
+          ? "Opened workspace folder."
+          : "Could not open workspace folder."),
+    );
+  }, [desktopBridge, desktopStatus?.workspace.rootPathHint]);
+
+  const exportDesktopDiagnostics = useCallback(async () => {
+    const result = await desktopBridge.exportDiagnosticBundle(
+      desktopStatus?.workspace.rootPathHint,
+    );
+    if (!result.ok && result.fallbackDownload) {
+      downloadText(
+        "coxeter-viewer-diagnostics.json",
+        JSON.stringify(
+          {
+            schemaVersion: 1,
+            kind: "coxeter-viewer-browser-diagnostics",
+            createdAt: new Date().toISOString(),
+            runtime: desktopStatus?.runtime ?? "browser",
+            sceneStats,
+            warnings,
+          },
+          null,
+          2,
+        ),
+      );
+    }
+    setDesktopMessage(
+      result.ok
+        ? `Diagnostic bundle written${result.path ? ` to ${result.path}` : ""}.`
+        : (result.message ?? "Downloaded browser diagnostic bundle."),
+    );
+  }, [
+    desktopBridge,
+    desktopStatus?.runtime,
+    desktopStatus?.workspace.rootPathHint,
+    sceneStats,
+    warnings,
+  ]);
+
   const exportQuotientBuildRequest = () => {
     setQuotientBuilderError(null);
     const result = createQuotientBuildInput({
@@ -2290,10 +2841,12 @@ export function App() {
       setQuotientBuilderError(result.errors.join(" "));
       return;
     }
-    downloadText(
-      `${system.name.replace(/\W+/g, "_")}_quotient-build-request.json`,
-      JSON.stringify(result.request, null, 2),
-    );
+    void requestNativeExport({
+      kind: "quotient-build-request",
+      fileName: `${system.name.replace(/\W+/g, "_")}_quotient-build-request.json`,
+      contents: JSON.stringify(result.request, null, 2),
+      mediaType: "application/json",
+    });
   };
 
   const openBaseOrbicomplex = () => {
@@ -2352,6 +2905,7 @@ export function App() {
       setYGammaCameraBookmark("front");
       setYGammaTopologyMode(true);
       setHoveredCellId(undefined);
+      setShowHigherCells(false);
     }
     setActiveGeneratorPairKey(key);
     setGraphView("on-graph");
@@ -2643,7 +3197,7 @@ export function App() {
       return;
     }
     if (entryId === "compact:5-cube") {
-      handleExampleChange("compact_5_cube_gamma1");
+      void handleExampleChange("compact_5_cube_gamma1");
       setActivePreset("local-chamber");
       setGraphView("on-graph");
       setGraphPresetId("research");
@@ -2651,11 +3205,41 @@ export function App() {
       return;
     }
     if (entryId === "compact:5-prism") {
-      handleExampleChange("compact_5_prism_makarov");
+      void handleExampleChange("compact_5_prism_makarov");
       setActivePreset("local-chamber");
       setGraphView("on-graph");
       setGraphPresetId("research");
       setLabelScope("focused");
+      return;
+    }
+    if (entryId === "compact:5-polytope-p1") {
+      void handleExampleChange("compact_5_polytope_p1_double_makarov");
+      setActivePreset("local-chamber");
+      setGraphView("on-graph");
+      setGraphPresetId("research");
+      setLabelScope("focused");
+      return;
+    }
+    if (entryId === "compact:5-prism-p2") {
+      void handleExampleChange("compact_5_prism_makarov_p2");
+      setActivePreset("local-chamber");
+      setGraphView("on-graph");
+      setGraphPresetId("research");
+      setLabelScope("focused");
+      return;
+    }
+    if (entryId.startsWith("catalogue:8facet:")) {
+      const requestedIndex = entryId.split(":").at(-1);
+      setUiMode("research");
+      setShowAdvancedPanels(true);
+      setEightFacetCatalogueOpen(true);
+      setEightFacetCatalogueFilter("all");
+      setEightFacetCatalogueQuery(
+        requestedIndex && requestedIndex !== "all" ? requestedIndex : "",
+      );
+      setDesktopMessage(
+        "Tumarkin Table 4.10 entries are certified examples. Use Load example in the catalogue to open one without cluttering the main gallery.",
+      );
     }
   };
 
@@ -2720,11 +3304,13 @@ export function App() {
     if (!ball) {
       return;
     }
-    downloadText(
-      `${system.name.replace(/\W+/g, "_")}_radius_${ball.metadata.radius}.json`,
-      JSON.stringify(ball, null, 2),
-    );
-  }, [ball, system.name]);
+    void requestNativeExport({
+      kind: "graph-json",
+      fileName: `${system.name.replace(/\W+/g, "_")}_radius_${ball.metadata.radius}.json`,
+      contents: JSON.stringify(ball, null, 2),
+      mediaType: "application/json",
+    });
+  }, [ball, requestNativeExport, system.name]);
 
   const exportLocalNeighborhood = useCallback(() => {
     const payload = buildLocalNeighborhoodExport({
@@ -2752,10 +3338,12 @@ export function App() {
       activeGeneratorPairKey,
       warnings,
     });
-    downloadText(
-      `${system.name.replace(/\W+/g, "_")}_${selectedNode?.id ?? "none"}_local.json`,
-      JSON.stringify(payload, null, 2),
-    );
+    void requestNativeExport({
+      kind: "local-neighborhood",
+      fileName: `${system.name.replace(/\W+/g, "_")}_${selectedNode?.id ?? "none"}_local.json`,
+      contents: JSON.stringify(payload, null, 2),
+      mediaType: "application/json",
+    });
   }, [
     activeDataset.id,
     activeDataset.label,
@@ -2774,6 +3362,7 @@ export function App() {
     occlusionMode,
     projection,
     relationWalkMode,
+    requestNativeExport,
     selectedNode,
     system,
     viewEdges,
@@ -2805,11 +3394,14 @@ export function App() {
     if (!png) {
       return;
     }
-    const link = document.createElement("a");
-    link.download = `${system.name.replace(/\W+/g, "_")}_scene.png`;
-    link.href = png;
-    link.click();
-  }, [captureScenePng, system.name]);
+    await requestNativeExport({
+      kind: "screenshot",
+      fileName: `${system.name.replace(/\W+/g, "_")}_scene.png`,
+      contents: png,
+      mediaType: "image/png",
+      contentEncoding: "data-url",
+    });
+  }, [captureScenePng, requestNativeExport, system.name]);
 
   const exportViewBundle = useCallback(async () => {
     await exportScreenshot();
@@ -2856,10 +3448,12 @@ export function App() {
       sceneStats,
       warnings: [...new Set(warnings)].sort(),
     };
-    downloadText(
-      `${system.name.replace(/\W+/g, "_")}_${selectedNode?.id ?? "none"}.view.json`,
-      JSON.stringify(payload, null, 2),
-    );
+    void requestNativeExport({
+      kind: "view-bundle",
+      fileName: `${system.name.replace(/\W+/g, "_")}_${selectedNode?.id ?? "none"}.view.json`,
+      contents: JSON.stringify(payload, null, 2),
+      mediaType: "application/json",
+    });
   }, [
     activeDataset.id,
     activeDataset.label,
@@ -2881,6 +3475,7 @@ export function App() {
     occlusionMode,
     projection,
     relationWalkMode,
+    requestNativeExport,
     sceneStats,
     selectedNode,
     system,
@@ -2980,10 +3575,12 @@ export function App() {
         ? { mimeType: "image/png" as const, dataUrl: screenshot }
         : undefined,
     };
-    downloadText(
-      `${system.name.replace(/\W+/g, "_")}_figure.coxeter-figure.json`,
-      JSON.stringify(payload, null, 2),
-    );
+    void requestNativeExport({
+      kind: "figure-bundle",
+      fileName: `${system.name.replace(/\W+/g, "_")}_figure.coxeter-figure.json`,
+      contents: JSON.stringify(payload, null, 2),
+      mediaType: "application/json",
+    });
   }, [
     activeDataset.id,
     activeDataset.label,
@@ -2992,6 +3589,7 @@ export function App() {
     annotations,
     cameraBookmarks,
     captureScenePng,
+    requestNativeExport,
     selectedCellId,
     selectedNode?.id,
     system.name,
@@ -3000,87 +3598,62 @@ export function App() {
     viewComparisonMode,
   ]);
 
-  const exportProjectSession = useCallback(() => {
-    const session = createProjectSession({
-      project: {
-        label: `${activeDataset.label} session`,
-      },
-      dataset: {
-        sourceKind:
-          activeDataset.kind === "quotient-complex"
-            ? "quotient-complex"
-            : activeDataset.kind === "generated-graph"
-              ? "generated-ball"
-              : "example",
-        activeDatasetId: activeDataset.id,
-        activeExampleId: selectedExample.id,
-      },
-      generation: {
-        radius,
-        backend:
-          backendId === "sageExportBackend" || backendId === "gapKbmagBackend"
-            ? backendId
-            : "browserApproxBackend",
-        maxRadius: graphPreset.maxRadius,
-        maxNodes: graphPreset.maxNodes,
-        maxEdges: graphPreset.maxEdges,
-      },
-      view: {
-        mode: activeIsYGammaBaseComplex
-          ? "y-gamma"
-          : graphView === "on-graph"
-            ? "local-topology"
-            : effectiveMode === "geometric"
-              ? "geometric-projection"
-              : "combinatorial-shell",
-        labelScope:
-          labelScope === "off"
-            ? "none"
-            : labelScope === "budgeted"
-              ? "all"
-              : labelScope,
-        selectedNodeId: selectedNode?.id,
-        selectedCellId,
-        activeGeneratorPairKey,
-        showRankTwoCells: showCells,
-        showHigherCells,
-        showNodeLabels,
-        showEdgeLabels,
-      },
-      experiments: {
-        activeBundleId: savedExperiments[0]?.id,
-        bundleIds: savedExperiments.map((bundle) => bundle.id),
-      },
-      warnings,
-      notes: annotations.map((annotation) => annotation.body),
+  const exportProjectSession = useCallback(async () => {
+    const exported = createProjectSessionExport(currentProjectSession);
+    const nativeResult = await desktopBridge.saveProjectSession(
+      currentProjectSession,
+    );
+    if (nativeResult.fallbackDownload || !nativeResult.ok) {
+      downloadText(exported.fileName, exported.contents);
+    }
+    const recent = upsertRecentProjectSession(recentSessions, {
+      id: `session:${nativeResult.path ?? exported.fileName}`,
+      label: currentProjectSession.project.label,
+      path: nativeResult.path,
+      lastOpenedAt: new Date().toISOString(),
     });
-    const exported = createProjectSessionExport(session);
-    downloadText(exported.fileName, exported.contents);
-  }, [
-    activeDataset.id,
-    activeDataset.kind,
-    activeDataset.label,
-    activeGeneratorPairKey,
-    activeIsYGammaBaseComplex,
-    annotations,
-    backendId,
-    effectiveMode,
-    graphPreset.maxEdges,
-    graphPreset.maxNodes,
-    graphPreset.maxRadius,
-    graphView,
-    labelScope,
-    radius,
-    savedExperiments,
-    selectedCellId,
-    selectedExample.id,
-    selectedNode?.id,
-    showCells,
-    showEdgeLabels,
-    showHigherCells,
-    showNodeLabels,
-    warnings,
-  ]);
+    const savedSession = {
+      ...currentProjectSession,
+      files: { recent },
+    };
+    setRecentSessions(recent);
+    setSavedSessionSnapshot(createProjectSessionSnapshot(savedSession));
+    setSessionBaselineReady(true);
+    setDesktopMessage(
+      nativeResult.ok
+        ? `Saved ${exported.fileName}${nativeResult.path ? ` to ${nativeResult.path}` : ""}.`
+        : (nativeResult.message ?? `Downloaded ${exported.fileName}.`),
+    );
+  }, [currentProjectSession, desktopBridge, recentSessions]);
+
+  const exportProjectSessionAs = useCallback(async () => {
+    const exported = createProjectSessionExport(currentProjectSession);
+    const nativeResult = await desktopBridge.saveProjectSession(
+      currentProjectSession,
+      { saveAs: true },
+    );
+    if (nativeResult.fallbackDownload || !nativeResult.ok) {
+      downloadText(exported.fileName, exported.contents);
+    }
+    if (nativeResult.ok) {
+      const recent = upsertRecentProjectSession(recentSessions, {
+        id: `session:${nativeResult.path ?? exported.fileName}`,
+        label: currentProjectSession.project.label,
+        path: nativeResult.path,
+        lastOpenedAt: new Date().toISOString(),
+      });
+      setRecentSessions(recent);
+      setSavedSessionSnapshot(
+        createProjectSessionSnapshot(currentProjectSession),
+      );
+      setSessionBaselineReady(true);
+    }
+    setDesktopMessage(
+      nativeResult.ok
+        ? `Saved ${exported.fileName}${nativeResult.path ? ` to ${nativeResult.path}` : ""}.`
+        : (nativeResult.message ?? `Downloaded ${exported.fileName}.`),
+    );
+  }, [currentProjectSession, desktopBridge, recentSessions]);
 
   const currentExperimentBundle = useCallback(
     (options: { screenshot?: string } = {}) => {
@@ -3259,15 +3832,160 @@ export function App() {
   const exportExperimentBundle = useCallback(async () => {
     const screenshot = await captureScenePng();
     const bundle = currentExperimentBundle({ screenshot });
-    downloadText(
-      `${system.name.replace(/\W+/g, "_")}_${selectedNode?.id ?? "none"}.coxeter-experiment.json`,
-      JSON.stringify(bundle, null, 2),
-    );
-  }, [captureScenePng, currentExperimentBundle, selectedNode?.id, system.name]);
+    await requestNativeExport({
+      kind: "experiment-bundle",
+      fileName: `${system.name.replace(/\W+/g, "_")}_${selectedNode?.id ?? "none"}.coxeter-experiment.json`,
+      contents: JSON.stringify(bundle, null, 2),
+      mediaType: "application/json",
+    });
+  }, [
+    captureScenePng,
+    currentExperimentBundle,
+    requestNativeExport,
+    selectedNode?.id,
+    system.name,
+  ]);
+
+  const handleDesktopMenuCommand = async (command: DesktopMenuCommand) => {
+    switch (command) {
+      case "new-session":
+        if (await confirmSessionDiscard("start a new session")) {
+          setExampleId(bundledExamples[0].id);
+          setImportedDataset(null);
+          setImportedExample(null);
+          setSelectedNodeId("e");
+          setRootNodeId("e");
+          setSelectedCellId(undefined);
+          setAnnotations([]);
+          setDesktopMessage("Started a new session.");
+        }
+        break;
+      case "open-session":
+        await openNativeProjectSession();
+        break;
+      case "save-session":
+        await exportProjectSession();
+        break;
+      case "save-session-as":
+        await exportProjectSessionAs();
+        break;
+      case "choose-workspace":
+        await chooseNativeWorkspace();
+        break;
+      case "reveal-workspace":
+        await revealWorkspaceArtifacts();
+        break;
+      case "export-graph":
+        exportGraph();
+        break;
+      case "export-screenshot":
+        await exportScreenshot();
+        break;
+      case "export-figure-bundle":
+        await exportFigureBundle();
+        break;
+      case "export-experiment-bundle":
+        await exportExperimentBundle();
+        break;
+      case "export-diagnostics":
+        await exportDesktopDiagnostics();
+        break;
+      case "check-tools":
+        await refreshDesktopTools();
+        await startDesktopJob("detectTools");
+        break;
+      case "show-logs":
+        setDesktopMessage(
+          "Use Export Diagnostic Bundle to collect local logs.",
+        );
+        break;
+      case "reset-view":
+        setResetSignal((value) => value + 1);
+        break;
+      case "teaching-mode":
+        setUiMode("teaching");
+        setShowAdvancedPanels(false);
+        break;
+      case "research-mode":
+        setUiMode("research");
+        break;
+      case "toggle-labels":
+        setShowNodeLabels((value) => !value);
+        setShowEdgeLabels((value) => !value);
+        break;
+      case "toggle-cells":
+        setShowCells((value) => !value);
+        break;
+      case "fullscreen":
+        {
+          const result = await desktopBridge.toggleFullscreen();
+          scheduleSceneLayoutRefresh();
+          if (result.message) {
+            setDesktopMessage(result.message);
+          }
+        }
+        break;
+      case "guide-hexagon":
+        startGuidedInspection("find-a-hexagon");
+        break;
+      case "guide-rank-three":
+        startGuidedInspection("understand-rank-three-cell");
+        break;
+      case "guide-y-gamma":
+        startGuidedInspection("inspect-ygamma");
+        break;
+      case "guide-quotient-game":
+        startGuidedInspection("quotient-game-experiment");
+        break;
+      case "lens-generator-star":
+        applyTopologyLens("generator-star");
+        break;
+      case "lens-edge-star":
+        applyTopologyLens("edge-star");
+        break;
+      case "lens-rank-k-family":
+        applyTopologyLens("rank-k-family");
+        break;
+      case "help-readme":
+        setDesktopMessage("README is bundled in the repository root.");
+        break;
+      case "help-walkthroughs":
+        setDesktopMessage(
+          "Walkthroughs are documented in docs/walkthroughs.md.",
+        );
+        break;
+      case "help-about":
+        setDesktopMessage("CoxeterViewer5D 0.1.0 desktop research viewer.");
+        break;
+    }
+  };
+  useEffect(() => {
+    desktopMenuCommandHandlerRef.current = handleDesktopMenuCommand;
+  });
+
+  useEffect(() => {
+    let cleanup: (() => void) | undefined;
+    let cancelled = false;
+    void desktopBridge
+      .onMenuCommand((command) => {
+        void desktopMenuCommandHandlerRef.current(command);
+      })
+      .then((unsubscribe) => {
+        if (cancelled) {
+          unsubscribe();
+        } else {
+          cleanup = unsubscribe;
+        }
+      });
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
+  }, [desktopBridge]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (isEditableTarget(event.target)) {
+      if (event.defaultPrevented || isEditableTarget(event.target)) {
         return;
       }
 
@@ -3300,6 +4018,14 @@ export function App() {
         case "V":
           setGraphView((value) => (value === "global" ? "on-graph" : "global"));
           break;
+        case "u":
+        case "U":
+          setViewerOnlyMode((value) => !value);
+          break;
+        case "t":
+        case "T":
+          setColorScheme((value) => (value === "dark" ? "light" : "dark"));
+          break;
         case "g":
         case "G":
           if (geometryAvailable) {
@@ -3323,11 +4049,20 @@ export function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [geometryAvailable, graphPreset.maxRadius, selectedNodeId]);
+  }, [
+    geometryAvailable,
+    graphPreset.maxRadius,
+    selectedNodeId,
+    scheduleSceneLayoutRefresh,
+    setViewerOnlyMode,
+  ]);
 
   return (
-    <main className="app-shell">
-      <aside className="sidebar" aria-label="Viewer controls">
+    <main
+      className={`app-shell${viewerOnly ? " viewer-only" : ""}`}
+      data-theme={colorScheme}
+    >
+      <aside ref={sidebarRef} className="sidebar" aria-label="Viewer controls">
         <Panel title="Input">
           <div className="segmented" role="group" aria-label="Interface mode">
             <button
@@ -3357,7 +4092,7 @@ export function App() {
             <select
               id="example-select"
               value={selectedExample.id}
-              onChange={(event) => handleExampleChange(event.target.value)}
+              onChange={(event) => void handleExampleChange(event.target.value)}
             >
               {examples.map((example) => (
                 <option key={example.id} value={example.id}>
@@ -3474,12 +4209,60 @@ export function App() {
               void handleImportQuotientFile(event.currentTarget.files?.[0])
             }
           />
+          <div className="button-row">
+            <button
+              type="button"
+              className="button"
+              onClick={chooseNativeWorkspace}
+            >
+              <FolderOpen size={16} aria-hidden="true" />
+              Workspace
+            </button>
+            <button
+              type="button"
+              className="button"
+              onClick={openNativeProjectSession}
+            >
+              <FolderOpen size={16} aria-hidden="true" />
+              Open session
+            </button>
+            <button
+              type="button"
+              className="button"
+              onClick={() => void exportProjectSession()}
+            >
+              <Save size={16} aria-hidden="true" />
+              Save session
+            </button>
+            <button
+              type="button"
+              className="button"
+              onClick={() => void revealWorkspaceArtifacts()}
+            >
+              <FolderOpen size={16} aria-hidden="true" />
+              Artifacts
+            </button>
+            <button
+              type="button"
+              className="button"
+              onClick={() => void refreshDesktopTools()}
+            >
+              Check tools
+            </button>
+            <button
+              type="button"
+              className="button"
+              onClick={() => void exportDesktopDiagnostics()}
+            >
+              Diagnostics
+            </button>
+          </div>
           <button
             type="button"
             className="button file-button"
             onClick={openBaseOrbicomplex}
           >
-            Open Y_Gamma complex
+            Open 3D Y_Gamma model
           </button>
           <details className="advanced-details">
             <summary>Quotient builder</summary>
@@ -3562,6 +4345,97 @@ export function App() {
               </button>
             ))}
           </div>
+          <details
+            className="catalogue-panel"
+            open={eightFacetCatalogueOpen}
+            onToggle={(event) =>
+              setEightFacetCatalogueOpen(event.currentTarget.open)
+            }
+          >
+            <summary>Example catalogue: 5D eight-facet cases</summary>
+            <p className="math-note">
+              Tumarkin lists 15 compact 5D Coxeter polytopes with 8 facets in{" "}
+              {tumarkinEightFacetSourceRef.locator}. These entries are
+              transcribed from the source EPS artwork, their dotted weights are
+              solved from the determinant equations, and each bundled JSON has a
+              passed rank/signature certificate.
+            </p>
+            <div className="field">
+              <label htmlFor="eight-facet-catalogue-search">
+                Search catalogue
+              </label>
+              <input
+                id="eight-facet-catalogue-search"
+                value={eightFacetCatalogueQuery}
+                onChange={(event) =>
+                  setEightFacetCatalogueQuery(event.target.value)
+                }
+                placeholder="G11411, 01, blocked, Table 4.10"
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="eight-facet-catalogue-filter">Filter</label>
+              <select
+                id="eight-facet-catalogue-filter"
+                value={eightFacetCatalogueFilter}
+                onChange={(event) =>
+                  setEightFacetCatalogueFilter(
+                    event.target.value as EightFacetCatalogueFilter,
+                  )
+                }
+              >
+                <option value="all">All 15 entries</option>
+                <option value="representative">
+                  Representative gallery entries
+                </option>
+                <option value="blocked">Uncertified or blocked</option>
+              </select>
+            </div>
+            <p className="math-note">
+              Showing {visibleEightFacetCatalogue.length}/
+              {tumarkinEightFacetCatalogue.length};{" "}
+              {countCertificationBlockedEntries()} still need transcription or
+              checker artifacts before certification.
+            </p>
+            <div
+              className="catalogue-list"
+              aria-label="Tumarkin eight-facet catalogue"
+            >
+              {visibleEightFacetCatalogue.map((entry) => (
+                <article key={entry.id} className="catalogue-entry">
+                  <div>
+                    <span className="small-label">
+                      {entry.galeDiagram} · #
+                      {entry.tableIndex.toString().padStart(2, "0")}
+                    </span>
+                    <strong>{entry.label}</strong>
+                  </div>
+                  <span className="status-pill">
+                    {entry.renderStatus.replace("-", " ")}
+                  </span>
+                  <span className="status-pill warning-pill">
+                    {entry.certificationStatus.replace(/-/g, " ")}
+                  </span>
+                  <p>{entry.sourceLocator}</p>
+                  <p className="math-note">
+                    {entry.renderable
+                      ? "Certified bundled Coxeter-system JSON is available."
+                      : `Certification needs: ${entry.requiredForCertification
+                          .slice(0, 2)
+                          .join(" ")}`}
+                  </p>
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    disabled={!entry.renderable}
+                    onClick={() => void handleLoadEightFacetEntry(entry)}
+                  >
+                    Load example
+                  </button>
+                </article>
+              ))}
+            </div>
+          </details>
         </Panel>
 
         <Panel title="Guided Inspection">
@@ -3627,7 +4501,7 @@ export function App() {
         )}
 
         {activeIsYGammaBaseComplex && yGammaAtlas ? (
-          <Panel title="Y_Gamma Reader">
+          <Panel title="Y_Gamma 3D Reader">
             <YGammaReaderPanel
               atlas={yGammaAtlas}
               focusPreset={yGammaFocusPreset}
@@ -4091,21 +4965,21 @@ export function App() {
               <div
                 className="segmented ygamma-view-switch"
                 role="group"
-                aria-label="Y_Gamma view"
+                aria-label="Y_Gamma display mode"
               >
                 <button
                   type="button"
                   aria-pressed={yGammaMainView === "complex"}
                   onClick={() => setYGammaMainView("complex")}
                 >
-                  Complex
+                  3D model
                 </button>
                 <button
                   type="button"
                   aria-pressed={yGammaMainView === "nerve"}
                   onClick={() => setYGammaMainView("nerve")}
                 >
-                  Nerve
+                  2D nerve schematic
                 </button>
               </div>
             ) : null}
@@ -4135,8 +5009,8 @@ export function App() {
                 }}
               >
                 {yGammaRankThreeFocusEnabled
-                  ? "Show atlas overview"
-                  : "3D m=2/m=3 cell"}
+                  ? "Exit 3D cell focus"
+                  : "Focus 3D m=2/m=3 cell"}
               </button>
             ) : null}
             {showingYGammaComplex &&
@@ -4169,6 +5043,24 @@ export function App() {
                 </button>
               </>
             ) : null}
+            <button
+              type="button"
+              className="button"
+              aria-pressed={colorScheme === "dark"}
+              onClick={() =>
+                setColorScheme((value) => (value === "dark" ? "light" : "dark"))
+              }
+            >
+              {colorScheme === "dark" ? "Light mode" : "Dark mode"}
+            </button>
+            <button
+              type="button"
+              className="button"
+              aria-pressed={viewerOnly}
+              onClick={() => setViewerOnlyMode((value) => !value)}
+            >
+              {viewerOnly ? "Show UI" : "Viewer only"}
+            </button>
             <button
               type="button"
               className="button"
@@ -4216,7 +5108,20 @@ export function App() {
             onShowComplex={() => setYGammaMainView("complex")}
           />
         ) : (
-          <div className="viewer-with-overlay">
+          <div
+            className={`viewer-with-overlay${
+              showingYGammaComplex && yGammaAtlas ? " has-ygamma-atlas" : ""
+            }`}
+          >
+            {viewerOnly ? (
+              <button
+                type="button"
+                className="viewer-ui-toggle"
+                onClick={() => setViewerOnlyMode(false)}
+              >
+                Show UI
+              </button>
+            ) : null}
             {showingYGammaComplex && yGammaAtlas ? (
               <YGammaMiniAtlasOverlay
                 atlas={yGammaAtlas}
@@ -4297,6 +5202,8 @@ export function App() {
               maxEdgeLabels={showingYGammaComplex ? 80 : effectiveMaxEdgeLabels}
               pickingEnabled={!showingYGammaComplex}
               workerGenerationMs={generation.generationMs}
+              colorScheme={colorScheme}
+              layoutVersion={sceneLayoutSignal}
               onCapturePngReady={handleCapturePngReady}
               onRenderStats={setSceneStats}
               onHoverCell={showingYGammaComplex ? setHoveredCellId : undefined}
@@ -4307,7 +5214,11 @@ export function App() {
         )}
       </section>
 
-      <aside className="right-rail" aria-label="Graph details">
+      <aside
+        ref={rightRailRef}
+        className="right-rail"
+        aria-label="Graph details"
+      >
         <Panel
           title="Inspector"
           actions={
@@ -4380,7 +5291,7 @@ export function App() {
                 className="icon-button"
                 aria-label="Export project session"
                 title="Export project session"
-                onClick={exportProjectSession}
+                onClick={() => void exportProjectSession()}
               >
                 <FileJson size={17} aria-hidden="true" />
               </button>
@@ -4445,6 +5356,12 @@ export function App() {
                 ball={ball ?? undefined}
                 davisIncidence={davisIncidence}
                 sceneStats={sceneStats}
+                desktopStatus={desktopStatus}
+                desktopMessage={desktopMessage}
+                sessionDirty={sessionDirty}
+                recentSessions={recentSessions}
+                desktopTools={desktopTools}
+                desktopJobs={desktopJobs}
               />
             </Panel>
 
@@ -4571,7 +5488,7 @@ export function App() {
                 <button
                   type="button"
                   className="button"
-                  onClick={exportProjectSession}
+                  onClick={() => void exportProjectSession()}
                 >
                   Export session
                 </button>
@@ -4694,7 +5611,7 @@ export function App() {
           )}
         </Panel>
 
-        <Panel title="Y_Gamma Cell Atlas">
+        <Panel title="Y_Gamma Cell Inventory">
           {yGammaAtlas ? (
             <YGammaAtlasPanel
               atlas={yGammaAtlas}
@@ -4750,12 +5667,12 @@ export function App() {
                 className="button"
                 onClick={openBaseOrbicomplex}
               >
-                Open Y_Gamma complex
+                Open 3D Y_Gamma model
               </button>
               <p className="math-note">
                 Y_Gamma is the fundamental-domain cell complex: one base vertex,
                 oriented generator arrows, and relation polytopes/cells for
-                spherical subsets. The nerve is only a diagnostic.
+                spherical subsets. The 2D nerve schematic is only a diagnostic.
               </p>
             </>
           )}
@@ -5353,8 +6270,8 @@ function YGammaMiniAtlasOverlay({
   onFocusPair: (key: string) => void;
 }) {
   return (
-    <aside className="ygamma-mini-atlas" aria-label="Y_Gamma mini atlas">
-      <strong>Pair atlas</strong>
+    <aside className="ygamma-mini-atlas" aria-label="Y_Gamma relation picker">
+      <strong>Relation picker</strong>
       <div className="ygamma-mini-grid">
         {yGammaPairMatrixEntries(atlas).map((entry) => (
           <button
@@ -5393,8 +6310,8 @@ function YGammaWhyPanel({
   if (!relation || relation.m === undefined) {
     return (
       <p className="math-note">
-        Hover a filled face or choose a finite pair in the mini atlas to see why
-        that relation cell is part of{" "}
+        Hover a filled face or choose a finite pair in the relation picker to
+        see why that relation cell is part of{" "}
         <span className="matrix-key">Y_Gamma</span>.
       </p>
     );
@@ -5523,7 +6440,9 @@ function YGammaTopologyChecklist({
       </li>
       <li>
         <span className="subset-rank">higher cell</span>
-        <span>{higherPresent ? "present in atlas" : "none for focus"}</span>
+        <span>
+          {higherPresent ? "present in cell inventory" : "none for focus"}
+        </span>
       </li>
       <li>
         <span className="subset-rank">local link</span>
@@ -5641,25 +6560,25 @@ function YGammaNerveDiagnosticViewer({
     <section
       className="ygamma-viewer"
       data-testid="ygamma-local-link-viewer"
-      aria-label="Y_Gamma nerve diagnostic viewer"
+      aria-label="2D Y_Gamma nerve schematic"
     >
       <div className="ygamma-viewer-header">
         <div>
-          <h2>Nerve / Local-Link Diagnostic</h2>
+          <h2>2D Nerve / Local-Link Schematic</h2>
           <p>
-            This is derived from the one-vertex complex. It is useful for local
-            topology, but it is not the complex Y_Gamma itself.
+            This flat schematic is derived from spherical subsets. It explains
+            the local link, but it is not the 3D Y_Gamma complex.
           </p>
         </div>
         <button type="button" className="button" onClick={onShowComplex}>
-          Show Y_Gamma complex
+          Show 3D Y_Gamma model
         </button>
       </div>
       <svg
         className="ygamma-nerve-svg"
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-label={`Y_Gamma local link for ${atlas.systemName}`}
+        aria-label={`2D local-link schematic for ${atlas.systemName}`}
       >
         <circle
           className="ygamma-nerve-guide"
@@ -5768,7 +6687,7 @@ function YGammaNerveDiagnosticViewer({
         <p>
           The filled regions here are nerve simplices: they describe which
           generator subsets are spherical. They are not Euclidean faces of an
-          embedded polytope.
+          embedded polytope, and they are not the 3D Y_Gamma model.
         </p>
         {activeRelation ? (
           <p>
@@ -5821,12 +6740,12 @@ function YGammaAtlasPanel({
       <p className="math-note">
         This atlas records the fundamental-domain cell complex{" "}
         <span className="matrix-key">Y_Gamma</span>: the base vertex, oriented
-        generator arrows, and relation cells/polytopes. The nerve is listed as a
-        derived local-topology diagnostic, not as the complex itself.
+        generator arrows, and relation cells/polytopes. The 2D nerve schematic
+        is a derived local-topology diagnostic, not the complex itself.
       </p>
       <div className="badge-row">
         <span className="status-badge">
-          {active ? "complex open" : "atlas only"}
+          {active ? "3D model open" : "data panel only"}
         </span>
         <span className="status-badge muted">one quotient vertex</span>
         <span className="status-badge muted">relation polytopes</span>
@@ -5842,7 +6761,7 @@ function YGammaAtlasPanel({
         ))}
       </ul>
       <p className="math-note">
-        Nerve/local link: {atlas.nerveVertices.length} generator vertices and{" "}
+        2D nerve/local link: {atlas.nerveVertices.length} generator vertices and{" "}
         {atlas.nerveSimplexCount} spherical simplex
         {atlas.nerveSimplexCount === 1 ? "" : "es"}.
       </p>
@@ -5856,10 +6775,10 @@ function YGammaAtlasPanel({
       </div>
       <div className="button-row">
         <button type="button" className="button" onClick={onShowComplex}>
-          Show complex in viewer
+          Show 3D Y_Gamma model
         </button>
         <button type="button" className="button" onClick={onShowNerve}>
-          Show nerve diagnostic
+          Show 2D nerve schematic
         </button>
         <button
           type="button"
@@ -5957,8 +6876,8 @@ function YGammaAtlasPanel({
       {higherRankGroups.length > 0 ? (
         <div className="ygamma-higher-summary">
           <p className="math-note">
-            Higher spherical cells are shown by incidence, not by a Euclidean
-            polytope embedding.
+            Higher spherical cells are exact incidence records. Their 3D drawing
+            is a readability model, not a certified Euclidean embedding.
           </p>
           <ul className="subset-list">
             {higherRankGroups.map((group) => (
@@ -6052,11 +6971,23 @@ function ResearchStatusPanel({
   ball,
   davisIncidence,
   sceneStats,
+  desktopStatus,
+  desktopMessage,
+  sessionDirty,
+  recentSessions,
+  desktopTools,
+  desktopJobs,
 }: {
   system: CoxeterSystemInput;
   ball?: GeneratedCayleyBall;
   davisIncidence?: import("../types").DavisIncidencePoset;
   sceneStats: SceneRenderStats | null;
+  desktopStatus: DesktopBridgeStatus | null;
+  desktopMessage: string | null;
+  sessionDirty: boolean;
+  recentSessions: readonly ProjectSessionRecentFile[];
+  desktopTools: readonly ExternalToolStatus[];
+  desktopJobs: readonly DesktopJobRecord[];
 }) {
   const status = system.dataStatus ?? "toy";
   const certification =
@@ -6115,6 +7046,50 @@ function ResearchStatusPanel({
             : "not sampled"}
         </span>
       </li>
+      <li>
+        <span className="subset-rank">workspace</span>
+        <span>{desktopStatus?.workspace.label ?? "checking workspace"}</span>
+      </li>
+      <li>
+        <span className="subset-rank">runtime</span>
+        <span>
+          {desktopStatus
+            ? desktopStatus.nativeAvailable
+              ? "desktop bridge"
+              : desktopStatus.runtime
+            : "checking"}
+        </span>
+      </li>
+      <li>
+        <span className="subset-rank">session</span>
+        <span>{sessionDirty ? "unsaved changes" : "saved"}</span>
+      </li>
+      <li>
+        <span className="subset-rank">recent</span>
+        <span>{recentSessions.length} sessions</span>
+      </li>
+      <li>
+        <span className="subset-rank">tools</span>
+        <span>
+          {desktopTools.length > 0
+            ? `${desktopTools.filter((tool) => tool.found).length}/${desktopTools.length} found`
+            : "not checked"}
+        </span>
+      </li>
+      <li>
+        <span className="subset-rank">jobs</span>
+        <span>
+          {desktopJobs.length > 0
+            ? `${desktopJobs[0].kind}: ${desktopJobs[0].status}`
+            : "none"}
+        </span>
+      </li>
+      {desktopMessage ? (
+        <li>
+          <span className="subset-rank">desktop</span>
+          <span>{desktopMessage}</span>
+        </li>
+      ) : null}
     </ul>
   );
 }
@@ -6415,6 +7390,89 @@ function centroid3(
   ];
 }
 
+function yGammaCameraOffsetForFocus(
+  bookmark: YGammaCameraBookmark,
+  focusCells: SceneCell[],
+  positionsByNodeId: Map<string, [number, number, number] | undefined>,
+): [number, number, number] {
+  if (bookmark === "front" && focusCells.length === 1) {
+    const boundary = focusCells[0].boundaryNodeIds
+      .map((nodeId) => positionsByNodeId.get(nodeId))
+      .filter(
+        (position): position is [number, number, number] =>
+          position !== undefined,
+      );
+    const normal = newellNormal3(boundary);
+    if (normal) {
+      const tangent = normalize3(
+        subtract3(boundary[1] ?? boundary[0], boundary[0]),
+      );
+      // A pure face-on view makes lifted relation sheets look flat. This
+      // oblique offset keeps the selected 2m-gon readable without changing the
+      // combinatorial boundary it represents.
+      const oblique = normalize3([
+        normal[0] * 0.82 + tangent[0] * 0.42,
+        normal[1] * 0.82 + tangent[1] * 0.42,
+        normal[2] * 0.82 + tangent[2] * 0.42 + 0.34,
+      ]);
+      return scale3(oblique, 17);
+    }
+  }
+
+  return bookmark === "front"
+    ? [0, -15, 4.5]
+    : bookmark === "top"
+      ? [0.2, -0.2, 17]
+      : bookmark === "square-family"
+        ? [6, 4, 13]
+        : bookmark === "hexagon-family"
+          ? [7, -12, 7]
+          : [10, -12, 8];
+}
+
+function newellNormal3(
+  points: Array<[number, number, number]>,
+): [number, number, number] | undefined {
+  if (points.length < 3) {
+    return undefined;
+  }
+  let normal: [number, number, number] = [0, 0, 0];
+  for (let index = 0; index < points.length; index += 1) {
+    const current = points[index];
+    const next = points[(index + 1) % points.length];
+    normal = [
+      normal[0] + (current[1] - next[1]) * (current[2] + next[2]),
+      normal[1] + (current[2] - next[2]) * (current[0] + next[0]),
+      normal[2] + (current[0] - next[0]) * (current[1] + next[1]),
+    ];
+  }
+  const length = Math.hypot(normal[0], normal[1], normal[2]);
+  return length > 1e-9 ? scale3(normal, 1 / length) : undefined;
+}
+
+function subtract3(
+  left: [number, number, number],
+  right: [number, number, number],
+): [number, number, number] {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function normalize3(
+  vector: [number, number, number],
+): [number, number, number] {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  return length > 1e-9
+    ? [vector[0] / length, vector[1] / length, vector[2] / length]
+    : [1, 0, 0];
+}
+
+function scale3(
+  vector: [number, number, number],
+  scalar: number,
+): [number, number, number] {
+  return [vector[0] * scalar, vector[1] * scalar, vector[2] * scalar];
+}
+
 function maxBoundaryDistance(
   nodeIds: string[],
   localLayout:
@@ -6571,6 +7629,11 @@ function readStoredViewPreset(): ViewPresetId | undefined {
     : undefined;
 }
 
+function readStoredColorScheme(): ColorScheme | undefined {
+  const value = window.localStorage?.getItem(colorSchemeStorageKey);
+  return value === "light" || value === "dark" ? value : undefined;
+}
+
 function isQuotientLinkLens(lensId: TopologyLensId): boolean {
   return (
     lensId === "ascending-link" ||
@@ -6588,4 +7651,11 @@ function downloadText(filename: string, text: string) {
   link.href = url;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+function downloadDataUrl(filename: string, dataUrl: string) {
+  const link = document.createElement("a");
+  link.download = filename;
+  link.href = dataUrl;
+  link.click();
 }

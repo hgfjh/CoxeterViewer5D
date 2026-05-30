@@ -12,9 +12,13 @@ export interface HigherCellDerivationResult {
 }
 
 /**
- * Derives complete visible cosets for spherical subsets of rank at least 3.
- * These records are combinatorial incidence data; renderers may still choose a
- * separate visual proxy because no exact Euclidean embedding is implied here.
+ * Derives higher Davis cell incidence from complete visible spherical cosets.
+ *
+ * The test is combinatorial: every generator in the spherical subset must keep
+ * the restricted component inside the current ball, and the component size must
+ * match the known finite special-subgroup order when that order is available.
+ * The record can be exact-in-ball even when the renderer later draws only a
+ * proxy hull.
  */
 export function deriveVisibleHigherDavisCells(
   ball: GeneratedCayleyBall,

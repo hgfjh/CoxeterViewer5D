@@ -4,6 +4,10 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
 
+// Stable launcher for quotient artifacts. It tries real external tools first
+// and falls back to the in-repo finite checker with an explicit status, so a
+// missing Sage/GAP runtime never masquerades as an external certificate.
+
 function arg(name, fallback) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : fallback;
@@ -145,7 +149,7 @@ function parseJsonOutput(stdout) {
       try {
         return JSON.parse(lines[index]);
       } catch {
-        // Keep scanning; some external tools print banners before JSON.
+        // Sage/GAP may print banners before the final JSON payload.
       }
     }
     return undefined;

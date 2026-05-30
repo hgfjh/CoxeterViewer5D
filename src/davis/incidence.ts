@@ -16,6 +16,13 @@ export interface DavisIncidenceOptions {
   localLinks?: LocalLink[];
 }
 
+/**
+ * Converts visible Davis cells into an incidence poset for inspection/export.
+ *
+ * The status is deliberately scoped to the finite ball. A complete-in-ball
+ * record says that every referenced visible face was found; it does not assert
+ * that the surrounding infinite Davis complex has been enumerated.
+ */
 export function deriveDavisIncidencePoset(
   ball: GeneratedCayleyBall,
   sphericalSubsets: SphericalSubset[],
@@ -62,6 +69,13 @@ export function deriveDavisIncidencePoset(
   };
 }
 
+/**
+ * Computes small F2 Betti numbers for a finite local-link complex.
+ *
+ * This is an in-browser diagnostic for exploration. External certificates may
+ * attach stronger topology claims, but this helper keeps the displayed counts
+ * reproducible for bundled examples and imported finite quotients.
+ */
 export function localLinkHomology(
   localLink: LocalLink,
 ): LocalLinkHomologySummary {

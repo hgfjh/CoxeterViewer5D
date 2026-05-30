@@ -78,8 +78,8 @@ function canonicalBoundary(boundary: string[]): string[] {
 }
 
 function cellKey(pair: [number, number], boundary: string[]): string {
-  // A rank-two cell is rediscovered from every boundary vertex. The sorted
-  // boundary set is a coset-level key for this finite dihedral subgroup.
+  // The same 2m-gon is found from each boundary vertex. Sorting the boundary
+  // gives a coset key without treating a different starting point as new data.
   const sortedBoundary = [...boundary].sort();
   return `${pair[0]}-${pair[1]}:${sortedBoundary.join("|")}`;
 }
@@ -113,8 +113,12 @@ function traceBoundary(
 }
 
 /**
- * Finds complete 2m-gons for finite rank-two special subgroups. Boundaries
- * clipped by the current radius ball are reported but not filled.
+ * Finds complete rank-two Davis cells in the visible finite ball.
+ *
+ * A finite pair with Coxeter entry m contributes a 2m-gon for each visible
+ * coset of <s_i, s_j>. If the radius cutoff clips the boundary, the function
+ * reports that fact and leaves the cell unfilled; filling a clipped polygon
+ * would invent incidence that is not present in the ball.
  */
 export function computeRankTwoDavisCells(
   ball: GeneratedCayleyBall,

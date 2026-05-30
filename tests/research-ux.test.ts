@@ -103,6 +103,12 @@ describe("research UI helper data", () => {
     expect(defaultGalleryEntries().map((entry) => entry.id)).toContain(
       "walkthrough:hexagon",
     );
+    expect(defaultGalleryEntries().map((entry) => entry.id)).toContain(
+      "catalogue:8facet:all",
+    );
+    expect(defaultGalleryEntries().map((entry) => entry.id)).toContain(
+      "catalogue:8facet:08",
+    );
     expect(
       viewComparisonOptions.some((option) => option.id === "davis-vs-ygamma"),
     ).toBe(true);

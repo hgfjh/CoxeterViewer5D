@@ -48,9 +48,13 @@ function hasInfiniteEntry(matrix: Array<Array<number | "inf">>): boolean {
 }
 
 /**
- * Enumerates the radius-R right Cayley ball using rounded reflection matrices
- * as node keys. This is a visualization backend, so the approximation is
- * recorded in metadata rather than hidden behind the graph.
+ * Enumerates a finite right Cayley ball with the browser approximation backend.
+ *
+ * Nodes are deduplicated by rounded matrices in the standard reflection
+ * representation. That is good enough for interactive drawings and small
+ * fixtures, but it is not an exact word problem solver. The returned metadata
+ * names the rounded key precision so exported graphs carry the approximation
+ * with them.
  */
 export function generateCayleyBall(
   input: unknown,
@@ -102,7 +106,8 @@ export function generateCayleyBall(
     const node = nodes[cursor];
 
     for (let generator = 0; generator < system.rank; generator += 1) {
-      // Right multiplication appends the generator to the preferred word.
+      // The rest of the app uses right multiplication: w --s_i--> w s_i.
+      // The stored word is only a preferred reduced representative.
       const nextMatrix = multiplyMatrices(node.matrix, reflections[generator]);
       const nextKey = roundedMatrixKey(nextMatrix, matrixKeyPrecision);
       let targetId = keyToNodeId.get(nextKey);

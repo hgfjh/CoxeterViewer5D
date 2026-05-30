@@ -4,6 +4,11 @@ import type {
   GeneratedCayleyBall,
 } from "../types";
 
+/**
+ * Persistent generation-worker request. The system may be omitted after the
+ * first request for a matching inputHash; the worker keeps that system in its
+ * own cache to avoid repeated structured clones.
+ */
 export interface GenerateBallRequest {
   type: "generate-ball";
   requestId: number;

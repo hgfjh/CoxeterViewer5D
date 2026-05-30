@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import A2 from "../public/examples/A2.json";
 import A3 from "../public/examples/A3.json";
 import compact5CubeGamma1 from "../public/examples/compact_5_cube_gamma1.json";
+import compact5PolytopeP1DoubleMakarov from "../public/examples/compact_5_polytope_p1_double_makarov.json";
 import compact5PrismMakarov from "../public/examples/compact_5_prism_makarov.json";
+import compact5PrismMakarovP2 from "../public/examples/compact_5_prism_makarov_p2.json";
 import I2_5 from "../public/examples/I2_5.json";
 import universalRank3 from "../public/examples/universal_rank3.json";
 import {
@@ -51,6 +53,8 @@ describe("Coxeter input validation", () => {
     expectValid(universalRank3);
     expectValid(compact5CubeGamma1);
     expectValid(compact5PrismMakarov);
+    expectValid(compact5PolytopeP1DoubleMakarov);
+    expectValid(compact5PrismMakarovP2);
   });
 
   it("keeps the certified compact 5-cube source data explicit", () => {
@@ -149,6 +153,80 @@ describe("Coxeter input validation", () => {
         evaluatePolynomial(
           dotted.exact!.minimalPolynomial,
           dotted.exact!.decimal,
+        ),
+      ),
+    ).toBeLessThan(1e-8);
+  });
+
+  it("keeps the other Emery-Kellerhals compact 5D Coxeter examples certified but narrow", () => {
+    expectValid(compact5PolytopeP1DoubleMakarov);
+    expectValid(compact5PrismMakarovP2);
+
+    expect(compact5PolytopeP1DoubleMakarov.dataStatus).toBe("certified");
+    expect(compact5PolytopeP1DoubleMakarov.certificate?.status).toBe("passed");
+    expect(compact5PolytopeP1DoubleMakarov.certificate?.backend).toBe(
+      "compact5PrismFamilyExactChecker",
+    );
+    expect(
+      compact5PolytopeP1DoubleMakarov.certificate?.diagnostics?.gram,
+    ).toEqual(
+      expect.objectContaining({
+        rank: 6,
+        signature: { positive: 5, negative: 1, zero: 1 },
+      }),
+    );
+    expect(compact5PolytopeP1DoubleMakarov.description).toContain("double");
+    expect(compact5PolytopeP1DoubleMakarov.coxeterMatrix[4][5]).toBe(3);
+    expect(compact5PolytopeP1DoubleMakarov.coxeterMatrix[4][6]).toBe(3);
+    expect(compact5PolytopeP1DoubleMakarov.coxeterMatrix[5][6]).toBe("inf");
+    expect(compact5PolytopeP1DoubleMakarov.warnings?.join(" ")).toContain(
+      "do not describe it as a simplicial prism",
+    );
+
+    expect(compact5PrismMakarovP2.dataStatus).toBe("certified");
+    expect(compact5PrismMakarovP2.certificate?.status).toBe("passed");
+    expect(compact5PrismMakarovP2.certificate?.backend).toBe(
+      "compact5PrismFamilyExactChecker",
+    );
+    expect(compact5PrismMakarovP2.certificate?.diagnostics?.gram).toEqual(
+      expect.objectContaining({
+        rank: 6,
+        signature: { positive: 5, negative: 1, zero: 1 },
+      }),
+    );
+    expect(compact5PrismMakarovP2.coxeterMatrix[4][5]).toBe(4);
+    expect(compact5PrismMakarovP2.coxeterMatrix[5][6]).toBe("inf");
+    expect(compact5PrismMakarovP2.sourceRefs?.[0]?.locator).toContain(
+      "Diagram",
+    );
+  });
+
+  it("keeps the new compact 5D dotted weights as exact algebraic real data", () => {
+    const p1Dotted =
+      compact5PolytopeP1DoubleMakarov.geometry?.normalGram?.[5]?.[6];
+    const p2Dotted = compact5PrismMakarovP2.geometry?.normalGram?.[5]?.[6];
+
+    expect(p1Dotted?.kind).toBe("dotted");
+    expect(p2Dotted?.kind).toBe("dotted");
+    if (p1Dotted?.kind !== "dotted" || p2Dotted?.kind !== "dotted") {
+      throw new Error("Expected dotted entries for P1 and P2.");
+    }
+
+    expect(p1Dotted.exact?.minimalPolynomial).toEqual([4, -6, 1]);
+    expect(p2Dotted.exact?.minimalPolynomial).toEqual([4, 0, -6, 0, 1]);
+    expect(
+      Math.abs(
+        evaluatePolynomial(
+          p1Dotted.exact!.minimalPolynomial,
+          p1Dotted.exact!.decimal,
+        ),
+      ),
+    ).toBeLessThan(1e-8);
+    expect(
+      Math.abs(
+        evaluatePolynomial(
+          p2Dotted.exact!.minimalPolynomial,
+          p2Dotted.exact!.decimal,
         ),
       ),
     ).toBeLessThan(1e-8);

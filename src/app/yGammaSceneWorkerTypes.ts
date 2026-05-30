@@ -4,6 +4,12 @@ import type {
 } from "./yGammaScene";
 import type { YGammaCellAtlas } from "./yGammaAtlas";
 
+/**
+ * Worker request for deterministic Y_Gamma scene construction.
+ *
+ * sceneVersion is computed on the main thread from atlas/options so stale
+ * replies can be ignored without inspecting the returned scene arrays.
+ */
 export interface BuildYGammaSceneRequest {
   type: "build-ygamma-scene";
   requestId: number;

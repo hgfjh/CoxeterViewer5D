@@ -22,6 +22,13 @@ export interface WarningGroup {
   warnings: string[];
 }
 
+/**
+ * Short, mode-aware explanation for the visible scene.
+ *
+ * This is user-facing storytelling, not a validator. It summarizes status
+ * already computed by the data pipeline and keeps exact/proxy/projection
+ * language close to the current view.
+ */
 export function buildWhatAmISeeingSummary(input: {
   system: CoxeterSystemInput;
   ball: GeneratedCayleyBall | undefined;
@@ -82,6 +89,9 @@ export function buildWhatAmISeeingSummary(input: {
   };
 }
 
+/**
+ * Groups warnings by the action a reader is likely to take.
+ */
 export function groupWarnings(warnings: string[]): WarningGroup[] {
   const buckets: Record<WarningGroupId, string[]> = {
     important: [],

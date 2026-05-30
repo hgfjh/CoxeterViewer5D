@@ -14,3 +14,4 @@ __pycache__
 dev-server.log
 *.log
 .DS_Store
+.tmp_sources

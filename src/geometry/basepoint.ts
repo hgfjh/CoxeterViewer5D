@@ -22,9 +22,11 @@ interface Candidate {
 }
 
 /**
- * Finds a chamber barycenter on the upper hyperboloid for normals whose
- * chamber convention is <x,n_i>_J <= 0. A global normal sign is allowed because
- * a Gram matrix alone does not determine inward versus outward orientation.
+ * Validates or solves a chamber basepoint on the upper hyperboloid.
+ *
+ * The chamber convention in this project is <x,n_i>_J <= 0 for every facet
+ * normal. A global normal sign is allowed because normalGram data fixes mutual
+ * inner products but not the inward/outward orientation of all facets.
  */
 export function validateOrSolveChamberBasepoint(
   normals: Vector[],
@@ -93,6 +95,9 @@ export function validateOrSolveChamberBasepoint(
   };
 }
 
+/**
+ * Returns max_i <x,n_i>_J; values <= tolerance satisfy the chamber inequalities.
+ */
 export function maxFacetInequality(point: Vector, normals: Vector[]): number {
   return Math.max(...normals.map((normal) => lorentzDot(point, normal)));
 }
@@ -158,6 +163,8 @@ function solveLeastSquaresBasepoint(normals: Vector[]): Vector | undefined {
     Array.from({ length: coordinateCount }, () => 0),
   );
   const rightHandSide = Array.from({ length: coordinateCount }, () => 0);
+  // The small ridge only stabilizes the numerical solve; it is not a
+  // mathematical constraint on the chamber.
   const ridge = 1e-9;
 
   for (const row of covectors) {

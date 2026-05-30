@@ -1,21 +1,48 @@
 {
   "schemaVersion": 1,
   "contractKind": "coxeter-viewer-tauri-v2-contract",
-  "status": "rust-wrapper-scaffold",
+  "status": "native-shell-command-surface",
   "tauriMajorVersion": 2,
   "productName": "CoxeterViewer5D",
-  "identifier": "org.coxeterviewer5d.app",
+  "identifier": "org.coxeterviewer5d.viewer",
   "frontendDist": "../dist",
   "devUrl": "http://localhost:5173",
   "beforeDevCommand": "corepack pnpm dev",
   "beforeBuildCommand": "corepack pnpm build",
-  "sessionFileName": ".coxeter-session.json",
   "releaseScript": "scripts/release_desktop.mjs",
-  "localCommands": ["read_project_session", "write_project_session"],
+  "sessionFileName": ".coxeter-session.json",
+  "fileAssociations": ["coxeter-session", "coxeter-experiment"],
+  "desktopEvents": ["desktop-menu-command", "desktop-job-updated"],
+  "localCommands": [
+    "append_desktop_log",
+    "collect_diagnostics",
+    "detect_tools",
+    "enqueue_desktop_job",
+    "export_text_file",
+    "get_desktop_job",
+    "get_runtime_info",
+    "list_desktop_jobs",
+    "open_workspace",
+    "read_desktop_log",
+    "read_desktop_settings",
+    "read_project_session",
+    "read_workspace_session",
+    "reveal_path",
+    "validate_desktop_path",
+    "write_desktop_settings",
+    "write_project_session",
+    "write_workspace_session"
+  ],
+  "controlledJobKinds": [
+    "detectTools",
+    "collectDiagnostics",
+    "validateWorkspace"
+  ],
   "optionalTooling": ["Rust Cargo", "@tauri-apps/cli"],
   "notes": [
-    "The Rust wrapper exists, but release packaging remains optional until @tauri-apps/cli is installed.",
+    "The Rust wrapper exposes typed desktop commands and a real native menu that emits desktop-menu-command events.",
     "Do not add desktop-only math paths; the Tauri shell should wrap the same viewer build.",
-    "Local session commands only read or write .coxeter-session.json files; imported mathematical JSON is still validated by the web app."
+    "Local session commands only read or write .coxeter-session.json files; imported mathematical JSON is still validated by the web app.",
+    "The job queue accepts controlled job kinds only; there is no arbitrary shell runner."
   ]
 }

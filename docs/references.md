@@ -1,6 +1,6 @@
 # References
 
-This file records sources that support the viewer's mathematical and engineering conventions. It is intentionally conservative. It certifies only the compact 5-cube and Makarov compact 5-prism data explicitly listed below.
+This file records sources that support the viewer's mathematical and engineering conventions. It is intentionally conservative. It certifies only examples that have a passed checker artifact, and it marks source-transcribed examples without such a checker as `verified-source`.
 
 ## Mathematics
 
@@ -29,6 +29,21 @@ This file records sources that support the viewer's mathematical and engineering
   - `scripts/certify_compact_5_prism.py` independently checks the repository JSON against the source graph, the algebraic dotted value, and exact normal Gram rank/signature. This is the scope of the bundled `certified` status.
   - EMS page: https://ems.press/journals/ggd/articles/7155473
   - DOI: https://doi.org/10.4171/GGD/663
+
+- Vincent Emery and Ruth Kellerhals, "The three smallest compact arithmetic hyperbolic 5-orbifolds," Algebraic & Geometric Topology 13 (2013), 817-829.
+  - Supports the three-smallest-orbifold family shown in the app as `P0`, `P1`, and `P2`: Table 2 lists Coxeter symbols `[5,3,3,3,3]`, `[5,3,3,3,3^{1,1}]`, and `[5,3,3,3,4]`; diagrams (1-2), (1-3), and (1-4) draw the corresponding Coxeter diagrams; Table 3 repeats the diagrams and labels `P1 = D P0`.
+  - The paper states that `P0` and `P2` are the two compact Coxeter polytopes first discovered by Makarov and that they are combinatorially simplicial prisms. `P1` is included as the geometric double of `P0`, not as a third simplicial prism.
+  - Supports `compact_5_prism_makarov_p2.json` and `compact_5_polytope_p1_double_makarov.json`. These files are now `certified` for the narrow source-transcription and exact Gram/signature scopes checked by `scripts/certify_compact_5_prism_family.py`.
+  - Stored CoxIter artifacts in `scripts/certificates/coxiter/` independently record that CoxIter accepts the prepared P1 and P2 diagrams as cocompact finite-covolume inputs. CoxIter output is a separate diagram-checker scope, not the exact normal-Gram inertia proof.
+  - PDF: https://msp.org/agt/2013/13-2/agt-v13-n2-p05-s.pdf
+
+- Pavel Tumarkin, "Compact Hyperbolic Coxeter n-Polytopes with n+3 Facets," Electronic Journal of Combinatorics 14 (2007), R69.
+  - Supports the eight-facet 5D catalogue in `src/catalogue/tumarkin_5d_8facet_catalogue.json`: Lemma 4.7 states that there are 15 compact hyperbolic Coxeter 5-polytopes with 8 facets and Gale diagram `G11411`; Table 4.10 draws their Coxeter diagrams.
+  - The repository transcribes the Table 4.10 diagrams from the arXiv EPS artwork `pic/5/5_n.eps` into `scripts/data/tumarkin_8facet_transcription.json`; the bundled `tumarkin_5d_8facet_g11411_*.json` examples are generated from that transcription.
+  - `scripts/certify_tumarkin_8facet.py` solves the hidden dotted-edge weights from the determinant/rank equations described by Lemma 4.7, stores them as algebraic real records with decimal caches, and checks normal-Gram rank/signature diagnostics before marking these examples `certified`.
+  - CoxIter artifacts, when present in `scripts/certificates/coxiter/`, are treated as an independent diagram-checker scope. They are separate from the exact in-repo dotted-weight and Gram diagnostics.
+  - Journal page: https://www.combinatorics.org/ojs/index.php/eljc/article/view/v14i1r69
+  - arXiv page: https://arxiv.org/abs/math/0406226
 
 ## Optional Exact Backends
 
@@ -90,10 +105,6 @@ Additional source candidates for future compact prism/cube work:
 - Pavel Tumarkin, "Hyperbolic Coxeter n-polytopes with n+2 facets," arXiv:math/0301133.
   - Candidate context for the finite-volume `n + 2` facet classification and how compact cases relate to earlier work.
   - arXiv page: https://arxiv.org/abs/math/0301133
-
-- Pavel Tumarkin, "Compact Hyperbolic Coxeter n-Polytopes with n+3 Facets," Electronic Journal of Combinatorics 14 (2007), R69.
-  - Candidate background for Gale-diagram methods and neighboring few-facet classifications; not itself an additional certified 5-prism data source for this repo.
-  - Journal page: https://www.combinatorics.org/ojs/index.php/eljc/article/view/v14i1r69
 
 - Rafael Guglielmetti, CoxIter.
   - Candidate independent checker for future compact Coxeter diagram and growth-rate cross-checks beyond the narrow source-transcription certificates bundled here.

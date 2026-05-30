@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "name": "Compact hyperbolic Coxeter 5-polytope P1 (double of P0)",
+  "description": "Coxeter graph for Emery-Kellerhals P1 = D P0 in H^5, the geometric double of the Makarov [5,3,3,3,3] prism along its [5,3,3,3] Coxeter facet.",
+  "rank": 7,
+  "generators": [
+    { "id": "d0", "label": "d0" },
+    { "id": "d1", "label": "d1" },
+    { "id": "d2", "label": "d2" },
+    { "id": "d3", "label": "d3" },
+    { "id": "d4", "label": "d4" },
+    { "id": "d5", "label": "d5" },
+    { "id": "d6", "label": "d6" }
+  ],
+  "coxeterMatrix": [
+    [1, 5, 2, 2, 2, 2, 2],
+    [5, 1, 3, 2, 2, 2, 2],
+    [2, 3, 1, 3, 2, 2, 2],
+    [2, 2, 3, 1, 3, 2, 2],
+    [2, 2, 2, 3, 1, 3, 3],
+    [2, 2, 2, 2, 3, 1, "inf"],
+    [2, 2, 2, 2, 3, "inf", 1]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 5,
+    "projection": "klein-pca",
+    "source": "Emery-Kellerhals, diagram (1-4) and Table 3, list P1 = D P0 with Coxeter symbol [5,3,3,3,3^{1,1}]. This file uses the viewer's normal-Gram sign convention.",
+    "normalGram": [
+      [
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 5 },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" }
+      ],
+      [
+        { "kind": "coxeter", "m": 5 },
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" }
+      ],
+      [
+        { "kind": "right" },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" }
+      ],
+      [
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "right" },
+        { "kind": "right" }
+      ],
+      [
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 }
+      ],
+      [
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.3090169943749475,
+          "sourceRefId": "emery-kellerhals-2013-smallest-5-orbifolds",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.3090169943749475,
+            "minimalPolynomial": [4, -6, 1],
+            "isolatingInterval": [1.309, 1.31]
+          }
+        }
+      ],
+      [
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "right" },
+        { "kind": "coxeter", "m": 3 },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.3090169943749475,
+          "sourceRefId": "emery-kellerhals-2013-smallest-5-orbifolds",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.3090169943749475,
+            "minimalPolynomial": [4, -6, 1],
+            "isolatingInterval": [1.309, 1.31]
+          }
+        },
+        { "kind": "numericGram", "value": 1 }
+      ]
+    ],
+    "diagnostics": {
+      "factorization": {
+        "signature": { "positive": 5, "negative": 1, "zero": 1 },
+        "residual": 0,
+        "tolerance": 1e-8
+      }
+    }
+  },
+  "dataStatus": "certified",
+  "sourceRefs": [
+    {
+      "id": "emery-kellerhals-2013-smallest-5-orbifolds",
+      "citation": "Vincent Emery and Ruth Kellerhals, The three smallest compact arithmetic hyperbolic 5-orbifolds, Algebraic & Geometric Topology 13 (2013), 817-829.",
+      "url": "https://msp.org/agt/2013/13-2/agt-v13-n2-p05-s.pdf",
+      "locator": "Diagram (1-4), Table 2, and Table 3.",
+      "notes": "The paper defines P1 as the geometric double of P0 with respect to its [5,3,3,3] Coxeter facet and gives Coxeter symbol [5,3,3,3,3^{1,1}]."
+    }
+  ],
+  "certificate": {
+    "status": "passed",
+    "backend": "compact5PrismFamilyExactChecker",
+    "backendVersion": "1.0.0",
+    "scopes": ["source-transcription", "gram-signature"],
+    "command": "python scripts/certify_compact_5_prism_family.py public/examples/compact_5_polytope_p1_double_makarov.json",
+    "inputHash": "778b978beb636f237d0fcd1dda048b60509dd4d9af8d30cb4a646970a06eb280",
+    "sourceRefIds": ["emery-kellerhals-2013-smallest-5-orbifolds"],
+    "diagnostics": {
+      "certifiedClaims": [
+        "Emery-Kellerhals P1 = D P0 source graph",
+        "derived algebraic dotted value cosh(l)=(3+sqrt(5))/4",
+        "exact normal Gram rank and signature"
+      ],
+      "sourceTranscription": {
+        "rank": 7,
+        "sourceRefId": "emery-kellerhals-2013-smallest-5-orbifolds",
+        "sourceLocator": "Emery-Kellerhals diagram (1-4), Table 2, and Table 3",
+        "coxeterSymbol": "[5,3,3,3,3^{1,1}]",
+        "dottedPair": [5, 6]
+      },
+      "dottedValue": {
+        "field": "Q(sqrt(5))",
+        "value": "(3 + sqrt(5)) / 4",
+        "minimalPolynomial": [4, -6, 1],
+        "isolatingInterval": [1.309, 1.31]
+      },
+      "gram": {
+        "field": "Q(sqrt(5))",
+        "rank": 6,
+        "signature": {
+          "positive": 5,
+          "negative": 1,
+          "zero": 1
+        },
+        "expectedForFacetNormalsInH5": {
+          "positive": 5,
+          "negative": 1,
+          "zero": 1,
+          "rank": 6
+        }
+      },
+      "nonClaims": [
+        "not an exact coordinate embedding",
+        "not a generated Cayley-ball certificate",
+        "not a quotient, manifold, or PL Morse certificate"
+      ]
+    }
+  },
+  "notes": [
+    "P1 is certified for the Emery-Kellerhals source graph, the derived algebraic dotted value, and exact normal Gram rank/signature.",
+    "It is the double of the Makarov P0 prism, not one of the two simplicial 5-prisms P0 and P2.",
+    "The dotted value is stored as exact algebraic metadata and decimal cache; geometric coordinates are still produced numerically by the viewer."
+  ],
+  "warnings": [
+    "P1 is a Coxeter double of P0; do not describe it as a simplicial prism.",
+    "Normal coordinates and the chamber basepoint are computed numerically from normalGram; geometric mode is visualization-grade.",
+    "The 3D display is a projection from H^5 and does not preserve all hyperbolic metric data."
+  ]
+}

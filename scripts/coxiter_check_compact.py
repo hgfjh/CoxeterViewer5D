@@ -27,6 +27,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 from typing import Any
 
@@ -45,7 +46,32 @@ SUPPORTED_EXAMPLES = {
         "expectedRank": 7,
         "expectedDimension": 5,
     },
+    "compact_5_polytope_p1_double_makarov.json": {
+        "sourceRefIds": ["emery-kellerhals-2013-smallest-5-orbifolds"],
+        "expectedRank": 7,
+        "expectedDimension": 5,
+    },
+    "compact_5_prism_makarov_p2.json": {
+        "sourceRefIds": ["emery-kellerhals-2013-smallest-5-orbifolds"],
+        "expectedRank": 7,
+        "expectedDimension": 5,
+    },
 }
+TUMARKIN_EIGHT_FACET_PATTERN = re.compile(r"tumarkin_5d_8facet_g11411_([0-9]{2})\.json")
+
+
+def supported_example_spec(name: str) -> dict[str, Any]:
+    spec = SUPPORTED_EXAMPLES.get(name)
+    if spec is not None:
+        return spec
+    match = TUMARKIN_EIGHT_FACET_PATTERN.fullmatch(name)
+    if match and 1 <= int(match.group(1)) <= 15:
+        return {
+            "sourceRefIds": ["tumarkin-2007-n-plus-3"],
+            "expectedRank": 8,
+            "expectedDimension": 5,
+        }
+    raise ValueError(f"{name} is not a supported compact CoxIter fixture")
 
 
 def canonical_json_bytes(value: Any) -> bytes:
@@ -113,9 +139,7 @@ def load_example(path: Path) -> dict[str, Any]:
 
 
 def build_coxiter_graph(path: Path, example: dict[str, Any]) -> tuple[str, list[str]]:
-    spec = SUPPORTED_EXAMPLES.get(path.name)
-    if spec is None:
-        raise ValueError(f"{path.name} is not a supported compact CoxIter fixture")
+    spec = supported_example_spec(path.name)
     if example.get("rank") != spec["expectedRank"]:
         raise ValueError(f"rank must be {spec['expectedRank']}")
 
@@ -240,55 +264,63 @@ def run_coxiter(
         command = candidate.get("command")
         if not command:
             continue
-        try:
-            stdin = graph_text if candidate.get("mode") == "stdin" else None
-            completed = subprocess.run(
-                command,
-                input=stdin,
-                text=True,
-                capture_output=True,
-                timeout=timeout,
-                check=False,
-            )
-        except FileNotFoundError as error:
-            errors.append(f"{command[0]}: {error}")
-            cleanup_candidate(candidate)
-            continue
-        except subprocess.TimeoutExpired:
-            cleanup_candidate(candidate)
-            return {
-                "status": "failed",
-                "command": command,
-                "stdout": "",
-                "stderr": f"CoxIter timed out after {timeout}s",
-                "parsed": {},
-            }
+        for attempt in range(2):
+            try:
+                stdin = graph_text if candidate.get("mode") == "stdin" else None
+                completed = subprocess.run(
+                    command,
+                    input=stdin,
+                    text=True,
+                    capture_output=True,
+                    timeout=timeout,
+                    check=False,
+                )
+            except FileNotFoundError as error:
+                errors.append(f"{command[0]}: {error}")
+                break
+            except subprocess.TimeoutExpired:
+                cleanup_candidate(candidate)
+                return {
+                    "status": "failed",
+                    "command": command,
+                    "stdout": "",
+                    "stderr": f"CoxIter timed out after {timeout}s",
+                    "parsed": {},
+                }
 
-        stdout = sanitize_process_text(completed.stdout)
-        stderr = sanitize_process_text(completed.stderr)
-        combined = "\n".join(part for part in [stdout, stderr] if part)
-        parsed = parse_coxiter_output(combined)
-        validation_errors = validate_coxiter_output(
-            completed.returncode,
-            combined,
-            parsed,
-            expected_rank,
-            expected_dimension,
-        )
-        if not validation_errors:
-            cleanup_candidate(candidate)
-            return {
-                "status": "passed",
-                "command": command,
-                "exitCode": completed.returncode,
-                "stdout": stdout.strip(),
-                "stderr": stderr.strip(),
-                "parsed": parsed,
-            }
-        errors.append(
-            f"{' '.join(command)} exited {completed.returncode}: "
-            f"{'; '.join(validation_errors)} {combined.strip()[:400]}"
-        )
+            stdout = sanitize_process_text(completed.stdout)
+            stderr = sanitize_process_text(completed.stderr)
+            combined = "\n".join(part for part in [stdout, stderr] if part)
+            parsed = parse_coxiter_output(combined)
+            validation_errors = validate_coxiter_output(
+                completed.returncode,
+                combined,
+                parsed,
+                expected_rank,
+                expected_dimension,
+            )
+            if not validation_errors:
+                cleanup_candidate(candidate)
+                return {
+                    "status": "passed",
+                    "command": command,
+                    "exitCode": completed.returncode,
+                    "stdout": stdout.strip(),
+                    "stderr": stderr.strip(),
+                    "parsed": parsed,
+                }
+            if (
+                attempt == 0
+                and "WSL_E_DISTRO_NOT_FOUND" in combined
+                and platform.system() == "Windows"
+            ):
+                time.sleep(0.5)
+                continue
+            errors.append(
+                f"{' '.join(command)} exited {completed.returncode}: "
+                f"{'; '.join(validation_errors)} {combined.strip()[:400]}"
+            )
+            break
         cleanup_candidate(candidate)
 
     return {
@@ -426,7 +458,7 @@ def build_report(
 ) -> dict[str, Any]:
     example = load_example(path)
     graph_text, dotted_edges = build_coxiter_graph(path, example)
-    spec = SUPPORTED_EXAMPLES[path.name]
+    spec = supported_example_spec(path.name)
     payload_hash = sha256_json(checked_payload(example, graph_text))
     coxiter_report = run_coxiter(
         graph_text,
@@ -504,7 +536,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "example",
         type=Path,
-        help="Path to compact_5_cube_gamma1.json or compact_5_prism_makarov.json.",
+        help="Path to one bundled compact Coxeter example JSON file.",
     )
     parser.add_argument(
         "--coxiter-executable",
@@ -527,6 +559,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Exit nonzero when CoxIter is unavailable or skipped.",
     )
+    parser.add_argument(
+        "--write-artifact",
+        action="store_true",
+        help="Store passed CoxIter output as a hash-matched artifact.",
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -538,6 +575,27 @@ def main(argv: list[str] | None = None) -> int:
             args.artifact_dir,
             not args.no_artifact,
         )
+        if args.write_artifact and report.get("ok"):
+            certificate = report.get("certificate", {})
+            diagnostics = certificate.get("diagnostics", {})
+            coxiter = diagnostics.get("coxiter")
+            if isinstance(coxiter, dict) and coxiter.get("status") == "passed":
+                artifact = {
+                    "schemaVersion": 1,
+                    "backend": BACKEND,
+                    "backendVersion": BACKEND_VERSION,
+                    "inputFile": str(args.example),
+                    "inputHash": certificate.get("inputHash"),
+                    "coxiterGraphSha256": diagnostics.get("coxiterGraphSha256"),
+                    "coxiter": coxiter,
+                }
+                destination = artifact_path_for(args.example, args.artifact_dir)
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_text(
+                    json.dumps(artifact, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+                report["writtenArtifact"] = str(destination)
     except Exception as error:  # noqa: BLE001 - CLI reports validation failures as JSON.
         report = {
             "ok": False,

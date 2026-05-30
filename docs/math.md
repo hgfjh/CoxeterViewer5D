@@ -127,7 +127,7 @@ ship explicit coordinates or cite an independently verified computation.
 
 The matrix-composition convention for a word must match the right-multiplication convention used by the Cayley graph. Tests should verify that traversing an edge labeled `i` applies the same reflection `R_i` used by geometric placement.
 
-The bundled `hyperbolic_toy_rank2.json` example supplies explicit normals and a basepoint so geometric mode can be exercised end to end. It is a self-contained toy fixture and is not compact 5-prism or 5-cube data. The bundled compact 5-cube example carries a machine-checkable certificate for the Gamma_1 source transcription, the two algebraic dotted weights, and the exact normal Gram rank/signature. It still relies on numerical `normalGram` factorization and basepoint solving for visualization.
+The bundled `hyperbolic_toy_rank2.json` example supplies explicit normals and a basepoint so geometric mode can be exercised end to end. It is a self-contained toy fixture and is not compact 5-prism or 5-cube data. The bundled compact 5-cube, Makarov `P0` prism, Emery-Kellerhals `P1 = D P0` double, Makarov `P2` prism, and Tumarkin's 15 compact 5D eight-facet `G11411` cases carry machine-checkable certificates for source transcription, algebraic dotted weights, and normal Gram rank/signature diagnostics. `P1` remains labeled as a double of the prism, not as a simplicial prism. All compact examples still rely on numerical `normalGram` factorization and basepoint solving for visualization.
 
 ## Projection To 3D
 
@@ -164,8 +164,10 @@ derived inside the app. Schema version 1 validates `dataStatus`, `sourceRefs`,
 and certificate summaries, but the meaning stays narrow: `verified-source`
 means the cited source supports the stated diagram or value, while `certified`
 requires a passed machine-checkable certificate. The compact 5-cube certificate
-checks exact Gram inertia `(5 positive, 1 negative, 4 zero)`, not a rendered
-3D projection or numerically solved chamber point.
+checks exact Gram inertia `(5 positive, 1 negative, 4 zero)`. The bundled
+compact 5-prism family certificates check exact Gram inertia `(5 positive, 1
+negative, 1 zero)`. Neither scope certifies a rendered 3D projection or
+numerically solved chamber point.
 
 ## Quotients And Game Data
 
@@ -179,10 +181,10 @@ incidence/proxy data when the viewer can enumerate them. `Y_Gamma` is not a
 torsion-free quotient manifold.
 
 The app represents `Y_Gamma` primarily as a 3D 2-skeleton scene in the main
-viewer and as a cell atlas in the side panel: a base vertex, generator arrows,
-rank-two relation cells, higher spherical cells, and attaching-word data. The
-nerve/local link is a separate diagnostic derived from the spherical subsets;
-it is not `Y_Gamma` itself. The 3D relation faces are drawn as singular sheets
+viewer and as a cell inventory in the side panel: a base vertex, generator
+arrows, rank-two relation cells, higher spherical cells, and attaching-word
+data. The 2D nerve/local-link schematic is a separate diagnostic derived from
+the spherical subsets; it is not `Y_Gamma` itself. The 3D relation faces are drawn as singular sheets
 glued to the visible generator arrows, because the quotient attaches the
 alternating `2m` boundary word to the same one-vertex 1-skeleton. The viewer
 draws hidden construction corners to complete the visible hexagon, octagon, or

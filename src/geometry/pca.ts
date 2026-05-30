@@ -15,6 +15,13 @@ export interface PcaProjectionResult {
 
 const JACOBI_TOLERANCE = 1e-12;
 
+/**
+ * Deterministic PCA projection for drawing high-dimensional point clouds.
+ *
+ * PCA is used only to choose readable 3D coordinates. It is not a hyperbolic
+ * model map, so callers should not draw the unit ball or make distance claims
+ * from the resulting coordinates.
+ */
 export function pcaProject(
   points: Vector[],
   targetDimension = 3,

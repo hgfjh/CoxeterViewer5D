@@ -74,6 +74,618 @@
         "This artifact does not certify numerical normal coordinates or chamber basepoints.",
         "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
       ]
+    },
+    {
+      "id": "coxiter-compact-5-polytope-p1-double-makarov-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/compact_5_polytope_p1_double_makarov.coxiter.json",
+      "sha256": "70ac6b4bccd429216bee61f48fc559c0e988c598f0454aa0ee589fc22fbb8006",
+      "input": {
+        "example": "public/examples/compact_5_polytope_p1_double_makarov.json",
+        "sha256": "78f65c9584e72472dae23b665b7b7a31c3364b3af732381b92dc0e4b9724b1ad"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated compact_5_polytope_p1_double_makarov graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for the Emery-Kellerhals P1 double example.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact source transcription or exact normal Gram signature; the in-repo prism-family checker owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-compact-5-prism-makarov-p2-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/compact_5_prism_makarov_p2.coxiter.json",
+      "sha256": "231d870128472623d68d5f19dec6986045a54eaede00630e67c45374b25fa569",
+      "input": {
+        "example": "public/examples/compact_5_prism_makarov_p2.json",
+        "sha256": "3cda61e2eac958280f6cfa56fdd54f53fa893077c15e4d1310c608591f9e050f"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated compact_5_prism_makarov_p2 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for the Emery-Kellerhals P2 Makarov prism example.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact source transcription or exact normal Gram signature; the in-repo prism-family checker owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-01-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_01.coxiter.json",
+      "sha256": "5593f5e374d418bd3ad1cd9c398e1724b686f4dd9072ef64900d3f833211ff87",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_01.json",
+        "sha256": "29210cb2d8fe4c00701cc5521527b074e7fd6802cb0b7ae6e79f3bf9b4e1b4c4"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_01 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 01.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-02-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_02.coxiter.json",
+      "sha256": "0ad3f22746b78d0959d9265b9e09ecd494c84bba6e74d8fa8dfe39444a633b57",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_02.json",
+        "sha256": "f9f456ad176bd311f7231c3447c1046bffa38481f42c31c064fd6de88f787826"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_02 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 02.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-03-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_03.coxiter.json",
+      "sha256": "283734189ba529e6b0879420bb07f4bb0101a1475ca87a76af99bb9d45b39a37",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_03.json",
+        "sha256": "f153b31e46c41768efb7fce3659a2bdbeca1671ba0e743cb14aa63d9fae6fc58"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_03 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 03.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-04-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_04.coxiter.json",
+      "sha256": "ed533ca7c44fee6eb5b8c67e2455ee3bfaabbbec78de9b90df1b66667b6e0209",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_04.json",
+        "sha256": "434573d6fe0a591be7f1910bb8e8cd97508cc48909cc10477bc9af00e402f026"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_04 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 04.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-05-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_05.coxiter.json",
+      "sha256": "6ad8003f170f2337180b2d064b09322a9bed24064c583a4d917c1bbcb9df10f3",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_05.json",
+        "sha256": "ae3d7172c4e73b383dffa685f6a9bd470b34c1ec6785e1b8da1fbbc6eb80cf81"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_05 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 05.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-06-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_06.coxiter.json",
+      "sha256": "f98986c1e2213fa6816afc00d7a977d27971a186a8bd02cdb3f38cf99c8e245d",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_06.json",
+        "sha256": "2ceb73cce0d9044355202de875b3b001d5f6731b9918cd85b3ef980349bef2ac"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_06 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 06.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-07-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_07.coxiter.json",
+      "sha256": "d24086a173c46717ce056a3c906ca8568d903e10bc124e675c7a6ae1030721cf",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_07.json",
+        "sha256": "d1854a5564e697b0176933ee37acf14159ba9c2fbcd4c577bbd9c881eb540e0d"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_07 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 07.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-08-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_08.coxiter.json",
+      "sha256": "707f2f25ad62a1bf5f3be2698d484ac31e2476f9a2d6c92b90800cfa5d458f19",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_08.json",
+        "sha256": "3ac7f8e173f74f974563350572a7322a388bd4dd754eca7e5ba1aa46546e86e5"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_08 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 08.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-09-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_09.coxiter.json",
+      "sha256": "93f684ad35ff4ffc7175e8c617056cea64f30f13c54bbc179fe91baace471e4e",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_09.json",
+        "sha256": "50b7f788d79b17f5f755d8233f9bf420756422138b26555a42ddd8a82d68a58c"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_09 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 09.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-10-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_10.coxiter.json",
+      "sha256": "26743986fccc81dbe3dd33ff756c85c74e3834b129f7d3c25bc92aedb6af54e2",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_10.json",
+        "sha256": "de9c5f1f3ec9bcd2c91cecc7868c1e640dcb8d1559f5fb12ba1c3227884dc09f"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_10 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 10.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-11-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_11.coxiter.json",
+      "sha256": "8c2fef2a29a27d631346152187d0d19a21f2d898b6c759eecb59a43b8adc6084",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_11.json",
+        "sha256": "443f0266704eb8c4715623379766a93cf36b5172eaf3aaeccffe8c859b0e6c10"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_11 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 11.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-12-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_12.coxiter.json",
+      "sha256": "fa2618c3bd611250cdeeb56c875d195a3787e7cfb365b69517419082332c93c3",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_12.json",
+        "sha256": "96fef6355f60e41b297a8649ddab7e6eccecf68142e68c2d8a6f7f3fa54e4b14"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_12 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 12.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-13-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_13.coxiter.json",
+      "sha256": "fe1812215829cdf8ff999cd9d8b1639b3f7db858ed2fd16a3829e294660d9d73",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_13.json",
+        "sha256": "c5857eaa5427d58dbdb7289c5d587c533db546e5314300d8ffa580dc275a391f"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_13 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 13.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-14-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_14.coxiter.json",
+      "sha256": "3a08acbc317fb90fd19bedd275e9eea2243897c57f5a5f4e522c60384cf129d8",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_14.json",
+        "sha256": "299b190d099df7af62e71b31229415c3c11fc32ef2e4a6f671dfea3c90fee402"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_14 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 14.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
+    },
+    {
+      "id": "coxiter-tumarkin-5d-8facet-g11411-15-2026-05-30",
+      "tool": "coxiter",
+      "artifactKind": "external-coxiter-output",
+      "status": "passed",
+      "path": "scripts/certificates/coxiter/tumarkin_5d_8facet_g11411_15.coxiter.json",
+      "sha256": "db41f510e57d59ae7f4ba5e0455badab0724f5225ff8a30e39bfcf4080b902d3",
+      "input": {
+        "example": "public/examples/tumarkin_5d_8facet_g11411_15.json",
+        "sha256": "d8946da1682c9a82b0984857c1bc90611e9ec206c9556324fa713eab674c8a6c"
+      },
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "bash",
+        "-lc",
+        "coxiter < generated tumarkin_5d_8facet_g11411_15 graph"
+      ],
+      "environment": {
+        "runtime": "CoxIter",
+        "runtimePath": "coxiter",
+        "containerProvided": false,
+        "notes": "CoxIter may be installed directly or run through WSL; the devcontainer does not install it."
+      },
+      "claims": [
+        "CoxIter accepted the prepared diagram input for Tumarkin Table 4.10 G11411 case 15.",
+        "The stored output reported cocompact yes and finite covolume yes for the hashed graph."
+      ],
+      "boundary": [
+        "This artifact does not certify exact dotted weights or exact normal Gram signature; scripts/certify_tumarkin_8facet.py owns those scopes.",
+        "This artifact does not certify numerical normal coordinates or chamber basepoints.",
+        "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
+      ]
     }
   ]
 }

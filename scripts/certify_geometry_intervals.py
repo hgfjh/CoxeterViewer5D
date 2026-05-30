@@ -40,6 +40,18 @@ SUPPORTED_EXAMPLES = {
         "expectedDimension": 5,
         "expectedSignature": {"positive": 5, "negative": 1, "zero": 1},
     },
+    "compact_5_polytope_p1_double_makarov.json": {
+        "sourceRefIds": ["emery-kellerhals-2013-smallest-5-orbifolds"],
+        "expectedRank": 7,
+        "expectedDimension": 5,
+        "expectedSignature": {"positive": 5, "negative": 1, "zero": 1},
+    },
+    "compact_5_prism_makarov_p2.json": {
+        "sourceRefIds": ["emery-kellerhals-2013-smallest-5-orbifolds"],
+        "expectedRank": 7,
+        "expectedDimension": 5,
+        "expectedSignature": {"positive": 5, "negative": 1, "zero": 1},
+    },
 }
 
 Vector = list[float]

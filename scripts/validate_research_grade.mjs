@@ -20,6 +20,15 @@ const COMMANDS = [
   [
     "python",
     [
+      "scripts/certify_compact_5_prism_family.py",
+      "public/examples/compact_5_polytope_p1_double_makarov.json",
+      "public/examples/compact_5_prism_makarov_p2.json",
+    ],
+  ],
+  ["python", ["scripts/certify_tumarkin_8facet.py"]],
+  [
+    "python",
+    [
       "scripts/gap_kbmag_export_backend.py",
       "--certify-output",
       "tests/fixtures/generated/I2_5_gap_radius_5.json",
@@ -41,7 +50,28 @@ const COMMANDS = [
       "public/examples/compact_5_prism_makarov.json",
     ],
   ],
+  [
+    "python",
+    [
+      "scripts/certify_geometry_intervals.py",
+      "public/examples/compact_5_polytope_p1_double_makarov.json",
+    ],
+  ],
+  [
+    "python",
+    [
+      "scripts/certify_geometry_intervals.py",
+      "public/examples/compact_5_prism_makarov_p2.json",
+    ],
+  ],
   ["node", ["scripts/check_independent.mjs"]],
+  [
+    "node",
+    [
+      "scripts/validate_artifact_manifest.mjs",
+      "scripts/certificates/external-artifact-manifest.example.json",
+    ],
+  ],
   ["node", ["scripts/compare_backends.mjs"]],
   ["node", ["scripts/compare_quotient_backends.mjs"]],
   ["node", ["scripts/validate_workflow.mjs"]],

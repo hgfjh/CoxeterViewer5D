@@ -1,17 +1,26 @@
 import { type Vector } from "./linearAlgebra";
 
+/**
+ * Klein projection from the upper hyperboloid to the unit ball.
+ *
+ * Geodesics become straight chords, which makes chamber adjacency easier to
+ * trace. Hyperbolic distances and angles are not preserved.
+ */
 export function kleinProject(point: Vector): Vector {
   assertUpperHyperboloidPoint(point, "Klein");
 
-  // The Klein model sends x in H^d to spatial(x) / x0. It keeps geodesics
-  // straight in the ball, but it is not a distance-preserving projection.
   return point.slice(1).map((coordinate) => coordinate / point[0]);
 }
 
+/**
+ * Poincare projection from the upper hyperboloid to the unit ball.
+ *
+ * This projection is conformal in the full model, but the app may still show a
+ * 3D axis/PCA slice of a higher-dimensional point cloud.
+ */
 export function poincareProject(point: Vector): Vector {
   assertUpperHyperboloidPoint(point, "Poincare");
 
-  // Stereographic projection from (-1, 0, ..., 0) to the unit ball.
   const denominator = point[0] + 1;
   return point.slice(1).map((coordinate) => coordinate / denominator);
 }

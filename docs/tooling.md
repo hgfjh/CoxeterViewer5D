@@ -5,27 +5,71 @@ imports should not require runtime network access or external algebra systems.
 
 ## App Commands
 
-Use `pnpm` from the repository root:
+Use Corepack so the pinned `pnpm` version in `package.json` is respected:
 
 ```bash
-pnpm install
-pnpm dev
-pnpm test
-pnpm lint
-pnpm build
-pnpm exec playwright test
+corepack enable
+corepack pnpm install
+corepack pnpm dev
+```
+
+If a developer already has a compatible global `pnpm`, the shorter `pnpm ...`
+commands work too. Corepack is documented because it is less fragile for a
+fresh clone.
+
+`corepack pnpm dev` starts the Vite development server. Vite prints the local
+browser URL, usually `http://127.0.0.1:5173/`.
+
+For a production-style web check:
+
+```bash
+corepack pnpm build
+corepack pnpm preview
+```
+
+`build` writes `dist/`; `preview` serves that directory locally.
+
+Routine validation commands:
+
+```bash
+corepack pnpm format
+corepack pnpm lint
+corepack pnpm test
+corepack pnpm exec playwright test
 ```
 
 The package scripts also include:
 
 ```bash
-pnpm e2e
-pnpm format
-pnpm preview
-pnpm test:watch
-pnpm bench:catalogue
-pnpm bench:catalogue:check
+corepack pnpm e2e
+corepack pnpm test:watch
+corepack pnpm bench:catalogue
+corepack pnpm bench:catalogue:check
 ```
+
+## Desktop App Commands
+
+The desktop app is a Tauri v2 shell around the same web viewer. It needs the
+web dependencies above plus Rust and the operating-system prerequisites that
+Tauri expects.
+
+Run the desktop app in development mode:
+
+```bash
+corepack pnpm desktop:dev
+```
+
+Build an unsigned local desktop bundle:
+
+```bash
+corepack pnpm desktop:build
+```
+
+Tauri writes the raw release binary under `src-tauri/target/release/` and
+platform bundles under `src-tauri/target/release/bundle/`. The exact file names
+depend on the target OS and Tauri bundle target. These outputs are ignored by
+git; public users should get desktop artifacts from a GitHub Release, not from a
+source checkout.
 
 ## Exact Exporter Workflow
 
@@ -81,6 +125,30 @@ Optional exact-tool paths remain outside the container contract:
 
 When an external runtime is used, record the path and command shape in an
 artifact manifest rather than hiding it in local machine state.
+
+Tumarkin's 15 compact 5D eight-facet `G11411` examples are regenerated and
+checked by a dedicated in-repo certifier:
+
+```bash
+python scripts/tumarkin_8facet_eps.py
+python scripts/tumarkin_8facet_solve.py
+python scripts/certify_tumarkin_8facet.py --write-examples
+python scripts/certify_tumarkin_8facet.py
+```
+
+The first command parses the arXiv EPS artwork into source-vector diagram
+records, the second solves the dotted weights, and the certifier writes or
+validates the bundled `tumarkin_5d_8facet_g11411_*.json` files. These scripts
+certify the source transcription and normal-Gram diagnostics; rendered
+coordinates remain numerical visualization data.
+
+External tool jobs should be treated as finite, inspectable jobs, not as hidden
+desktop services. A job is ready for release only when it has a stable launcher
+under `scripts/`, validates its input, emits JSON or a certificate artifact, and
+records tool id, command shape, input hash, output hash, status, claims, and
+non-claims. `missing-runtime`, `missing-kbmag`, `unsupported-coxeter-system`,
+and `skipped` are valid outcomes; they are preferable to pretending that an
+exact backend ran.
 
 `scripts/external_tool_adapters.json` records the current interoperability
 boundary. Sage, GAP/KBMAG, and CoxIter entries point at implemented wrappers.
@@ -159,14 +227,27 @@ pnpm session:validate
 Release scripts are deterministic readiness checks by default:
 
 ```bash
-pnpm release:web
-pnpm release:desktop
+corepack pnpm release:web
+corepack pnpm release:desktop
 ```
 
-`release:web` builds and hashes `dist/`. `release:desktop` checks the optional
-Tauri v2 scaffold and reports `skipped` until a maintainer opts into the Rust
-project and Tauri CLI dependency. The desktop shell must wrap the same viewer
-and artifact pipeline as the web app; it is not a separate math runtime.
+`release:web` builds and hashes `dist/`. `release:desktop` checks the Tauri v2
+scaffold, signing environment, updater environment, and packaging readiness.
+The desktop shell must wrap the same viewer and artifact pipeline as the web
+app; it is not a separate math runtime.
+
+Both release scripts include a `releaseOperations` object. For web releases,
+code signing and native updater work are `not-applicable`. For desktop releases,
+code signing is reported from platform environment variables and updater signing
+is reported from `TAURI_SIGNING_PRIVATE_KEY` plus the optional
+`TAURI_SIGNING_PRIVATE_KEY_PASSWORD`. Missing signing or updater variables
+produce `status: "skipped"` with `ok: true`; unsigned local bundles are allowed.
+A public auto-updating build still needs platform signing credentials, a Tauri
+updater signing key, a release endpoint, and maintainer release-channel policy.
+
+Release notes are scaffolded in `docs/releases/`. Start from
+`docs/releases/template.md` and record the exact web/desktop report status,
+signing/updater state, validation commands, and blockers.
 
 ## Runtime Checks
 
@@ -321,10 +402,15 @@ The research-grade gate is stricter than CI:
 ```bash
 pnpm certify:compact-5-cube
 pnpm certify:compact-5-prism
+pnpm certify:compact-5-prism-family
 python scripts/certify_geometry_intervals.py public/examples/compact_5_cube_gamma1.json
 python scripts/certify_geometry_intervals.py public/examples/compact_5_prism_makarov.json
+python scripts/certify_geometry_intervals.py public/examples/compact_5_polytope_p1_double_makarov.json
+python scripts/certify_geometry_intervals.py public/examples/compact_5_prism_makarov_p2.json
 python scripts/coxiter_check_compact.py public/examples/compact_5_cube_gamma1.json --require-external
 python scripts/coxiter_check_compact.py public/examples/compact_5_prism_makarov.json --require-external
+python scripts/coxiter_check_compact.py public/examples/compact_5_polytope_p1_double_makarov.json --require-external
+python scripts/coxiter_check_compact.py public/examples/compact_5_prism_makarov_p2.json --require-external
 pnpm check:independent
 pnpm validate:research-grade
 ```

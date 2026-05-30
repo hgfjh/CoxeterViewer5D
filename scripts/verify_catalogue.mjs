@@ -4,6 +4,7 @@ import { join } from "node:path";
 
 const EXAMPLE_DIR = "public/examples";
 const GENERATED_DIR = "tests/fixtures/generated";
+const EIGHT_FACET_CATALOGUE = "src/catalogue/tumarkin_5d_8facet_catalogue.json";
 const STATUSES = new Set([
   "toy",
   "placeholder",
@@ -25,6 +26,17 @@ function evaluatePolynomial(coefficients, x) {
     (value, coefficient) => value * x + coefficient,
     0,
   );
+}
+
+function relativePolynomialResidual(coefficients, x) {
+  const degree = Math.max(0, coefficients.length - 1);
+  const base = Math.max(1, Math.abs(x));
+  const scale = coefficients.reduce(
+    (total, coefficient, index) =>
+      total + Math.abs(coefficient) * base ** (degree - index),
+    0,
+  );
+  return Math.abs(evaluatePolynomial(coefficients, x)) / Math.max(1, scale);
 }
 
 function verifyExactReal(errors, file, location, exact) {
@@ -72,14 +84,15 @@ function verifyExactReal(errors, file, location, exact) {
     );
   }
 
-  const residual = Math.abs(
-    evaluatePolynomial(exact.minimalPolynomial ?? [], exact.decimal),
+  const residual = relativePolynomialResidual(
+    exact.minimalPolynomial ?? [],
+    exact.decimal,
   );
-  if (residual > 1e-8) {
+  if (residual > 1e-12) {
     fail(
       errors,
       file,
-      `${location}.exact.decimal has polynomial residual ${residual}.`,
+      `${location}.exact.decimal has scaled polynomial residual ${residual}.`,
     );
   }
 }
@@ -200,6 +213,84 @@ function verifyGenerated(errors, file, ball) {
   }
 }
 
+function verifyEightFacetCatalogue(errors, file, catalogue) {
+  if (catalogue.kind !== "compact-5d-eight-facet-catalogue") {
+    fail(
+      errors,
+      file,
+      "kind must identify the compact 5D eight-facet catalogue.",
+    );
+  }
+  if (catalogue.sourceRef?.id !== "tumarkin-2007-n-plus-3") {
+    fail(errors, file, "sourceRef must cite Tumarkin Table 4.10.");
+  }
+  if (!Array.isArray(catalogue.entries) || catalogue.entries.length !== 15) {
+    fail(errors, file, "catalogue must contain exactly 15 entries.");
+    return;
+  }
+
+  const ids = new Set();
+  const representative = [];
+  for (const [index, entry] of catalogue.entries.entries()) {
+    if (ids.has(entry.id)) {
+      fail(errors, file, `duplicate entry id ${entry.id}.`);
+    }
+    ids.add(entry.id);
+    if (entry.tableIndex !== index + 1) {
+      fail(errors, file, `entry ${entry.id} must have sequential tableIndex.`);
+    }
+    if (
+      entry.dimension !== 5 ||
+      entry.facets !== 8 ||
+      entry.galeDiagram !== "G11411"
+    ) {
+      fail(errors, file, `entry ${entry.id} has wrong compact 5D metadata.`);
+    }
+    if (
+      entry.dataStatus !== "certified" ||
+      entry.renderStatus !== "renderable-example" ||
+      entry.renderable !== true
+    ) {
+      fail(
+        errors,
+        file,
+        `entry ${entry.id} must be a certified renderable example.`,
+      );
+    }
+    if (entry.certificationStatus !== "certified") {
+      fail(
+        errors,
+        file,
+        `entry ${entry.id} must carry a passed Tumarkin checker certificate.`,
+      );
+    }
+    const expectedExample = `tumarkin_5d_8facet_g11411_${String(entry.tableIndex).padStart(2, "0")}.json`;
+    if (entry.exampleFile !== expectedExample) {
+      fail(errors, file, `entry ${entry.id} must point at ${expectedExample}.`);
+    } else {
+      try {
+        readJson(join(EXAMPLE_DIR, expectedExample));
+      } catch (error) {
+        fail(
+          errors,
+          file,
+          `entry ${entry.id} example file is missing: ${error}`,
+        );
+      }
+    }
+    if (entry.representative) {
+      representative.push(entry.tableIndex);
+    }
+  }
+  if (representative.join(",") !== "1,8,15") {
+    fail(
+      errors,
+      file,
+      "representative catalogue entries must be 1, 8, and 15.",
+    );
+  }
+}
+
 const errors = [];
 const examples = readdirSync(EXAMPLE_DIR)
   .filter((name) => name.endsWith(".json"))
@@ -216,11 +307,18 @@ for (const file of generated) {
   verifyGenerated(errors, file, readJson(join(GENERATED_DIR, file)));
 }
 
+verifyEightFacetCatalogue(
+  errors,
+  EIGHT_FACET_CATALOGUE,
+  readJson(EIGHT_FACET_CATALOGUE),
+);
+
 const result = {
   ok: errors.length === 0,
   checked: {
     examples: examples.length,
     generated: generated.length,
+    eightFacetCatalogueEntries: 15,
   },
   errors,
 };

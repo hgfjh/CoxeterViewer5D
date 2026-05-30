@@ -25,8 +25,12 @@ export interface DavisCellProxyOptions {
 }
 
 /**
- * Higher-rank Davis cells are not embedded exactly here. We identify complete
- * visible restricted Cayley components and expose them as visual proxies.
+ * Builds renderer-facing proxies for higher-rank Davis cells.
+ *
+ * Prefer imported or derived exact incidence records when present. If no such
+ * records exist, the fallback searches for complete restricted components in
+ * the visible ball. In both cases the filled 3D shape remains a readability
+ * proxy; exactness refers only to the node/edge/cell incidence data.
  */
 export function computeSphericalCellProxies(
   ball: GeneratedCayleyBall,

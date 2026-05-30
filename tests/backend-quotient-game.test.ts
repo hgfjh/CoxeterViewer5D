@@ -892,7 +892,7 @@ describe("backend reproducibility command contracts", () => {
       }>;
     };
     expect(registryReport.ok).toBe(true);
-    expect(registryReport.manifests[0]?.artifactCount).toBe(2);
+    expect(registryReport.manifests[0]?.artifactCount).toBe(19);
     expect(
       registryReport.manifests[0]?.artifacts.every(
         (artifact) =>

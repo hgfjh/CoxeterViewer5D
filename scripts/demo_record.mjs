@@ -11,11 +11,14 @@ const demos = [
     id: "find-a-hexagon",
     title: "Find a hexagon",
     docNeedle: "Hexagon Relation",
-    sourceExample: "I2_5",
+    sourceExample: "A2",
     guideId: "find-a-hexagon",
+    media: {
+      screenshot: "docs/screenshots/hexagon-a2-rank-two-m3.png",
+    },
     storyboardFrames: [
-      "Open the relation guide.",
-      "Focus an m=3 pair in a compact or finite example.",
+      "Open A2 and switch to the rank-two-cell preset.",
+      "Focus the unique m=3 pair.",
       "Read the six alternating boundary labels.",
     ],
   },
@@ -25,6 +28,9 @@ const demos = [
     docNeedle: "Rank-Three Cell",
     sourceExample: "A3",
     guideId: "understand-rank-three-cell",
+    media: {
+      screenshot: "docs/screenshots/a3-rank-three-square-hexagon.png",
+    },
     storyboardFrames: [
       "Open Y_Gamma.",
       "Choose the rank-three spherical-cell lens.",
@@ -32,15 +38,18 @@ const demos = [
     ],
   },
   {
-    id: "inspect-ygamma",
-    title: "Inspect Y_Gamma",
+    id: "inspect-ygamma-p2",
+    title: "Inspect Y_Gamma for P2",
     docNeedle: "The Base Complex `Y_Gamma`",
-    sourceExample: "A3",
+    sourceExample: "compact_5_prism_makarov_p2",
     guideId: "inspect-ygamma",
+    media: {
+      screenshot: "docs/screenshots/y-gamma-p2-m5-relation.png",
+    },
     storyboardFrames: [
       "Show the single base vertex and generator arrows.",
-      "Turn on semantic edge labels.",
-      "Toggle full 2-skeleton and topology glass mode.",
+      "Focus an m=5 relation face in the 3D model.",
+      "Compare the 3D model with the cell inventory, not the 2D nerve schematic.",
     ],
   },
   {
@@ -49,6 +58,9 @@ const demos = [
     docNeedle: "Quotient And Game Demo",
     sourceExample: "I2_5_identity_quotient",
     guideId: "quotient-game-experiment",
+    media: {
+      screenshot: "docs/screenshots/i2-5-quotient-game-cocycle.png",
+    },
     storyboardFrames: [
       "Load the I2(5) quotient workflow.",
       "Use the s0=+1, s1=-1 cocycle preset.",

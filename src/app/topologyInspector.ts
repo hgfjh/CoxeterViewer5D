@@ -44,6 +44,13 @@ export interface TopologyExplanation {
   badges: string[];
 }
 
+/**
+ * Produces the short explanation shown for the selected topological object.
+ *
+ * The status field is intentionally conservative: projected views remain
+ * "projection", higher-cell hulls remain "visual proxy", and quotient cells
+ * become "certified" only when their imported certificate says so.
+ */
 export function buildTopologyExplanation(input: {
   system: CoxeterSystemInput;
   subject: TopologyInspectorSubject | undefined;

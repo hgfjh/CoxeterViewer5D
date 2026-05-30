@@ -7,6 +7,9 @@ import process from "node:process";
 
 const deterministicCheckedAt = "1970-01-01T00:00:00.000Z";
 
+// Web releases are static dist/ snapshots. The hashes here are release
+// bookkeeping, not mathematical certificates.
+
 function commandExists(command, args = ["--version"]) {
   const result = spawnSync(command, args, {
     cwd: process.cwd(),
@@ -55,6 +58,21 @@ function listFiles(root) {
   return files.sort((left, right) => left.path.localeCompare(right.path));
 }
 
+function webReleaseOperations() {
+  return {
+    codeSigning: {
+      status: "skipped",
+      reason: "not-applicable",
+      note: "The web release is a static dist/ artifact and is not code-signed by this script.",
+    },
+    updater: {
+      status: "skipped",
+      reason: "not-applicable",
+      note: "The web release has no native updater bundle. Desktop updater signing is reported by release:desktop.",
+    },
+  };
+}
+
 function skipped(reason, detail) {
   return {
     ok: true,
@@ -64,6 +82,7 @@ function skipped(reason, detail) {
     checkedAt: deterministicCheckedAt,
     releaseKind: "web-static",
     artifactDir: "dist",
+    releaseOperations: webReleaseOperations(),
     files: [],
   };
 }
@@ -96,6 +115,7 @@ if (!skipBuild) {
       checkedAt: deterministicCheckedAt,
       releaseKind: "web-static",
       artifactDir: "dist",
+      releaseOperations: webReleaseOperations(),
       build: {
         ...build,
         status: "failed",
@@ -132,6 +152,7 @@ const report = {
   releaseKind: "web-static",
   artifactDir: "dist",
   build,
+  releaseOperations: webReleaseOperations(),
   files: listFiles(distDir),
 };
 

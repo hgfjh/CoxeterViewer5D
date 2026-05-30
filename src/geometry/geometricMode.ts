@@ -65,9 +65,12 @@ const DEFAULT_PROJECTION: HyperbolicProjection = "poincare-axes";
 const DEFAULT_AXES: [number, number, number] = [0, 1, 2];
 
 /**
- * Builds Lorentz reflection data for a hyperboloid Coxeter input. Explicit
- * normal coordinates are preferred; otherwise a normal Gram matrix is factored
- * numerically into coordinates for visualization.
+ * Builds Lorentz reflection data for a hyperboloid Coxeter input.
+ *
+ * Explicit normalCoordinates plus a basepoint are the strongest browser path.
+ * If only normalGram is present, normals are factored numerically and the
+ * resulting warnings must stay visible. Either way, this helper validates the
+ * Lorentz form and chamber inequalities before geometric mode is enabled.
  */
 export function buildHyperbolicReflectionData(
   system: CoxeterSystemInput,
@@ -225,6 +228,13 @@ export function hyperbolicPointForWord(
   return matVec(wordMatrix, basepoint);
 }
 
+/**
+ * Places Cayley nodes by applying the reflection representation to a basepoint.
+ *
+ * The hyperbolicPoint field is the full Lorentz-model point. The rendered
+ * position is a 3D projection chosen for inspection, so callers should continue
+ * to label it as projected geometry rather than an exact embedded model.
+ */
 export function placeCayleyNodesInHyperbolicGeometry(
   system: CoxeterSystemInput,
   nodes: CayleyNode[],

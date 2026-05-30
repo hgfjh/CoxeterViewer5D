@@ -7,6 +7,10 @@ import process from "node:process";
 const DEFAULT_MANIFEST =
   "scripts/certificates/external-artifact-manifest.example.json";
 const MANIFEST_KIND = "coxeter-viewer-external-artifact-manifest";
+
+// The registry records provenance for generated artifacts. It checks hashes,
+// commands, tool names, and declared claim boundaries; the mathematical content
+// is checked by the artifact-specific certifier named in each record.
 const KNOWN_TOOLS = new Set([
   "sage",
   "gap-kbmag",

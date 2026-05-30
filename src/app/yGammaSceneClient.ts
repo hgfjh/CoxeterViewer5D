@@ -56,9 +56,13 @@ interface PendingRequest {
   startedAt: number;
 }
 
-const yGammaSceneSchemaVersion = 1;
+const yGammaSceneSchemaVersion = 2;
 const yGammaSceneNamespace = "ygamma-scene";
+const yGammaSceneBuilderVersion = "relation-face-lift-v2";
 
+/**
+ * Factory for the off-main-thread Y_Gamma scene builder.
+ */
 export function createYGammaSceneClient(
   options: YGammaSceneClientOptions = {},
 ): YGammaSceneClient {
@@ -97,6 +101,7 @@ export class YGammaSceneClient {
     });
     return yGammaSceneVersion({
       atlasVersion,
+      builderVersion: yGammaSceneBuilderVersion,
       options: request.options,
     });
   }
@@ -204,6 +209,7 @@ export class YGammaSceneClient {
   ): Promise<void> {
     const pending = this.pending.get(response.requestId);
     if (!pending) {
+      // A newer lens/preset may already have replaced this request.
       return;
     }
     this.pending.delete(response.requestId);

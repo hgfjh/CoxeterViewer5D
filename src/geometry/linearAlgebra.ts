@@ -1,6 +1,12 @@
 export type Vector = number[];
 export type Matrix = number[][];
 
+/**
+ * Minimal dense linear algebra for small Coxeter and Lorentz computations.
+ *
+ * These helpers favor explicit shape checks over cleverness. Large numerical
+ * work belongs in external Sage/GAP/CoxIter-style tooling.
+ */
 export function identityMatrix(size: number): Matrix {
   if (!Number.isInteger(size) || size < 0) {
     throw new Error(`Matrix size must be a non-negative integer, got ${size}.`);

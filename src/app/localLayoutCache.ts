@@ -26,6 +26,9 @@ export interface LocalViewCacheOptions {
   breadcrumbEntries?: number;
 }
 
+/**
+ * Factory for memoizing local navigation helpers around a generated ball.
+ */
 export function createLocalViewCache(
   options: LocalViewCacheOptions = {},
 ): LocalViewCache {
@@ -90,6 +93,8 @@ export class LocalViewCache {
       mode: input.mode,
     });
     if (this.neighborhoods.has(key)) {
+      // Sets are mutable, so callers receive a copy and cannot corrupt the
+      // cached neighborhood used by later focus changes.
       return cloneOptionalSet(this.neighborhoods.get(key));
     }
     const nodeIds = cellNeighborhoodNodeIds(

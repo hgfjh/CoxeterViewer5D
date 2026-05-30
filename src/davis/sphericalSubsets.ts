@@ -253,10 +253,12 @@ function computeSphericalSubgroupOrder(
 }
 
 /**
- * Cholesky pivots detect positive definiteness for the finite Coxeter Gram
- * matrix. For Coxeter systems, this is the local test for a spherical special
- * subgroup; the code keeps the numerical tolerance explicit because this is a
- * viewer-side check, not an exact classification proof.
+ * Tests positive definiteness of a finite Coxeter Gram matrix.
+ *
+ * In the Davis-complex convention, a special subgroup is spherical exactly
+ * when its finite Coxeter Gram matrix is positive definite. This viewer uses a
+ * numerical Cholesky test so interactive imports can be checked without Sage;
+ * exact classification claims still belong to external certificates.
  */
 export function checkPositiveDefinite(
   matrix: number[][],
@@ -305,6 +307,13 @@ export function checkPositiveDefinite(
   };
 }
 
+/**
+ * Checks whether a named generator subset is spherical in the viewer model.
+ *
+ * Infinite Coxeter entries are rejected before the Gram test because they do
+ * not define finite special subgroups. The returned Gram matrix is numerical
+ * and should be treated as validation data, not as a proof artifact.
+ */
 export function checkSphericalSubset(
   input: unknown,
   generators: number[],
@@ -420,10 +429,11 @@ function toSphericalSubset(
 }
 
 /**
- * Enumerates nonempty spherical subsets of S. For small rank this checks every
- * subset; above the guard it still returns the singleton and finite rank-two
- * data needed by the local viewer, and warns that higher-rank simplices were
- * skipped.
+ * Enumerates nonempty spherical subsets used by Davis cells and local links.
+ *
+ * Small ranks are exhaustive. Large ranks fall back to singleton and finite
+ * rank-two data so the viewer stays responsive; the warning is part of the
+ * result because omitted higher-rank simplices change local-link topology.
  */
 export function enumerateSphericalSubsets(
   input: unknown,

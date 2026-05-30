@@ -384,9 +384,20 @@ Recommended examples:
 - `universal_rank3.json`: all off-diagonal entries infinite; useful for tree-like Cayley balls and absence of rank-two cells.
 - `hyperbolic_toy_rank2.json`: explicit hyperboloid normals and basepoint for exercising geometric mode; toy data only.
 - `compact_5_cube_gamma1.json`: certified compact hyperbolic Coxeter 5-cube graph from Jacquemet-Tschantz Figure 3. The bundled certificate checks the Gamma_1 source transcription table, the algebraic dotted values, and exact normal Gram rank/signature. Geometric coordinates and basepoint are still numerical visualization data derived from `normalGram`, not part of the certificate.
-- `compact_5_prism_makarov.json`: certified compact hyperbolic Coxeter 5-prism graph from Bredon-Kellerhals Example 8. The bundled certificate checks the source graph based on `[5,3,3,3,3]`, the algebraic dotted value, and exact normal Gram rank/signature. Geometric coordinates and basepoint are still numerical visualization data derived from `normalGram`, not part of the certificate.
+- `compact_5_prism_makarov.json`: certified compact hyperbolic Coxeter 5-prism `P0` graph from Bredon-Kellerhals Example 8 and Emery-Kellerhals diagram (1-2). The bundled certificate checks the source graph based on `[5,3,3,3,3]`, the algebraic dotted value, and exact normal Gram rank/signature. Geometric coordinates and basepoint are still numerical visualization data derived from `normalGram`, not part of the certificate.
+- `compact_5_polytope_p1_double_makarov.json`: certified compact Coxeter 5-polytope `P1 = D P0` from Emery-Kellerhals diagram (1-4). The bundled certificate checks the source graph, derived algebraic dotted value, and exact normal Gram rank/signature. It is included with the three-smallest-orbifold family, but it is a double of the Makarov prism, not a simplicial prism.
+- `compact_5_prism_makarov_p2.json`: certified compact hyperbolic Coxeter 5-prism `P2` from Emery-Kellerhals diagram (1-3), with Coxeter symbol `[5,3,3,3,4]`. The bundled certificate checks the source graph, derived algebraic dotted value, and exact normal Gram rank/signature.
 
-Do not ship further compact hyperbolic data, or further compact 5-cube/5-prism Gram or coordinate data, unless the source is verified and cited in [references.md](references.md).
+The Tumarkin eight-facet catalogue lives at
+`src/catalogue/tumarkin_5d_8facet_catalogue.json`. The catalogue is a compact
+index over the 15 certified `G11411` examples rather than a replacement for the
+example JSON files. Each entry points at a bundled
+`tumarkin_5d_8facet_g11411_*.json` Coxeter-system file generated from
+`scripts/data/tumarkin_8facet_transcription.json` and checked by
+`scripts/certify_tumarkin_8facet.py`. The catalogue keeps the UI searchable
+without placing all 15 compact examples in the main selector.
+
+Do not ship further compact hyperbolic data, or stronger certification claims, unless the source is cited in [references.md](references.md) and a checker artifact is added.
 
 ## Import Behavior
 
@@ -435,7 +446,8 @@ The derived JSON shape is quotient-like for validation, but the viewer presents
 it as a fundamental-domain complex: one base vertex `"*"`, one oriented arrow
 per generator/facet direction, rank-two cells whose boundary positions reference
 `"*"`, and optional higher spherical incidence records.
-The viewer presents this data as a cell atlas plus a main-stage 3D 2-skeleton.
+The viewer presents this data as a cell inventory plus a main-stage 3D
+2-skeleton.
 The rendered rank-two faces are singular sheets glued to the visible generator
 arrows. Hidden construction corners complete the full `2m` outline; repeated
 boundary labels such as `"*"` in the quotient data are attaching-map positions

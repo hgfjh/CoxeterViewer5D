@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "sessionKind": "coxeter-viewer-project-session",
+  "project": {
+    "id": "coxeter-viewer-v0-1-0-public-alpha",
+    "label": "CoxeterViewer5D v0.1.0 public alpha demo"
+  },
+  "createdAt": "2026-05-30T00:00:00.000Z",
+  "updatedAt": "2026-05-30T00:00:00.000Z",
+  "appVersion": "0.1.0",
+  "dataset": {
+    "sourceKind": "example",
+    "activeDatasetId": "compact_5_prism_makarov_p2",
+    "activeExampleId": "compact_5_prism_makarov_p2"
+  },
+  "generation": {
+    "radius": 3,
+    "backend": "browserApproxBackend",
+    "maxRadius": 10,
+    "maxNodes": 20000,
+    "maxEdges": 80000,
+    "matrixKeyPrecision": 10
+  },
+  "view": {
+    "mode": "y-gamma",
+    "labelScope": "selected",
+    "showRankTwoCells": true,
+    "showHigherCells": true,
+    "showNodeLabels": false,
+    "showEdgeLabels": true
+  },
+  "files": {
+    "recent": []
+  },
+  "experiments": {
+    "bundleIds": []
+  },
+  "desktop": {
+    "preferredRuntime": "web"
+  },
+  "warnings": [
+    "Rendered Y_Gamma faces are a 3D readability model of exact incidence data."
+  ],
+  "notes": [
+    "Public alpha sample session: open the P2 Y_Gamma model and focus an m=5 relation."
+  ]
+}

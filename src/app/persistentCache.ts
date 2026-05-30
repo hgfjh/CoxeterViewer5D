@@ -149,6 +149,11 @@ export interface PersistentCache<T> {
 const defaultDatabaseName = "coxeter-viewer-performance-cache";
 const defaultStoreName = "records";
 
+/**
+ * Builds the IndexedDB key. Namespace, schema, app version, input hash, and
+ * variant all participate so stale mathematical data is missed rather than
+ * silently reused after a migration or source edit.
+ */
 export function persistentKeyString(key: PersistentCacheKey): string {
   return [
     key.namespace,
@@ -179,6 +184,12 @@ export function persistentCacheMetadataForNamespace(
   );
 }
 
+/**
+ * IndexedDB-backed cache with an in-memory LRU fallback.
+ *
+ * Cache hits are performance hints only. Generated JSON, certificates, and
+ * experiment bundles still carry their own hashes and validation status.
+ */
 export function createPersistentCache<T>(
   options: PersistentCacheOptions = {},
 ): PersistentCache<T> {

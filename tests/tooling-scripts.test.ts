@@ -132,6 +132,15 @@ describe("optional exact exporter tooling", () => {
     expect(packageJson.scripts["certify:compact-5-prism"]).toContain(
       "certify_compact_5_prism.py",
     );
+    expect(packageJson.scripts["certify:compact-5-prism-family"]).toContain(
+      "certify_compact_5_prism_family.py",
+    );
+    expect(
+      packageJson.scripts["check:coxiter:compact-5-polytope-p1"],
+    ).toContain("compact_5_polytope_p1_double_makarov.json");
+    expect(packageJson.scripts["check:coxiter:compact-5-prism-p2"]).toContain(
+      "compact_5_prism_makarov_p2.json",
+    );
     expect(packageJson.scripts["check:independent"]).toContain(
       "check_independent.mjs",
     );
@@ -141,6 +150,63 @@ describe("optional exact exporter tooling", () => {
     expect(packageJson.scripts["bench:timed"]).toContain("benchmark_timed.mjs");
     expect(packageJson.scripts["bench:catalogue:check"]).toContain("--check");
     expect(packageJson.scripts["bench:catalogue:write"]).toContain("--write");
+  });
+
+  it("reports release signing and updater skips without blocking local builds", () => {
+    const desktopStdout = execFileSync(
+      process.execPath,
+      ["scripts/release_desktop.mjs", "--check"],
+      { cwd: process.cwd(), encoding: "utf8" },
+    );
+    const desktop = JSON.parse(desktopStdout) as {
+      ok: boolean;
+      releaseOperations: {
+        codeSigning: { status: string; note: string };
+        updater: { status: string; missingEnv: string[]; note: string };
+      };
+    };
+
+    expect(desktop.ok).toBe(true);
+    expect(["configured", "skipped"]).toContain(
+      desktop.releaseOperations.codeSigning.status,
+    );
+    if (desktop.releaseOperations.codeSigning.status === "skipped") {
+      expect(desktop.releaseOperations.codeSigning.note).toContain("local");
+    }
+    expect(["configured", "skipped"]).toContain(
+      desktop.releaseOperations.updater.status,
+    );
+    if (desktop.releaseOperations.updater.status === "skipped") {
+      expect(desktop.releaseOperations.updater.missingEnv).toContain(
+        "TAURI_SIGNING_PRIVATE_KEY",
+      );
+      expect(desktop.releaseOperations.updater.note).toContain(
+        "does not fail unsigned local desktop builds",
+      );
+    }
+
+    const webStdout = execFileSync(
+      process.execPath,
+      ["scripts/release_web.mjs", "--check"],
+      { cwd: process.cwd(), encoding: "utf8" },
+    );
+    const web = JSON.parse(webStdout) as {
+      ok: boolean;
+      releaseOperations: {
+        codeSigning: { status: string; reason: string };
+        updater: { status: string; reason: string };
+      };
+    };
+
+    expect(web.ok).toBe(true);
+    expect(web.releaseOperations.codeSigning).toMatchObject({
+      status: "skipped",
+      reason: "not-applicable",
+    });
+    expect(web.releaseOperations.updater).toMatchObject({
+      status: "skipped",
+      reason: "not-applicable",
+    });
   });
 
   it("keeps the Sage exporter honest about runtime and implementation status", () => {
@@ -852,7 +918,7 @@ describe("optional exact exporter tooling", () => {
     expect(stored.benchmark).toBe("catalogue-static-v1");
     expect(stored.elapsedMs).toBeUndefined();
     expect(stored.totals).toMatchObject({
-      examples: 7,
+      examples: 24,
       generated: 6,
       generatedNodes: 80,
       generatedEdges: 104,

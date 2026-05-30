@@ -4,22 +4,47 @@ Demo media should teach inspection habits. A good screenshot or short clip
 shows the selected mathematical object, the relevant warnings, and enough UI
 context to tell exact data from drawing convention.
 
-## Recommended Demo Set
+## Public-Alpha Demo Set
 
-Capture these views first:
+The public alpha uses four primary captures. They are small enough to keep in
+the repo as screenshots and specific enough to teach the main inspection habits.
 
-- Hexagon relation: `A2`, rank-two pair with `m = 3`, one filled six-sided
-  Davis cell.
-- Decagon relation: `I2(5)`, full rank-two cell boundary with alternating
-  generator labels.
-- Rank-three cell: `A3`, one finite triple with square and hexagon face
-  incidence visible.
-- `Y_Gamma`: one relation face, one around-generator view, and one full
-  two-skeleton overview.
-- Quotient/game: `I2(5)` identity-subgroup workflow with the cocycle
-  `s0 = +1`, `s1 = -1`, and the boundary-sum diagnostic visible.
-- Geometric projection: a toy hyperbolic example or certified compact example
-  with the projection warning visible.
+- Find a hexagon: `A2`, rank-two pair `s0-s1` with `m = 3`, one filled
+  six-sided Davis cell, and the selected-cell inspector visible.
+- Inspect A3 rank-three cell: `A3`, `Y_Gamma(A3)` rank-three focus, with square
+  and hexagon face families visible as one 3D incidence object.
+- Inspect `Y_Gamma` for P2: `compact_5_prism_makarov_p2`, one relation or
+  around-generator focus first, then the full two-skeleton if it remains
+  readable.
+- Run `I2(5)` quotient/game: identity-subgroup workflow with ten cosets, one
+  decagon quotient cell, the `s0 = +1`, `s1 = -1` cocycle, and the boundary-sum
+  diagnostic visible.
+
+Other views, such as geometric projection or a full compact-example overview,
+belong in later release notes unless the screenshot makes the projection caveat
+easy to read.
+
+## Capture Tooling
+
+The repository has three useful capture paths:
+
+- **In-app stills**: use **Export screenshot** for a PNG, and export the sidecar
+  or experiment notebook bundle when the image will be cited. The sidecar tells
+  readers which dataset, selected object, filters, warnings, and scene stats the
+  image records.
+- **Storyboard metadata**: run `corepack pnpm demo:record` from the repository
+  root. This validates that the walkthrough headings named in
+  `docs/demo-media-manifest.json` exist and prints deterministic storyboard
+  metadata. Use `corepack pnpm demo:record -- --write docs/demo-media-manifest.json`
+  only when updating the manifest is part of the release task.
+- **Playwright traces**: `corepack pnpm e2e` uses the checked-in Playwright
+  config, which records traces on first retry. Traces are useful for debugging a
+  failed capture path, but they are not polished demo videos.
+
+There is no checked-in public-alpha video recorder beyond the storyboard
+manifest. For motion, use a local screen recorder or a temporary Playwright
+video configuration, keep clips short, and publish large videos as release
+artifacts instead of committing them to the repo.
 
 ## Capture Checklist
 
@@ -33,6 +58,8 @@ Before saving media:
 - Prefer local or focused views for cells. Use full-graph views for context.
 - Export the view sidecar JSON when the image will be cited, filed in an issue,
   or used in documentation.
+- Keep the browser viewport and app theme consistent across the four guided
+  demos, so the images feel like one tour rather than four unrelated captures.
 
 ## Suggested Captions
 
@@ -42,8 +69,9 @@ Use captions that identify both the object and the drawing layer:
   exact in the generated ball; the planar fill is a drawing."
 - "`A3` rank-three incidence proxy. The square and hexagon faces record
   spherical rank-two subsets in the selected triple."
-- "`Y_Gamma` one-relation view. The visible face is a singular relation sheet
-  attached to the one-vertex generator spine."
+- "`Y_Gamma(P2)` one-relation view. The visible face is a singular relation
+  sheet attached to the one-vertex generator spine for the certified P2 source
+  system."
 - "`I2(5)` quotient/game demo. The decagon boundary sum vanishes for the named
   integer cocycle."
 - "Hyperbolic chamber barycenters projected to 3D by PCA. Distances and
@@ -56,7 +84,7 @@ Use names that can be sorted and understood without opening the file:
 ```text
 docs/screenshots/hexagon-a2-rank-two-m3.png
 docs/screenshots/a3-rank-three-square-hexagon.png
-docs/screenshots/y-gamma-one-relation-a3.png
+docs/screenshots/y-gamma-p2-m5-relation.png
 docs/screenshots/i2-5-quotient-game-cocycle.png
 ```
 
@@ -68,6 +96,15 @@ docs/screenshots/hexagon-a2-rank-two-m3.sidecar.json
 
 Do not commit large videos by default. Prefer short clips, compressed assets,
 or links to release artifacts when motion is essential.
+
+Suggested video stems:
+
+```text
+release-media/find-a-hexagon-a2.webm
+release-media/a3-rank-three-cell.webm
+release-media/y-gamma-p2-reader.webm
+release-media/i2-5-quotient-game.webm
+```
 
 ## Accessibility Notes
 
@@ -92,5 +129,7 @@ Avoid screenshots that:
 - Use dense all-face `Y_Gamma` views when a local reader preset would explain
   the same idea more clearly.
 - Crop away the selected-object inspector.
+- Mix `A3` and P2 labels in the same `Y_Gamma` capture. The public-alpha P2
+  demo should visibly be the P2 source, not a generic `Y_Gamma` scene.
 
 The demo should make the viewer more honest, not more dramatic.

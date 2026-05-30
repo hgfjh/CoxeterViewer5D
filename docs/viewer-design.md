@@ -95,9 +95,25 @@ Expected panels:
 - Math notes panel: short context for the current mode.
 - Warnings panel: grouped approximation, truncation, invalid geometry, omitted-view, backend, and placeholder notices.
 
+On desktop-size viewports, the central Three.js viewer should stay fixed in the
+visible workspace. The left control rail and right inspector rail scroll
+independently, so changing a setting should not require scrolling away from the
+geometric object. The `Viewer only` control hides both rails and the header
+strip, leaving the canvas as the primary surface with a small `Show UI` escape
+button over the viewer.
+
+Light/dark mode is presentation state. It changes the React shell and the
+Three.js scene background, but generator colors, status badges, and exact/proxy
+semantics keep their usual meanings.
+
 Expected scene controls:
 
 - Orbit controls for camera movement.
+- WASD camera nudging for desktop-style navigation. This moves the camera in
+  the active view only; it never edits words, quotient data, cocycles, or
+  generator choices. Forward/back movement is deliberately slower than orbit
+  movement, and strafing is slower still so `A`/`D` can be used for small
+  inspection adjustments instead of jumping across the model.
 - Reset view.
 - Focus selected node.
 - Switch between global view and a local chamber view around the selected node.
@@ -380,9 +396,9 @@ rendered as a quotient/game dataset, not as a universal Cayley ball.
 
 The primary `Y_Gamma` display is now a main-stage 3D 2-skeleton scene. It shows
 the base vertex, oriented generator arrows, and filled rank-two relation faces
-glued directly to the corresponding generator arrows. The cell atlas panel
+glued directly to the corresponding generator arrows. The cell inventory panel
 lists the same base vertex, oriented generator arrows, rank-two relation cells,
-higher spherical cells, and label meanings. The nerve/local-link display is
+higher spherical cells, and label meanings. The 2D nerve/local-link schematic is
 available only as a diagnostic derived from this complex. The relation faces
 are singular sheets in the drawing: two boundary sides are the existing
 generator 1-cells, and the remaining hidden construction corners complete the
@@ -393,9 +409,9 @@ For high-rank examples the full `Y_Gamma` 2-skeleton is visually dense: the
 compact 5-cube has ten generator arrows and forty rank-two faces. The default
 view therefore keeps the generator 1-skeleton visible and labels its arrows,
 then shows only the active rank-two relation face. The all-faces toggle is an
-overview/debug view, not the recommended way to read local topology. The nerve
-and pair matrix are better summaries of which generator pairs and higher
-spherical subsets control the local link.
+overview/debug view, not the recommended way to read local topology. The 2D
+nerve schematic and relation picker are better summaries of which generator
+pairs and higher spherical subsets control the local link.
 
 Rank-three `Y_Gamma` cells are rendered from the finite rank-three Coxeter
 cell boundary, then glued to the base vertex and the three generator-arrow
@@ -403,13 +419,13 @@ endpoints by a deterministic readability embedding. A right-angled triple is
 therefore drawn as a cube-like boundary with six square faces, not as a
 tetrahedron. Non-right-angled rank-three cells use the corresponding finite
 Coxeter-cell rank-two faces. These are still visual incidence proxies unless
-separate affine coordinates are imported; the atlas stores the actual
+separate affine coordinates are imported; the cell inventory stores the actual
 generators and rank-two face references. In dense views the rank-three fills
 are restricted to triples incident to the active generator pair unless the user
 turns on the all-faces overview.
 
-The full `m=2/m=3 3-cell` focus mode searches the current `Y_Gamma` atlas for a
-rank-three spherical cell containing a square relation face and a hexagon
+The full `m=2/m=3 3-cell` focus mode searches the current `Y_Gamma` cell
+inventory for a rank-three spherical cell containing a square relation face and a hexagon
 relation face that share one generator. That hinge fixes a readable 3D
 orientation and is the default normal inspection view whenever such a hinge is
 available, including compact examples. The full generator spine remains visible
@@ -441,9 +457,9 @@ camera target, and explanatory text:
 
 Cell peeling controls reduce the 3D object to a selected face, adjacent faces,
 or the same rank-three cell. Transparent topology mode lowers fill opacity and
-emphasizes outlines and generator arrows. The mini atlas beside the viewer is a
-compact Coxeter-pair grid; finite entries focus the corresponding relation, and
-infinite entries are shown as absent rank-two cells.
+emphasizes outlines and generator arrows. The relation picker beside the viewer
+is a compact Coxeter-pair grid; finite entries focus the corresponding relation,
+and infinite entries are shown as absent rank-two cells.
 
 `src/quotient/` also exposes a bounded in-repo certification layer. It checks
 Schreier-style generator actions, finite Coxeter relations, rank-two quotient

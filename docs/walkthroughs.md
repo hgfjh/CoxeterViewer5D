@@ -1,175 +1,193 @@
 # Walkthroughs
 
-These walkthroughs are short inspection scripts for the main teaching views.
-They are not proofs. Each one separates the combinatorial object from the 3D
-drawing used to make it legible.
+These are presenter scripts for the four public-alpha guided demos. They are
+meant to teach inspection habits: name the Coxeter object, show the exact
+incidence data, then say which parts of the 3D picture are only a drawing.
+
+The demos are not proofs. Treat the warnings panel, selected-object inspector,
+and sidecar/export metadata as part of the mathematical readout.
 
 ## Before You Start
 
-Use a small radius first. A radius that is too small may show an incomplete
-cell boundary; a radius that is too large may hide labels or cells behind render
-budgets. The warnings panel is part of the mathematical readout, not a nuisance
-banner.
+Use the named example before starting each guide. Some guided buttons preserve
+the current dataset, so a clean public-alpha run should load the example first
+and then press the guide button.
 
-Good first examples:
+Suggested order:
 
-- `A2`: one rank-two spherical pair with `m = 3`.
-- `I2(5)`: one decagon relation with full group order `10`.
-- `A3`: a rank-three spherical example with square and hexagon relation faces.
-- The `I2(5)` quotient/game demo: ten cosets and one decagon quotient cell.
+1. `A2`: find a hexagon for one `m = 3` rank-two relation.
+2. `A3`: inspect one rank-three spherical cell.
+3. `compact_5_prism_makarov_p2`: inspect `Y_Gamma` for the certified P2 prism.
+4. `I2(5)` quotient/game workflow: run the cocycle and link diagnostics.
 
-## Hexagon Relation
+Keep labels focused, not global. A radius that is too small may clip a cell
+boundary; a radius that is too large can make labels and cells visually noisy.
+Filled cells should mean the whole boundary is present.
 
-Goal: read the relation `(s_i s_j)^3 = 1` as one rank-two Davis cell.
+## Hexagon Relation: Find A Hexagon
 
-1. Open `A2` or any example with a finite pair `m_ij = 3`.
-2. Set the radius large enough to include the full relation boundary. For `A2`,
-   the full group appears quickly.
-3. Open the rank-two relation view and choose the pair `(i, j)` with `m = 3`.
-4. Select one visible rank-two cell.
-5. Turn on relation-walk labels if available.
+Goal: read `(s_i s_j)^3 = 1` as one six-sided rank-two Davis cell.
 
-What to look for:
+Public-alpha path:
 
-- The boundary has `2m = 6` directed edge steps.
-- Edge labels alternate between the two generators.
-- The same polygon can be started at any boundary vertex and read in either
-  direction.
-- Filled color means the whole boundary is present in the finite ball.
+1. Load `A2`.
+2. Set radius to `3` or higher. In `A2`, the full finite group appears quickly.
+3. Start **Guided Inspection** -> **Find a hexagon**.
+4. In the rank-two/Davis controls, focus the pair `s0-s1` with `m = 3`.
+5. Select a filled rank-two cell and use relation-walk labels if they are
+   helpful.
 
-What is exact:
+What to say:
 
-- The generator pair.
+- A finite Coxeter pair with `m = 3` gives a `2m = 6` boundary.
+- The boundary labels alternate between the two generators.
+- The same cyclic cell can be read from any boundary vertex.
+- If the cell is outlined but not filled, the radius has probably clipped the
+  boundary.
+
+Exact in this demo:
+
+- The generator pair `s0-s1`.
 - The Coxeter value `m = 3`.
-- The cyclic boundary node ids in the generated graph.
-- The statement that this is the Davis cell for one coset of `<s_i, s_j>`.
+- The six boundary node ids and alternating edge labels.
+- The statement that this is one Davis cell for a coset of `<s0, s1>`.
 
-What is a drawing:
+Drawing convention:
 
-- The Euclidean shape of the filled hexagon.
-- The camera angle, opacity, label placement, and any ghost context.
-- Any apparent metric length or angle in the 3D scene.
+- The Euclidean-looking hexagon.
+- Camera angle, panel opacity, label placement, and ghost context.
+- Any apparent metric angle or length in the scene.
 
-If the cell is outlined but not filled, the radius cutoff probably clipped the
-boundary. Increase radius or switch to a focused relation view.
+If the guide opens on `I2(5)`, load `A2` first and start the guide again.
+`I2(5)` is the decagon example, not the hexagon example.
 
-## Rank-Three Cell
+## Rank-Three Cell: Inspect A3
 
-Goal: inspect how rank-two faces assemble around one finite rank-three
-spherical subset.
+Goal: see how rank-two faces assemble around one finite rank-three spherical
+subset.
 
-1. Open `A3`.
-2. Use the rank-three cell or `Y_Gamma` reader preset.
-3. Choose a spherical triple, typically `{s0, s1, s2}` in the bundled `A3`
-   example.
-4. Rotate the camera until the square and hexagon face families are both
-   visible.
-5. Use the local link or atlas panel to compare the displayed faces with the
-   finite generator pairs.
+Public-alpha path:
 
-What to look for:
+1. Load `A3`.
+2. Start **Guided Inspection** -> **Understand a rank-three cell**, or use
+   **Research Workflow** -> **Rank-three cell**.
+3. Confirm the main scene is `Y_Gamma(A3)`.
+4. Use the `Y_Gamma` rank-three reader preset.
+5. Orbit until a square face family and a hexagon face family are visible
+   together.
 
-- A finite rank-three subset contributes one higher Davis cell in the local
-  model.
-- Its boundary is organized by rank-two spherical faces.
-- In an `A3`-style triple, one commuting square face and one `m = 3` hexagon
-  face can meet along a common generator direction.
-- The viewer may draw the rank-three cell as a bounded 3D proxy so the
-  incidence is readable.
+What to say:
 
-What is exact:
+- `A3` has one spherical triple `{s0, s1, s2}`.
+- The boundary of the rank-three cell is organized by rank-two spherical
+  faces.
+- In the bundled `A3` view, a commuting square face and an `m = 3` hexagon
+  face can be inspected as incident pieces of one 3D object.
+- The local-link or nerve schematic is useful for checking the subset list, but
+  the main teaching view should remain three-dimensional.
+
+Exact in this demo:
 
 - Which three generators form the spherical subset.
-- Which rank-two faces belong to its boundary.
-- The incidence records between the higher cell and the listed rank-two faces.
+- Which rank-two faces are in its boundary.
+- The incidence records between the higher cell and those faces.
 
-What is a drawing:
+Drawing convention:
 
-- The convex hull or panel geometry used to make the cell visible.
-- The apparent Euclidean shape of a finite Coxeter cell unless exact affine
-  coordinates were imported.
-- Any separation between faces introduced only to prevent visual overlap.
+- The 3D proxy hull or separated panels used to make the incidence readable.
+- The apparent Euclidean shape of the cell.
+- Any small face offset introduced to prevent visual overlap.
 
-The important question is not "is this a literal Euclidean polytope?" The
-first question is "which spherical subset and which face incidences am I
-seeing?"
+The question to answer out loud is not "is this a literal Euclidean polytope?"
+It is "which spherical subset and which face incidences am I seeing?"
 
-## The Base Complex `Y_Gamma`
+## The Base Complex `Y_Gamma`: Inspect P2
 
-Goal: read the one-vertex fundamental-domain complex derived from a Coxeter
-system.
+Goal: inspect the one-vertex fundamental-domain complex for the certified
+Makarov P2 compact 5-prism example.
 
-1. Open a Coxeter example and choose the `Y_Gamma` view.
-2. Start with the "one relation" reader preset.
-3. Move to "around generator" to see all relation faces incident to one
-   generator arrow.
-4. Use the rank-three preset when a finite triple is available.
-5. Use the full two-skeleton overview only after the local pieces are clear.
+Public-alpha path:
 
-What to look for:
+1. Load **Compact 5-prism P2 Makarov** (`compact_5_prism_makarov_p2`).
+2. Check that the example status is certified for source transcription and
+   Gram/signature diagnostics.
+3. Click **Open 3D Y_Gamma model**.
+4. Start **Guided Inspection** -> **Inspect Y_Gamma**.
+5. In the `Y_Gamma 3D Reader`, begin with one relation or around-generator
+   focus. Use the full two-skeleton only after the local pieces are clear.
+6. Point out that finite pairs contribute relation faces; the dotted/infinite
+   pair does not contribute a finite rank-two Davis face.
 
-- There is one base vertex.
-- Each generator appears as an oriented arrow from the base vertex.
-- Each finite Coxeter pair contributes a rank-two relation face attached along
+What to say:
+
+- `Y_Gamma` has one base vertex.
+- Each Coxeter generator is shown as an oriented arrow from that vertex.
+- Each finite Coxeter pair contributes a rank-two relation sheet attached along
   an alternating word.
-- Hidden construction corners complete the visible `2m`-gon, but they are not
-  extra quotient vertices.
-- The local link or nerve view is a diagnostic derived from spherical subsets;
-  it is not the same object as `Y_Gamma`.
+- P2 is a 5-dimensional hyperbolic Coxeter source, but this `Y_Gamma` scene is
+  a 3D readability layout for incidence.
+- Hidden construction corners complete visible `2m`-gons; they are not extra
+  quotient vertices.
 
-What is exact:
+Exact in this demo:
 
-- The one-vertex 1-skeleton and generator labels.
-- The attaching word for each finite rank-two relation face.
-- The spherical-subset incidence records used by the atlas.
+- The P2 Coxeter matrix and generator labels.
+- Which finite pairs attach relation faces.
+- The one-vertex 1-skeleton and the relation attaching words.
+- The source/certificate metadata shown for the bundled example.
 
-What is a drawing:
+Drawing convention:
 
-- The singular sheet used to show a relation face in 3D.
-- The hidden construction corners of a hexagon, octagon, or decagon.
 - The placement of generator arrows around the base vertex.
+- The singular 3D sheets used to show relation faces.
+- Any face peeling, spacing, or camera preset used to keep the dense P2
+  two-skeleton legible.
 
 Do not call `Y_Gamma` a torsion-free quotient manifold. It is the base
 orbicomplex or fundamental-domain style complex associated to the Coxeter
 system being inspected.
 
-## Quotient And Game Demo
+## Quotient And Game Demo: Run I2(5)
 
 Goal: follow a small quotient experiment from group data to cocycle and local
 topology diagnostics.
 
-1. Open the Research Workflow panel.
+Public-alpha path:
+
+1. Open the **Research Workflow** panel.
 2. Choose the `I2(5)` identity-subgroup demo.
 3. Confirm that the quotient has ten visible cosets and one rank-two decagon
    cell.
 4. Select the named cocycle with `s0 = +1` and `s1 = -1`.
 5. Inspect the boundary-sum diagnostic for the decagon.
 6. Switch between ascending, descending, level, and full local-link lenses.
-7. Save an experiment notebook run if you want a reproducible inspection
-   record.
+7. Save an experiment notebook run if a reproducible inspection record is
+   needed.
 
-What to look for:
+What to say:
 
+- The identity subgroup of the finite group `I2(5)` leaves all ten group
+  elements visible as quotient vertices.
 - Generator actions should be involutions on quotient vertices.
-- The finite relation should close around the quotient cell.
-- The decagon boundary sum should be zero for the named cocycle.
-- Ascending and descending edges are view filters for the selected integer
+- The finite relation should close around the decagon.
+- The named cocycle has zero boundary sum on that decagon.
+- Ascending and descending views are filters for the selected integer
   assignment.
 
-What is exact when supplied by the artifact:
+Exact when supplied by the artifact:
 
 - Quotient vertices and generator actions.
 - Edge inverse pairing.
 - Rank-two cell boundary references.
 - Schreier-style relation checks recorded in the certificate block.
 
-What still needs care:
+Still not claimed:
 
 - A quotient complex is not automatically a manifold.
-- Passing the in-repo visible stabilizer guard is useful evidence, not a
-  published torsion-free proof.
-- A game or PL Morse label assignment needs boundary checks before it should be
-  called a cocycle on the displayed cell structure.
+- The in-repo visible stabilizer guard is useful evidence, not a published
+  torsion-free proof.
+- A game or PL Morse label assignment should not be called a cocycle until its
+  boundary checks pass on the displayed cell structure.
 
 Use "quotient complex" until a torsion-free certificate is present and its
 scope is clear.

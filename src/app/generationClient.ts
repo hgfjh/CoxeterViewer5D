@@ -79,6 +79,9 @@ interface PendingRequest {
 
 export const generatedBallCacheMetadata = persistentCacheRegistry.generatedBall;
 
+/**
+ * Factory for the long-lived generation client used by the app shell.
+ */
 export function createGenerationClient(
   options: GenerationClientOptions = {},
 ): GenerationClient {
@@ -196,6 +199,9 @@ export class GenerationClient {
         requestId,
         cacheKey,
         inputHash,
+        // The worker keeps the most recent system per hash. Radius changes can
+        // then post only options, which avoids cloning compact examples on
+        // every slider or preset change.
         system: this.postedSystemHashes.has(inputHash)
           ? undefined
           : request.system,
@@ -246,6 +252,8 @@ export class GenerationClient {
   ): Promise<void> {
     const pending = this.pending.get(response.requestId);
     if (!pending) {
+      // Stale worker replies are harmless: the UI may already have requested a
+      // newer radius/example, so only the matching request id can resolve.
       return;
     }
     this.pending.delete(response.requestId);

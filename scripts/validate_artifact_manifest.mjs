@@ -10,6 +10,10 @@ const KNOWN_TOOLS = new Set([
   "published-transcription",
 ]);
 
+// Artifact manifests are provenance records, not mathematical checkers. This
+// validator confirms that files, hashes, tools, and claim boundaries are
+// recorded well enough for a release reviewer to reproduce the evidence.
+
 function readJson(filePath) {
   try {
     return JSON.parse(readFileSync(filePath, "utf8"));

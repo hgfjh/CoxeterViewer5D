@@ -2,6 +2,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { performance } from "node:perf_hooks";
+import { spawn, spawnSync } from "node:child_process";
 import { chromium } from "@playwright/test";
 
 const DEFAULT_OUTPUT = "scripts/benchmarks/timed-browser-v1.json";
@@ -84,6 +85,67 @@ function parseArgs(argv) {
   return args;
 }
 
+async function canReachBenchmarkUrl() {
+  try {
+    const response = await fetch(BENCHMARK_URL, { method: "HEAD" });
+    return response.ok || response.status < 500;
+  } catch {
+    return false;
+  }
+}
+
+async function waitForBenchmarkUrl(timeoutMs = 30_000) {
+  const startedAt = performance.now();
+  while (performance.now() - startedAt < timeoutMs) {
+    if (await canReachBenchmarkUrl()) {
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+  throw new Error(`benchmark server did not become ready at ${BENCHMARK_URL}`);
+}
+
+async function ensureBenchmarkServer() {
+  if (await canReachBenchmarkUrl()) {
+    return { dispose: async () => undefined };
+  }
+  const url = new URL(BENCHMARK_URL);
+  if (url.hostname !== "127.0.0.1" && url.hostname !== "localhost") {
+    throw new Error(
+      `benchmark URL ${BENCHMARK_URL} is not reachable; start that server before running the timed benchmark`,
+    );
+  }
+
+  // The benchmark is a release gate, so it should not depend on a previous
+  // Playwright run leaving Vite alive. Start the same local server here when
+  // the standard localhost endpoint is free.
+  const child =
+    process.platform === "win32"
+      ? spawn(`corepack pnpm dev --host ${url.hostname}`, {
+          shell: true,
+          stdio: "ignore",
+          windowsHide: true,
+        })
+      : spawn("corepack", ["pnpm", "dev", "--host", url.hostname], {
+          stdio: "ignore",
+          windowsHide: true,
+        });
+  child.unref();
+  await waitForBenchmarkUrl();
+  return {
+    dispose: async () => {
+      if (process.platform === "win32" && child.pid) {
+        spawnSync("taskkill", ["/pid", String(child.pid), "/T", "/F"], {
+          stdio: "ignore",
+          windowsHide: true,
+        });
+        return;
+      }
+      child.kill();
+    },
+  };
+}
+
 async function waitForStats(page, expected) {
   await page.waitForFunction(
     (target) => {
@@ -118,7 +180,7 @@ async function resetPage(page) {
       globalThis.sessionStorage?.clear();
     })
     .catch(() => undefined);
-  await page.reload({ waitUntil: "networkidle" });
+  await page.goto(BENCHMARK_URL, { waitUntil: "domcontentloaded" });
   await waitForStats(page);
 }
 
@@ -285,9 +347,11 @@ async function runYGammaPresetInteraction(page) {
       await resetPage(page);
       await clickFirstVisible([
         page.getByLabel(/viewer controls/i).getByRole("button", {
-          name: /open y_gamma complex/i,
+          name: /open (3d )?y_gamma (model|complex)/i,
         }),
-        page.getByRole("button", { name: /open y_gamma complex/i }),
+        page.getByRole("button", {
+          name: /open (3d )?y_gamma (model|complex)/i,
+        }),
       ]);
       await page.waitForFunction(() => {
         const stats = globalThis.__coxeterSceneStats;
@@ -602,9 +666,11 @@ async function runBookmarkRestoreInteraction(page) {
       await resetPage(page);
       await clickFirstVisible([
         page.getByLabel(/viewer controls/i).getByRole("button", {
-          name: /open y_gamma complex/i,
+          name: /open (3d )?y_gamma (model|complex)/i,
         }),
-        page.getByRole("button", { name: /open y_gamma complex/i }),
+        page.getByRole("button", {
+          name: /open (3d )?y_gamma (model|complex)/i,
+        }),
       ]);
       await page.waitForFunction(() => {
         const stats = globalThis.__coxeterSceneStats;
@@ -703,13 +769,11 @@ async function runImportRepairInteraction(page) {
 
 async function runIdleRenderCountInteraction(page) {
   const before = await sceneStats(page);
-  // TODO(perf): enforce this once SceneRenderStats exposes a finite renderCount.
   if (!Number.isFinite(before?.renderCount)) {
     return {
       id: "idle-render-count",
       status: "skipped",
-      reason:
-        "scene stats do not expose renderCount yet; add this metric before enforcing idle render budgets",
+      reason: "scene stats did not expose renderCount in this browser context",
     };
   }
 
@@ -970,12 +1034,13 @@ function interactionBudgetFailuresFor(interactions) {
 }
 
 const args = parseArgs(process.argv.slice(2));
+const benchmarkServer = await ensureBenchmarkServer();
 const browser = await chromium.launch();
 const page = await browser.newPage();
 const startedAt = performance.now();
 
 try {
-  await page.goto(BENCHMARK_URL, { waitUntil: "networkidle" });
+  await page.goto(BENCHMARK_URL, { waitUntil: "domcontentloaded" });
   const cases = [];
   for (const testCase of CASES) {
     cases.push(await runCase(page, testCase, testCase.expected));
@@ -1005,4 +1070,5 @@ try {
   }
 } finally {
   await browser.close();
+  await benchmarkServer.dispose();
 }

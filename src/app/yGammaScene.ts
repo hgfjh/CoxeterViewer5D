@@ -68,13 +68,19 @@ const GENERATOR_ARROW_RADIUS = 5.2;
 const FACE_OUTER_RADIUS_BASE = 3.75;
 const FACE_OUTER_RADIUS_MAX = 4.7;
 const FACE_BULGE = 0.86;
+const FACE_LIFT_BASE = 0.62;
+const FACE_LIFT_PER_EDGE = 0.035;
+const FACE_LIFT_MAX = 1.18;
 const FACE_LAYER_STEP = 0.14;
 const rankThreeCoxeterCellCache = new Map<string, RankThreeCoxeterCell>();
 
 /**
- * Build a compact 3D readability model for the 2-skeleton of the
- * fundamental-domain complex Y_Gamma. Relation faces are full 2m-sided sheets
- * glued to the shared generator-arrow spine, not detached polygon panels.
+ * Builds a cohesive 3D readability model for the 2-skeleton of Y_Gamma.
+ *
+ * The output keeps one base vertex, generator-arrow 1-cells, and full 2m-sided
+ * relation faces in one scene. Hidden helper vertices may be introduced to
+ * make finite 2m-gons simply embedded, but semantic labels stay on generator
+ * arrows and relation boundaries rather than on the construction scaffolding.
  */
 export function buildYGamma2SkeletonScene(
   atlas: YGammaCellAtlas,
@@ -223,7 +229,7 @@ export function buildYGamma2SkeletonScene(
       ...warnings,
       ...(faceMode === "active-pair"
         ? [
-            "Dense Y_Gamma view is filtered to the active rank-two relation face; use the pair matrix or all-faces toggle to inspect other relations.",
+            "Dense Y_Gamma view is filtered to the active rank-two relation face; use the relation picker or all-faces toggle to inspect other relations.",
           ]
         : []),
     ],
@@ -709,12 +715,14 @@ function hingeCornerPositions(
 ): Vec3[] {
   const radius = GENERATOR_ARROW_RADIUS;
   const faceBulge = m === 2 ? 0.18 : 0.42;
+  const liftRadius = relationFaceLift(2 * m);
   return Array.from({ length: cornerCount }, (_entry, cornerIndex) => {
     const t = (cornerIndex + 1) / (cornerCount + 1);
     const x = radius * (1 - t);
     const outward = radius * Math.sin(Math.PI * t) * faceBulge;
     const yOrZ = radius * t + outward;
-    return plane === "xy" ? [x, yOrZ, 0] : [x, 0, yOrZ];
+    const lift = Math.sin(Math.PI * t) * liftRadius;
+    return plane === "xy" ? [x, yOrZ, lift] : [x, lift, yOrZ];
   });
 }
 
@@ -1558,14 +1566,29 @@ function cohesiveHiddenCorners(
     FACE_OUTER_RADIUS_BASE + boundaryLength * 0.06,
   );
   const midDirection = normalize(add(left, right));
+  const liftNormal = relationNormal(left, right, 0, 1);
+  const liftRadius = relationFaceLift(boundaryLength);
   const corners: Vec3[] = [];
   for (let cornerIndex = 0; cornerIndex < hiddenCornerCount; cornerIndex += 1) {
     const t = (cornerIndex + 1) / (hiddenCornerCount + 1);
     const direction = normalize(add(scale(left, 1 - t), scale(right, t)));
     const bulge = scale(midDirection, Math.sin(Math.PI * t) * FACE_BULGE);
-    corners.push(add(add(scale(direction, outerRadius), bulge), offset));
+    // Relation faces are readability surfaces, not affine certificates.
+    // Lifting hidden corners keeps every 2m-gon legible in the 3D viewer,
+    // including decagons where the old construction could sit in one plane.
+    const lift = scale(liftNormal, Math.sin(Math.PI * t) * liftRadius);
+    corners.push(
+      add(add(add(scale(direction, outerRadius), bulge), offset), lift),
+    );
   }
   return corners;
+}
+
+function relationFaceLift(boundaryLength: number): number {
+  return Math.min(
+    FACE_LIFT_MAX,
+    FACE_LIFT_BASE + Math.max(0, boundaryLength - 4) * FACE_LIFT_PER_EDGE,
+  );
 }
 
 function cohesiveFaceOffset(
@@ -1575,7 +1598,8 @@ function cohesiveFaceOffset(
   relationCount: number,
 ): Vec3 {
   const normal = relationNormal(left, right, index, relationCount);
-  const layer = ((index % 9) - 4) * FACE_LAYER_STEP;
+  const centeredIndex = index - (Math.max(1, relationCount) - 1) / 2;
+  const layer = Math.max(-4, Math.min(4, centeredIndex)) * FACE_LAYER_STEP;
   return scale(normal, layer);
 }
 

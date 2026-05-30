@@ -1,0 +1,1839 @@
+{
+  "diagramCount": 16,
+  "diagrams": [
+    {
+      "diagramIndex": 1,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v0",
+          "sourceLineCount": 3,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v1",
+          "sourceLineCount": 2,
+          "target": "v4"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v7"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v5",
+          "sourceLineCount": 3,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v5",
+          "sourceLineCount": 2,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d11",
+          "slot": 1,
+          "sourcePosition": [382, 11285]
+        },
+        {
+          "raw": "d12",
+          "slot": 2,
+          "sourcePosition": [1207, 11735]
+        },
+        {
+          "raw": "d13",
+          "slot": 3,
+          "sourcePosition": [2032, 11300]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [2129, 10745]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [1530, 11362]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [929, 9555]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [1537, 9548]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [2130, 10155]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [330, 10162]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [330, 10755]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [930, 11355]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 2,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v0",
+          "sourceLineCount": 3,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v7"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v5",
+          "sourceLineCount": 3,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v5",
+          "sourceLineCount": 2,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d21",
+          "slot": 1,
+          "sourcePosition": [4567, 11285]
+        },
+        {
+          "raw": "d22",
+          "slot": 2,
+          "sourcePosition": [5407, 11735]
+        },
+        {
+          "raw": "d23",
+          "slot": 3,
+          "sourcePosition": [6202, 11285]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [6300, 10784]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [5701, 11401]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [5100, 9594]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [5708, 9587]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [6301, 10194]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [4501, 10201]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [4501, 10794]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [5101, 11394]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 3,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v0",
+          "sourceLineCount": 3,
+          "target": "v4"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v7"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v5",
+          "sourceLineCount": 3,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v5",
+          "sourceLineCount": 2,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d31",
+          "slot": 1,
+          "sourcePosition": [9082, 11300]
+        },
+        {
+          "raw": "d32",
+          "slot": 2,
+          "sourcePosition": [9982, 11810]
+        },
+        {
+          "raw": "d33",
+          "slot": 3,
+          "sourcePosition": [10747, 11315]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [10852, 10764]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [10253, 11381]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [9652, 9574]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [10260, 9567]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [10853, 10174]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [9053, 10181]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [9053, 10774]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [9653, 11374]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 4,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v0",
+          "sourceLineCount": 3,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v7"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v5",
+          "sourceLineCount": 3,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d41",
+          "slot": 1,
+          "sourcePosition": [4924, 8550]
+        },
+        {
+          "raw": "d42",
+          "slot": 2,
+          "sourcePosition": [4099, 9000]
+        },
+        {
+          "raw": "d43",
+          "slot": 3,
+          "sourcePosition": [3319, 8550]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [3226, 7995]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [3825, 8612]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [4426, 6805]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [3818, 6798]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [3225, 7405]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [5025, 7412]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [5025, 8005]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [4425, 8605]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 5,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v0",
+          "sourceLineCount": 3,
+          "target": "v4"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v7"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v5",
+          "sourceLineCount": 3,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d51",
+          "slot": 1,
+          "sourcePosition": [7969, 8547]
+        },
+        {
+          "raw": "d52",
+          "slot": 2,
+          "sourcePosition": [7069, 8997]
+        },
+        {
+          "raw": "d53",
+          "slot": 3,
+          "sourcePosition": [6319, 8472]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [6211, 8010]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [6810, 8627]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [7411, 6820]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [6803, 6813]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [6210, 7420]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [8010, 7427]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [8010, 8020]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [7410, 8620]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 6,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v0",
+          "sourceLineCount": 3,
+          "target": "v4"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v7"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v5",
+          "sourceLineCount": 3,
+          "target": "v6"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d61",
+          "slot": 1,
+          "sourcePosition": [10844, 8525]
+        },
+        {
+          "raw": "d62",
+          "slot": 2,
+          "sourcePosition": [10094, 9050]
+        },
+        {
+          "raw": "d63",
+          "slot": 3,
+          "sourcePosition": [9344, 8525]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [9184, 8035]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [9783, 8652]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [10384, 6845]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [9776, 6838]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [9183, 7445]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [10983, 7452]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [10983, 8045]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [10383, 8645]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 7,
+      "edges": [
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v0",
+          "sourceLineCount": 2,
+          "target": "v2"
+        },
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v1",
+          "sourceLineCount": 2,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d71",
+          "slot": 1,
+          "sourcePosition": [346, 20672]
+        },
+        {
+          "raw": "d72",
+          "slot": 2,
+          "sourcePosition": [1201, 21272]
+        },
+        {
+          "raw": "d73",
+          "slot": 3,
+          "sourcePosition": [1981, 20687]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [2115, 19992]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [292, 19977]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [907, 20877]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [1507, 20892]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [1201, 17300]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [1209, 17893]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [1209, 18500]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [1209, 19100]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 8,
+      "edges": [
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v2"
+        },
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v1",
+          "sourceLineCount": 2,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d81",
+          "slot": 1,
+          "sourcePosition": [4636, 20537]
+        },
+        {
+          "raw": "d82",
+          "slot": 2,
+          "sourcePosition": [5401, 21182]
+        },
+        {
+          "raw": "d83",
+          "slot": 3,
+          "sourcePosition": [6226, 20582]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [6345, 19917]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [4522, 19902]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [5137, 20802]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [5737, 20817]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [5431, 17225]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [5439, 17818]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [5439, 18425]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [5439, 19025]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 9,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v1",
+          "sourceLineCount": 2,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d91",
+          "slot": 1,
+          "sourcePosition": [9151, 20582]
+        },
+        {
+          "raw": "d92",
+          "slot": 2,
+          "sourcePosition": [10051, 21167]
+        },
+        {
+          "raw": "d93",
+          "slot": 3,
+          "sourcePosition": [10786, 20597]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [10950, 19962]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [9127, 19947]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [9742, 20847]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [10342, 20862]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [10036, 17270]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [10044, 17863]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [10044, 18470]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [10044, 19070]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 10,
+      "edges": [
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v0",
+          "sourceLineCount": 3,
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v2",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v3",
+          "sourceLineCount": 1,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v4",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "dotted",
+          "source": "v4",
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v5",
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d101",
+          "slot": 1,
+          "sourcePosition": [336, 16051]
+        },
+        {
+          "raw": "d102",
+          "slot": 2,
+          "sourcePosition": [1221, 16741]
+        },
+        {
+          "raw": "d103",
+          "slot": 3,
+          "sourcePosition": [2044, 16074]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [1236, 12754]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [1244, 13347]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [1244, 13954]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [1244, 14554]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [2150, 15446]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [327, 15431]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [942, 16331]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [1542, 16346]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 11,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d111",
+          "slot": 1,
+          "sourcePosition": [4724, 15991]
+        },
+        {
+          "raw": "d112",
+          "slot": 2,
+          "sourcePosition": [5497, 16679]
+        },
+        {
+          "raw": "d113",
+          "slot": 3,
+          "sourcePosition": [6269, 16002]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [6380, 15371]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [4557, 15356]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [5172, 16256]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [5772, 16271]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [5466, 12679]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [5474, 13272]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [5474, 13879]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [5474, 14479]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 12,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d121",
+          "slot": 1,
+          "sourcePosition": [9280, 16034]
+        },
+        {
+          "raw": "d122",
+          "slot": 2,
+          "sourcePosition": [10097, 16706]
+        },
+        {
+          "raw": "d123",
+          "slot": 3,
+          "sourcePosition": [10855, 16042]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [10985, 15416]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [9162, 15401]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [9777, 16301]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [10377, 16316]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [10071, 12724]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [10079, 13317]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [10079, 13924]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [10079, 14524]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 13,
+      "edges": [
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v0",
+          "sourceLineCount": 2,
+          "target": "v2"
+        },
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d131",
+          "slot": 1,
+          "sourcePosition": [127, 23160]
+        },
+        {
+          "raw": "d132",
+          "slot": 2,
+          "sourcePosition": [922, 23850]
+        },
+        {
+          "raw": "d133",
+          "slot": 3,
+          "sourcePosition": [1702, 23175]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [1857, 22512]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [34, 22497]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [649, 23397]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [1249, 23412]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [-551, 21605]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [42, 21597]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [649, 21597]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [1249, 21597]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 14,
+      "edges": [
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v2"
+        },
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d141",
+          "slot": 1,
+          "sourcePosition": [4612, 23115]
+        },
+        {
+          "raw": "d142",
+          "slot": 2,
+          "sourcePosition": [5437, 23775]
+        },
+        {
+          "raw": "d143",
+          "slot": 3,
+          "sourcePosition": [6292, 23115]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [6357, 22495]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [4534, 22480]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [5149, 23380]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [5749, 23395]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [3949, 21588]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [4542, 21580]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [5149, 21580]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [5749, 21580]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 15,
+      "edges": [
+        {
+          "kind": "dotted",
+          "source": "v0",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v7"
+        },
+        {
+          "kind": "dotted",
+          "source": "v1",
+          "target": "v2"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "dotted",
+          "source": "v2",
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v5",
+          "sourceLineCount": 1,
+          "target": "v6"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v6",
+          "sourceLineCount": 1,
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d151",
+          "slot": 1,
+          "sourcePosition": [9232, 23085]
+        },
+        {
+          "raw": "d152",
+          "slot": 2,
+          "sourcePosition": [10117, 23775]
+        },
+        {
+          "raw": "d153",
+          "slot": 3,
+          "sourcePosition": [10912, 23100]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [10990, 22495]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [9167, 22480]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [9782, 23380]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [10382, 23395]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [8582, 21588]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [9175, 21580]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [9782, 21580]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [10382, 21580]
+        }
+      ]
+    },
+    {
+      "diagramIndex": 16,
+      "edges": [
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v0",
+          "sourceLineCount": 2,
+          "target": "v1"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v0",
+          "sourceLineCount": 1,
+          "target": "v4"
+        },
+        {
+          "kind": "finite",
+          "m": 3,
+          "source": "v1",
+          "sourceLineCount": 1,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v2",
+          "sourceLineCount": 3,
+          "target": "v3"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v2",
+          "sourceLineCount": 2,
+          "target": "v7"
+        },
+        {
+          "kind": "finite",
+          "m": 5,
+          "source": "v4",
+          "sourceLineCount": 3,
+          "target": "v5"
+        },
+        {
+          "kind": "finite",
+          "m": 4,
+          "source": "v5",
+          "sourceLineCount": 2,
+          "target": "v6"
+        },
+        {
+          "kind": "dotted",
+          "source": "v6",
+          "target": "v7"
+        }
+      ],
+      "hiddenDottedLabels": [
+        {
+          "raw": "d161",
+          "slot": 1,
+          "sourcePosition": [1150, 8998]
+        }
+      ],
+      "nodeCount": 8,
+      "nodes": [
+        {
+          "id": "v0",
+          "sourcePosition": [871, 6822]
+        },
+        {
+          "id": "v1",
+          "sourcePosition": [1479, 6815]
+        },
+        {
+          "id": "v2",
+          "sourcePosition": [2071, 8012]
+        },
+        {
+          "id": "v3",
+          "sourcePosition": [2072, 7422]
+        },
+        {
+          "id": "v4",
+          "sourcePosition": [272, 7429]
+        },
+        {
+          "id": "v5",
+          "sourcePosition": [272, 8022]
+        },
+        {
+          "id": "v6",
+          "sourcePosition": [872, 8622]
+        },
+        {
+          "id": "v7",
+          "sourcePosition": [1472, 8629]
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 1,
+  "source": "Tumarkin arXiv math/0406226 pic/5/5_n.eps"
+}

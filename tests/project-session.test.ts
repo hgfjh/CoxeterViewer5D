@@ -9,9 +9,13 @@ import {
   PROJECT_SESSION_FILE_NAME,
   createProjectSession,
   createProjectSessionExport,
+  createProjectSessionSnapshot,
+  createProjectSessionWorkspace,
   formatSessionIssues,
+  hasProjectSessionChanges,
   importProjectSession,
   serializeProjectSession,
+  upsertRecentProjectSession,
   validateProjectSession,
 } from "../src/app/projectSession";
 
@@ -137,6 +141,61 @@ describe("project sessions", () => {
     expect(formatSessionIssues(result.errors).join("\n")).toContain(
       "$.view.mode",
     );
+  });
+
+  it("tracks workspace metadata without requiring native desktop state", () => {
+    const session = createProjectSession({
+      createdAt,
+      workspace: createProjectSessionWorkspace({
+        id: "workspace:local",
+        label: "Local study",
+        runtime: "tauri",
+        rootPathHint: "C:/coxeter/local-study",
+        sessionPath: "C:/coxeter/local-study/.coxeter-session.json",
+      }),
+    });
+
+    const result = validateProjectSession(session);
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.workspace).toMatchObject({
+        id: "workspace:local",
+        label: "Local study",
+        runtime: "tauri",
+      });
+    }
+  });
+
+  it("fingerprints snapshots and upserts recent sessions deterministically", () => {
+    const saved = createProjectSessionSnapshot(
+      createProjectSession({ createdAt, generation: { radius: 2 } }),
+    );
+    const current = createProjectSessionSnapshot(
+      createProjectSession({ createdAt, generation: { radius: 3 } }),
+    );
+    const recent = upsertRecentProjectSession(
+      [
+        {
+          id: "session:old",
+          kind: "session",
+          label: "Old",
+          path: "C:/old/.coxeter-session.json",
+        },
+      ],
+      {
+        id: "session:new",
+        label: "New",
+        path: "C:/new/.coxeter-session.json",
+      },
+    );
+
+    expect(hasProjectSessionChanges(saved, current)).toBe(true);
+    expect(recent.map((entry) => entry.id)).toEqual([
+      "session:new",
+      "session:old",
+    ]);
+    expect(recent[0].kind).toBe("session");
   });
 
   it("validates .coxeter-session.json files from the Node script", () => {

@@ -138,8 +138,20 @@ export interface SceneViewProps {
   edges: SceneEdge[];
   cells: SceneCell[];
   generators: SceneGenerator[];
+  /**
+   * Mesh topology/position version. Changing this rebuilds buffers and pick
+   * proxies; ordinary selection and label changes should not touch it.
+   */
   structureVersion: string;
+  /**
+   * Material, label, and highlight version over the current structure.
+   */
   appearanceVersion: string;
+  /**
+   * Parent-layout version. It only schedules a resize after CSS or fullscreen
+   * changes so the WebGL canvas follows the restored viewer dimensions.
+   */
+  layoutVersion?: string | number;
   selectedNodeId?: string;
   selectedCellId?: string;
   showCells: boolean;
@@ -165,6 +177,7 @@ export interface SceneViewProps {
   maxEdgeLabels?: number;
   pickingEnabled?: boolean;
   workerGenerationMs?: number;
+  colorScheme?: SceneColorScheme;
   onCapturePngReady?: (capture: (() => Promise<string>) | undefined) => void;
   onRenderStats?: (stats: SceneRenderStats) => void;
   onHoverCell?: (cellId: string | undefined) => void;
@@ -191,7 +204,36 @@ const fallbackGeneratorColors = [
 const defaultMaxNodeLabels = 80;
 const defaultMaxEdgeLabels = 120;
 const unitY = new Vector3(0, 1, 0);
+const unitZ = new Vector3(0, 0, 1);
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+const cameraMoveFastMultiplier = 2.4;
+const cameraMoveMinimumSpeed = 0.35;
+const cameraMoveDistanceScale = 0.18;
+const cameraMoveDirectionalScale = {
+  forward: 0.72,
+  strafe: 0.28,
+  vertical: 0.42,
+};
+type SceneColorScheme = "light" | "dark";
+
+export interface CameraMovementIntent {
+  forward: number;
+  strafe: number;
+  vertical: number;
+  fast: boolean;
+}
+
+export interface CameraMovementAxes {
+  forward: Vector3;
+  right: Vector3;
+  vertical: Vector3;
+}
+
+export interface CameraMovementDirectionalScale {
+  forward: number;
+  strafe: number;
+  vertical: number;
+}
 
 export function SceneView({
   nodes,
@@ -200,6 +242,7 @@ export function SceneView({
   generators,
   structureVersion,
   appearanceVersion,
+  layoutVersion = 0,
   selectedNodeId,
   selectedCellId,
   showCells,
@@ -225,6 +268,7 @@ export function SceneView({
   maxEdgeLabels = defaultMaxEdgeLabels,
   pickingEnabled = true,
   workerGenerationMs,
+  colorScheme = "light",
   onCapturePngReady,
   onRenderStats,
   onHoverCell,
@@ -273,6 +317,7 @@ export function SceneView({
       generators,
       structureVersion,
       appearanceVersion,
+      layoutVersion: String(layoutVersion),
       selectedNodeId,
       selectedCellId,
       showCells,
@@ -298,6 +343,7 @@ export function SceneView({
       maxEdgeLabels,
       pickingEnabled,
       workerGenerationMs,
+      colorScheme,
       onRenderStats,
       onHoverCell,
       nodePositions,
@@ -309,6 +355,7 @@ export function SceneView({
     cells,
     edges,
     generators,
+    layoutVersion,
     nodePositions,
     nodes,
     onSelectCell,
@@ -320,6 +367,7 @@ export function SceneView({
     pickingEnabled,
     selectedCellId,
     selectedNodeId,
+    colorScheme,
     showReferenceBall,
     referenceBallRadius,
     labelScope,
@@ -372,6 +420,7 @@ interface GraphUpdate {
   generators: SceneGenerator[];
   structureVersion: string;
   appearanceVersion: string;
+  layoutVersion: string;
   selectedNodeId?: string;
   selectedCellId?: string;
   showCells: boolean;
@@ -397,6 +446,7 @@ interface GraphUpdate {
   maxEdgeLabels: number;
   pickingEnabled: boolean;
   workerGenerationMs?: number;
+  colorScheme: SceneColorScheme;
   onRenderStats?: (stats: SceneRenderStats) => void;
   onHoverCell?: (cellId: string | undefined) => void;
   nodePositions: Map<string, Vector3>;
@@ -464,6 +514,7 @@ class SceneRuntime {
   private framedGraphKey = "";
   private lastStructureKey = "";
   private lastAppearanceKey = "";
+  private lastLayoutVersion = "";
   private lastResetSignal = 0;
   private lastFocusSignal = 0;
   private nodeMeshes: NodeMeshBucket[] = [];
@@ -484,9 +535,12 @@ class SceneRuntime {
   private frame = 0;
   private previousFrameTime = performance.now();
   private lastGraphUpdate: GraphUpdate | undefined;
+  private readonly movementKeys = new Set<string>();
+  private fastCameraMove = false;
+  private colorScheme: SceneColorScheme = "light";
 
   constructor(private readonly mount: HTMLDivElement) {
-    this.scene.background = new Color("#f6f7f9");
+    this.setColorScheme("light");
     this.camera.position.set(0, -9, 6);
 
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
@@ -528,6 +582,9 @@ class SceneRuntime {
     this.controls.addEventListener("start", this.handleControlsStart);
     this.controls.addEventListener("change", this.handleControlsChange);
     this.controls.addEventListener("end", this.handleControlsEnd);
+    window.addEventListener("keydown", this.handleKeyDown);
+    window.addEventListener("keyup", this.handleKeyUp);
+    window.addEventListener("blur", this.handleWindowBlur);
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(mount);
     this.requestRender("init");
@@ -540,8 +597,15 @@ class SceneRuntime {
     this.onHoverCell = update.onHoverCell;
     this.onRenderStats = update.onRenderStats;
     this.pickingEnabled = update.pickingEnabled;
+    this.setColorScheme(update.colorScheme);
+    if (update.layoutVersion !== this.lastLayoutVersion) {
+      this.lastLayoutVersion = update.layoutVersion;
+      this.scheduleResize("layout-change");
+    }
     const structureKey = update.structureVersion;
     const appearanceKey = update.appearanceVersion;
+    // The renderer is demand-driven. A stable structure/appearance pair means
+    // React re-rendered controls, not the Three.js scene.
     if (
       structureKey === this.lastStructureKey &&
       appearanceKey === this.lastAppearanceKey
@@ -598,6 +662,8 @@ class SceneRuntime {
     const height = Math.max(1, this.renderer.domElement.height);
     const renderTarget = new WebGLRenderTarget(width, height);
     const pixels = new Uint8Array(width * height * 4);
+    // Screenshots render into a temporary target so preserveDrawingBuffer can
+    // stay disabled during normal interaction.
     this.renderer.setRenderTarget(renderTarget);
     this.render("screenshot");
     this.renderer.readRenderTargetPixels(
@@ -655,6 +721,9 @@ class SceneRuntime {
     this.controls.removeEventListener("start", this.handleControlsStart);
     this.controls.removeEventListener("change", this.handleControlsChange);
     this.controls.removeEventListener("end", this.handleControlsEnd);
+    window.removeEventListener("keydown", this.handleKeyDown);
+    window.removeEventListener("keyup", this.handleKeyUp);
+    window.removeEventListener("blur", this.handleWindowBlur);
     this.controls.dispose();
     this.releaseLabelSprites();
     clearGroup(this.scene);
@@ -903,6 +972,8 @@ class SceneRuntime {
       }
     }
 
+    // Lines and arrowheads are bucketed by generator/ghost state so relation
+    // focus does not create one mesh per edge.
     for (const [bucketKey, bucket] of edgeBuckets) {
       const geometry = new BufferGeometry();
       geometry.setAttribute(
@@ -1553,6 +1624,16 @@ class SceneRuntime {
     this.requestRender("resize");
   }
 
+  private scheduleResize(reason: string) {
+    const resize = () => {
+      this.resize();
+      this.requestRender(reason);
+    };
+    window.requestAnimationFrame(() => window.requestAnimationFrame(resize));
+    window.setTimeout(resize, 80);
+    window.setTimeout(resize, 240);
+  }
+
   private handleCameraSignals(update: GraphUpdate) {
     if (update.resetSignal !== this.lastResetSignal) {
       this.lastResetSignal = update.resetSignal;
@@ -1601,6 +1682,117 @@ class SceneRuntime {
   private readonly handleControlsEnd = () => {
     this.scheduleDampingFrames("camera-end", 18);
   };
+
+  private readonly handleKeyDown = (event: KeyboardEvent) => {
+    if (isEditableKeyboardTarget(event.target)) {
+      return;
+    }
+
+    if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+      this.fastCameraMove = true;
+      if (this.isCameraMovementActive()) {
+        this.requestRender("camera-key-move");
+      }
+      return;
+    }
+
+    if (!cameraMovementKeyCodes.has(event.code)) {
+      return;
+    }
+
+    event.preventDefault();
+    this.fastCameraMove = this.fastCameraMove || event.shiftKey;
+    const previousSize = this.movementKeys.size;
+    this.movementKeys.add(event.code);
+    if (previousSize !== this.movementKeys.size) {
+      this.requestRender("camera-key-move");
+    }
+  };
+
+  private readonly handleKeyUp = (event: KeyboardEvent) => {
+    if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+      this.fastCameraMove = event.shiftKey;
+      return;
+    }
+
+    if (cameraMovementKeyCodes.has(event.code)) {
+      this.movementKeys.delete(event.code);
+      this.fastCameraMove = event.shiftKey;
+    }
+  };
+
+  private readonly handleWindowBlur = () => {
+    this.movementKeys.clear();
+    this.fastCameraMove = false;
+  };
+
+  private setColorScheme(colorScheme: SceneColorScheme) {
+    if (this.colorScheme === colorScheme && this.scene.background) {
+      return;
+    }
+    this.colorScheme = colorScheme;
+    this.scene.background = new Color(
+      colorScheme === "dark" ? "#0d1117" : "#f6f7f9",
+    );
+    this.requestRender("theme");
+  }
+
+  private isCameraMovementActive(): boolean {
+    if (
+      this.movementKeys.size === 0 ||
+      isEditableKeyboardTarget(document.activeElement)
+    ) {
+      return false;
+    }
+    const intent = this.cameraMovementIntent();
+    return intent.forward !== 0 || intent.strafe !== 0 || intent.vertical !== 0;
+  }
+
+  private cameraMovementIntent(): CameraMovementIntent {
+    return {
+      forward:
+        Number(this.movementKeys.has("KeyW")) -
+        Number(this.movementKeys.has("KeyS")),
+      strafe:
+        Number(this.movementKeys.has("KeyD")) -
+        Number(this.movementKeys.has("KeyA")),
+      vertical:
+        Number(this.movementKeys.has("KeyE")) -
+        Number(this.movementKeys.has("KeyQ")),
+      fast: this.fastCameraMove,
+    };
+  }
+
+  private applyCameraMovement(deltaMs: number): boolean {
+    if (!this.isCameraMovementActive()) {
+      return false;
+    }
+
+    const forward = new Vector3();
+    const right = new Vector3();
+    this.camera.getWorldDirection(forward);
+    right.setFromMatrixColumn(this.camera.matrixWorld, 0);
+    const speed = Math.max(
+      cameraMoveMinimumSpeed,
+      this.camera.position.distanceTo(this.controls.target) *
+        cameraMoveDistanceScale,
+    );
+    const delta = cameraLocalMovementDelta(
+      { forward, right, vertical: unitZ },
+      this.cameraMovementIntent(),
+      Math.min(deltaMs, 100) / 1000,
+      speed,
+      cameraMoveFastMultiplier,
+      cameraMoveDirectionalScale,
+    );
+    if (delta.lengthSq() === 0) {
+      return false;
+    }
+
+    this.camera.position.add(delta);
+    this.controls.target.add(delta);
+    return true;
+  }
 
   private readonly handlePointerDown = (event: PointerEvent) => {
     this.pointerDownPosition = { x: event.clientX, y: event.clientY };
@@ -1743,14 +1935,18 @@ class SceneRuntime {
       frame: this.frame,
       deltaMs,
     });
+    const movedByKeyboard = this.applyCameraMovement(deltaMs);
     const controlsChanged = this.controls.update();
-    this.render(reason);
+    this.render(movedByKeyboard ? "camera-key-move" : reason);
     if (this.dampingFramesRemaining > 0) {
       this.dampingFramesRemaining -= 1;
     }
-    if (controlsChanged || this.dampingFramesRemaining > 0) {
+    const continueDamping = controlsChanged && this.dampingFramesRemaining > 0;
+    if (movedByKeyboard || this.isCameraMovementActive() || continueDamping) {
       this.animationFrame = window.requestAnimationFrame(() =>
-        this.renderFrame("camera-damping"),
+        this.renderFrame(
+          this.isCameraMovementActive() ? "camera-key-move" : "camera-damping",
+        ),
       );
     }
   };
@@ -1823,6 +2019,77 @@ function emptySpatialPickStats(): SpatialPickPrefilterStats {
     minimumEntryCount: 32,
     padding: 0,
   };
+}
+
+const cameraMovementKeyCodes = new Set([
+  "KeyW",
+  "KeyS",
+  "KeyA",
+  "KeyD",
+  "KeyQ",
+  "KeyE",
+]);
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function cameraLocalMovementDelta(
+  axes: CameraMovementAxes,
+  intent: CameraMovementIntent,
+  deltaSeconds: number,
+  speed: number,
+  fastMultiplier = cameraMoveFastMultiplier,
+  directionalScale: CameraMovementDirectionalScale = {
+    forward: 1,
+    strafe: 1,
+    vertical: 1,
+  },
+): Vector3 {
+  const delta = new Vector3();
+  const scale = deltaSeconds * speed * (intent.fast ? fastMultiplier : 1);
+  if (scale <= 0) {
+    return delta;
+  }
+
+  addScaledNormal(
+    delta,
+    axes.forward,
+    intent.forward * scale * directionalScale.forward,
+  );
+  addScaledNormal(
+    delta,
+    axes.right,
+    intent.strafe * scale * directionalScale.strafe,
+  );
+  addScaledNormal(
+    delta,
+    axes.vertical,
+    intent.vertical * scale * directionalScale.vertical,
+  );
+  return delta;
+}
+
+function addScaledNormal(delta: Vector3, axis: Vector3, scale: number) {
+  if (scale === 0 || axis.lengthSq() === 0) {
+    return;
+  }
+  delta.addScaledVector(axis.clone().normalize(), scale);
+}
+
+function isEditableKeyboardTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+  if (target.isContentEditable) {
+    return true;
+  }
+  if (
+    target.closest(
+      '[contenteditable="true"], [contenteditable="plaintext-only"]',
+    )
+  ) {
+    return true;
+  }
+  const tagName = target.tagName.toLowerCase();
+  return tagName === "input" || tagName === "textarea" || tagName === "select";
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -2273,6 +2540,13 @@ class ScreenLabelOccupancy {
   }
 }
 
+/**
+ * Prioritizes labels before screen-space collision checks.
+ *
+ * Y_Gamma can have several semantic edges drawn on the same segment. The
+ * segment budget picks the best label for that segment; the occupancy pass then
+ * prevents separate nearby labels from covering each other.
+ */
 function edgeLabelPriority(edge: SceneEdge, update: GraphUpdate): number {
   const source = update.nodePositions.get(edge.source);
   const target = update.nodePositions.get(edge.target);
