@@ -24,7 +24,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 import sympy as sp
 
 from tumarkin_8facet_solve import build_gram, solve_g11411_path
@@ -162,28 +161,80 @@ def dotted_diagnostics(diagram: dict[str, Any], solution: dict[sp.Symbol, sp.Exp
     return rows
 
 
-def numerical_signature(diagram: dict[str, Any], solution: dict[sp.Symbol, sp.Expr]) -> dict[str, int]:
+def symmetric_eigenvalues(matrix: list[list[float]], tolerance: float = 1e-12) -> list[float]:
+    """Return eigenvalues of a small real symmetric matrix.
+
+    The Tumarkin certifier only needs 8x8 Gram signatures.  A Jacobi sweep keeps
+    the checker independent of NumPy on CI while preserving deterministic
+    floating-point diagnostics.
+    """
+
+    values = [row[:] for row in matrix]
+    size = len(values)
+    if size == 0:
+        return []
+
+    for _sweep in range(80 * size * size):
+        pivot_i = 0
+        pivot_j = 1 if size > 1 else 0
+        largest = 0.0
+        for i in range(size):
+            for j in range(i + 1, size):
+                entry = abs(values[i][j])
+                if entry > largest:
+                    largest = entry
+                    pivot_i = i
+                    pivot_j = j
+
+        if largest < tolerance:
+            break
+
+        app = values[pivot_i][pivot_i]
+        aqq = values[pivot_j][pivot_j]
+        apq = values[pivot_i][pivot_j]
+        angle = 0.5 * math.atan2(2.0 * apq, aqq - app)
+        cosine = math.cos(angle)
+        sine = math.sin(angle)
+
+        for k in range(size):
+            if k == pivot_i or k == pivot_j:
+                continue
+            aik = values[k][pivot_i]
+            akq = values[k][pivot_j]
+            next_i = cosine * aik - sine * akq
+            next_j = sine * aik + cosine * akq
+            values[k][pivot_i] = values[pivot_i][k] = next_i
+            values[k][pivot_j] = values[pivot_j][k] = next_j
+
+        values[pivot_i][pivot_i] = cosine * cosine * app - 2.0 * sine * cosine * apq + sine * sine * aqq
+        values[pivot_j][pivot_j] = sine * sine * app + 2.0 * sine * cosine * apq + cosine * cosine * aqq
+        values[pivot_i][pivot_j] = values[pivot_j][pivot_i] = 0.0
+
+    return sorted(values[index][index] for index in range(size))
+
+
+def evaluated_gram_matrix(diagram: dict[str, Any], solution: dict[sp.Symbol, sp.Expr], precision: int) -> list[list[float]]:
     gram, _variables, _pairs = build_gram(diagram)
-    evaluated = np.array(
-        [[float(sp.N(entry.subs(solution), 40)) for entry in row] for row in gram.tolist()],
-        dtype=float,
-    )
-    eigenvalues = np.linalg.eigvalsh(evaluated)
+    return [
+        [float(sp.N(entry.subs(solution), precision)) for entry in row]
+        for row in gram.tolist()
+    ]
+
+
+def numerical_signature(diagram: dict[str, Any], solution: dict[sp.Symbol, sp.Expr]) -> dict[str, int]:
+    eigenvalues = symmetric_eigenvalues(evaluated_gram_matrix(diagram, solution, 40))
+    positive = sum(1 for value in eigenvalues if value > 1e-8)
+    negative = sum(1 for value in eigenvalues if value < -1e-8)
     return {
-        "positive": int(np.sum(eigenvalues > 1e-8)),
-        "negative": int(np.sum(eigenvalues < -1e-8)),
-        "zero": int(len(eigenvalues) - np.sum(eigenvalues > 1e-8) - np.sum(eigenvalues < -1e-8)),
+        "positive": positive,
+        "negative": negative,
+        "zero": len(eigenvalues) - positive - negative,
     }
 
 
 def exact_rank_checks(diagram: dict[str, Any], solution: dict[sp.Symbol, sp.Expr]) -> dict[str, Any]:
-    gram, _variables, _pairs = build_gram(diagram)
-    evaluated = np.array(
-        [[float(sp.N(entry.subs(solution), 80)) for entry in row] for row in gram.tolist()],
-        dtype=float,
-    )
-    eigenvalues = np.linalg.eigvalsh(evaluated)
-    numerical_rank = int(np.sum(np.abs(eigenvalues) > 1e-8))
+    eigenvalues = symmetric_eigenvalues(evaluated_gram_matrix(diagram, solution, 80))
+    numerical_rank = sum(1 for value in eigenvalues if abs(value) > 1e-8)
     return {
         "rank": numerical_rank,
         "rankMethod": "eigenvalue check after exact determinant-equation solve",
@@ -322,8 +373,14 @@ def validate_example(path: Path, example: dict[str, Any], diagram: dict[str, Any
     expected_diag = expected["certificate"]["diagnostics"]
     if actual_diag.get("signature") != expected_diag["signature"]:
         errors.append("certificate signature diagnostics are stale")
-    if actual_diag.get("rankChecks") != expected_diag["rankChecks"]:
+    rank_checks = actual_diag.get("rankChecks", {})
+    expected_rank_checks = expected_diag["rankChecks"]
+    if rank_checks.get("rank") != expected_rank_checks["rank"]:
         errors.append("certificate rank diagnostics are stale")
+    if rank_checks.get("determinantEquationsSolved") is not True:
+        errors.append("certificate determinant-equation diagnostics must pass")
+    if len(rank_checks.get("smallestAbsoluteEigenvalues", [])) < 3:
+        errors.append("certificate must keep three eigenvalue-scale diagnostics")
     if len(actual_diag.get("dottedWeights", [])) != 3:
         errors.append("certificate must record the three dotted weights")
     if path.name != f"tumarkin_5d_8facet_g11411_{diagram['diagramIndex']:02d}.json":
