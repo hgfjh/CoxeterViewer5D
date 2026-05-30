@@ -18,7 +18,6 @@ from pathlib import Path
 from typing import Any
 
 import sympy as sp
-import numpy as np
 
 from tumarkin_8facet_eps import diagram_to_transcription, parse_eps
 
@@ -149,6 +148,58 @@ def solve_g11411_path(diagram: dict[str, Any]) -> dict[sp.Symbol, sp.Expr]:
     return solution
 
 
+def symmetric_eigenvalues(matrix: list[list[float]], tolerance: float = 1e-12) -> list[float]:
+    """Return eigenvalues for the small symmetric Gram matrices in this script.
+
+    This is a Jacobi sweep rather than a proof engine.  It is used only for the
+    exploratory signature summary printed by this source-transcription helper;
+    exact determinant equations still carry the certification work.
+    """
+
+    values = [row[:] for row in matrix]
+    size = len(values)
+    if size == 0:
+        return []
+
+    for _sweep in range(80 * size * size):
+        pivot_i = 0
+        pivot_j = 1 if size > 1 else 0
+        largest = 0.0
+        for i in range(size):
+            for j in range(i + 1, size):
+                entry = abs(values[i][j])
+                if entry > largest:
+                    largest = entry
+                    pivot_i = i
+                    pivot_j = j
+
+        if largest < tolerance:
+            break
+
+        app = values[pivot_i][pivot_i]
+        aqq = values[pivot_j][pivot_j]
+        apq = values[pivot_i][pivot_j]
+        angle = 0.5 * math.atan2(2.0 * apq, aqq - app)
+        cosine = math.cos(angle)
+        sine = math.sin(angle)
+
+        for k in range(size):
+            if k == pivot_i or k == pivot_j:
+                continue
+            aik = values[k][pivot_i]
+            akq = values[k][pivot_j]
+            next_i = cosine * aik - sine * akq
+            next_j = sine * aik + cosine * akq
+            values[k][pivot_i] = values[pivot_i][k] = next_i
+            values[k][pivot_j] = values[pivot_j][k] = next_j
+
+        values[pivot_i][pivot_i] = cosine * cosine * app - 2.0 * sine * cosine * apq + sine * sine * aqq
+        values[pivot_j][pivot_j] = sine * sine * app + 2.0 * sine * cosine * apq + cosine * cosine * aqq
+        values[pivot_i][pivot_j] = values[pivot_j][pivot_i] = 0.0
+
+    return sorted(values[index][index] for index in range(size))
+
+
 def solve_diagram(diagram: dict[str, Any]) -> dict[str, Any]:
     matrix, variables, _dotted_pairs = build_gram(diagram)
     if not variables:
@@ -165,16 +216,13 @@ def solve_diagram(diagram: dict[str, Any]) -> dict[str, Any]:
         if all(abs(sp.im(value)) < sp.Rational(1, 10) ** 25 for value in values):
             decimals = [float(sp.re(value)) for value in values]
             if all(value > 1 for value in decimals):
-                evaluated = np.array(
-                    [
-                        [float(sp.N(entry.subs(solution), 30)) for entry in row]
-                        for row in matrix.tolist()
-                    ],
-                    dtype=float,
-                )
-                eigen = np.linalg.eigvalsh(evaluated)
-                positive = int(np.sum(eigen > 1e-8))
-                negative = int(np.sum(eigen < -1e-8))
+                evaluated = [
+                    [float(sp.N(entry.subs(solution), 30)) for entry in row]
+                    for row in matrix.tolist()
+                ]
+                eigen = symmetric_eigenvalues(evaluated)
+                positive = sum(1 for value in eigen if value > 1e-8)
+                negative = sum(1 for value in eigen if value < -1e-8)
                 zero = int(len(eigen) - positive - negative)
                 real_solutions.append(
                     {
