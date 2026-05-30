@@ -7,6 +7,14 @@ Davis cells, hyperbolic chamber projections, the one-vertex base complex
 The app is an educational and research workflow tool, not a theorem prover. It
 keeps exact data, numerical geometry, and drawing conventions visibly separate.
 
+## License
+
+Unless otherwise noted, CoxeterViewer5D source code, scripts, bundled JSON
+examples, and documentation are released under the Apache License 2.0. Source
+references cited in the data remain the property of their respective
+authors/publishers; this project licenses only its own transcriptions, code,
+and generated artifacts.
+
 ## Run The App From Source
 
 These commands are for someone who has just cloned or downloaded the repository
