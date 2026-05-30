@@ -50,6 +50,13 @@ function chunkForModule(id: string): string | undefined {
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    watch: {
+      // Cargo rewrites and locks compiled DLLs while `tauri dev` is running.
+      // Vite should watch web source files, not Rust build artifacts.
+      ignored: ["**/src-tauri/target/**"],
+    },
+  },
   optimizeDeps: {
     include: ["lucide-react", "react", "react-dom/client", "three"],
   },
