@@ -1,0 +1,58 @@
+name: Data-source correction
+description: Report a citation, transcription, catalogue, or bundled-example data issue.
+title: "[Data]: "
+labels: ["data", "citation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when the problem is about source data, references, Coxeter diagrams, Gram entries, labels, or bundled example metadata.
+        Please distinguish a suspected transcription issue from a rendering issue.
+  - type: input
+    id: example
+    attributes:
+      label: Example or file
+      placeholder: "compact_5_prism_makarov_p2.json"
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source reference
+      description: Give the paper/book/software source, URL/DOI/arXiv id, and locator such as theorem, figure, table, page, or equation.
+      placeholder: "Author, title, arXiv:..., Table/Figure/Page ..."
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What looks wrong?
+      description: Describe the current data and the proposed correction.
+      placeholder: "The edge between s2 and s5 is listed as m=3, but Figure ... shows ..."
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or check
+      description: Include exact entries, matrix rows, certificate output, screenshots of source diagrams, or commands run. Do not paste copyrighted prose beyond short necessary excerpts.
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Likely impact
+      options:
+        - Citation or wording only
+        - Example metadata
+        - Coxeter matrix
+        - Geometry/Gram data
+        - Certification artifact
+        - Unsure
+    validations:
+      required: true
+  - type: checkboxes
+    id: policy
+    attributes:
+      label: Data policy
+      options:
+        - label: I understand that compact hyperbolic data should not be changed without a source locator and validation artifact.
+          required: true

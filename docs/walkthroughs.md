@@ -24,6 +24,20 @@ Keep labels focused, not global. A radius that is too small may clip a cell
 boundary; a radius that is too large can make labels and cells visually noisy.
 Filled cells should mean the whole boundary is present.
 
+## Reference Captures
+
+These stills are checked into `docs/screenshots/` so a reader can see the
+intended public-alpha tour without running the app first. They are teaching
+captures, not certificates; pair them with the inspector, warnings, and exported
+sidecar when the exact data matters.
+
+| Demo                | Capture                                                                                                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Find a hexagon      | ![Rank-two Davis hexagon for generators s0 and s1 in A2.](screenshots/hexagon-a2-rank-two-m3.png)                                     |
+| A3 rank-three cell  | ![A3 rank-three Y_Gamma focus showing square and hexagon face families in one 3D view.](screenshots/a3-rank-three-square-hexagon.png) |
+| P2 Y_Gamma          | ![P2 Y_Gamma relation view for an m=5 face attached to the generator spine.](screenshots/y-gamma-p2-m5-relation.png)                  |
+| I2(5) quotient/game | ![I2(5) quotient/game workflow with cocycle and decagon diagnostic.](screenshots/i2-5-quotient-game-cocycle.png)                      |
+
 ## Hexagon Relation: Find A Hexagon
 
 Goal: read `(s_i s_j)^3 = 1` as one six-sided rank-two Davis cell.

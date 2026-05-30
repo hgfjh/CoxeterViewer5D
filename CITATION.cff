@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use CoxeterViewer5D in research, teaching, or a public demo, please cite the software release."
+type: software
+title: "CoxeterViewer5D"
+version: "0.1.0"
+date-released: "2026-05-30"
+abstract: "Offline-capable research and teaching viewer for Coxeter Cayley balls, Davis cells, Y_Gamma base complexes, quotient/game experiments, and certified compact Coxeter examples."
+authors:
+  - name: "CoxeterViewer5D contributors"
+repository-code: "https://github.com/hgfjh/CoxeterViewer5D"
+url: "https://github.com/hgfjh/CoxeterViewer5D/releases/tag/v0.1.0"
+license: "Apache-2.0"
+keywords:
+  - "Coxeter groups"
+  - "Davis complex"
+  - "Cayley graph"
+  - "hyperbolic reflection groups"
+  - "geometric topology"
+  - "mathematical visualization"
+  - "Y_Gamma"

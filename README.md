@@ -127,6 +127,15 @@ For a first public pass, use these four demos in order:
 
 Presenter scripts live in [docs/walkthroughs.md](docs/walkthroughs.md). Capture
 and caption guidance lives in [docs/demo-media.md](docs/demo-media.md).
+The checked-in stills live in [docs/screenshots](docs/screenshots) and can be
+regenerated with `corepack pnpm demo:screenshots`.
+
+| Demo                          | Reference Capture                                                                                                                                               |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Find a hexagon                | ![A rank-two Davis hexagon for the A2 m=3 relation, shown as a filled six-sided cell with boundary context.](docs/screenshots/hexagon-a2-rank-two-m3.png)       |
+| Inspect an A3 rank-three cell | ![A3 Y_Gamma rank-three focus with square and hexagon face families visible as one 3D incidence object.](docs/screenshots/a3-rank-three-square-hexagon.png)     |
+| Inspect `Y_Gamma` for P2      | ![Y_Gamma for the certified P2 compact 5-prism, focused on an m=5 relation sheet attached to the generator spine.](docs/screenshots/y-gamma-p2-m5-relation.png) |
+| Run `I2(5)` quotient/game     | ![I2(5) quotient/game workflow with the named cocycle and decagon boundary-sum diagnostic visible.](docs/screenshots/i2-5-quotient-game-cocycle.png)            |
 
 ## What Is Exact?
 

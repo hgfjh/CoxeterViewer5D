@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Public alpha release
+    url: https://github.com/hgfjh/CoxeterViewer5D/releases/tag/v0.1.0
+    about: Download the latest public alpha artifacts.

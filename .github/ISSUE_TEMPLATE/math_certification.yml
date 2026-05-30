@@ -1,0 +1,57 @@
+name: Math or certification concern
+description: Ask about exactness, certificates, quotient/game checks, or mathematical claims.
+title: "[Math/Cert]: "
+labels: ["math", "certification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for questions about what is exact, what is certified, and what is only a drawing or projection convention.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Coxeter matrix or source transcription
+        - Gram/signature certificate
+        - Geometric projection or interval geometry
+        - Davis cells or local links
+        - Y_Gamma
+        - Quotient/game workflow
+        - Backend parity or external tools
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: object
+    attributes:
+      label: Example, selected object, or artifact
+      placeholder: "A3 rank-three cell, P2 Y_Gamma m=5 face, I2(5) quotient demo"
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: Concern
+      description: State the mathematical question or possible claim boundary problem.
+      placeholder: "The UI says ..., but I think this should be labeled as a visual proxy because ..."
+    validations:
+      required: true
+  - type: textarea
+    id: artifact
+    attributes:
+      label: Relevant certificate, warning, or exported sidecar
+      description: Paste the small relevant JSON block or command output if available.
+      render: json
+  - type: textarea
+    id: expected_language
+    attributes:
+      label: Suggested wording or expected status
+      description: If this is about UI language, say what label would be mathematically safer.
+  - type: checkboxes
+    id: claims
+    attributes:
+      label: Claim boundary
+      options:
+        - label: I am not asking the project to promote a theorem-level claim without a passed certificate and source/input hashes.
+          required: true
