@@ -1113,10 +1113,13 @@ describe("local chamber UX helpers", () => {
       "Gamma:e:1-2",
     ]);
     expect(scene.edges.map((edge) => edge.compactLabel)).toEqual([
-      "m=3",
-      "m=2",
-      "m=3",
+      "3",
+      "2",
+      "3",
     ]);
+    expect(
+      scene.edges.every((edge) => edge.semanticLabelKind === "coxeter-order"),
+    ).toBe(true);
     expect(scene.edges.map((edge) => edge.colorHint)).toEqual([
       "#2563eb",
       "#06b6d4",
@@ -1185,7 +1188,7 @@ describe("local chamber UX helpers", () => {
 
     expect(scene.edges).toHaveLength(expectedEdgeCount);
     expect(
-      scene.edges.every((edge) => edge.compactLabel?.startsWith("m=")),
+      scene.edges.every((edge) => /^\d+$/.test(edge.compactLabel ?? "")),
     ).toBe(true);
     expect(scene.edges.every((edge) => edge.alwaysLabel)).toBe(true);
     expect(scene.edges.every((edge) => edge.labelLeader)).toBe(true);

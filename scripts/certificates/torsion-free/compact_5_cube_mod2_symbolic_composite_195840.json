@@ -1,0 +1,61 @@
+{
+  "artifactSha256": "aea234598b093e44b22d1b23756835c482f2985ec64f6b121a2ea7506bda3561",
+  "artifactType": "mod2-symbolic-composite-search",
+  "baseExactCertificate": {
+    "maximumDegree": 97920,
+    "reason": "Targets below 97,920 violate the stabilizer-index floor; all ten index-97,920 classes have nonzero fixed-point marks.",
+    "status": "exact-exhausted"
+  },
+  "builderVersion": "1.0.0",
+  "claims": [
+    "exact exclusion of the declared target degrees through 97920",
+    "resource-bounded accounting at degree 195840"
+  ],
+  "compactSubgroups": [],
+  "degreeGate": {
+    "allTargetsAtOrBelowTwiceFloor": true,
+    "conclusion": "requires-complete-floor-pair-double-cosets",
+    "exactFloorPairTypeCount": 55,
+    "exactPairDegree": 195840,
+    "floorClassCount": 10,
+    "floorWitnessFreeClassIds": [],
+    "maximumTargetDegree": 195840,
+    "method": "stabilizer-intersection index monotonicity",
+    "moduleDegreeFloor": 97920,
+    "targetsBelowFloor": [5760, 11520, 17280, 23040, 46080],
+    "witnessCount": 186
+  },
+  "execution": {
+    "actionSource": "scripts/certificates/torsion-free/compact_5_cube_mod2_ambient_action.json",
+    "reason": "GAP exceeded the 120-second wall-clock bound.",
+    "requestSha256": "ec92ac9383f46c0db231ba3e76656c3404d24712e273766df30c133042368029",
+    "status": "incomplete-resource-bounded",
+    "stderrTail": "",
+    "stdoutTail": "",
+    "timeoutSeconds": 120
+  },
+  "nonClaims": [
+    "exhaustion at degree 195840",
+    "existence or nonexistence of a torsion-free action"
+  ],
+  "requestSha256": "ec92ac9383f46c0db231ba3e76656c3404d24712e273766df30c133042368029",
+  "schemaVersion": 1,
+  "search": {
+    "completeWithinDeclaredTargets": false,
+    "reason": "GAP exceeded the 120-second wall-clock bound."
+  },
+  "sourceHashes": {
+    "ambientActionSha256": "73cefb5af2e02dbfd53fe5e6f330226a2ad61141490cb0fe60e212ee79e6a283",
+    "coxeterInputSha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+    "coxeterMatrixSha256": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+    "gapSearchScriptSha256": "2f44f691dc346660f29a1b79b0b78c9a10e770cbf8626adadf821f7ed4a19055",
+    "pythonBuilderSha256": "bc781e07f8e22db8f3f96a47885a61dafcd283c284abc0d030be7696b6b25740",
+    "recognizerLibraryPrefixSha256": "1083b8acae66f84cb7933804e784544e2edf7c8f524abc78172ad8707a23b22b",
+    "recognizerScriptSha256": "b0ed4c46817251b45aea9c47a300deef2674131d877c56c0e19ca0f372f2bd19",
+    "symbolicReportFileSha256": "48f8ac10330430030e66b9377316bc347c4861756acc49961b23ef01c23e5a2e",
+    "symbolicReportSha256": "9c54c2cbd081c6c60e78b93384b8e59f1ff6dcb372e0e5eae566bed777b96cee",
+    "witnessCatalogueSha256": "ecb34ecdd386b16765507d1a48ab7ed3c9887ba4b00c80056a9d1af628486140"
+  },
+  "status": "incomplete-resource-bounded",
+  "targetDegrees": [5760, 11520, 17280, 23040, 46080, 97920, 195840]
+}

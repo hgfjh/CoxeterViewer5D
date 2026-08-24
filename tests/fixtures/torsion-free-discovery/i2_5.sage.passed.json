@@ -1,0 +1,551 @@
+{
+  "artifactType": "coxeter-torsion-free-discovery",
+  "bounds": {
+    "maxCandidates": 4,
+    "maxCompositeCombinations": 20000,
+    "maxCompositeModules": 4,
+    "maxCongruenceImageOrder": 100000,
+    "maxCongruencePrime": 31,
+    "maxIndex": 10,
+    "maxModuleCandidates": 96,
+    "maxSphericalOrder": 1000,
+    "maxSubsets": 16,
+    "maxWitnesses": 64,
+    "timeoutSeconds": 60
+  },
+  "certificate": {
+    "claims": [
+      "finite-index",
+      "torsion-free"
+    ],
+    "completeSphericalRestrictionChecks": true,
+    "completeTorsionWitnessCatalogue": true,
+    "coxeterRelationChecks": [
+      {
+        "exponent": 2,
+        "generators": [
+          0,
+          0
+        ],
+        "kind": "involution",
+        "passed": true,
+        "phase": "residue-field"
+      },
+      {
+        "exponent": 2,
+        "generators": [
+          1,
+          1
+        ],
+        "kind": "involution",
+        "passed": true,
+        "phase": "residue-field"
+      },
+      {
+        "exponent": 5,
+        "generators": [
+          0,
+          1
+        ],
+        "kind": "coxeter",
+        "passed": true,
+        "phase": "residue-field"
+      }
+    ],
+    "criterion": "tits-prime-order-fixed-point",
+    "explanation": "Exact reduction is injective on every maximal spherical special subgroup. The kernel therefore contains no nonidentity spherical element; Tits' torsion theorem makes it torsion-free. Prime-order class representatives were also checked in the regular action.",
+    "noFixedPointChecks": [
+      {
+        "fixedVertexIds": [],
+        "passed": true,
+        "primeOrder": 2,
+        "witnessId": "tw0",
+        "word": [
+          0
+        ]
+      },
+      {
+        "fixedVertexIds": [],
+        "passed": true,
+        "primeOrder": 5,
+        "witnessId": "tw1",
+        "word": [
+          0,
+          1
+        ]
+      },
+      {
+        "fixedVertexIds": [],
+        "passed": true,
+        "primeOrder": 5,
+        "witnessId": "tw2",
+        "word": [
+          0,
+          1,
+          0,
+          1
+        ]
+      }
+    ],
+    "nonClaims": [
+      "minimal index",
+      "manifold",
+      "virtual algebraic fibering"
+    ],
+    "sphericalRestrictionChecks": [
+      {
+        "expectedOrder": 10,
+        "imageOrder": 10,
+        "injective": true,
+        "subset": [
+          0,
+          1
+        ],
+        "type": "I2(5)"
+      }
+    ],
+    "status": "passed",
+    "theoremBasis": [
+      "faithful standard Tits reflection representation",
+      "injective reduction on every maximal spherical special subgroup",
+      "Tits torsion theorem for Coxeter groups",
+      "regular action of the exact finite congruence image"
+    ],
+    "transitive": true
+  },
+  "congruence": {
+    "cyclotomicOrder": 10,
+    "imageOrder": 10,
+    "primeIdeal": "Fractional ideal (3)",
+    "rationalPrime": 3,
+    "residueFieldOrder": 81,
+    "sphericalImageChecks": [
+      {
+        "expectedOrder": 10,
+        "imageOrder": 10,
+        "passed": true,
+        "subset": [
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  "errors": [],
+  "finiteAction": {
+    "cosetConvention": "Regular right action of the finite congruence image; q0 is the congruence-kernel base coset",
+    "degree": 10,
+    "edges": [
+      {
+        "generator": 0,
+        "id": "qe:q0:g0:q1",
+        "label": "s0",
+        "source": "q0",
+        "target": "q1"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q1:g0:q0",
+        "label": "s0",
+        "source": "q1",
+        "target": "q0"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q2:g0:q4",
+        "label": "s0",
+        "source": "q2",
+        "target": "q4"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q3:g0:q5",
+        "label": "s0",
+        "source": "q3",
+        "target": "q5"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q4:g0:q2",
+        "label": "s0",
+        "source": "q4",
+        "target": "q2"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q5:g0:q3",
+        "label": "s0",
+        "source": "q5",
+        "target": "q3"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q6:g0:q8",
+        "label": "s0",
+        "source": "q6",
+        "target": "q8"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q7:g0:q9",
+        "label": "s0",
+        "source": "q7",
+        "target": "q9"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q8:g0:q6",
+        "label": "s0",
+        "source": "q8",
+        "target": "q6"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q9:g0:q7",
+        "label": "s0",
+        "source": "q9",
+        "target": "q7"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q0:g1:q2",
+        "label": "s1",
+        "source": "q0",
+        "target": "q2"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q1:g1:q3",
+        "label": "s1",
+        "source": "q1",
+        "target": "q3"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q2:g1:q0",
+        "label": "s1",
+        "source": "q2",
+        "target": "q0"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q3:g1:q1",
+        "label": "s1",
+        "source": "q3",
+        "target": "q1"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q4:g1:q6",
+        "label": "s1",
+        "source": "q4",
+        "target": "q6"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q5:g1:q7",
+        "label": "s1",
+        "source": "q5",
+        "target": "q7"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q6:g1:q4",
+        "label": "s1",
+        "source": "q6",
+        "target": "q4"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q7:g1:q5",
+        "label": "s1",
+        "source": "q7",
+        "target": "q5"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q8:g1:q9",
+        "label": "s1",
+        "source": "q8",
+        "target": "q9"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q9:g1:q8",
+        "label": "s1",
+        "source": "q9",
+        "target": "q8"
+      }
+    ],
+    "generatorActions": [
+      {
+        "generator": 0,
+        "images": [
+          "q1",
+          "q0",
+          "q4",
+          "q5",
+          "q2",
+          "q3",
+          "q8",
+          "q9",
+          "q6",
+          "q7"
+        ]
+      },
+      {
+        "generator": 1,
+        "images": [
+          "q2",
+          "q3",
+          "q0",
+          "q1",
+          "q6",
+          "q7",
+          "q4",
+          "q5",
+          "q9",
+          "q8"
+        ]
+      }
+    ],
+    "subgroupGenerators": [],
+    "vertices": [
+      {
+        "id": "q0",
+        "representativeWord": []
+      },
+      {
+        "id": "q1",
+        "representativeWord": [
+          0
+        ]
+      },
+      {
+        "id": "q2",
+        "representativeWord": [
+          1
+        ]
+      },
+      {
+        "id": "q3",
+        "representativeWord": [
+          0,
+          1
+        ]
+      },
+      {
+        "id": "q4",
+        "representativeWord": [
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q5",
+        "representativeWord": [
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q6",
+        "representativeWord": [
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "q7",
+        "representativeWord": [
+          0,
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "id": "q8",
+        "representativeWord": [
+          1,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q9",
+        "representativeWord": [
+          0,
+          1,
+          0,
+          1,
+          0
+        ]
+      }
+    ]
+  },
+  "indexLowerBound": {
+    "contributingSubgroupIds": [
+      "T:0,1"
+    ],
+    "value": "10"
+  },
+  "inputHash": "60c38b9d0b896c2e64f54a05dfb925919d1e895af006d26e563c2f16b2746efe",
+  "ok": true,
+  "provenance": {
+    "artifactHash": "ee061e89743621ca82d192d97db051a17476cebd3c149fbd7877aa265cc5fedf",
+    "backend": "sage-congruence-torsion-free",
+    "backendVersion": "1.0.0",
+    "coefficientField": "Cyclotomic Field of order 10 and degree 4",
+    "command": "wsl sage -c <temporary-path>",
+    "cyclotomicConductor": 10,
+    "inputHash": "60c38b9d0b896c2e64f54a05dfb925919d1e895af006d26e563c2f16b2746efe",
+    "primeIdeal": "Fractional ideal (3)",
+    "primeIdealNorm": 81,
+    "rationalPrime": 3,
+    "residueFieldOrder": 81,
+    "runtime": "wsl",
+    "runtimeLabel": "wsl sage",
+    "sageVersion": "10.8"
+  },
+  "schemaVersion": 1,
+  "search": {
+    "actionDegreeCap": 100000,
+    "attempts": [
+      {
+        "imageOrder": 10,
+        "primeIdeal": "Fractional ideal (3)",
+        "primeIdealNorm": 81,
+        "rationalPrime": 3,
+        "reason": "faithful-on-maximal-spherical-subgroups",
+        "residueDegree": 4,
+        "residueFieldOrder": 81,
+        "sphericalRestrictionChecks": [
+          {
+            "expectedOrder": 10,
+            "imageOrder": 10,
+            "injective": true,
+            "subset": [
+              0,
+              1
+            ],
+            "type": "I2(5)"
+          }
+        ],
+        "status": "accepted"
+      }
+    ],
+    "candidatesChecked": 1,
+    "maxCandidates": 4,
+    "maxRationalPrime": 31,
+    "method": "exact-cyclotomic-tits-congruence",
+    "reason": "faithful-spherical-congruence-kernel-found",
+    "selectedStrategy": "sage-congruence-kernel"
+  },
+  "sourceSystem": {
+    "coxeterMatrix": [
+      [
+        1,
+        5
+      ],
+      [
+        5,
+        1
+      ]
+    ],
+    "generators": [
+      {
+        "id": "s0",
+        "label": "s0"
+      },
+      {
+        "id": "s1",
+        "label": "s1"
+      }
+    ],
+    "name": "I2(5)",
+    "notes": [
+      "Self-test input for automatic torsion-free subgroup discovery."
+    ],
+    "rank": 2,
+    "schemaVersion": 1
+  },
+  "sphericalCatalogue": {
+    "complete": true,
+    "maximalSubgroups": [
+      {
+        "congruenceImageOrder": 10,
+        "congruenceRestrictionInjective": true,
+        "order": 10,
+        "subset": [
+          0,
+          1
+        ],
+        "type": "I2(5)"
+      }
+    ],
+    "method": "complete-finite-coxeter-classification+exact-congruence-restrictions"
+  },
+  "status": "passed",
+  "strategyAttempts": [
+    {
+      "candidateDegree": 10,
+      "elapsedMs": 12875,
+      "message": "faithful-spherical-congruence-kernel-found",
+      "status": "passed",
+      "strategy": "sage-congruence-kernel"
+    }
+  ],
+  "torsionWitnesses": [
+    {
+      "classSize": 5,
+      "id": "tw0",
+      "primeOrder": 2,
+      "sphericalOrder": 10,
+      "sphericalType": "I2(5)",
+      "subset": [
+        0,
+        1
+      ],
+      "word": [
+        0
+      ]
+    },
+    {
+      "classSize": 2,
+      "id": "tw1",
+      "primeOrder": 5,
+      "sphericalOrder": 10,
+      "sphericalType": "I2(5)",
+      "subset": [
+        0,
+        1
+      ],
+      "word": [
+        0,
+        1
+      ]
+    },
+    {
+      "classSize": 2,
+      "id": "tw2",
+      "primeOrder": 5,
+      "sphericalOrder": 10,
+      "sphericalType": "I2(5)",
+      "subset": [
+        0,
+        1
+      ],
+      "word": [
+        0,
+        1,
+        0,
+        1
+      ]
+    }
+  ],
+  "warnings": []
+}

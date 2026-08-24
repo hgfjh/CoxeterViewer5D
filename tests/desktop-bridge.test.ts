@@ -103,6 +103,34 @@ describe("desktop bridge", () => {
     });
   });
 
+  it("polls one desktop job without cloning the full queue", async () => {
+    const calls: Array<{ command: string; args?: Record<string, unknown> }> =
+      [];
+    const bridge = createTauriDesktopBridge({
+      loadTauriCore: async () => ({
+        invoke: async <T>(
+          command: string,
+          args?: Record<string, unknown>,
+        ): Promise<T> => {
+          calls.push({ command, args });
+          return {
+            id: "job-7",
+            kind: "discoverTorsionFreeCover",
+            status: "running",
+          } as T;
+        },
+      }),
+    });
+
+    await expect(bridge.getDesktopJob("job-7")).resolves.toMatchObject({
+      id: "job-7",
+      status: "running",
+    });
+    expect(calls).toEqual([
+      { command: "get_desktop_job", args: { id: "job-7" } },
+    ]);
+  });
+
   it("falls back to a browser download when native session save fails", async () => {
     const bridge = createTauriDesktopBridge({
       confirm: () => true,

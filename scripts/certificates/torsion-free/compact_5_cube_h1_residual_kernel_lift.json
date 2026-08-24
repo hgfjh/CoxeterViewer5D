@@ -1,0 +1,211 @@
+{
+  "ambientRationalKernelCompleteness": {
+    "certifiedHere": false,
+    "reason": "Kernel replay and saturation certify the integral lattice inside the reconstructed rational span. Equality with the full rational kernel requires a separate rational-nullity upper bound (equivalently, a rational-rank lower bound)."
+  },
+  "combinedModulus": "982830239",
+  "combinedResidueSha256": "5f1db01982b71704611ca812c3b943534dcada4dbfc95b334bcbdd2272fbfd1c",
+  "integralKernelFrame": {
+    "exactKernelReplay": {
+      "firstFailures": [],
+      "maxAbsResidual": "0",
+      "nonzeroResidualCount": 0,
+      "passed": true
+    },
+    "path": "scripts/certificates/torsion-free/compact_5_cube_h1_residual_kernel_frame.txt",
+    "rationalGraphChartParameterBasis": [
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    ],
+    "saturation": {
+      "effectiveConstraintCount": 0,
+      "method": "exact-coordinate-denominator-congruence-intersection",
+      "parameterLatticeIndex": "1"
+    },
+    "sha256": "b81fbf5d0f387ce62ccffe8d3698a7f6fad4f16a36698b7dd0cbc2c883c7f370",
+    "statistics": [
+      {
+        "basisVector": 0,
+        "maxAbsEntry": "3",
+        "nonzeroCount": 37954
+      },
+      {
+        "basisVector": 1,
+        "maxAbsEntry": "3",
+        "nonzeroCount": 24284
+      },
+      {
+        "basisVector": 2,
+        "maxAbsEntry": "3",
+        "nonzeroCount": 24138
+      },
+      {
+        "basisVector": 3,
+        "maxAbsEntry": "2",
+        "nonzeroCount": 24360
+      },
+      {
+        "basisVector": 4,
+        "maxAbsEntry": "2",
+        "nonzeroCount": 28720
+      },
+      {
+        "basisVector": 5,
+        "maxAbsEntry": "4",
+        "nonzeroCount": 31294
+      },
+      {
+        "basisVector": 6,
+        "maxAbsEntry": "2",
+        "nonzeroCount": 15388
+      },
+      {
+        "basisVector": 7,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      },
+      {
+        "basisVector": 8,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      },
+      {
+        "basisVector": 9,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      },
+      {
+        "basisVector": 10,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      },
+      {
+        "basisVector": 11,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      },
+      {
+        "basisVector": 12,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      },
+      {
+        "basisVector": 13,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      },
+      {
+        "basisVector": 14,
+        "maxAbsEntry": "1",
+        "nonzeroCount": 2304
+      }
+    ]
+  },
+  "matrix": {
+    "columns": 87950,
+    "path": ".tmp/h1_boundary_residual.linbox",
+    "rows": 266513,
+    "sha256": "a5bcc0771d5cc35f070fbcbf190d97aae0ce782b85117b869614fd0ad118e450"
+  },
+  "modularInputs": [
+    {
+      "graphChartTransform": [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30010],
+        [0, 0, 0, 0, 0, 0, 0, 0, 30010, 0, 0, 0, 0, 0, 0],
+        [30010, 0, 30010, 0, 0, 30010, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [2, 30010, 0, 0, 0, 1, 1, 0, 0, 30010, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 30010, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+        [30009, 1, 30009, 0, 0, 30009, 30010, 0, 0, 0, 0, 0, 30010, 0, 0],
+        [30010, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [30009, 1, 30010, 30010, 30009, 30008, 30010, 0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 30010, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [30010, 1, 30010, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 2, 1, 1, 0, 30010, 0, 0, 0, 0, 0],
+        [2, 30009, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+      ],
+      "modularKernelReplay": {
+        "firstFailures": [],
+        "nonzeroResidualCount": 0,
+        "passed": true
+      },
+      "normalizedResidueSha256": "08ad3b0303cfaa5a4733f22a58afad2b6aa183bd858ade5a7cd3e134afa15bdb",
+      "nullity": 15,
+      "path": ".tmp/h1_core_nullspace_p30011.txt",
+      "prime": 30011,
+      "rank": 87935,
+      "sha256": "e1ee69886d250aff960f527c16396ddbb6a6d2cad0397c40bad750913b5f960c"
+    },
+    {
+      "graphChartTransform": [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32748],
+        [0, 0, 0, 0, 0, 0, 0, 0, 32748, 0, 0, 0, 0, 0, 0],
+        [32748, 0, 32748, 0, 0, 32748, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [2, 32748, 0, 0, 0, 1, 1, 0, 0, 32748, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 32748, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+        [32747, 1, 32747, 0, 0, 32747, 32748, 0, 0, 0, 0, 0, 32748, 0, 0],
+        [32748, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [32747, 1, 32748, 32748, 32747, 32746, 32748, 0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 32748, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [32748, 1, 32748, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 2, 1, 1, 0, 32748, 0, 0, 0, 0, 0],
+        [2, 32747, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+      ],
+      "modularKernelReplay": {
+        "firstFailures": [],
+        "nonzeroResidualCount": 0,
+        "passed": true
+      },
+      "normalizedResidueSha256": "4eb331e98fb1026940a8b1813d74ca1682991ec2a3a171054ed3ba65aba1852f",
+      "nullity": 15,
+      "path": ".tmp/h1_core_nullspace_p32749.txt",
+      "prime": 32749,
+      "rank": 87935,
+      "sha256": "aa11a098739ebfa20eb0743d6cfa56ecc52169a3000bfe641fecfd962b7b8006"
+    }
+  ],
+  "normalization": {
+    "kind": "lexicographically-first-coordinate-minor-to-identity",
+    "pivotRows": [
+      0, 3, 7, 12, 15, 24, 30, 18947, 18950, 18956, 18959, 62888, 62889, 62906,
+      62907
+    ]
+  },
+  "reconstructionAttempts": [
+    {
+      "exactReplay": {
+        "firstFailures": [],
+        "maxAbsResidual": "0",
+        "nonzeroResidualCount": 0,
+        "passed": true
+      },
+      "method": "symmetric-residue"
+    }
+  ],
+  "schema": "coxeter-viewer.modular-kernel-lift-certificate.v2",
+  "selectedMethod": "symmetric-residue",
+  "sourceBinding": {
+    "coreMatrixDigest": "1437c25d58780bfa0818d2789bdc684932b4c799bfdfd44d307a5ed2aab9e99a",
+    "ledgerDigest": "5ec3ec68d6aea009afde18942f7a5147efba9063c1305aa1f654e17c6711c5bc",
+    "preparationDigest": "6ca90097bf595a8ddc011e7fdb8b5b64fa9f5017a9b598c78b662b68964a5956"
+  },
+  "status": "verified-saturated-frame-in-reconstructed-rational-subspace"
+}

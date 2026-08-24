@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import I2_5 from "../public/examples/I2_5.json";
+import compact5Cube from "../public/examples/compact_5_cube_gamma1.json";
 import jnwCubeGraph from "../public/examples/jnw_cube_graph.json";
 import {
   activeGuidedInspectionStep,
@@ -113,51 +114,48 @@ describe("research UI helper data", () => {
   it("defines the release-orientation model labels and Start Here actions", () => {
     expect(
       Object.values(modelExplanations).map((entry) => entry.label),
-    ).toEqual(["Davis", "Y_Gamma", "Gamma", "Projection", "Quotient + Games"]);
+    ).toEqual(["Davis", "hat X", "bar X", "Gamma", "Projection"]);
     expect(
       Object.values(modelExplanations).map((entry) => entry.teachingLabel),
     ).toEqual([
       "Davis complex",
-      "Y_Gamma",
+      "hat X cover",
+      "bar X compression",
       "Defining graph Gamma",
       "Projection drawing",
-      "Quotient + Games",
     ]);
     expect(modelExplanations.davis.shortDescription).toBe(
-      "Cayley graph plus Davis cells.",
+      "A finite Cayley ball with visible Davis cells.",
     );
-    expect(modelExplanations.ygamma.shortDescription).toBe(
-      "One fundamental-domain model.",
+    expect(modelExplanations["hat-x"].shortDescription).toBe(
+      "The finite cover of the Coxeter presentation complex.",
+    );
+    expect(modelExplanations["bar-x"].shortDescription).toBe(
+      "The compressed even-sided complex where walls live.",
     );
     expect(modelExplanations.gamma.shortDescription).toBe(
-      "Defining graph of the Coxeter system.",
+      "Generators joined by their finite Coxeter relations.",
     );
     expect(modelExplanations.projection.shortDescription).toBe(
-      "Chamber barycenters drawn in 3D.",
+      "Chamber barycenters projected into a 3D drawing.",
     );
-    expect(modelExplanations["quotient-games"].shortDescription).toBe(
-      "Imported/generated quotient complex and game diagnostics.",
-    );
-    expect(modelExplanationForLabel("Y_Gamma").id).toBe("ygamma");
-    expect(modelExplanationForLabel("Quotient + Games").id).toBe(
-      "quotient-games",
-    );
+    expect(modelExplanationForLabel("hat X cover").id).toBe("hat-x");
+    expect(modelExplanationForLabel("bar X walls").id).toBe("bar-x");
 
     expect(startHereActions.map((action) => action.label)).toEqual([
       "Explore a Coxeter example",
-      "Find a relation cell",
-      "Understand Y_Gamma",
-      "Study a quotient/game",
+      "Find a torsion-free cover",
+      "Find walls in bar X",
+      "Coorient walls",
       "Inspect exactness and data status",
     ]);
     expect(
-      startHereActions.find((action) => action.id === "find-relation-cell")
-        ?.guideId,
-    ).toBe("one-relation");
+      startHereActions.find((action) => action.id === "find-walls")?.model,
+    ).toBe("bar-x");
     expect(
-      startHereActions.find((action) => action.id === "understand-ygamma")
-        ?.guideId,
-    ).toBe("inspect-ygamma");
+      startHereActions.find((action) => action.id === "inspect-finite-cover")
+        ?.model,
+    ).toBe("hat-x");
   });
 
   it("keeps the topology inspector organized around three answers", () => {
@@ -166,7 +164,7 @@ describe("research UI helper data", () => {
       "Why is it here?",
       "Exact or drawing?",
     ]);
-    expect(inspectorAnswers[2].purpose).toContain("certified data");
+    expect(inspectorAnswers[2].purpose).toContain("exact incidence");
   });
 
   it("creates deterministic annotations, bookmarks, and gallery entries", () => {
@@ -271,6 +269,22 @@ describe("topology-first explanations", () => {
     expect(explanation.rows.at(-1)?.value).toContain(
       "all 1 other generators accounted for once",
     );
+  });
+
+  it("labels compact-cube Gamma edges by Coxeter order, never generator", () => {
+    const compactSystem = compact5Cube as CoxeterSystemInput;
+    const gammaScene = buildDefiningGraphScene(compactSystem);
+
+    expect(gammaScene.edges).toHaveLength(gammaScene.records.length);
+    for (const edge of gammaScene.edges) {
+      const record = gammaScene.records.find((entry) => entry.id === edge.id)!;
+      expect(edge.compactLabel).toBe(String(record.entry));
+      expect(
+        compactSystem.generators.some(
+          (generator) => generator.label === edge.compactLabel,
+        ),
+      ).toBe(false);
+    }
   });
 
   it("explains Y_Gamma, quotient, and game subjects without changing claims", () => {

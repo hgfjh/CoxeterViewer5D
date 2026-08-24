@@ -1,0 +1,867 @@
+{
+  "artifactType": "finite-image-bounded-degree-classification",
+  "claims": [
+    "complete classification for this finite image and degree range"
+  ],
+  "degreeLedger": [
+    {
+      "degree": 5760,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 11520,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 17280,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 23040,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 28800,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 34560,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 40320,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 46080,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 51840,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 57600,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 63360,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 69120,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 74880,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 80640,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 86400,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 92160,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 97920,
+      "exactSubgroupClassCount": 10,
+      "independentAudit": {
+        "expectedClassCount": 10,
+        "observedClassCount": 10,
+        "passed": true,
+        "source": "independent GAP normalizer-quotient and Goursat audit"
+      },
+      "materializedAndRejectedCount": 10,
+      "outcome": "materialized-and-rejected",
+      "reason": "Every exact subgroup class was materialized and contains a conjugate of a prime-order spherical torsion witness.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 103680,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 109440,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 115200,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 120960,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 126720,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 132480,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 138240,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 144000,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 149760,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 155520,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 161280,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 167040,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 172800,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 178560,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 184320,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 190080,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 195840,
+      "exactSubgroupClassCount": 9,
+      "independentAudit": {
+        "expectedClassCount": 0,
+        "observedClassCount": 0,
+        "passed": false,
+        "source": ""
+      },
+      "materializedAndRejectedCount": 9,
+      "outcome": "materialized-and-rejected",
+      "reason": "Every exact subgroup class was materialized and contains a conjugate of a prime-order spherical torsion witness.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 201600,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 207360,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 213120,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 218880,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 224640,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 230400,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 236160,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 241920,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 247680,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 253440,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 259200,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 264960,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 270720,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 276480,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 282240,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 288000,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 293760,
+      "exactSubgroupClassCount": 14,
+      "independentAudit": {
+        "expectedClassCount": 0,
+        "observedClassCount": 0,
+        "passed": false,
+        "source": ""
+      },
+      "materializedAndRejectedCount": 14,
+      "outcome": "materialized-and-rejected",
+      "reason": "Every exact subgroup class was materialized and contains a conjugate of a prime-order spherical torsion witness.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 299520,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 305280,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 311040,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 316800,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 322560,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 328320,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 334080,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 339840,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 345600,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 351360,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 357120,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 362880,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 368640,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 374400,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 380160,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 385920,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 391680,
+      "exactSubgroupClassCount": 12,
+      "independentAudit": {
+        "expectedClassCount": 0,
+        "observedClassCount": 0,
+        "passed": false,
+        "source": ""
+      },
+      "materializedAndRejectedCount": 12,
+      "outcome": "materialized-and-rejected",
+      "reason": "Every exact subgroup class was materialized and contains a conjugate of a prime-order spherical torsion witness.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 397440,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 403200,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 408960,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 414720,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 420480,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 426240,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 432000,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 437760,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 443520,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 449280,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 455040,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 460800,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 466560,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 472320,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 478080,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 483840,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 489600,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 495360,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 501120,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 506880,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 512640,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 518400,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 524160,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 529920,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 535680,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 541440,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 547200,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 552960,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 558720,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 564480,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 570240,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    },
+    {
+      "degree": 576000,
+      "exactSubgroupClassCount": 0,
+      "materializedAndRejectedCount": 0,
+      "outcome": "impossible",
+      "reason": "No S3 projection, O8-(2):2 projection index, and common quotient satisfy Goursat's exact index formula.",
+      "witnessFreeCandidateCount": 0
+    }
+  ],
+  "inputHash": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+  "matrixDigest": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+  "nonClaims": [
+    "nonexistence in the Coxeter group",
+    "classification for another finite image",
+    "minimal torsion-free index",
+    "virtual algebraic fibering"
+  ],
+  "reportSha256": "675da9ba119490d8ce6ecb6743ee3e4e7529087fb3bdec770b892cb74be8e499",
+  "reportVersion": "1.0.0",
+  "schemaVersion": 1,
+  "scope": {
+    "ceiling": 576000,
+    "completeNecessaryIndexSieve": true,
+    "completeSubgroupFamilyClassification": true,
+    "degreeCount": 100,
+    "lowerBound": 5760
+  },
+  "source": {
+    "candidateId": "GF(2)",
+    "coxeterMatrixSha256": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+    "finiteImageOrder": "2368880640",
+    "inputSha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+    "recognitionActionSha256": "742877f94fe20bd6083ba08c41507ca6c450342d3f34d2f4856c8c6fb3217119",
+    "witnessCatalogueSha256": "ecb34ecdd386b16765507d1a48ab7ed3c9887ba4b00c80056a9d1af628486140"
+  },
+  "summary": {
+    "degreeOutcomes": {
+      "impossible": 96,
+      "materialized-and-rejected": 4
+    },
+    "exactSubgroupClassCount": 45,
+    "materializedAndRejectedCount": 45,
+    "witnessFreeCandidateCount": 0
+  }
+}

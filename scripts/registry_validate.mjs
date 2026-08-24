@@ -163,7 +163,18 @@ function storedArtifactInputHash(root, relativePath) {
   try {
     const resolved = resolveWithinRoot(root, relativePath);
     const artifact = JSON.parse(readFileSync(resolved, "utf8"));
-    return typeof artifact.inputHash === "string" ? artifact.inputHash : null;
+    if (typeof artifact.inputHash === "string") {
+      return artifact.inputHash;
+    }
+
+    // Structural group certificates keep the source binding beside the other
+    // provenance hashes rather than at the top level.
+    const source = isRecord(artifact.provenance)
+      ? artifact.provenance.source
+      : undefined;
+    return isRecord(source) && typeof source.sha256 === "string"
+      ? source.sha256
+      : null;
   } catch {
     return null;
   }

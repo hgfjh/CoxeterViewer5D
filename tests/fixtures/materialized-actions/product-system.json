@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "D_infinity x A1 materialized-action fixture",
+  "rank": 3,
+  "generators": [
+    { "id": "s0", "label": "s0" },
+    { "id": "s1", "label": "s1" },
+    { "id": "s2", "label": "s2" }
+  ],
+  "coxeterMatrix": [
+    [1, "inf", 2],
+    ["inf", 1, 2],
+    [2, 2, 1]
+  ]
+}

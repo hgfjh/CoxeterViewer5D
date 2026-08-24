@@ -1,0 +1,672 @@
+{
+  "schemaVersion": 1,
+  "kind": "compact-h5-fibering-action-portfolio",
+  "generatedAt": "2026-08-22T00:00:00.000Z",
+  "status": "passed",
+  "policy": {
+    "order": [
+      "source-certification",
+      "spherical-planning",
+      "torsion-free-action",
+      "integral-h1-wall-saturation",
+      "cheap-link-screen",
+      "generalized-compression",
+      "exact-chamber-arrangement"
+    ],
+    "b1ZeroAction": "deprioritize",
+    "expensiveConstructionRule": "Build neither the generalized compression nor the exact height chamber arrangement unless the preceding cheap multi-gauge/order/subdivision screen has a replayed survivor.",
+    "excludedTarget": "tumarkin-g12221"
+  },
+  "p0P1Double": {
+    "status": "passed",
+    "relation": "W(P1)-is-index-two-kernel-in-W(P0)",
+    "p0OddCharacter": [0, 0, 0, 0, 0, 0, 1],
+    "kernelIndex": 2,
+    "schreierTransversal": [[], [6]],
+    "p1GeneratorWordsInP0": [[0], [1], [2], [3], [4], [5], [6, 5, 6]],
+    "checks": [
+      {
+        "id": "parity-character",
+        "passed": true,
+        "explanation": "Sending p6 to 1 in Z/2 and p0,...,p5 to 0 respects every Coxeter relator; its kernel has index two."
+      },
+      {
+        "id": "reidemeister-schreier-generators",
+        "passed": true,
+        "explanation": "For transversal {1,p6}, commuting relations p6*pi=pi*p6 (i<=4) reduce the kernel generators to p0,...,p5 and p6*p5*p6."
+      },
+      {
+        "id": "derived-coxeter-matrix",
+        "passed": true,
+        "explanation": "Because p6 commutes with p0,...,p4, the order of pi with p6*p5*p6 equals the stored order of pi with p5 for every i<=4; p5 with its conjugate remains infinite dihedral. These derived entries, not a hard-coded row, equal the stored P1 matrix."
+      },
+      {
+        "id": "source-double",
+        "passed": true,
+        "explanation": "The stored Emery-Kellerhals source record identifies P1 as the geometric double of P0 along its [5,3,3,3] facet."
+      }
+    ],
+    "sourceClaim": "public/examples/compact_5_polytope_p1_double_makarov.json source record: P1 = D P0 along the [5,3,3,3] Coxeter facet.",
+    "certificateDigest": "fadf6d28e1ae9b9fac1a3edc28532ea395c7ac0bf7ad822674de249babe1964d"
+  },
+  "targets": [
+    {
+      "id": "makarov-p0",
+      "priority": 1,
+      "role": "primary",
+      "rationale": "First compact target: 92 nonempty spherical types, the lowest stored Coxeter growth in this portfolio, and every action can be restricted to the explicit index-two P1 kernel.",
+      "source": {
+        "path": "public/examples/compact_5_prism_makarov.json",
+        "bytesSha256": "6cb5c7bd535e654e83dc87d383fd9aba5db61fa491edaeff634f792aea5bc221",
+        "canonicalInputSha256": "c1e89cfd943dbb7eda7c55a761ca80f612e95bdc44d118b9429f38bcf77914d0",
+        "name": "Compact hyperbolic Coxeter 5-prism (Makarov)",
+        "rank": 7,
+        "dimension": 5,
+        "dataStatus": "certified",
+        "certificateStatus": "passed"
+      },
+      "sphericalPlan": {
+        "status": "complete",
+        "nonemptyTypeCount": 92,
+        "countsByRank": {
+          "1": 7,
+          "2": 20,
+          "3": 30,
+          "4": 25,
+          "5": 10
+        },
+        "torsionFreeDegreeDivisor": "28800",
+        "largestSphericalOrder": "28800",
+        "conditionalMinimumQuotientCellCount": "352484"
+      },
+      "oddCoxeterGraph": {
+        "components": [[0, 1, 2, 3, 4, 5], [6]],
+        "componentCount": 2,
+        "nonzeroMod2CharacterCount": "3"
+      },
+      "discovery": {
+        "backend": "auto",
+        "maxIndex": 115200,
+        "maxCandidates": 128,
+        "maxModuleCandidates": 512,
+        "maxCompositeModules": 6,
+        "maxCompositeCombinations": 100000,
+        "maxCongruencePrime": 47,
+        "maxCongruenceImageOrder": 5000000,
+        "maxWitnesses": 8192,
+        "maxSphericalOrder": 100000,
+        "maxSubsets": 65536,
+        "timeoutSeconds": 1800,
+        "command": [
+          "python",
+          "scripts/torsion_free_discovery.py",
+          "--input",
+          "public/examples/compact_5_prism_makarov.json",
+          "--backend",
+          "auto",
+          "--max-index",
+          "115200",
+          "--max-candidates",
+          "128",
+          "--max-module-candidates",
+          "512",
+          "--max-composite-modules",
+          "6",
+          "--max-composite-combinations",
+          "100000",
+          "--max-congruence-prime",
+          "47",
+          "--max-congruence-image-order",
+          "5000000",
+          "--max-witnesses",
+          "8192",
+          "--max-spherical-order",
+          "100000",
+          "--max-subsets",
+          "65536",
+          "--timeout",
+          "1800"
+        ]
+      },
+      "cheapScreenPlan": {
+        "gaugeFamilies": [
+          "tree-section",
+          "tree-section-plus-periodic-potential-bound-1",
+          "tree-section-plus-periodic-potential-bound-2"
+        ],
+        "pullingOrderFamilies": [
+          "increasing-point-id",
+          "decreasing-point-id",
+          "stable-hash-seed-17",
+          "stable-hash-seed-43"
+        ],
+        "subdivisionFamilies": [
+          "unsubdivided-coxeter-cells",
+          "regular-pulling",
+          "stellar-maximal-cell-centres",
+          "stellar-obstruction-stars"
+        ],
+        "tiePolarities": [-1, 1],
+        "plannedConfigurationFamilyCount": 48,
+        "plannedDirectedRunCount": 96,
+        "executorStatus": "not-registered-until-action-and-full-h1-exist",
+        "characterSamplingPolicy": "After full integral H1 exists, bind primitive basis characters, primitive wall generators, and a deterministic bounded coefficient shell to exact character digests; no character is claimed sampled by this preflight.",
+        "samplingPolicy": "This is the planned Cartesian family. Promotion requires a future registered executor to materialize each gauge, order, subdivision, and both tie polarities and to replay every local link exactly."
+      },
+      "stages": [
+        {
+          "id": "source-certification",
+          "status": "passed",
+          "gate": "The bundled source transcription and hyperbolic dimension must replay.",
+          "note": "Certified source data replayed."
+        },
+        {
+          "id": "spherical-planning",
+          "status": "passed",
+          "gate": "All generator subsets must be exhausted and every finite special-subgroup order exact.",
+          "note": "The complete spherical-subgroup plan and degree divisor were recomputed."
+        },
+        {
+          "id": "torsion-free-action",
+          "status": "ready",
+          "gate": "Supply a complete permutation action and replay freeness on every spherical special subgroup.",
+          "note": "Bounded discovery is the next executable stage."
+        },
+        {
+          "id": "integral-h1-wall-saturation",
+          "status": "blocked",
+          "gate": "Requires a passed torsion-free action.",
+          "note": "No action is available."
+        },
+        {
+          "id": "cheap-link-screen",
+          "status": "blocked",
+          "gate": "Requires full integral H1 and wall saturation with b1>0.",
+          "note": "Algebraic gate has not run."
+        },
+        {
+          "id": "generalized-compression",
+          "status": "blocked",
+          "gate": "Requires at least one cheap-screen survivor.",
+          "note": "Expensive construction is intentionally withheld."
+        },
+        {
+          "id": "exact-chamber-arrangement",
+          "status": "blocked",
+          "gate": "Requires a replayed generalized compression.",
+          "note": "Expensive arrangement is intentionally withheld."
+        }
+      ],
+      "disposition": "ready-for-torsion-free-search",
+      "nonClaims": [
+        "A source certificate is not a torsion-free subgroup certificate.",
+        "A cheap screen without a survivor is a prioritization result, not a non-fibering theorem.",
+        "No generalized compression or chamber arrangement is constructed before its promotion gate passes."
+      ]
+    },
+    {
+      "id": "makarov-p1",
+      "priority": 2,
+      "role": "companion",
+      "rationale": "Natural companion to P0: the exact doubling kernel permits restriction of every discovered P0 action before an independent search.",
+      "source": {
+        "path": "public/examples/compact_5_polytope_p1_double_makarov.json",
+        "bytesSha256": "2f5acbaef9bfa5423a38e6052eb1bd25929b41b9c8430c179e49e0993bdcaf31",
+        "canonicalInputSha256": "d88862776eb9945135d42f16b2fe7ed35f813d5f6bd388a0ae6c03398148daec",
+        "name": "Compact hyperbolic Coxeter 5-polytope P1 (double of P0)",
+        "rank": 7,
+        "dimension": 5,
+        "dataStatus": "certified",
+        "certificateStatus": "passed"
+      },
+      "sphericalPlan": {
+        "status": "complete",
+        "nonemptyTypeCount": 92,
+        "countsByRank": {
+          "1": 7,
+          "2": 20,
+          "3": 30,
+          "4": 25,
+          "5": 10
+        },
+        "torsionFreeDegreeDivisor": "28800",
+        "largestSphericalOrder": "28800",
+        "conditionalMinimumQuotientCellCount": "342084"
+      },
+      "oddCoxeterGraph": {
+        "components": [[0, 1, 2, 3, 4, 5, 6]],
+        "componentCount": 1,
+        "nonzeroMod2CharacterCount": "1"
+      },
+      "discovery": {
+        "backend": "auto",
+        "maxIndex": 115200,
+        "maxCandidates": 128,
+        "maxModuleCandidates": 512,
+        "maxCompositeModules": 6,
+        "maxCompositeCombinations": 100000,
+        "maxCongruencePrime": 47,
+        "maxCongruenceImageOrder": 5000000,
+        "maxWitnesses": 8192,
+        "maxSphericalOrder": 100000,
+        "maxSubsets": 65536,
+        "timeoutSeconds": 1800,
+        "command": [
+          "python",
+          "scripts/torsion_free_discovery.py",
+          "--input",
+          "public/examples/compact_5_polytope_p1_double_makarov.json",
+          "--backend",
+          "auto",
+          "--max-index",
+          "115200",
+          "--max-candidates",
+          "128",
+          "--max-module-candidates",
+          "512",
+          "--max-composite-modules",
+          "6",
+          "--max-composite-combinations",
+          "100000",
+          "--max-congruence-prime",
+          "47",
+          "--max-congruence-image-order",
+          "5000000",
+          "--max-witnesses",
+          "8192",
+          "--max-spherical-order",
+          "100000",
+          "--max-subsets",
+          "65536",
+          "--timeout",
+          "1800"
+        ],
+        "p0TransferEligible": true
+      },
+      "cheapScreenPlan": {
+        "gaugeFamilies": [
+          "tree-section",
+          "tree-section-plus-periodic-potential-bound-1",
+          "tree-section-plus-periodic-potential-bound-2"
+        ],
+        "pullingOrderFamilies": [
+          "increasing-point-id",
+          "decreasing-point-id",
+          "stable-hash-seed-17",
+          "stable-hash-seed-43"
+        ],
+        "subdivisionFamilies": [
+          "unsubdivided-coxeter-cells",
+          "regular-pulling",
+          "stellar-maximal-cell-centres",
+          "stellar-obstruction-stars"
+        ],
+        "tiePolarities": [-1, 1],
+        "plannedConfigurationFamilyCount": 48,
+        "plannedDirectedRunCount": 96,
+        "executorStatus": "not-registered-until-action-and-full-h1-exist",
+        "characterSamplingPolicy": "After full integral H1 exists, bind primitive basis characters, primitive wall generators, and a deterministic bounded coefficient shell to exact character digests; no character is claimed sampled by this preflight.",
+        "samplingPolicy": "This is the planned Cartesian family. Promotion requires a future registered executor to materialize each gauge, order, subdivision, and both tie polarities and to replay every local link exactly."
+      },
+      "stages": [
+        {
+          "id": "source-certification",
+          "status": "passed",
+          "gate": "The bundled source transcription and hyperbolic dimension must replay.",
+          "note": "Certified source data replayed."
+        },
+        {
+          "id": "spherical-planning",
+          "status": "passed",
+          "gate": "All generator subsets must be exhausted and every finite special-subgroup order exact.",
+          "note": "The complete spherical-subgroup plan and degree divisor were recomputed."
+        },
+        {
+          "id": "torsion-free-action",
+          "status": "ready",
+          "gate": "Supply a complete permutation action and replay freeness on every spherical special subgroup.",
+          "note": "Bounded discovery is the next executable stage."
+        },
+        {
+          "id": "integral-h1-wall-saturation",
+          "status": "blocked",
+          "gate": "Requires a passed torsion-free action.",
+          "note": "No action is available."
+        },
+        {
+          "id": "cheap-link-screen",
+          "status": "blocked",
+          "gate": "Requires full integral H1 and wall saturation with b1>0.",
+          "note": "Algebraic gate has not run."
+        },
+        {
+          "id": "generalized-compression",
+          "status": "blocked",
+          "gate": "Requires at least one cheap-screen survivor.",
+          "note": "Expensive construction is intentionally withheld."
+        },
+        {
+          "id": "exact-chamber-arrangement",
+          "status": "blocked",
+          "gate": "Requires a replayed generalized compression.",
+          "note": "Expensive arrangement is intentionally withheld."
+        }
+      ],
+      "disposition": "ready-for-torsion-free-search",
+      "nonClaims": [
+        "A source certificate is not a torsion-free subgroup certificate.",
+        "A cheap screen without a survivor is a prioritization result, not a non-fibering theorem.",
+        "No generalized compression or chamber arrangement is constructed before its promotion gate passes."
+      ]
+    },
+    {
+      "id": "tumarkin-g11411-15",
+      "priority": 3,
+      "role": "first-backup",
+      "rationale": "First eight-facet backup: it has the lowest certified Coxeter growth among the G11411 cases considered here.",
+      "source": {
+        "path": "public/examples/tumarkin_5d_8facet_g11411_15.json",
+        "bytesSha256": "8955e1c37c4993b9af271d84a796b0551e3e21aedfeed8341319f304cce7bdac",
+        "canonicalInputSha256": "16e88a6577484de52a0a9eb45724dfbd6faf3951e70e45ebccd7b053e06e3219",
+        "name": "Tumarkin 5D eight-facet G11411 #15",
+        "rank": 8,
+        "dimension": 5,
+        "dataStatus": "certified",
+        "certificateStatus": "passed"
+      },
+      "sphericalPlan": {
+        "status": "complete",
+        "nonemptyTypeCount": 122,
+        "countsByRank": {
+          "1": 8,
+          "2": 25,
+          "3": 40,
+          "4": 35,
+          "5": 14
+        },
+        "torsionFreeDegreeDivisor": "28800",
+        "largestSphericalOrder": "28800",
+        "conditionalMinimumQuotientCellCount": "443348"
+      },
+      "oddCoxeterGraph": {
+        "components": [[0, 1, 4, 5, 6, 7], [2], [3]],
+        "componentCount": 3,
+        "nonzeroMod2CharacterCount": "7"
+      },
+      "discovery": {
+        "backend": "auto",
+        "maxIndex": 57600,
+        "maxCandidates": 96,
+        "maxModuleCandidates": 384,
+        "maxCompositeModules": 5,
+        "maxCompositeCombinations": 75000,
+        "maxCongruencePrime": 43,
+        "maxCongruenceImageOrder": 5000000,
+        "maxWitnesses": 8192,
+        "maxSphericalOrder": 100000,
+        "maxSubsets": 65536,
+        "timeoutSeconds": 1800,
+        "command": [
+          "python",
+          "scripts/torsion_free_discovery.py",
+          "--input",
+          "public/examples/tumarkin_5d_8facet_g11411_15.json",
+          "--backend",
+          "auto",
+          "--max-index",
+          "57600",
+          "--max-candidates",
+          "96",
+          "--max-module-candidates",
+          "384",
+          "--max-composite-modules",
+          "5",
+          "--max-composite-combinations",
+          "75000",
+          "--max-congruence-prime",
+          "43",
+          "--max-congruence-image-order",
+          "5000000",
+          "--max-witnesses",
+          "8192",
+          "--max-spherical-order",
+          "100000",
+          "--max-subsets",
+          "65536",
+          "--timeout",
+          "1800"
+        ]
+      },
+      "cheapScreenPlan": {
+        "gaugeFamilies": [
+          "tree-section",
+          "tree-section-plus-periodic-potential-bound-1",
+          "tree-section-plus-periodic-potential-bound-2"
+        ],
+        "pullingOrderFamilies": [
+          "increasing-point-id",
+          "decreasing-point-id",
+          "stable-hash-seed-17",
+          "stable-hash-seed-43"
+        ],
+        "subdivisionFamilies": [
+          "unsubdivided-coxeter-cells",
+          "regular-pulling",
+          "stellar-maximal-cell-centres",
+          "stellar-obstruction-stars"
+        ],
+        "tiePolarities": [-1, 1],
+        "plannedConfigurationFamilyCount": 48,
+        "plannedDirectedRunCount": 96,
+        "executorStatus": "not-registered-until-action-and-full-h1-exist",
+        "characterSamplingPolicy": "After full integral H1 exists, bind primitive basis characters, primitive wall generators, and a deterministic bounded coefficient shell to exact character digests; no character is claimed sampled by this preflight.",
+        "samplingPolicy": "This is the planned Cartesian family. Promotion requires a future registered executor to materialize each gauge, order, subdivision, and both tie polarities and to replay every local link exactly."
+      },
+      "stages": [
+        {
+          "id": "source-certification",
+          "status": "passed",
+          "gate": "The bundled source transcription and hyperbolic dimension must replay.",
+          "note": "Certified source data replayed."
+        },
+        {
+          "id": "spherical-planning",
+          "status": "passed",
+          "gate": "All generator subsets must be exhausted and every finite special-subgroup order exact.",
+          "note": "The complete spherical-subgroup plan and degree divisor were recomputed."
+        },
+        {
+          "id": "torsion-free-action",
+          "status": "ready",
+          "gate": "Supply a complete permutation action and replay freeness on every spherical special subgroup.",
+          "note": "Bounded discovery is the next executable stage."
+        },
+        {
+          "id": "integral-h1-wall-saturation",
+          "status": "blocked",
+          "gate": "Requires a passed torsion-free action.",
+          "note": "No action is available."
+        },
+        {
+          "id": "cheap-link-screen",
+          "status": "blocked",
+          "gate": "Requires full integral H1 and wall saturation with b1>0.",
+          "note": "Algebraic gate has not run."
+        },
+        {
+          "id": "generalized-compression",
+          "status": "blocked",
+          "gate": "Requires at least one cheap-screen survivor.",
+          "note": "Expensive construction is intentionally withheld."
+        },
+        {
+          "id": "exact-chamber-arrangement",
+          "status": "blocked",
+          "gate": "Requires a replayed generalized compression.",
+          "note": "Expensive arrangement is intentionally withheld."
+        }
+      ],
+      "disposition": "ready-for-torsion-free-search",
+      "nonClaims": [
+        "A source certificate is not a torsion-free subgroup certificate.",
+        "A cheap screen without a survivor is a prioritization result, not a non-fibering theorem.",
+        "No generalized compression or chamber arrangement is constructed before its promotion gate passes."
+      ]
+    },
+    {
+      "id": "tumarkin-g11411-04",
+      "priority": 4,
+      "role": "contrast",
+      "rationale": "Cheapest contrasting G11411 case by the stored conditional quotient-cell estimate; it is not a replacement for #15.",
+      "source": {
+        "path": "public/examples/tumarkin_5d_8facet_g11411_04.json",
+        "bytesSha256": "8329d612e98ac0020ffb93bf9ba3d8ee988cd66330a617a0992893812d1cc750",
+        "canonicalInputSha256": "7002f52f6acd9dc05c418df7379042312abbde75d5e83de0b0fb3541eb512d30",
+        "name": "Tumarkin 5D eight-facet G11411 #04",
+        "rank": 8,
+        "dimension": 5,
+        "dataStatus": "certified",
+        "certificateStatus": "passed"
+      },
+      "sphericalPlan": {
+        "status": "complete",
+        "nonemptyTypeCount": 122,
+        "countsByRank": {
+          "1": 8,
+          "2": 25,
+          "3": 40,
+          "4": 35,
+          "5": 14
+        },
+        "torsionFreeDegreeDivisor": "28800",
+        "largestSphericalOrder": "28800",
+        "conditionalMinimumQuotientCellCount": "414184"
+      },
+      "oddCoxeterGraph": {
+        "components": [[0, 1, 2, 3, 4, 5, 6, 7]],
+        "componentCount": 1,
+        "nonzeroMod2CharacterCount": "1"
+      },
+      "discovery": {
+        "backend": "auto",
+        "maxIndex": 57600,
+        "maxCandidates": 96,
+        "maxModuleCandidates": 384,
+        "maxCompositeModules": 5,
+        "maxCompositeCombinations": 75000,
+        "maxCongruencePrime": 43,
+        "maxCongruenceImageOrder": 5000000,
+        "maxWitnesses": 8192,
+        "maxSphericalOrder": 100000,
+        "maxSubsets": 65536,
+        "timeoutSeconds": 1800,
+        "command": [
+          "python",
+          "scripts/torsion_free_discovery.py",
+          "--input",
+          "public/examples/tumarkin_5d_8facet_g11411_04.json",
+          "--backend",
+          "auto",
+          "--max-index",
+          "57600",
+          "--max-candidates",
+          "96",
+          "--max-module-candidates",
+          "384",
+          "--max-composite-modules",
+          "5",
+          "--max-composite-combinations",
+          "75000",
+          "--max-congruence-prime",
+          "43",
+          "--max-congruence-image-order",
+          "5000000",
+          "--max-witnesses",
+          "8192",
+          "--max-spherical-order",
+          "100000",
+          "--max-subsets",
+          "65536",
+          "--timeout",
+          "1800"
+        ]
+      },
+      "cheapScreenPlan": {
+        "gaugeFamilies": [
+          "tree-section",
+          "tree-section-plus-periodic-potential-bound-1",
+          "tree-section-plus-periodic-potential-bound-2"
+        ],
+        "pullingOrderFamilies": [
+          "increasing-point-id",
+          "decreasing-point-id",
+          "stable-hash-seed-17",
+          "stable-hash-seed-43"
+        ],
+        "subdivisionFamilies": [
+          "unsubdivided-coxeter-cells",
+          "regular-pulling",
+          "stellar-maximal-cell-centres",
+          "stellar-obstruction-stars"
+        ],
+        "tiePolarities": [-1, 1],
+        "plannedConfigurationFamilyCount": 48,
+        "plannedDirectedRunCount": 96,
+        "executorStatus": "not-registered-until-action-and-full-h1-exist",
+        "characterSamplingPolicy": "After full integral H1 exists, bind primitive basis characters, primitive wall generators, and a deterministic bounded coefficient shell to exact character digests; no character is claimed sampled by this preflight.",
+        "samplingPolicy": "This is the planned Cartesian family. Promotion requires a future registered executor to materialize each gauge, order, subdivision, and both tie polarities and to replay every local link exactly."
+      },
+      "stages": [
+        {
+          "id": "source-certification",
+          "status": "passed",
+          "gate": "The bundled source transcription and hyperbolic dimension must replay.",
+          "note": "Certified source data replayed."
+        },
+        {
+          "id": "spherical-planning",
+          "status": "passed",
+          "gate": "All generator subsets must be exhausted and every finite special-subgroup order exact.",
+          "note": "The complete spherical-subgroup plan and degree divisor were recomputed."
+        },
+        {
+          "id": "torsion-free-action",
+          "status": "ready",
+          "gate": "Supply a complete permutation action and replay freeness on every spherical special subgroup.",
+          "note": "Bounded discovery is the next executable stage."
+        },
+        {
+          "id": "integral-h1-wall-saturation",
+          "status": "blocked",
+          "gate": "Requires a passed torsion-free action.",
+          "note": "No action is available."
+        },
+        {
+          "id": "cheap-link-screen",
+          "status": "blocked",
+          "gate": "Requires full integral H1 and wall saturation with b1>0.",
+          "note": "Algebraic gate has not run."
+        },
+        {
+          "id": "generalized-compression",
+          "status": "blocked",
+          "gate": "Requires at least one cheap-screen survivor.",
+          "note": "Expensive construction is intentionally withheld."
+        },
+        {
+          "id": "exact-chamber-arrangement",
+          "status": "blocked",
+          "gate": "Requires a replayed generalized compression.",
+          "note": "Expensive arrangement is intentionally withheld."
+        }
+      ],
+      "disposition": "ready-for-torsion-free-search",
+      "nonClaims": [
+        "A source certificate is not a torsion-free subgroup certificate.",
+        "A cheap screen without a survivor is a prioritization result, not a non-fibering theorem.",
+        "No generalized compression or chamber arrangement is constructed before its promotion gate passes."
+      ]
+    }
+  ],
+  "artifactHash": "3ec5c9ed1dd06b6cc3fa32e53a8a1d35407783a04e2e87e2a9c14ba9ba98e667"
+}

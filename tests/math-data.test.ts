@@ -7,6 +7,7 @@ import compact5PolytopeP1DoubleMakarov from "../public/examples/compact_5_polyto
 import compact5PrismMakarov from "../public/examples/compact_5_prism_makarov.json";
 import compact5PrismMakarovP2 from "../public/examples/compact_5_prism_makarov_p2.json";
 import I2_5 from "../public/examples/I2_5.json";
+import idealHyperbolic3CubeM3 from "../public/examples/ideal_hyperbolic_3_cube_m3.json";
 import jnwCubeGraph from "../public/examples/jnw_cube_graph.json";
 import universalRank3 from "../public/examples/universal_rank3.json";
 import {
@@ -51,12 +52,73 @@ describe("Coxeter input validation", () => {
     expectValid(I2_5);
     expectValid(A2);
     expectValid(A3);
+    expectValid(idealHyperbolic3CubeM3);
     expectValid(jnwCubeGraph);
     expectValid(universalRank3);
     expectValid(compact5CubeGamma1);
     expectValid(compact5PrismMakarov);
     expectValid(compact5PolytopeP1DoubleMakarov);
     expectValid(compact5PrismMakarovP2);
+  });
+
+  it("stores the all-m=3 cube as an ideal, not compact, hyperbolic 3-cube", () => {
+    expectValid(idealHyperbolic3CubeM3);
+
+    expect(idealHyperbolic3CubeM3.rank).toBe(6);
+    expect(idealHyperbolic3CubeM3.dataStatus).toBe("certified");
+    expect(idealHyperbolic3CubeM3.certificate?.status).toBe("passed");
+    expect(idealHyperbolic3CubeM3.certificate?.diagnostics?.gram).toEqual({
+      rank: 4,
+      signature: { positive: 3, negative: 1, zero: 2 },
+      eigenvalues: { "3": 3, "0": 2, "-3": 1 },
+    });
+    expect(
+      idealHyperbolic3CubeM3.certificate?.diagnostics?.polyhedron,
+    ).toMatchObject({
+      combinatorics: "3-cube",
+      finiteVolume: true,
+      compact: false,
+      idealVertexCount: 8,
+      vertexLinkType: "affine A~2",
+    });
+
+    let finitePairs = 0;
+    let oppositePairs = 0;
+    for (let left = 0; left < idealHyperbolic3CubeM3.rank; left += 1) {
+      for (
+        let right = left + 1;
+        right < idealHyperbolic3CubeM3.rank;
+        right += 1
+      ) {
+        if (idealHyperbolic3CubeM3.coxeterMatrix[left][right] === 3) {
+          finitePairs += 1;
+        } else {
+          expect(idealHyperbolic3CubeM3.coxeterMatrix[left][right]).toBe("inf");
+          oppositePairs += 1;
+        }
+      }
+    }
+    expect({ finitePairs, oppositePairs }).toEqual({
+      finitePairs: 12,
+      oppositePairs: 3,
+    });
+
+    const normals = idealHyperbolic3CubeM3.geometry?.normalCoordinates;
+    expect(normals).toHaveLength(6);
+    const lorentzDot = (left: number[], right: number[]) =>
+      -left[0] * right[0] +
+      left
+        .slice(1)
+        .reduce(
+          (sum, coordinate, index) => sum + coordinate * right[index + 1],
+          0,
+        );
+    expect(lorentzDot(normals![0], normals![0])).toBeCloseTo(1, 12);
+    expect(lorentzDot(normals![0], normals![1])).toBeCloseTo(-0.5, 12);
+    expect(lorentzDot(normals![0], normals![5])).toBeCloseTo(-2, 12);
+    expect(idealHyperbolic3CubeM3.warnings?.join(" ")).toContain(
+      "compactness would be false",
+    );
   });
 
   it("stores the JNW cube graph as the 3-cube 1-skeleton RACG", () => {

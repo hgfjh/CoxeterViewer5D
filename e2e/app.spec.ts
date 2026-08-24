@@ -2,1449 +2,765 @@ import { Buffer } from "node:buffer";
 import { readFileSync } from "node:fs";
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
-async function firstPresent(candidates: Locator[]): Promise<Locator | null> {
-  for (const candidate of candidates) {
-    if ((await candidate.count()) > 0) {
-      return candidate.first();
-    }
-  }
-
-  return null;
-}
-
-async function firstVisible(candidates: Locator[]): Promise<Locator | null> {
-  for (const candidate of candidates) {
-    const count = await candidate.count();
-
-    for (let index = 0; index < Math.min(count, 5); index += 1) {
-      const option = candidate.nth(index);
-
-      if (await option.isVisible().catch(() => false)) {
-        return option;
-      }
-    }
-  }
-
-  return null;
-}
-
-async function textOf(locator: Locator): Promise<string> {
-  return ((await locator.textContent()) ?? "").replace(/\s+/g, " ").trim();
-}
-
-async function setRadius(control: Locator, value: string): Promise<void> {
-  const metadata = await control.evaluate((element) => {
-    const input = element as HTMLInputElement;
-
-    return {
-      role: element.getAttribute("role") ?? "",
-      type: input.type ?? "",
+interface WallExperiment {
+  kind: string;
+  sourceSystem: { name: string };
+  torsionFreeCoverDiscovery?: {
+    status: string;
+    request: { artifactType: string };
+  };
+  coverCompression: {
+    hatX: {
+      vertices: unknown[];
+      directedLiftEdges: unknown[];
+      generatorBigonCells: unknown[];
+      liftedRelationCells: unknown[];
     };
-  });
-
-  if (metadata.role === "slider" || metadata.type === "range") {
-    await control.focus();
-    await control.press("ArrowRight");
-    return;
-  }
-
-  await control.fill(value);
-  await control.blur();
-}
-
-async function radiusControl(page: Page): Promise<Locator | null> {
-  return firstVisible([
-    page.getByRole("spinbutton", { name: /radius/i }),
-    page.getByRole("slider", { name: /radius/i }),
-    page.getByLabel(/radius/i),
-    page.getByTestId("radius-input"),
-    page.getByTestId("radius-control"),
-  ]);
-}
-
-async function switchToResearchMode(page: Page): Promise<void> {
-  await page
-    .getByRole("group", { name: /interface mode/i })
-    .getByRole("button", { name: /research/i })
-    .click();
-}
-
-async function switchModel(page: Page, model: RegExp): Promise<void> {
-  await page
-    .getByRole("group", { name: /choose mathematical view/i })
-    .first()
-    .getByRole("button", { name: model })
-    .click();
-}
-
-async function visibleNodeCount(page: Page): Promise<Locator | null> {
-  return firstVisible([
-    page.getByTestId("node-count"),
-    page.getByRole("status", { name: /node count|nodes/i }),
-    page.getByText(/nodes?\s*:\s*\d+/i),
-  ]);
-}
-
-async function sceneStats(page: Page): Promise<{
-  mode?: string;
-  graphNodes?: number;
-  renderedNodes?: number;
-  renderedEdgeSegments?: number;
-  renderedCells?: number;
-  renderedNodeLabels?: number;
-  renderedEdgeLabels?: number;
-  renderedLabelLeaders?: number;
-  labelRenderer?: "sprite" | "sdf-batch";
-  labelRendererFallbackReason?: string;
-  pickingStrategy?: "linear" | "sphere-prefilter" | "bvh" | "gpu";
-  drawCalls?: number;
-  frame?: number;
-  renderCount?: number;
-  stateNodeHighlights?: {
-    inState: number;
-    outOfState: number;
+    barX: {
+      vertices: unknown[];
+      geometricEdges: unknown[];
+      relationCells: unknown[];
+    };
+    certificate: { status: string };
   };
-  frameSamples?: Array<{ frame: number; deltaMs: number }>;
-}> {
-  return page.evaluate(() => {
-    const stats = (
-      window as Window & {
-        __coxeterSceneStats?: {
-          mode: string;
-          graphNodes: number;
-          renderedNodes: number;
-          renderedEdgeSegments: number;
-          renderedCells: number;
-          renderedNodeLabels: number;
-          renderedEdgeLabels: number;
-          renderedLabelLeaders: number;
-          labelRenderer: "sprite" | "sdf-batch";
-          labelRendererFallbackReason?: string;
-          picking: {
-            strategy?: "linear" | "sphere-prefilter" | "bvh" | "gpu";
-          };
-          drawCalls: number;
-          frame: number;
-          renderCount: number;
-          stateNodeHighlights: {
-            inState: number;
-            outOfState: number;
-          };
-          frameSamples: Array<{ frame: number; deltaMs: number }>;
-        };
-      }
-    ).__coxeterSceneStats;
-
-    return stats
-      ? {
-          mode: stats.mode,
-          graphNodes: stats.graphNodes,
-          renderedNodes: stats.renderedNodes,
-          renderedEdgeSegments: stats.renderedEdgeSegments,
-          renderedCells: stats.renderedCells,
-          renderedNodeLabels: stats.renderedNodeLabels,
-          renderedEdgeLabels: stats.renderedEdgeLabels,
-          renderedLabelLeaders: stats.renderedLabelLeaders,
-          labelRenderer: stats.labelRenderer,
-          labelRendererFallbackReason: stats.labelRendererFallbackReason,
-          pickingStrategy: stats.picking?.strategy,
-          drawCalls: stats.drawCalls,
-          frame: stats.frame,
-          renderCount: stats.renderCount,
-          stateNodeHighlights: stats.stateNodeHighlights,
-          frameSamples: stats.frameSamples,
-        }
-      : {};
-  });
-}
-
-function largeRankOneQuotient(vertexCount = 3_000) {
-  const evenVertexCount = vertexCount - (vertexCount % 2);
-  const vertices = Array.from(
-    { length: evenVertexCount },
-    (_unused, index) => ({
-      id: `q${index}`,
-      label: `Q_${index + 1}`,
-    }),
-  );
-  const edges = [];
-  for (let index = 0; index < evenVertexCount; index += 2) {
-    const forwardId = `e${index}`;
-    const reverseId = `e${index + 1}`;
-    edges.push(
-      {
-        id: forwardId,
-        source: `q${index}`,
-        target: `q${index + 1}`,
-        generator: 0,
-        inverseEdgeId: reverseId,
-        label: "s0",
-      },
-      {
-        id: reverseId,
-        source: `q${index + 1}`,
-        target: `q${index}`,
-        generator: 0,
-        inverseEdgeId: forwardId,
-        label: "s0",
-      },
-    );
-  }
-  return {
-    schemaVersion: 1,
-    name: "Large progressive quotient fixture",
-    generatorRank: 1,
-    vertices,
-    edges,
-    twoCells: [],
-    warnings: ["Synthetic performance fixture."],
+  wallSystem: { walls: Array<{ id: string }> };
+  coorientation: { wallSigns: Record<string, 1 | -1> };
+  view: {
+    wallDisplayMode: "all" | "selected";
+    showInducedDirections: boolean;
+    colorEdgesByWall: boolean;
+    barRelationFamily?: string;
+  };
+  optimization?: {
+    status: string;
+    objectiveValue: number | null;
+    certificate: { optimalityProven: boolean };
+  };
+  virtualAlgebraicFibering?: {
+    status: string;
+    primitiveHomomorphism: {
+      rawImage: string;
+      normalizationDivisor: number | null;
+      primitiveImage: boolean;
+      generatorValues: Array<{
+        generatorId: string;
+        primitiveValue: number;
+      }>;
+    };
+    wallHomomorphism: {
+      cocycle: { relationChecks: Array<{ passed: boolean }> };
+    };
+    plMorse: {
+      failedCheckIds: string[];
+      auxiliaryDiagnostics: Array<{ id: string; passed: boolean }>;
+    };
+    result: { virtualAlgebraicFibration: boolean };
+  };
+  fullDavisVirtualAlgebraicFibering?: {
+    kind: string;
+    certificate?: {
+      schemaVersion: number;
+      kind: string;
+      fullCellPoset?: { certificate: { status: string } };
+      triangulation?: { status: string };
+      hashes: { artifactSha256?: string };
+    };
   };
 }
 
-test("loads the app shell", async ({ page }) => {
+const modelLabels = [
+  "Davis complex",
+  "hat X cover",
+  "bar X compression",
+  "Defining graph Gamma",
+  "Projection drawing",
+] as const;
+
+async function openApp(page: Page): Promise<void> {
   await page.goto("/");
-
-  await expect(page.getByRole("main")).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: /coxeter viewer 5d/i }),
+    page.getByRole("heading", { name: "CoxeterViewer5D" }),
   ).toBeVisible();
-});
-
-test("teaching mode keeps model navigation and caveats readable", async ({
-  page,
-}) => {
-  await page.goto("/");
-
-  await expect(
-    page.getByRole("heading", { name: /^start here$/i }),
-  ).toBeVisible();
-  await expect(page.getByLabel(/current model/i)).toContainText(/Davis/i);
-  const modelSwitch = page
-    .getByRole("group", {
-      name: /choose mathematical view/i,
-    })
-    .first();
-  await expect(modelSwitch).toBeVisible();
-  for (const label of [
-    "Davis complex",
-    "Y_Gamma",
-    "Defining graph Gamma",
-    "Projection drawing",
-    "Quotient + Games",
-  ]) {
-    await expect(
-      modelSwitch.getByRole("button", { name: label, exact: true }),
-    ).toBeVisible();
-  }
-  await expect(
-    page.getByRole("heading", { name: /what is selected/i }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /why is it here/i }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /exact or drawing/i }),
-  ).toBeVisible();
-  await expect(page.getByRole("heading", { name: /caveats/i })).toBeVisible();
-  for (const label of [
-    "Explore a Coxeter example",
-    "Find a relation cell",
-    "Understand Y_Gamma",
-    "Study a quotient/game",
-    "Inspect exactness and data status",
-  ]) {
-    await expect(
-      page.getByRole("button", { name: new RegExp(label, "i") }),
-    ).toBeVisible();
-  }
-  await expect(page.getByRole("heading", { name: /^help$/i })).toHaveCount(0);
-  await expect(
-    page.getByRole("heading", { name: /what am i seeing/i }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByRole("heading", { name: /current view/i }),
-  ).toBeVisible();
-  await expect(page.getByText(/Import Coxeter system/i)).toHaveCount(0);
-  await expect(
-    page.getByRole("heading", { name: /example gallery/i }),
-  ).toHaveCount(0);
-  await page.getByRole("button", { name: /Understand Y_Gamma/i }).click();
-  await expect(page.getByLabel(/current model/i)).toContainText(/Y_Gamma/i);
-
-  await switchToResearchMode(page);
-  await expect(
-    page.getByRole("heading", { name: /choose \/ load/i }),
-  ).toBeVisible();
-  await expect(page.getByText(/Workflow/i).first()).toBeVisible();
-  await expect(page.getByText(/Data\/files/i).first()).toBeVisible();
-  await expect(page.getByText(/Notebook\/export/i).first()).toBeVisible();
-  await expect(page.getByText(/Status\/tools/i).first()).toBeVisible();
-  await page
-    .locator("details")
-    .filter({ hasText: /Files \+ Workspace/i })
-    .locator("summary")
-    .click();
-  await expect(page.getByText(/Import Coxeter system/i)).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /example gallery/i }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /research workflow/i }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /quotient \+ games/i }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(/Generator-Uniform Cochain/i).first(),
-  ).toBeVisible();
-  await expect(page.getByText(/JNW Legal-System Game/i).first()).toBeVisible();
-});
-
-test("renders a nonblank scene on desktop and mobile viewports", async ({
-  page,
-}) => {
-  for (const viewport of [
-    { width: 1280, height: 820 },
-    { width: 390, height: 760 },
-  ]) {
-    await page.setViewportSize(viewport);
-    await page.goto("/");
-    await expect(
-      page.getByTestId("scene-canvas").locator("canvas"),
-    ).toBeVisible();
-    await expect
-      .poll(async () => {
-        const stats = await sceneStats(page);
-        return Math.min(
-          stats.renderedNodes ?? 0,
-          stats.renderedEdgeSegments ?? 0,
-          stats.drawCalls ?? 0,
-          stats.renderCount ?? 0,
-        );
-      })
-      .toBeGreaterThan(0);
-  }
-});
-
-test("renderer exposes benchmark-friendly scene stats", async ({ page }) => {
-  await page.goto("/");
   await expect(
     page.getByTestId("scene-canvas").locator("canvas"),
   ).toBeVisible();
+  await expect.poll(() => renderedSceneCount(page)).toBeGreaterThan(0);
+}
 
-  await expect
-    .poll(async () => {
-      const stats = await sceneStats(page);
-      return {
-        nodes: stats.renderedNodes ?? 0,
-        edges: stats.renderedEdgeSegments ?? 0,
-        drawCalls: stats.drawCalls ?? 0,
-      };
-    })
-    .toMatchObject({ nodes: expect.any(Number), edges: expect.any(Number) });
-
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedNodes ?? 0)
-    .toBeGreaterThan(0);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedEdgeSegments ?? 0)
-    .toBeGreaterThan(0);
-  await expect
-    .poll(async () => (await sceneStats(page)).drawCalls ?? 0)
-    .toBeGreaterThan(0);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderCount ?? 0)
-    .toBeGreaterThan(0);
-
-  const canvasShell = page.getByTestId("scene-canvas");
-  await expect(canvasShell).toHaveAttribute("data-rendered-nodes", /\d+/);
-  await expect(canvasShell).toHaveAttribute("data-rendered-edges", /\d+/);
-});
-
-test("opens the Tumarkin eight-facet catalogue without adding fake examples", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-
-  await page.getByRole("button", { name: /16 eight-facet 5D cases/i }).click();
-  await expect(
-    page.getByLabel(/Tumarkin eight-facet catalogue/i),
-  ).toBeVisible();
-  await expect(page.getByText(/Showing 16\/16/i)).toBeVisible();
-  await expect(
-    page
-      .getByText(/Certified bundled Coxeter-system JSON is available/i)
-      .first(),
-  ).toBeVisible();
-
-  await page.getByLabel(/Search catalogue/i).fill("08");
-  await expect(page.getByText(/Tumarkin G11411 #8/i)).toBeVisible();
-  await expect(page.getByText(/Tumarkin G11411 #1/i)).toHaveCount(0);
-
-  await page.getByLabel(/Search catalogue/i).fill("G12221");
-  await expect(page.getByText(/Tumarkin G12221 \(unique\)/i)).toBeVisible();
-  await page.getByRole("button", { name: "Load example" }).click();
-  await expect(page.getByLabel("Example")).toHaveValue(
-    "tumarkin-5d-8facet-g12221-01",
+async function renderedSceneCount(page: Page): Promise<number> {
+  return page.evaluate(
+    () =>
+      (
+        window as Window & {
+          __coxeterSceneStats?: {
+            renderedNodes: number;
+            renderedEdgeSegments: number;
+            renderCount: number;
+          };
+        }
+      ).__coxeterSceneStats?.renderCount ?? 0,
   );
-});
+}
 
-test("changing radius updates the node count when controls are available", async ({
-  page,
-}) => {
-  await page.goto("/");
+function modelSwitch(page: Page): Locator {
+  return page.getByRole("group", { name: "Mathematical model" });
+}
 
-  const control = await radiusControl(page);
-  const nodeCount = await visibleNodeCount(page);
+async function chooseModel(page: Page, label: (typeof modelLabels)[number]) {
+  const button = modelSwitch(page).getByRole("button", {
+    name: label,
+    exact: true,
+  });
+  await button.click();
+  await expect(button).toHaveAttribute("aria-pressed", "true");
+}
 
-  if (!control || !nodeCount) {
-    test.skip(
-      true,
-      "Radius control or node count is not implemented in the scaffold yet.",
-    );
-    return;
-  }
+function workflow(page: Page): Locator {
+  return page.getByRole("list", { name: "Cover and wall workflow" });
+}
 
-  const before = await textOf(nodeCount);
-  const currentValue = await control.inputValue().catch(() => "");
-  const nextValue = currentValue === "3" ? "4" : "3";
+function panel(page: Page, title: RegExp): Locator {
+  return page.locator("section.panel").filter({
+    has: page.getByRole("heading", { name: title }),
+  });
+}
 
-  await setRadius(control, nextValue);
+async function switchToResearch(page: Page): Promise<void> {
+  await page
+    .getByRole("group", { name: "Interface mode" })
+    .getByRole("button", { name: "Research", exact: true })
+    .click();
+}
 
-  await expect.poll(() => textOf(nodeCount)).not.toBe(before);
-});
+async function expectStat(
+  page: Page,
+  label: string,
+  value: number,
+): Promise<void> {
+  const stat = page
+    .locator(".stats-row .stat")
+    .filter({ has: page.getByText(label, { exact: true }) });
+  await expect(stat).toContainText(new RegExp(`${label}\\s*${value}`));
+}
 
-test("rank-two cell toggle updates the visible cell count when exposed", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-  await page.getByLabel(/example/i).selectOption("A2");
-  await page.getByRole("button", { name: /look near a chamber/i }).click();
-  await page.getByLabel(/local depth/i).selectOption("3");
-  await page.getByLabel(/far shells/i).selectOption("fade-far");
-
-  const toggle = await firstVisible([
-    page.getByRole("checkbox", {
-      name: /rank[-\s]?two.*cells|davis.*cells|cells/i,
-    }),
-    page.getByRole("switch", {
-      name: /rank[-\s]?two.*cells|davis.*cells|cells/i,
-    }),
-    page.getByRole("button", {
-      name: /rank[-\s]?two.*cells|davis.*cells|cells/i,
-    }),
-    page.getByTestId("rank-two-cells-toggle"),
+async function downloadExperiment(page: Page): Promise<WallExperiment> {
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: "Export experiment" }).click(),
   ]);
-  const cellCount = await firstVisible([
-    page.getByTestId("rank-two-cell-count"),
-    page.getByRole("status", {
-      name: /cell count|rank[-\s]?two cells|visible cells/i,
-    }),
-    page.getByText(/cells?\s*:\s*\d+/i),
-  ]);
+  expect(download.suggestedFilename()).toMatch(/\.coxeter-experiment\.json$/);
+  const path = await download.path();
+  expect(path).not.toBeNull();
+  return JSON.parse(readFileSync(path!, "utf8")) as WallExperiment;
+}
 
-  if (!toggle || !cellCount) {
-    test.skip(
-      true,
-      "Rank-two cell toggle or visible cell count is not implemented yet.",
-    );
-    return;
-  }
-
-  const before = await textOf(cellCount);
-
-  await toggle.click();
-
-  await expect.poll(() => textOf(cellCount)).not.toBe(before);
-});
-
-test("label toggles expose compact vertex and edge labels", async ({
+test("opens on the I2(5) bar-X wall workflow with all five models", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openApp(page);
+
+  await expect(page.getByLabel("Source Coxeter system")).toHaveValue("I2_5");
+  for (const label of modelLabels) {
+    await expect(
+      modelSwitch(page).getByRole("button", { name: label, exact: true }),
+    ).toBeVisible();
+  }
+  await expect(
+    modelSwitch(page).getByRole("button", {
+      name: "bar X compression",
+      exact: true,
+    }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    page.getByRole("region", { name: "bar X compression viewer" }),
+  ).toBeVisible();
+
+  const steps = workflow(page).getByRole("listitem");
+  await expect(steps.nth(0)).toContainText(
+    "1. Certify a torsion-free subgroup",
+  );
+  await expect(steps.nth(0)).toContainText(
+    "Certified from the materialized action (index 10)",
+  );
+  await expect(steps.nth(1)).toContainText(
+    "2. Materialize a manageable finite cover",
+  );
+  await expect(steps.nth(1)).toContainText(
+    "I2(5) quotient (identity subgroup)",
+  );
+  await expect(steps.nth(2)).toContainText("3. Compress to bar X");
+  await expect(steps.nth(2)).toContainText("10 edges, 1 relation cells");
+  await expect(steps.nth(3)).toContainText("4. Find walls");
+  await expect(steps.nth(3)).toContainText("5 opposite-edge classes");
+  await expect(steps.nth(4)).toContainText("5. Coorient walls");
+  await expect(steps.nth(4)).toContainText("Coherent directions");
+  await expect(steps.nth(5)).toContainText("6. Keep lawful cells");
+  await expect(steps.nth(5)).toContainText("1 of 1 retained");
+  await expect(steps.nth(6)).toContainText("7. Certify a primitive map to Z");
+  await expectStat(page, "Vertices", 10);
+  await expectStat(page, "Edges", 10);
+  await expectStat(page, "Cells", 1);
+  await expectStat(page, "Walls", 5);
+});
+
+test("makes bounded automatic cover discovery the primary cover action", async ({
+  page,
+}) => {
+  await openApp(page);
+  const coversPanel = panel(page, /Covers \+ Walls/);
+  await expect(
+    coversPanel.getByRole("button", { name: "Find torsion-free cover" }),
+  ).toBeVisible();
+  await expect(coversPanel).toContainText("Necessary index divisor");
+  await expect(coversPanel).toContainText(/10/);
+  await expect(coversPanel).toContainText(
+    "finite image -> composite -> small GAP fallback",
+  );
+
+  await coversPanel
+    .getByRole("button", { name: "Find torsion-free cover" })
+    .click();
+  await expect(coversPanel).toContainText(/desktop app/i);
+
+  await coversPanel
+    .getByText("Search bounds and fallback import", { exact: true })
+    .click();
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    coversPanel.getByRole("button", { name: "Export search request" }).click(),
+  ]);
+  const path = await download.path();
+  expect(path).not.toBeNull();
+  const request = JSON.parse(readFileSync(path!, "utf8"));
+  expect(request).toMatchObject({
+    schemaVersion: 1,
+    artifactType: "coxeter-torsion-free-discovery-request",
+    sourceSystem: { name: "I2(5)" },
+    search: {
+      backend: "auto",
+      maxIndex: 256,
+      maxModuleCandidates: 96,
+      maxCompositeModules: 4,
+      maxCongruencePrime: 31,
+      maxCongruenceImageOrder: 100000,
+    },
+  });
+});
+
+test("imports a discovery artifact only after independent certification", async ({
+  page,
+}) => {
+  await openApp(page);
+  const coversPanel = panel(page, /Covers \+ Walls/);
+  await coversPanel
+    .getByText("Search bounds and fallback import", { exact: true })
+    .click();
+  await coversPanel
+    .getByLabel("Import discovery result")
+    .setInputFiles("tests/fixtures/torsion-free-discovery/i2_5.passed.json");
+  await expect(coversPanel).toContainText(
+    /Imported and independently certified a torsion-free cover of index 10/,
+  );
+  await expect(
+    modelSwitch(page).getByRole("button", { name: "hat X cover", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+
+  await switchToResearch(page);
+  const statusPanel = panel(page, /Data \+ Status/);
+  await expect(
+    statusPanel.getByText("Torsion-free evidence", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    statusPanel.getByText("supplied-passed", { exact: true }).first(),
+  ).toBeVisible();
+});
+
+test("navigates hat X, bar X, Gamma, and the Davis source without losing the scene", async ({
+  page,
+}) => {
+  await openApp(page);
+
+  await chooseModel(page, "hat X cover");
+  await expect(
+    page.getByRole("region", { name: "hat X cover viewer" }),
+  ).toBeVisible();
+  await expectStat(page, "Vertices", 10);
+  await expectStat(page, "Edges", 20);
+  await expectStat(page, "Cells", 10);
+
+  await chooseModel(page, "bar X compression");
+  await expectStat(page, "Vertices", 10);
+  await expectStat(page, "Edges", 10);
+  await expectStat(page, "Walls", 5);
+
+  await chooseModel(page, "Defining graph Gamma");
+  await expect(
+    page.getByRole("region", { name: "Defining graph Gamma viewer" }),
+  ).toBeVisible();
+  await expectStat(page, "Vertices", 2);
+  await expectStat(page, "Edges", 1);
+  await expectStat(page, "Cells", 0);
+
+  await chooseModel(page, "Davis complex");
+  await expect(
+    page.getByRole("region", { name: "Davis complex viewer" }),
+  ).toBeVisible();
+  await expect.poll(() => renderedSceneCount(page)).toBeGreaterThan(0);
+});
+
+test("selects and flips a wall without changing the underlying wall system", async ({
+  page,
+}) => {
+  await openApp(page);
+  await switchToResearch(page);
+
+  const wallReader = page.getByRole("region", { name: "Wall reader" });
+  await expect(wallReader).toBeVisible();
+  await expect(
+    wallReader.getByRole("button", { name: "All walls" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(wallReader.getByLabel("Show wall arcs")).toBeChecked();
+  await expect(wallReader.getByLabel("Color dual edges by wall")).toBeChecked();
+  await expect(wallReader.getByLabel("Show induced edge arrows")).toBeChecked();
+  await expect(wallReader).toContainText(
+    "Arrowheads show the direction induced on dual edges",
+  );
+  await expect
+    .poll(() =>
+      page.getByTestId("scene-canvas").getAttribute("data-rendered-edges"),
+    )
+    .toBe("15");
+
+  await wallReader.getByRole("button", { name: "Selected wall" }).click();
+
+  const wallSelect = page.getByLabel("Select a wall");
+  await expect(wallSelect.locator("option")).toHaveCount(5);
+  await wallSelect.selectOption({ index: 1 });
+  const wallId = await wallSelect.inputValue();
+  await expect(panel(page, /Focus Inspector/)).toContainText(
+    /W2, an abstract wall in bar X/,
+  );
+
+  const before = await downloadExperiment(page);
+  expect(before.view).toMatchObject({
+    wallDisplayMode: "selected",
+    showInducedDirections: true,
+    colorEdgesByWall: true,
+  });
+  await page.getByRole("button", { name: "Flip selected wall" }).click();
+  const after = await downloadExperiment(page);
+
+  expect(after.wallSystem.walls.map((wall) => wall.id)).toEqual(
+    before.wallSystem.walls.map((wall) => wall.id),
+  );
+  expect(after.coorientation.wallSigns[wallId]).toBe(
+    -before.coorientation.wallSigns[wallId],
+  );
+  await expect(wallReader).toContainText(/W2 has sign [+-]/);
+
+  await wallReader.getByLabel("Show induced edge arrows").uncheck();
+  const arrowsHidden = await downloadExperiment(page);
+  expect(arrowsHidden.view.showInducedDirections).toBe(false);
+});
+
+test("proves the largest lawful subcomplex for the default decagon", async ({
+  page,
+}) => {
+  await openApp(page);
+  await switchToResearch(page);
+
+  await page
+    .getByRole("button", { name: "Find largest lawful subcomplex" })
+    .click();
+  await expect(panel(page, /Covers \+ Walls/)).toContainText(
+    /Proven optimum: 1 lawful cells\./,
+    { timeout: 15_000 },
+  );
+
+  const experiment = await downloadExperiment(page);
+  expect(experiment.optimization).toMatchObject({
+    status: "optimal",
+    objectiveValue: 1,
+    certificate: { optimalityProven: true },
+  });
+});
+
+test("teaching and research disclosure keep labels and caveats understandable", async ({
+  page,
+}) => {
+  await openApp(page);
+
+  await expect(page.getByRole("heading", { name: "Start Here" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Data + Status" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "Notebook + Export" }),
+  ).toHaveCount(0);
 
   const vertexLabels = page.getByRole("checkbox", {
-    name: /group-element labels/i,
+    name: "Show vertex labels",
   });
-  const edgeLabels = page.getByRole("checkbox", {
-    name: /generator labels on edges/i,
-  });
-
-  await expect(vertexLabels).toBeVisible();
+  const edgeLabels = page.getByRole("checkbox", { name: "Show edge labels" });
   await expect(vertexLabels).toBeChecked();
-  await expect(edgeLabels).toBeVisible();
   await expect(edgeLabels).toBeChecked();
-
-  await vertexLabels.click();
-  await edgeLabels.click();
-
+  await vertexLabels.uncheck();
+  await edgeLabels.uncheck();
   await expect(vertexLabels).not.toBeChecked();
   await expect(edgeLabels).not.toBeChecked();
-});
 
-test("theme and viewer-only controls keep the canvas central", async ({
-  page,
-}) => {
-  await page.goto("/");
+  const caveats = panel(page, /^Caveats$/);
+  const caveatDetails = caveats.locator("details");
+  await expect(caveatDetails).not.toHaveAttribute("open", "");
+  await caveatDetails.locator("summary").click();
+  await expect(caveats.getByRole("listitem").first()).toBeVisible();
+  await expect(caveats).toContainText(/drawing|hypotheses|combinatorial/i);
 
-  await page.getByRole("button", { name: /dark mode/i }).click();
-  await expect(page.locator("main.app-shell")).toHaveAttribute(
-    "data-theme",
-    "dark",
+  await switchToResearch(page);
+  await expect(page.getByRole("heading", { name: "Start Here" })).toHaveCount(
+    0,
   );
-
-  await page.getByRole("button", { name: /viewer only/i }).click();
-  await expect(page.locator("main.app-shell")).toHaveClass(/viewer-only/);
-  await expect(page.getByLabel(/viewer controls/i)).toBeHidden();
-  await expect(page.getByRole("button", { name: /^show ui$/i })).toBeVisible();
-
-  await page.getByRole("button", { name: /^show ui$/i }).click();
-  await expect(page.locator("main.app-shell")).not.toHaveClass(/viewer-only/);
-  await expect(page.getByLabel(/viewer controls/i)).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Data + Status" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Notebook + Export" }),
+  ).toBeVisible();
+  await expect(page.getByText("Compression", { exact: true })).toBeVisible();
+  await expect(page.getByText("passed", { exact: true })).toBeVisible();
 });
 
-test("keyboard viewer-only toggle restores rail scroll positions", async ({
+test("U expands the viewer and restores the complete interface", async ({
   page,
 }) => {
-  await page.goto("/");
-
-  const controlsRail = page.getByLabel(/viewer controls/i);
-  const detailsRail = page.getByLabel(/graph details/i);
-  const sceneCanvas = page.getByTestId("scene-canvas");
-  const fullUiBox = await sceneCanvas.boundingBox();
-  expect(fullUiBox?.width ?? 0).toBeGreaterThan(100);
-  const before = await Promise.all([
-    controlsRail.evaluate((element) => {
-      element.scrollTop = Math.min(240, element.scrollHeight);
-      return element.scrollTop;
-    }),
-    detailsRail.evaluate((element) => {
-      element.scrollTop = Math.min(320, element.scrollHeight);
-      return element.scrollTop;
-    }),
-  ]);
+  await openApp(page);
+  const shell = page.locator(".app-shell");
+  const controls = page.getByLabel("Viewer controls");
+  const inspector = page.getByLabel("Inspector and research tools");
+  const canvas = page.getByTestId("scene-canvas");
+  const initialWidth = (await canvas.boundingBox())?.width ?? 0;
 
   await page.keyboard.press("u");
-  await expect(page.locator("main.app-shell")).toHaveClass(/viewer-only/);
+  await expect(shell).toHaveClass(/viewer-only/);
+  await expect(controls).toBeHidden();
+  await expect(inspector).toBeHidden();
   await expect
-    .poll(async () => (await sceneCanvas.boundingBox())?.width ?? 0)
-    .toBeGreaterThan((fullUiBox?.width ?? 0) + 100);
+    .poll(async () => (await canvas.boundingBox())?.width ?? 0)
+    .toBeGreaterThan(initialWidth + 100);
+
   await page.keyboard.press("u");
-  await expect(page.locator("main.app-shell")).not.toHaveClass(/viewer-only/);
+  await expect(shell).not.toHaveClass(/viewer-only/);
+  await expect(controls).toBeVisible();
+  await expect(inspector).toBeVisible();
   await expect
     .poll(async () =>
-      Math.abs(
-        ((await sceneCanvas.boundingBox())?.width ?? 0) -
-          (fullUiBox?.width ?? 0),
-      ),
+      Math.abs(((await canvas.boundingBox())?.width ?? 0) - initialWidth),
     )
-    .toBeLessThanOrEqual(2);
-
-  await expect
-    .poll(async () =>
-      Promise.all([
-        controlsRail.evaluate((element) => element.scrollTop),
-        detailsRail.evaluate((element) => element.scrollTop),
-      ]),
-    )
-    .toEqual(before);
+    .toBeLessThanOrEqual(4);
 });
 
-test("keyboard shortcuts toggle labels without using form focus", async ({
+test("exports exact cover data and a one-shot PNG", async ({ page }) => {
+  await openApp(page);
+  await switchToResearch(page);
+
+  const experiment = await downloadExperiment(page);
+  expect(experiment.kind).toBe("wall-coorientation-experiment");
+  expect(experiment.torsionFreeCoverDiscovery).toMatchObject({
+    status: "ready",
+    request: {
+      artifactType: "coxeter-torsion-free-discovery-request",
+    },
+  });
+  expect(experiment.sourceSystem.name).toBe("I2(5)");
+  expect(experiment.coverCompression.certificate.status).toBe("passed");
+  expect(experiment.coverCompression.hatX.vertices).toHaveLength(10);
+  expect(experiment.coverCompression.hatX.directedLiftEdges).toHaveLength(20);
+  expect(experiment.coverCompression.hatX.generatorBigonCells).toHaveLength(20);
+  expect(experiment.coverCompression.hatX.liftedRelationCells).toHaveLength(10);
+  expect(experiment.coverCompression.barX.vertices).toHaveLength(10);
+  expect(experiment.coverCompression.barX.geometricEdges).toHaveLength(10);
+  expect(experiment.coverCompression.barX.relationCells).toHaveLength(1);
+  expect(experiment.wallSystem.walls).toHaveLength(5);
+
+  const [png] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: "Export PNG" }).click(),
+  ]);
+  expect(png.suggestedFilename()).toMatch(/\.png$/);
+  const pngPath = await png.path();
+  expect(pngPath).not.toBeNull();
+  const bytes = readFileSync(pngPath!);
+  expect(bytes.subarray(0, 8)).toEqual(
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+  );
+  expect(bytes.byteLength).toBeGreaterThan(1_000);
+});
+
+test("rejects an invalid finite-cover import without breaking the viewer", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openApp(page);
 
-  const vertexLabels = page.getByRole("checkbox", {
-    name: /group-element labels/i,
+  await page.getByLabel("Import an existing finite action").setInputFiles({
+    name: "invalid-cover.json",
+    mimeType: "application/json",
+    buffer: Buffer.from('{"schemaVersion":1,"name":"Incomplete cover"}'),
   });
-  const edgeLabels = page
-    .getByRole("checkbox", {
-      name: /generator labels on edges/i,
-    })
-    .first();
 
-  await expect(vertexLabels).toBeChecked();
-  await page.keyboard.press("l");
-  await expect(vertexLabels).not.toBeChecked();
-
-  const edgeLabelsInitiallyChecked = await edgeLabels.isChecked();
-  await page.keyboard.press("e");
-  await expect(edgeLabels).toBeChecked({ checked: edgeLabelsInitiallyChecked });
-  await page.keyboard.press("Shift+E");
-  await expect(edgeLabels).toBeChecked({
-    checked: !edgeLabelsInitiallyChecked,
-  });
-});
-
-test("local link and focus controls are exposed", async ({ page }) => {
-  await page.goto("/");
-  await page
-    .getByRole("group", { name: /reader focus presets/i })
-    .getByRole("button", { name: /local link/i })
-    .click();
-
+  const coversPanel = panel(page, /Covers \+ Walls/);
+  const importWarning = coversPanel
+    .locator(".warning-inline")
+    .filter({ hasText: "Invalid quotient complex" });
+  await expect(importWarning).toBeVisible();
+  await expect(importWarning).toContainText(
+    /generatorRank|vertices|edges|twoCells|must|required/i,
+  );
   await expect(
-    page.getByRole("heading", { name: /local link/i }),
-  ).toBeVisible();
-  await expect(page.getByText(/spherical simplices/i)).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: /focus selected node/i }),
+    page.getByRole("heading", { name: "CoxeterViewer5D" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: /root view at selected node/i }),
+    page.getByTestId("scene-canvas").locator("canvas"),
   ).toBeVisible();
 });
 
-test("on-graph view exposes a local neighborhood around the selected node", async ({
+test("uses an imported finite action as the source for every model", async ({
   page,
 }) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
+  await openApp(page);
+  const imported = JSON.parse(
+    readFileSync("src/examples/I2_5_identity_quotient.json", "utf8"),
+  );
+  imported.name = "Imported finite action";
+  imported.sourceSystem.name = "Imported I2 source";
 
-  const onGraph = page.getByTestId("view-on-graph");
-  await expect(onGraph).toBeVisible();
-  await onGraph.click();
+  await page.getByLabel("Import an existing finite action").setInputFiles({
+    name: "imported-cover.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(imported)),
+  });
 
-  await expect(onGraph).toHaveAttribute("aria-pressed", "true");
-  await expect.poll(async () => (await sceneStats(page)).mode).toBe("on-graph");
-  await expect(page.getByLabel(/local depth/i)).toBeVisible();
-  await expect(page.locator(".current-model-badge")).toContainText(/Davis/i);
-  await expect(page.getByTestId("scene-canvas")).toHaveAttribute(
-    "data-cell-render-mode",
-    "in-graph",
+  await expect(page.getByTestId("active-source-system")).toContainText(
+    "Imported I2 source (from the finite action)",
+  );
+  await chooseModel(page, "Defining graph Gamma");
+  await expect(panel(page, /Focus Inspector/)).toContainText(
+    "Imported I2 source",
+  );
+
+  await chooseModel(page, "Davis complex");
+  await expect(panel(page, /Focus Inspector/)).toContainText(
+    "Imported I2 source",
   );
 });
 
-test("compact 5-cube defaults to a decluttered local chamber view", async ({
+test("keeps all certified eight-facet examples reachable without crowding the picker", async ({
   page,
 }) => {
-  await page.goto("/");
-
-  await page.getByLabel(/example/i).selectOption("compact_5_cube_gamma1");
-  await expect.poll(async () => (await sceneStats(page)).mode).toBe("on-graph");
-  await switchToResearchMode(page);
-  await expect(
-    page.getByRole("button", { name: /look near a chamber/i }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await expect(
-    page
-      .getByRole("group", { name: /label scope/i })
-      .getByRole("button", { name: /focused/i }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await expect(
-    page.getByText(/look near a chamber neighborhood/i),
-  ).toBeVisible();
-  await expect(page.getByLabel(/far shells/i)).toHaveValue("hide-far");
-  await expect(page.getByLabel(/cell drawing/i)).toHaveValue("in-graph");
-});
-
-test("generator stepping updates the selected word breadcrumb", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-  await page.getByRole("button", { name: /look near a chamber/i }).click();
+  await openApp(page);
+  const catalogue = page.locator(
+    '#example-select optgroup[label="Certified eight-facet catalogue"] option',
+  );
+  await expect(catalogue).toHaveCount(16);
 
   await page
-    .getByLabel(/step by generator/i)
-    .getByRole("button", { name: /^s0$/ })
-    .click();
-  await expect(page.getByLabel(/selected word breadcrumb/i)).toContainText(
-    /e\s*\/\s*s0/i,
-  );
-  await expect(page.getByText(/selected chamber w:0/i)).toBeVisible();
-});
-
-test("local-link chord focuses a rank-two relation", async ({ page }) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-  await page.getByLabel(/example/i).selectOption("A2");
-  await page.getByRole("button", { name: /look near a chamber/i }).click();
-  await page.getByLabel(/local depth/i).selectOption("3");
-  await page.getByLabel(/far shells/i).selectOption("fade-far");
-
-  const pairFilters = page.getByRole("group", {
-    name: /local link pair filters/i,
-  });
-  await pairFilters
-    .getByRole("button", { name: /focus s0-s1 rank-two cells/i })
-    .click();
-
-  await expect(page.getByLabel(/cell focus/i)).toHaveValue("selected-cell");
-  await expect(page.getByLabel("Neighborhood", { exact: true })).toHaveValue(
-    "cell-boundary",
-  );
-  const relationPanel = page.getByLabel(/graph details/i);
-  await expect(relationPanel.getByText(/pair s0-s1 has m=3/i)).toBeVisible();
-  await expect(relationPanel.getByText(/hexagon/i).first()).toBeVisible();
-});
-
-test("rank-two cell focus uses graph-bounded cells and selected pair filtering", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-  await page.getByLabel(/example/i).selectOption("A2");
-  await page
-    .getByRole("group", { name: /view presets/i })
-    .getByRole("button", { name: /rank-two cells/i })
-    .click();
-
-  await expect(page.getByLabel(/cell drawing/i)).toHaveValue("in-graph");
-  await expect(page.getByLabel(/cell focus/i)).toHaveValue("selected-pair");
-  await expect(page.getByTestId("scene-canvas")).toHaveAttribute(
-    "data-cell-render-mode",
-    "in-graph",
-  );
-
-  await page
-    .getByLabel(/coxeter pair matrix/i)
-    .getByRole("button", { name: /s0-s1/i })
-    .click();
-  await expect(page.getByLabel(/cell focus/i)).toHaveValue("selected-cell");
-  await expect(page.getByLabel("Neighborhood", { exact: true })).toHaveValue(
-    "cell-boundary",
-  );
-  await expect(page.getByTestId("rank-two-cell-count")).toBeVisible();
-});
-
-test("opens the one-vertex Y_Gamma base complex for game access", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchModel(page, /^Y_Gamma$/);
-
-  await expect(page.getByText(/Y_Gamma/i).first()).toBeVisible();
-  await expect(page.getByTestId("scene-canvas")).toBeVisible();
-  await expect(page.getByTestId("scene-canvas")).toHaveAttribute(
-    "data-cell-render-mode",
-    "in-graph",
+    .getByLabel("Source Coxeter system")
+    .selectOption("tumarkin_5d_8facet_g12221_01");
+  await expect(page.getByTestId("active-source-system")).toContainText(
+    "Tumarkin 5D eight-facet G12221",
   );
   await expect(
-    page.getByText(/Y_Gamma fundamental-domain cell complex/i).first(),
-  ).toBeVisible();
-  await expect(
-    page.getByText(/oriented generator arrows/i).first(),
-  ).toBeVisible();
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedCells ?? 0)
-    .toBeGreaterThan(0);
-  await page
-    .getByRole("group", { name: /interface mode/i })
-    .getByRole("button", { name: /research/i })
-    .click();
-  await expect(
-    page.getByRole("heading", { name: /Y_Gamma Cell Inventory/i }),
-  ).toBeVisible();
-  await expect(page.getByText(/not distinct affine vertices/i)).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /Quotient \+ Games/i }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(/quotient complex: no torsion-free/i),
-  ).toBeVisible();
-  await expect(page.getByText(/Boundary checks/i).first()).toBeVisible();
-});
-
-test("compact 5-cube Y_Gamma labels every visible semantic edge", async ({
-  page,
-}) => {
-  test.setTimeout(120_000);
-
-  await page.goto("/");
-  await page.getByLabel(/example/i).selectOption("compact_5_cube_gamma1");
-  await switchModel(page, /^Y_Gamma$/);
-
-  const yGammaReader = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /Y_Gamma Reader/i }),
-  });
-  const drawingGroup = yGammaReader.getByRole("group", {
-    name: /Y_Gamma separate cells for reading/i,
-  });
-  await expect(drawingGroup).toBeVisible();
-  await drawingGroup.getByRole("button", { name: /^Expanded$/ }).click();
-  await expect(
-    drawingGroup.getByRole("button", { name: /^Expanded$/ }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await drawingGroup.getByRole("button", { name: /^Coherent$/ }).click();
-  await expect(
-    drawingGroup.getByRole("button", { name: /^Coherent$/ }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await drawingGroup.getByRole("button", { name: /^Expanded$/ }).click();
-
-  await expect
-    .poll(async () => {
-      const stats = await sceneStats(page);
-      return stats.renderedEdgeSegments && stats.renderedEdgeLabels
-        ? stats.renderedEdgeLabels === stats.renderedEdgeSegments
-        : false;
-    })
-    .toBe(true);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedLabelLeaders ?? 0)
-    .toBeGreaterThan(0);
-  const yGammaReaderControls = page.getByTestId("ygamma-reader");
-  await yGammaReaderControls
-    .getByTestId("ygamma-advanced-readability")
-    .locator("summary")
-    .click();
-  await yGammaReaderControls
-    .getByRole("button", { name: /extract relation star/i })
-    .click();
-  await expect
-    .poll(async () => {
-      const stats = await sceneStats(page);
-      return Math.min(
-        stats.renderedCells ?? 0,
-        stats.renderedEdgeLabels ?? 0,
-        stats.renderedLabelLeaders ?? 0,
-      );
-    })
-    .toBeGreaterThan(0);
-  await expect(
-    yGammaReaderControls.getByRole("button", {
-      name: /extract relation star/i,
+    modelSwitch(page).getByRole("button", {
+      name: "Davis complex",
+      exact: true,
     }),
   ).toHaveAttribute("aria-pressed", "true");
-
-  await yGammaReaderControls
-    .getByRole("button", { name: /compare shared vs separated drawing/i })
-    .click();
-  const comparisonLeft = page.getByTestId("ygamma-comparison-left");
-  const comparisonRight = page.getByTestId("ygamma-comparison-right");
-  await expect(comparisonLeft).toBeVisible();
-  await expect(comparisonRight).toBeVisible();
-  const comparisonScene = page.getByTestId("ygamma-comparison-scene");
-  await expect(comparisonScene.locator("canvas")).toHaveCount(1);
-  await expect
-    .poll(async () => {
-      const box = await comparisonScene.locator(".scene-shell").boundingBox();
-      return box?.height ?? 0;
-    })
-    .toBeGreaterThan(360);
-
-  const readerControls = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /start here/i }),
-  });
-
-  await readerControls.getByRole("button", { name: "See all" }).click();
-  await expect
-    .poll(async () => {
-      const stats = await sceneStats(page);
-      return stats.renderedEdgeSegments && stats.renderedEdgeLabels
-        ? stats.renderedEdgeLabels === stats.renderedEdgeSegments
-        : false;
-    })
-    .toBe(true);
-
-  await readerControls
-    .getByRole("group", { name: /reader focus presets/i })
-    .getByRole("button", { name: /^Read one relation$/ })
-    .click();
-  await expect
-    .poll(async () => {
-      const stats = await sceneStats(page);
-      return stats.renderedEdgeSegments && stats.renderedEdgeLabels
-        ? stats.renderedEdgeLabels === stats.renderedEdgeSegments
-        : false;
-    })
-    .toBe(true);
 });
 
-test("Y_Gamma game workflows expose cochain and JNW state tools", async ({
+test("loads the ideal 3-cube with its certified index-24 S4 cover", async ({
   page,
 }) => {
-  await page.goto("/");
+  await openApp(page);
+
   await page
-    .getByRole("group", { name: /choose mathematical view/i })
-    .first()
-    .getByRole("button", { name: /^Y_Gamma$/ })
-    .click();
-  await switchToResearchMode(page);
-
-  const gamePanel = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /quotient \+ games/i }),
-  });
-  await expect(
-    gamePanel.getByLabel(/generator-uniform cochain editor/i),
-  ).toBeVisible();
-
-  await gamePanel.getByLabel(/value for s0/i).fill("1");
-  await gamePanel.getByLabel(/value for s1/i).fill("-1");
-  await expect(gamePanel.getByText(/cocycle passed/i)).toBeVisible();
-
-  await gamePanel.getByLabel(/value for s1/i).fill("0");
-  await expect(gamePanel.getByText(/failed rank-two boundary/i)).toBeVisible();
-  await gamePanel
-    .getByRole("button", { name: /focus cell/i })
-    .first()
-    .click();
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedCells ?? 0)
-    .toBeGreaterThan(0);
-
-  await gamePanel
-    .getByRole("button", { name: /JNW Legal-System Game/i })
-    .click();
-  await expect(
-    gamePanel.getByLabel(/JNW legal-system game editor/i),
-  ).toBeVisible();
-  await expect(
-    gamePanel.getByText(/Experimental non-JNW|Failed checks/i),
-  ).toBeVisible();
-  await gamePanel
-    .getByRole("button", { name: /show state-orbit model/i })
-    .click();
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedNodes ?? 0)
-    .toBeGreaterThan(0);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedNodeLabels ?? 0)
-    .toBeGreaterThan(0);
-});
-
-test("opens the Coxeter defining graph Gamma as a third source view", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await page.getByLabel(/example/i).selectOption("A3");
-  await page
-    .getByRole("group", { name: /choose mathematical view/i })
-    .first()
-    .getByRole("button", { name: /^Defining graph Gamma$/ })
-    .click();
+    .getByLabel("Source Coxeter system")
+    .selectOption("ideal_hyperbolic_3_cube_m3");
 
   await expect(
-    page.getByRole("group", { name: /choose mathematical view/i }).first(),
-  ).toBeVisible();
-  await expect(
-    page
-      .getByRole("group", { name: /choose mathematical view/i })
-      .first()
-      .getByRole("button", { name: /^Defining graph Gamma$/, pressed: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /coxeter defining graph/i }),
-  ).toBeVisible();
-  const gammaPanel = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /coxeter defining graph/i }),
-  });
-  await expect(
-    gammaPanel.getByText(/finite relation edge/i).first(),
-  ).toBeVisible();
-  await expect(gammaPanel.getByText(/m=inf are omitted/i)).toBeVisible();
-  await expect(gammaPanel.getByText(/m=2 commuting edges/i)).toBeVisible();
-  await expect(gammaPanel.getByText(/k\(Gamma\)/i)).toBeVisible();
-  await expect(gammaPanel.getByText(/0\.25 = 1 - 3\/2 \+ 3\/4/i)).toBeVisible();
-  await expect(gammaPanel.getByText(/m=2 \(/i)).toBeVisible();
-  const relationComponents = gammaPanel.getByLabel(
-    /Relation-order connected components/i,
-  );
-  await expect(relationComponents).toBeVisible();
-  await expect(
-    relationComponents.getByLabel(/m=2 connected components/i),
-  ).toContainText(/s0.*s2/i);
-  await expect(
-    relationComponents
-      .locator("p.gamma-isolated-generators")
-      .filter({ hasText: "Gamma_2" }),
-  ).toContainText(/s1/i);
-  await expect(
-    gammaPanel.getByLabel(/Gamma relation color legend/i),
-  ).toBeVisible();
-  await expect(
-    gammaPanel.getByRole("group", { name: /Gamma drawing mode/i }),
-  ).toBeVisible();
-  await gammaPanel.getByRole("button", { name: /2D planar/i }).click();
-  await expect(
-    gammaPanel.getByRole("button", { name: /2D planar/, pressed: true }),
-  ).toBeVisible();
-  await expect(gammaPanel.getByText(/planar mode places/i)).toBeVisible();
-});
-
-test("compact 5-cube Gamma labels every defining edge", async ({ page }) => {
-  test.setTimeout(90_000);
-
-  await page.goto("/");
-  await page.getByLabel(/example/i).selectOption("compact_5_cube_gamma1");
-  await page
-    .getByRole("group", { name: /choose mathematical view/i })
-    .first()
-    .getByRole("button", { name: /^Defining graph Gamma$/ })
-    .click();
-
-  await expect(
-    page.getByRole("heading", { name: /coxeter defining graph/i }),
-  ).toBeVisible();
-  const gammaPanel = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /coxeter defining graph/i }),
-  });
-  await gammaPanel.getByLabel(/Inspect Gamma generator/i).selectOption("0");
-  const g0Partition = gammaPanel.getByLabel(
-    /Incident relation partition for g0/i,
-  );
-  await expect(g0Partition).toBeVisible();
-  await expect(g0Partition.getByText(/finite degree 8/i)).toBeVisible();
-  await expect(g0Partition.getByText(/m=2/i).first()).toBeVisible();
-  await expect(g0Partition.getByText(/6 neighbors/i)).toBeVisible();
-  await expect(g0Partition.getByText(/m=3/i).first()).toBeVisible();
-  await expect(g0Partition.getByText(/2 neighbors/i)).toBeVisible();
-  await expect(g0Partition.getByText(/m=inf/i).first()).toBeVisible();
-  await expect(
-    g0Partition.getByText(
-      /all 9 other generators are accounted for exactly once/i,
+    page.locator(
+      '#example-select optgroup[label="Core and featured examples"] option[value="ideal_hyperbolic_3_cube_m3"]',
     ),
-  ).toBeVisible();
-  const orderThreeComponents = gammaPanel.getByLabel(
-    /m=3 connected components/i,
-  );
-  await expect(orderThreeComponents).toContainText(
-    /2 edge-bearing components/i,
-  );
-  await expect(orderThreeComponents).toContainText(
-    /g0.*g1.*g2.*g3.*g4.*g5.*g6.*g7/i,
-  );
-  await expect(orderThreeComponents).toContainText(/g8.*g9/i);
-  await g0Partition.getByRole("button", { name: "g8" }).click();
-  await expect(
-    gammaPanel.getByLabel(/Incident relation partition for g8/i),
-  ).toBeVisible();
-  await gammaPanel.getByRole("button", { name: /2D planar/i }).click();
-  await expect(gammaPanel.getByText(/K5 obstruction/i)).toBeVisible();
-  await expect(gammaPanel.getByText(/not planar/i)).toBeVisible();
-  await expect
-    .poll(async () => {
-      const stats = await sceneStats(page);
-      return [stats.renderedEdgeSegments ?? 0, stats.renderedEdgeLabels ?? 0];
-    })
-    .toEqual([40, 40]);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedLabelLeaders ?? 0)
-    .toBeGreaterThan(35);
-});
+  ).toHaveCount(1);
 
-test("research workflow loads the I2(5) quotient/game demo", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
+  await expect(page.getByTestId("active-source-system")).toContainText(
+    "Regular ideal hyperbolic Coxeter 3-cube",
+  );
+  await expect(page.getByTestId("active-source-system")).toContainText(
+    "from the finite action",
+  );
+  await expect(workflow(page).getByRole("listitem").nth(1)).toContainText(
+    "Regular ideal 3-cube S4-kernel cover (24 sheets)",
+  );
 
-  const workflow = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /research workflow/i }),
+  const relationReader = page.getByRole("region", {
+    name: "bar X relation reader",
   });
-  await expect(
-    page.getByRole("heading", { name: /research workflow/i }),
-  ).toBeVisible();
-  await workflow.getByRole("button", { name: /^3Quotient$/ }).click();
-  await workflow.getByRole("button", { name: /load demo quotient/i }).click();
+  const relationFamily = page.getByLabel("Relation family in bar X");
+  await expect(relationReader).toBeVisible();
+  await expect(relationFamily).toHaveValue("0:1");
+  await expect(relationReader).toContainText("4 of 48 cells");
+  await expect(relationReader).toContainText("4 hexagons");
+  await expectStat(page, "Cells", 4);
 
-  await expect(
-    page.getByText(/I2\(5\) quotient \(identity subgroup\)/),
-  ).toBeVisible();
-  await expect(page.getByText(/cocycle i2-5-height-cocycle/i)).toBeVisible();
-  await expect(
-    page.getByText(/1\/1 rank-two boundary checks passed/i),
-  ).toBeVisible();
-
-  await workflow.getByRole("button", { name: /ascending link/i }).click();
-  await expect(page.getByText(/ascending/i).first()).toBeVisible();
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedEdgeSegments ?? 0)
-    .toBeGreaterThan(0);
-
-  const download = page.waitForEvent("download");
-  await workflow
-    .getByRole("button", { name: /export reproducible bundle/i })
-    .click();
-  const file = await download;
-  expect(file.suggestedFilename()).toMatch(/\.coxeter-experiment\.json$/);
-});
-
-test("research workflow opens the JNW cube legal-system demo", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-
-  const workflow = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /research workflow/i }),
-  });
-  await workflow.getByRole("button", { name: /load jnw cube game/i }).click();
-
-  await expect(page.getByText(/JNW cube graph RACG/i).first()).toBeVisible();
-  await expect(
-    page.getByText(/JNW faithful; 4\/4 legal/i).first(),
-  ).toBeVisible();
-  await expect(page.getByLabel(/current model/i)).toContainText(
-    /JNW move-kernel cover \/ in-repo diagnostic/i,
-  );
-  await expect(page.getByLabel(/Where am I in JNW/i)).toContainText(
-    /Coxeter system Gamma.*Y_Gamma fundamental domain.*JNW move-kernel cover/i,
-  );
-  const gamePanel = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /quotient \+ games/i }),
-  });
-  await expect(
-    gamePanel.getByRole("button", {
-      name: /Ascending link at selected state/i,
-    }),
-  ).toBeVisible();
-  await expect(page.getByLabel(/JNW workflow path/i)).toBeVisible();
-  await expect(gamePanel.getByLabel(/Current JNW setup/i)).toBeVisible();
-  await expect(gamePanel.getByLabel(/Current JNW setup/i)).toContainText(
-    /S_\d = \{v/i,
-  );
-  await expect(gamePanel.getByLabel(/Current JNW setup/i)).toContainText(
-    /\{v000, v010, v110, v111\}/,
-  );
-  await expect(gamePanel.getByLabel(/Current JNW setup/i)).toContainText(
-    /Four lifts over Y_Gamma; 16 geometric rails and 12 square cells/i,
-  );
-  await expect(gamePanel.getByLabel(/Current JNW setup/i)).toContainText(
-    /256 vertices; not the compact cover shown here/i,
-  );
-  await expect(
-    gamePanel.getByText(/JNW cube bipartition\/color-class preset/i),
-  ).toBeVisible();
-  await expect(gamePanel.getByLabel(/JNW quotient reader/i)).toBeVisible();
-  await gamePanel.getByText(/Drawing details/i).click();
-  await expect(
-    gamePanel.getByText(/Build quotient in stages 4/i),
-  ).toBeVisible();
-  await expect(
-    gamePanel.getByRole("button", { name: /Glass faces/i }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await expect(
-    gamePanel.getByLabel(/Gamma vertices highlighted for S_/i),
-  ).toBeVisible();
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedCells ?? 0)
-    .toBeGreaterThan(0);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedNodeLabels ?? 0)
-    .toBeGreaterThanOrEqual(4);
-  const statePicker = gamePanel.getByLabel(/Choose JNW state/i);
-  await expect(statePicker).toBeVisible();
-  await statePicker.getByRole("button", { name: "S_2" }).click();
-  await expect(gamePanel.getByLabel(/Current JNW setup/i)).toContainText(
-    /S_2 = \{/,
-  );
-  await gamePanel
-    .getByRole("button", { name: /Mirror selected state on Gamma/i })
-    .click();
-  await expect(page.getByLabel(/current model/i)).toContainText(/Gamma/i);
-  await expect(
-    page.getByText(/S_2 is highlighted on Gamma/i).first(),
-  ).toBeVisible();
-  const gammaPanel = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /coxeter defining graph/i }),
-  });
-  await expect(
-    gammaPanel.locator("tr").filter({ hasText: "State vertices" }),
-  ).toContainText(/v[01]{3}/);
-  await expect(
-    gammaPanel.getByText(/colored generator vertices/i),
-  ).toBeVisible();
-  await expect
-    .poll(
-      async () => (await sceneStats(page)).stateNodeHighlights?.inState ?? 0,
-    )
-    .toBeGreaterThan(0);
-  await expect
-    .poll(
-      async () => (await sceneStats(page)).stateNodeHighlights?.outOfState ?? 0,
-    )
-    .toBeGreaterThan(0);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedNodeLabels ?? 0)
-    .toBeGreaterThanOrEqual(4);
-  await gamePanel
-    .getByRole("button", { name: /Descending link at selected state/i })
-    .click();
-  await expect(page.getByLabel(/current model/i)).toContainText(
-    /JNW move-kernel cover/i,
-  );
-  await expect(
-    page.getByText(
-      /This link is inspected at a selected state vertex.*move-kernel cover/i,
-    ),
-  ).toBeVisible();
-  const relationSelect = gamePanel.getByLabel(/Choose relation/i);
-  await expect(relationSelect).toBeVisible();
-  await relationSelect.selectOption({ index: 1 });
-  await expect(
-    gamePanel.getByText(/Selected relation boundary/i),
-  ).toBeVisible();
-  await gamePanel
-    .getByRole("button", { name: /Next relation/i })
-    .first()
-    .click();
-  await expect(
-    gamePanel.getByText(/Selected relation boundary/i),
-  ).toBeVisible();
-  await gamePanel
-    .getByRole("button", { name: /Focus selected relation/i })
-    .click();
-  await expect(
-    gamePanel.getByText(/Selected relation boundary/i),
-  ).toBeVisible();
-  await gamePanel
-    .getByRole("button", { name: /Compare source chart with state link/i })
-    .click();
-  await expect(
-    page.getByLabel(/Y_Gamma and JNW state-link comparison/i),
-  ).toContainText(/Each quotient state carries the same local generator data/i);
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedEdgeSegments ?? 0)
-    .toBeGreaterThan(0);
-});
-
-test("research workflow rank-three lens opens the A3 Y_Gamma focus", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-
-  const workflow = page.locator("section.panel").filter({
-    has: page.getByRole("heading", { name: /research workflow/i }),
-  });
-  await workflow.getByRole("button", { name: /rank-three cell/i }).click();
-
-  await expect(page.getByText(/Y_Gamma\(A3\)/).first()).toBeVisible();
-  await expect(page.getByText(/rank-three/i).first()).toBeVisible();
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedCells ?? 0)
-    .toBeGreaterThan(0);
-});
-
-test("experiment log saves and exports deterministic bundles", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-  await page.getByRole("button", { name: /look near a chamber/i }).click();
-  await page.getByLabel(/note/i).fill("checking lifted local cell panels");
-  await page.getByRole("button", { name: /save run/i }).click();
-  await expect(page.getByText(/1 saved run in this browser/i)).toBeVisible();
-
-  const download = page.waitForEvent("download");
-  await page.getByRole("button", { name: /export experiment/i }).click();
-  const file = await download;
-  expect(file.suggestedFilename()).toMatch(/\.coxeter-experiment\.json$/);
-  const path = await file.path();
-  expect(path).toBeTruthy();
-  const payload = JSON.parse(readFileSync(path ?? "", "utf8"));
-  expect(payload).toMatchObject({
-    schemaVersion: 1,
-    summary: { runCount: 1 },
-  });
-});
-
-test("view presets update the storytelling panel", async ({ page }) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-
-  await expect(
-    page.getByRole("heading", { name: /what am i seeing/i }),
-  ).toBeVisible();
-  await page
-    .getByRole("group", { name: /view presets/i })
-    .getByRole("button", { name: /see all/i })
-    .click();
-  await expect(page.getByText(/finite-radius cayley ball/i)).toBeVisible();
-  await page
-    .getByRole("group", { name: /view presets/i })
-    .getByRole("button", { name: /rank-two cells/i })
-    .click();
-  await expect(page.getByText(/exact rank-two davis cells/i)).toBeVisible();
-  await page.getByLabel(/example/i).selectOption("hyperbolic_toy_rank2");
-  await page
-    .getByRole("group", { name: /view presets/i })
-    .getByRole("button", { name: /projection drawing/i })
-    .click();
-  await expect(page.getByText(/geometric mode/i)).toBeVisible();
-});
-
-test("exports local neighborhood and view sidecar metadata", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-  await page.getByRole("button", { name: /look near a chamber/i }).click();
-
-  const localDownload = page.waitForEvent("download");
-  await page
-    .getByRole("button", { name: /export local neighborhood/i })
-    .click();
-  const localFile = await localDownload;
-  expect(localFile.suggestedFilename()).toMatch(/local\.json$/);
-  const localPath = await localFile.path();
-  expect(localPath).toBeTruthy();
-  const localText = readFileSync(localPath ?? "", "utf8");
-  expect(JSON.parse(localText)).toMatchObject({
-    kind: "coxeter-local-neighborhood-view",
-    view: { graphView: "on-graph" },
-  });
-
-  const downloads: string[] = [];
-  page.on("download", (download) =>
-    downloads.push(download.suggestedFilename()),
-  );
-  await page.getByRole("button", { name: /export view bundle/i }).click();
-  await expect
-    .poll(() => downloads.some((name) => name.endsWith(".view.json")))
-    .toBe(true);
-});
-
-test("geometric mode reports a disabled warning when the selected example has no geometry", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
-
-  const geometricMode = await firstPresent([
-    page.getByRole("tab", { name: /geometric/i }),
-    page.getByRole("radio", { name: /geometric/i }),
-    page.getByRole("button", { name: /geometric/i }),
-    page.getByTestId("mode-geometric"),
-  ]);
-
-  if (!geometricMode) {
-    test.skip(true, "Geometric mode control is not implemented yet.");
-    return;
-  }
-
-  if (await geometricMode.isEnabled()) {
-    await geometricMode.click();
-  }
-
+  await relationFamily.selectOption("all");
+  await expect(relationReader).toContainText("48 hexagons");
+  await expect(relationReader).toContainText("same 24 vertices");
+  await expectStat(page, "Cells", 48);
   await expect
     .poll(async () =>
-      Boolean(
-        await firstVisible([
-          page
-            .getByRole("alert")
-            .filter({ hasText: /no geometry|missing geometry|disabled/i }),
-          page.getByTestId("geometry-warning"),
-          page.getByText(
-            /geometric mode.*(disabled|unavailable)|no geometry|missing geometry/i,
-          ),
-        ]),
+      Number(
+        (await page
+          .getByTestId("scene-canvas")
+          .getAttribute("data-rendered-cells")) ?? 0,
       ),
     )
-    .toBe(true);
-});
+    .toBe(48);
 
-test("toy hyperbolic example enables geometric projection mode", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
+  await relationFamily.selectOption("shared-complex");
+  await expect(page.getByRole("region", { name: "Wall reader" })).toBeVisible();
 
-  await page.getByLabel(/example/i).selectOption("hyperbolic_toy_rank2");
-  const geometricMode = page.getByTestId("mode-geometric");
-
-  await expect(geometricMode).toBeEnabled();
-  await page.getByLabel(/projection/i).selectOption("poincare-pca");
-  await geometricMode.click();
-  await expect(geometricMode).toHaveAttribute("aria-pressed", "true");
-  await page.locator("details.caveats-drawer summary").click();
+  await chooseModel(page, "hat X cover");
   await expect(
-    page
-      .getByText(/This 3D view is a projection, not exact hyperbolic geometry/i)
-      .first(),
+    page.getByRole("region", { name: "hat X cover viewer" }),
   ).toBeVisible();
+  await expectStat(page, "Vertices", 24);
+
+  await chooseModel(page, "Defining graph Gamma");
+  await expect(panel(page, /Focus Inspector/)).toContainText(
+    "Regular ideal hyperbolic Coxeter 3-cube",
+  );
 });
 
-test("invalid JSON import shows a validation error when import UI is exposed", async ({
+test("reads four or 48 ideal-cube hexagons on one shared quotient skeleton", async ({
   page,
 }) => {
-  await page.goto("/");
-  await switchToResearchMode(page);
+  await openApp(page);
+  await page
+    .getByLabel("Source Coxeter system")
+    .selectOption("ideal_hyperbolic_3_cube_m3");
+  await chooseModel(page, "bar X compression");
 
-  const importInput = await firstPresent([
-    page.getByTestId("import-json-input"),
-    page.getByLabel(/import.*json|load.*json|example json/i),
-  ]);
-
-  if (!importInput) {
-    test.skip(true, "JSON import input is not implemented yet.");
-    return;
-  }
-
-  await importInput.setInputFiles({
-    name: "invalid-coxeter-system.json",
-    mimeType: "application/json",
-    buffer: Buffer.from("{ not valid json"),
-  });
-
+  const selector = page.getByLabel("Relation family in bar X");
+  await expect(selector).toHaveValue("0:1");
+  await expect(selector.locator("option")).toHaveCount(14);
+  await expect(
+    page.getByRole("region", { name: "bar X relation reader" }),
+  ).toContainText("24/(2 x 3) = 4 hexagons");
+  await expectStat(page, "Vertices", 24);
+  await expectStat(page, "Edges", 72);
+  await expectStat(page, "Cells", 4);
   await expect
     .poll(async () =>
-      Boolean(
-        await firstVisible([
-          page
-            .getByRole("alert")
-            .filter({ hasText: /invalid json|parse|validation|schema/i }),
-          page.getByTestId("import-error"),
-          page.getByText(/invalid json|parse error|validation error|schema/i),
-        ]),
+      Number(
+        await page
+          .getByTestId("scene-canvas")
+          .getAttribute("data-rendered-cells"),
       ),
     )
-    .toBe(true);
+    .toBe(4);
+
+  await selector.selectOption("all");
+  await expectStat(page, "Vertices", 24);
+  await expectStat(page, "Edges", 72);
+  await expectStat(page, "Cells", 48);
+  await expect(
+    page.getByRole("region", { name: "bar X relation reader" }),
+  ).toContainText("48 exact hexagons remain attached");
+  await expect
+    .poll(async () =>
+      Number(
+        await page
+          .getByTestId("scene-canvas")
+          .getAttribute("data-rendered-cells"),
+      ),
+    )
+    .toBe(48);
+
+  await selector.selectOption("shared-complex");
+  await expect(
+    page.getByRole("region", { name: "bar X relation reader" }),
+  ).toContainText("same compressed complex");
+  await expect(page.getByLabel("Show wall arcs")).toBeChecked();
 });
 
-test("large quotient import validates progressively and enables dense renderer paths", async ({
-  page,
-}) => {
+test("exports the full Davis quotient Morse certificate", async ({ page }) => {
   test.setTimeout(120_000);
-  await page.goto("/");
-  await switchToResearchMode(page);
-
-  const input = page.getByTestId("import-quotient-input");
-  await input.setInputFiles({
-    name: "large-progressive-quotient.json",
-    mimeType: "application/json",
-    buffer: Buffer.from(JSON.stringify(largeRankOneQuotient())),
+  await openApp(page);
+  await page
+    .getByLabel("Source Coxeter system")
+    .selectOption("ideal_hyperbolic_3_cube_m3");
+  const card = page.getByRole("region", {
+    name: "Virtual algebraic fibering certificate",
   });
-
-  const progress = page.getByTestId("quotient-import-progress");
-  await expect(progress).toContainText(/parsed and validated/i, {
+  await expect(card).toBeVisible();
+  await card.getByRole("button", { name: "Check full Davis quotient" }).click();
+  await expect(card).toContainText(
+    /Found a coorientation|Search is|Exhausted the coorientation/,
+    {
+      timeout: 60_000,
+    },
+  );
+  await expect(card).toContainText("Full quotient cells", {
     timeout: 60_000,
   });
-  await expect(progress).toContainText(/3,000 vertices.*3,000 edges/i);
-  await expect(
-    page.getByText(/Large progressive quotient fixture/).first(),
-  ).toBeVisible();
-  await page.getByRole("button", { name: /^Whole ball$/ }).click();
-  await page
-    .getByRole("group", { name: /^Label scope$/ })
-    .getByRole("button", { name: /^budgeted$/ })
+  await card
+    .getByText("Certificate stages and evidence", { exact: true })
     .click();
-  await expect
-    .poll(async () => (await sceneStats(page)).renderedNodes ?? 0, {
-      timeout: 30_000,
-    })
-    .toBe(3_000);
-  await expect
-    .poll(async () => {
-      const stats = await sceneStats(page);
-      return {
-        renderer: stats.labelRenderer,
-        reason: stats.labelRendererFallbackReason,
-      };
-    })
-    .toEqual({ renderer: "sdf-batch", reason: undefined });
+  await expect(card).toContainText("Complete Davis quotient cell poset");
+  await expect(card).toContainText("Compatible pulling triangulation");
+  await expect(card).toContainText("Full ascending and descending links");
 
-  const scene = page.getByTestId("scene-canvas");
-  const box = await scene.boundingBox();
-  expect(box).not.toBeNull();
-  if (box) {
-    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  }
-  await expect
-    .poll(async () => (await sceneStats(page)).pickingStrategy)
-    .toBe("gpu");
+  await card
+    .getByRole("button", { name: "Export fibering certificate" })
+    .click();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-last-browser-export",
+    /virtual-fibering\.certificate\.json$/,
+  );
+
+  await switchToResearch(page);
+  const experiment = await downloadExperiment(page);
+  expect(experiment.fullDavisVirtualAlgebraicFibering).toMatchObject({
+    kind: "full-davis-coorientation-search",
+    certificate: {
+      schemaVersion: 2,
+      kind: "full-davis-virtual-algebraic-fibering-certificate",
+      fullCellPoset: { certificate: { status: "passed" } },
+      triangulation: { status: "passed" },
+      hashes: { artifactSha256: expect.stringMatching(/^[0-9a-f]{64}$/) },
+    },
+  });
+});
+
+test("certifies the smaller lawful complex before building the full Davis quotient", async ({
+  page,
+}) => {
+  test.setTimeout(60_000);
+  await openApp(page);
+  await page
+    .getByLabel("Source Coxeter system")
+    .selectOption("ideal_hyperbolic_3_cube_m3");
+  const card = page.getByRole("region", {
+    name: "Virtual algebraic fibering certificate",
+  });
+  await card
+    .getByRole("button", { name: "Run lawful-first certification" })
+    .click();
+  await expect(card).toContainText("Track A: lawful 2-complex", {
+    timeout: 30_000,
+  });
+  await expect(card).toContainText("exact metric-link check");
+  await expect(card).toContainText("finite generation transferred to H");
+  await expect(card.getByText("Track B: complete Davis quotient")).toHaveCount(
+    0,
+  );
 });

@@ -188,7 +188,10 @@ export function buildDefiningGraphScene(
       // SceneView colors edges by a single generator bucket. For Gamma edges,
       // the label carries the relation; the color is only a stable cue.
       generator: record.sourceGenerator,
-      compactLabel: record.label,
+      // Coxeter-diagram edges carry relation orders, not generator names.
+      // The legend writes "m=3"; the edge itself stays compact as "3".
+      compactLabel: String(record.entry),
+      semanticLabelKind: "coxeter-order",
       colorHint: record.color,
       isRelationBoundary: true,
       alwaysLabel: true,
@@ -224,7 +227,7 @@ export function buildDefiningGraphScene(
       "Pairs with m=inf are omitted because they do not contribute a finite Coxeter relation edge.",
       layoutMode === "planar"
         ? "Gamma planar mode is a 2D drawing of the defining graph. If an obstruction is present, crossings are unavoidable in any plane drawing."
-        : "The 3D placement of Gamma is a drawing convention; it is not the Davis complex or Y_Gamma.",
+        : "The 3D placement of Gamma is a drawing convention; it is not a cell complex or a geometric realization.",
       topology.planarity.reason,
     ],
     rightAnglePairCount: topology.rightAnglePairCount,

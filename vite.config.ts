@@ -24,23 +24,27 @@ function chunkForModule(id: string): string | undefined {
     return "viewer-renderer";
   }
   if (
-    normalizedId.includes("/src/app/yGamma") ||
-    normalizedId.includes("/src/topology/")
+    normalizedId.includes("/src/compression/") ||
+    normalizedId.includes("/src/walls/") ||
+    normalizedId.includes("/src/torsionFree/") ||
+    normalizedId.includes("/src/fibering/") ||
+    normalizedId.endsWith("/src/davis/fullQuotient.ts")
   ) {
-    return "research-ygamma-topology";
+    return "research-cover-walls";
   }
   if (
     normalizedId.includes("/src/game/") ||
     normalizedId.includes("/src/quotient/") ||
     normalizedId.includes("/src/app/experiments")
   ) {
-    return "research-quotient-game";
+    return "research-import-adapters";
   }
   if (
     normalizedId.includes("/src/cayley/") ||
     normalizedId.includes("/src/coxeter/") ||
     normalizedId.includes("/src/davis/") ||
-    normalizedId.includes("/src/geometry/")
+    normalizedId.includes("/src/geometry/") ||
+    normalizedId.includes("/src/topology/")
   ) {
     return "math-core";
   }

@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://coxeterviewer5d.local/schemas/torsion-free-discovery-v1.json",
+  "title": "Coxeter torsion-free subgroup discovery artifact",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "status",
+    "ok",
+    "sourceSystem",
+    "inputHash",
+    "bounds",
+    "warnings",
+    "errors"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "artifactType": {
+      "const": "coxeter-torsion-free-discovery"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed",
+        "skipped",
+        "exhausted",
+        "timeout",
+        "cancelled"
+      ]
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "sourceSystem": {
+      "type": "object"
+    },
+    "inputHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bounds": {
+      "type": "object",
+      "required": [
+        "maxIndex",
+        "maxCandidates",
+        "maxWitnesses",
+        "maxSphericalOrder",
+        "maxSubsets",
+        "timeoutSeconds"
+      ],
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "sphericalCatalogue": {
+      "type": "object",
+      "required": ["complete", "method", "maximalSubgroups"],
+      "properties": {
+        "complete": {
+          "const": true
+        },
+        "method": {
+          "type": "string"
+        },
+        "maximalSubgroups": {
+          "type": "array"
+        }
+      }
+    },
+    "torsionWitnesses": {
+      "type": "array"
+    },
+    "search": {
+      "type": "object"
+    },
+    "finiteAction": {
+      "type": "object",
+      "required": [
+        "degree",
+        "vertices",
+        "generatorActions",
+        "edges",
+        "cosetConvention"
+      ],
+      "properties": {
+        "degree": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "vertices": {
+          "type": "array"
+        },
+        "generatorActions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["generator", "images"],
+            "properties": {
+              "generator": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "edges": {
+          "type": "array"
+        },
+        "subgroupGenerators": {
+          "type": "array"
+        },
+        "cosetConvention": {
+          "type": "string"
+        }
+      }
+    },
+    "certificate": {
+      "type": "object",
+      "required": [
+        "status",
+        "criterion",
+        "transitive",
+        "noFixedPointChecks",
+        "coxeterRelationChecks",
+        "claims",
+        "nonClaims"
+      ],
+      "properties": {
+        "status": {
+          "enum": ["passed", "failed"]
+        },
+        "criterion": {
+          "enum": [
+            "tits-prime-order-fixed-point",
+            "tits-spherical-image-order",
+            "tits-maximal-spherical-regular-orbits"
+          ]
+        },
+        "completeTorsionWitnessCatalogue": {
+          "type": "boolean"
+        },
+        "completeSphericalRestrictionChecks": {
+          "type": "boolean"
+        },
+        "transitive": {
+          "type": "boolean"
+        },
+        "noFixedPointChecks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["witnessId", "fixedVertexIds", "passed"]
+          }
+        },
+        "coxeterRelationChecks": {
+          "type": "array"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nonClaims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "criterion": { "const": "tits-prime-order-fixed-point" }
+            }
+          },
+          "then": {
+            "required": ["completeTorsionWitnessCatalogue"],
+            "properties": {
+              "completeTorsionWitnessCatalogue": { "const": true }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "criterion": {
+                "enum": [
+                  "tits-spherical-image-order",
+                  "tits-maximal-spherical-regular-orbits"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": ["completeSphericalRestrictionChecks"],
+            "properties": {
+              "completeSphericalRestrictionChecks": { "const": true }
+            }
+          }
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "passed"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "finiteAction",
+          "certificate",
+          "sphericalCatalogue",
+          "torsionWitnesses",
+          "search",
+          "provenance"
+        ],
+        "properties": {
+          "ok": {
+            "const": true
+          },
+          "certificate": {
+            "properties": {
+              "status": {
+                "const": "passed"
+              },
+              "transitive": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

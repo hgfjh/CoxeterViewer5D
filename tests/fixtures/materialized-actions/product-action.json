@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "solver": {
+    "id": "packed-composite-permutation-module-solver",
+    "version": "1.0.0"
+  },
+  "problemSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "candidate": {
+    "id": "composite:product-action",
+    "moduleIndices": [0, 1],
+    "moduleIds": ["factor-a", "factor-b"],
+    "representativeCode": "0",
+    "representativeTuple": [0, 0],
+    "orbitIndex": 0,
+    "degree": 4,
+    "cartesianDegree": "4",
+    "decompositionKind": "double-coset-diagonal-orbit",
+    "actionMaterialized": true,
+    "actionSha256": "3c2e0f9e8c768e0f86367c0cb356572354c5c5489290b03aafade48b91c2f6ad",
+    "witnessChecks": []
+  },
+  "generatorActions": [
+    [1, 0, 3, 2],
+    [1, 0, 3, 2],
+    [2, 3, 0, 1]
+  ],
+  "orbitPointCodes": [0, 1, 2, 3]
+}

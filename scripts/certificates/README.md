@@ -18,9 +18,358 @@ manifest. A manifest records:
 Validate a manifest without running any external algebra system:
 
 ```bash
-node scripts/validate_artifact_manifest.mjs scripts/certificates/external-artifact-manifest.example.json
+corepack pnpm registry:validate
 ```
 
 The validator checks structure, known tool names, referenced paths, and recorded
 artifact hashes. It does not certify Coxeter theory, finite quotients, normal
 coordinates, or screenshot truth.
+
+The registry also includes direct GAP, exact Sage congruence, and composite
+permutation-action cover artifacts. Their artifact-specific TypeScript tests
+independently recheck the finite actions; the registry check verifies only
+provenance and byte hashes.
+
+The compact 5-cube GF(3) structural artifact is separately replayable. It
+binds the source matrices and toolchain, verifies the split form and basis
+change, proves equality with `Omega^+(10,3)` through a proved GenSS chain plus
+standard-generator SLPs, verifies the index-two outer coset, and stores the
+complete degree ledger through `576,000`. The optional generic `recog` result is
+diagnostic; an unavailable or timed-out recognition tree cannot replace or
+invalidate the exact GenSS/SLP proof.
+
+The odd-characteristic artifacts bind the exact reduced Tits matrices, all 32
+maximal spherical restriction checks, a similitude change of basis to the
+standard split orthogonal form, `CM_InOmega` containment, and the index-two
+outer coset. For `p=5` and `p=7`, reverse containment is a prescribed-order
+proved GenSS chain with replayed standard-generator SLPs. For `p=11`, the
+natural orbit is too large for that construction; reverse containment instead
+uses the specialized one-sided `RecogniseClassical` test. Its positive
+`isOmegaContained` result is conclusive, while a negative result would not be
+promoted. The run is seeded and repeated in the replay process.
+
+`ClassicalMaximalsGeneric("O+",10,p,[1..9])` gives the complete root
+maximal-index ledger through degree `576,000`. An independent GAP process
+rechecks the matrices, the applicable containment proof, the outer coset, and
+the ledger before an artifact is marked `verified`. Generic composition-tree
+recognition is not an order oracle in this path.
+
+`compact_5_cube_mod5_structural_certificate.json` is verified. It proves
+`Q_5' = Omega^+(10,5)`, `[Q_5:Q_5'] = 2`, and exact congruence-kernel index
+`27,230,655,539,587,500,000,000,000,000,000`. Its complete maximal-index
+ledger rejects every one of the 100 multiples of `5,760` through `576,000` in
+this finite image. That is a finite-image-specific obstruction, not a claim
+that no Coxeter subgroup of one of those indices exists.
+
+The verified `p=7` and `p=11` artifacts prove the corresponding
+`Omega^+(10,p):2` images and likewise reject all 100 multiples of `5,760`
+through `576,000`. Their exact kernel indices are
+`104,772,288,945,650,279,285,144,527,564,308,480,000` and
+`72,282,655,659,789,924,991,879,132,244,787,601,185,792,000,000`,
+respectively. These are explicit torsion-free normal kernels, not manageable
+materialized covers.
+
+The `torsion-free/compact_5_cube_weyl_*_negative.json` files record the exact
+structural searches in `W(D6)`, `W(B6)`, and `W(E6)`. Each run starts from a
+complete catalogue of labeled `A5 = S6` embeddings, including the exceptional
+outer-automorphism labeling, and extends the remaining generators modulo
+pointwise centralizers. All three declared targets are exhausted with no
+locally faithful global tuple. These are target-specific negative results, not
+a proof that the compact 5-cube has no manageable torsion-free cover.
+
+The `compact_5_cube_s6_block_5760.json` and
+`compact_5_cube_s6_block_11520.json` artifacts cover all centerless `S6`
+extensions by the SmallGroups catalogues of orders `8` and `16`. The target
+catalogue includes the direct products and every nontrivial outer-action
+kernel modulo block-group automorphisms. Each target still receives a complete
+catalogue of `S6` subgroups and labeled simple systems. This is an exact
+normal-target family, not a classification of all index-`5,760` or
+index-`11,520` subgroups of the Coxeter group.
+
+The `compact_5_cube_a6_core_5760.json` and
+`compact_5_cube_a6_core_11520.json` artifacts treat the remaining normal
+extension case in which the anchor `S6` has core `A6`. The block quotient is
+a transitive group of degree `8` or `16`, and the target is the pullback of a
+homomorphism to `Out(A6) = C2 x C2`. The catalogue is reduced by block-group
+automorphisms that preserve the point stabilizer. Together with the
+centerless `S6` artifacts and the elementary faithful-anchor case, these runs
+classify the declared normal covers at degrees `5,760` and `11,520`. They do
+not classify nonnormal covers.
+
+`compact_5_cube_affine_s6_11520.json` records the core-free anchor target
+`2^4:S6`, the unique transitive-group candidate of degree `16` and order
+`11,520` with point stabilizer `S6`. Its global Coxeter-generator search is
+separate from the block-extension catalogues so the `K = 1` case remains
+auditable.
+
+`compact_5_cube_block_amalgam_r0_5760.json` is the first exact nonnormal
+residue-gluing stratum. It fixes the regular `A5 = S6` anchor and enumerates
+the seven, one, seven, forty-one, and forty-one unlabeled block-incidence
+types forced by the successive spherical overlaps. Scope `R0` uses one
+sorted-label embedding of each abstract incidence type and the minimum-root
+zero-twist equivariant map on each overlap orbit. Exhaustion is a negative
+result only for those representatives; arbitrary embeddings, port
+permutations, and overlap holonomy remain outside it.
+
+The current result is exhausted with no candidate. All seven first-stage
+incidence types survive, but all seven fail at the forced second-stage
+`K_(8,15)` gluing under the canonical zero-twist port assignment. Consequently
+the next meaningful nonnormal search must enlarge the port/twist scope rather
+than enumerate more undecorated incidence graphs.
+
+`compact_5_cube_block_amalgam_r1_local_ports_5760.json` exhausts all 210
+local `C/P` port orbits in the uniform-port, canonical-existing-side,
+zero-twist stratum. `compact_5_cube_block_amalgam_r2_single_chord_5760.json`
+exhausts all 4,606 probes obtained by changing one overlap map on one of the
+98 chords outside a fixed spanning tree while keeping canonical ports. Neither
+stratum contains a stage-two survivor. The artifacts explicitly set
+`globalSecondGluingComplete` to false: nonuniform port skeletons and
+simultaneous changes on several overlap maps remain outside these finite
+searches. The latter is not presented as a `Hom(F_98,P)/P` classification,
+because the fixed first-stage action does not leave an independent `P` gauge
+at every existing block.
+
+`compact_5_cube_block_amalgam_r3_two_chord_same_block_5760.json` exhausts the
+next simultaneous-holonomy stratum: two changed fundamental chords sharing a
+non-root `C`-block. Its 294 supports and `47^2` nonidentity map pairs account
+for 649,446 rows and 4,546,122 first-stage branch configurations. Exact
+alternating-hexagon witnesses outside each mutable block reject the entire
+stratum.
+
+`compact_5_cube_block_amalgam_r4_full_holonomy_new_ports_5760.json` uses the
+opposite locality argument. For each possible local class on the root
+`D4 x A1` residue it stores a digest of failed alternating-hexagon witnesses
+whose `g4` inputs remain in that residue. Choices on the other fourteen
+residues and all 98 non-tree overlap maps cannot alter those walks. The
+certificate therefore closes all `210^15 * 48^98` configurations in the
+fixed-tree map slice with the
+canonical existing-side port skeleton. This includes chord pairs in different
+blocks, supports of size at least three, and nonuniform new-residue choices.
+
+`compact_5_cube_block_amalgam_r5_one_existing_transposition_5760.json` extends
+the same proof to all `7 * C(15,2) = 735` existing-side skeletons one
+transposition from canonical, again with arbitrary new-residue classes and
+arbitrary non-tree chord maps in the same slice. It does not close the full
+local torsor factor `24^15 * 48^105`, or existing-side permutations at
+distance two or more. Both artifacts set `globalSecondGluingComplete` to false
+and must not be read as torsion-free cover certificates.
+
+`compact_5_cube_block_amalgam_r6_distance_two_5760.json` canonically covers
+all 266,560 distance-two skeletons in the fixed-tree minimum-root slice. It
+records 265,662 exclusions and 898 unresolved skeletons.
+
+`compact_5_cube_block_amalgam_r7_global_distance_two_5760.json` propagates
+those 898 local survivors across all fifteen residues. It exhausts all 3,001
+viable signature/branch cases and 630,210 exact class attempts without a
+surviving second-gluing row. Its negative conclusion is complete for the
+distance-two fixed-tree minimum-root map slice only; the artifact deliberately
+keeps `globalSecondGluingComplete` false.
+
+`compact_5_cube_block_amalgam_r6_full_frame_d5_p100_window_5760.json` is the
+separate full-frame pilot. It checks the first 100 canonical depth-5 prefixes
+for all 29,505 signature/branch cases, visits 132,817,959 search nodes, and
+retains 93 locally replayed frames. These are 384-point local frames, not
+complete `g4` rows. Its `status` is `window-complete` and its mathematical
+`complete` flag remains false.
+
+`compact_5_cube_r6_candidate_frames_5760.json` is the portable seed catalogue
+extracted from that pilot's ignored checkpoint. It is bound to both the
+checkpoint outcome digest and the public R6 certificate.
+
+`compact_5_cube_r8_candidate_globalizer_5760.json` records the bounded global
+propagation campaign. Ten exact forced-boundary clauses cover all 93 supplied
+seeds; no complete second-gluing row survives. The artifact is exact for those
+seeds but deliberately keeps `complete: false`, because the R6 prefix window
+did not enumerate the remaining full-frame space.
+
+`compact_5_cube_nonnormal_p2_p3_through_576000.json` combines the sealed
+characteristic-2 and characteristic-3 searches. It binds the same 32 maximal
+spherical restrictions and 186 prime-order torsion witnesses in both images.
+Its negative conclusion is limited to those two finite images and transitive
+actions of degree at most `576,000`; its retained partial modules remain valid
+inputs to the odd-prime/composite portfolio.
+
+`compact_5_cube_order5_partial_modules.json` is the focused small-module
+campaign. It certifies all three nonzero `C2` characters, imports the retained
+degree-`3` action, and exhausts the declared faithful `S5`/`S6` subset-action
+anchor families. Those modules cover 123 of 186 witnesses; all eleven
+order-five witnesses remain uncovered in this track. The negative conclusion
+is limited to the declared target families.
+
+`compact_5_cube_mod2_symbolic_partial_modules.json` reconstructs all 45
+torsion-contaminated mod-2 subgroup classes from the complete degree ledger.
+It stores exact 186-entry fixed-point vectors and compact stabilizer generators
+inside the certified 122-point ambient action. It deliberately does not store
+the corresponding 97,920-point and larger coset rows. Twenty classes are on
+the degree/coverage Pareto frontier, and their union covers all 186 witnesses.
+`compact_5_cube_mod2_ambient_action.json` is the small, sealed 122-point action
+used to replay those stabilizers. Bundling it avoids a dependency on one
+developer machine's WSL cache; it is not a 97,920-point cover action.
+
+`compact_5_cube_mod2_symbolic_composite_195840.json` binds the symbolic module
+catalogue, compact ambient action, witness catalogue, Python builder, GAP
+driver, and recognition library by SHA-256. Its base certificate exactly
+excludes this mod-2 family through degree 97,920. The recorded two-minute GAP
+run did not finish the degree-195,840 double-coset ledger, so the artifact has
+status `incomplete-resource-bounded` and makes no existence or nonexistence
+claim at that degree. No 195,840-point rows were materialized.
+
+`compact_5_cube_partial_module_campaign.json` verifies and combines those two
+evidence tracks. Complete union coverage opens the Everitt composition gate,
+but the diagonal-orbit degree divisor eliminates every requested degree from
+5,760 through 97,920. The first possible coverage-improving intersection of
+mod-2 stabilizers has degree 195,840. This artifact is not a torsion-free
+subgroup certificate. It also records the symbolic-composite status separately
+from the exact lower-degree exclusion and the independent global CSP fallback.
+
+`compact_5_cube_global_csp_fallback_5760.json` is the independent bounded
+global second-gluing search started after the requested composite degree range
+was eliminated. Its current run is resource-bounded and incomplete. Learned
+clauses remain valid in their recorded scope, but absence of a candidate is
+not a degree-5,760 nonexistence result.
+
+Finite-image portfolio runs keep reusable partial actions and any materialized
+survivor in content-addressed storage. A survivor has a separate
+`materialized-action-two-track-promotion` artifact. That artifact binds the
+complete action bytes to spherical freeness and quotient construction, then
+records either the lawful-subcomplex certificate or the full-Davis fallback. It
+stores separate byte hashes for the source Coxeter file and materialized
+action file, compatibility hashes for the runner and four core modules, and a
+complete theorem-facing source-tree and toolchain manifest. Only a promotion
+whose common stages and selected track pass, with a fresh verifier-only report,
+supports the virtual-algebraic-fibering claim. The unused track may be skipped;
+it is not silently counted as passed.
+
+`torsion-free/compact_5_cube_index34560_h1.json` is the completed integral
+cohomology calculation for the exact degree-34,560 character lift, whose
+point stabilizer is denoted `H` here. It certifies `H^1(H;Z) = Z^19`. The ten wall classes have rank four, Smith factors
+`(1,1,1,2)`, and index two in their rank-four saturation; consequently
+`H^1(H;Z)/L_wall = Z^15 + Z/2`. The completion digest is
+`dbd4b3b901f66d00d9acc0125c9df550c664eded720990f4722da8842f01c38f`.
+Its two modular rank computations are reproducible exact LinBox eliminations,
+not embedded proof-carrying pivot ledgers.
+
+`torsion-free/compact_5_cube_index34560_rank19_global_normals.json.gz` is the
+bounded archive of the exhaustive central raw-difference arrangement on that
+integral lattice. It contains 46,275 primitive normals aggregated from
+4,467,168 germ occurrences and separately counts 856,530 identically-zero
+germs. The archive SHA-256 is
+`6a5ddcd80e8bf39331888af9090d9eb8876429bb4e7cd2b28e460977310fee2d`;
+its decoded artifact digest is
+`46914a6e832d92e19206e5c0e75ce2b3ccd3a2480be79e497643a58055fdedad`.
+The adjacent `.archive.json` manifest replays every stored chunk and aggregate
+count for internal consistency. The theorem-facing finalizer additionally
+regenerates each complete point interval from the fresh exact action,
+generalized compression, and integral cocycle section before accepting those
+normals. This is the exact integral sign arrangement, including raw-zero faces
+and the point-order tie rule; it is not the translated affine arrangement for
+arbitrary real weights and contains no link conclusion by itself. Its
+invariant obstruction leaves are not a literal enumeration or count of all
+arrangement faces.
+
+`torsion-free/compact_5_cube_index34560_rank19_adaptive.json.gz` and its
+adjacent `.archive.json` manifest contain the terminal exact Track-B
+obstruction cover. The search selected `q0,...,q31`, then closed in one
+iteration with 81 feasible nodes, 42 ternary splits, 38 invariant obstruction
+leaves, one zero-character leaf, 46 exactly infeasible branches, and 127
+oracle queries. Every zero-sign branch at the 42 splits is feasible and is
+retained in the proof. The 38 terminal primitive representatives are unique;
+36 lie on proper raw-zero faces, with two leaves in every positive dimension
+from 1 through 19. The 38 negative-polarity leaves use disconnected
+ascending-link obstructions at `q2` (13 leaves), `q4` (5), or `q27` (20); the
+independently replayed antipodal cover has the same census for descending
+links. The negative and positive cover hashes are respectively
+`ff24f4f91226926f0f2b4d9aa2e098927eb0ec1d8db3e07f3d2ba77d901fefac`
+and
+`a5ea8ffecdf7f5e366fac63a21994b7c66e1d2314556c05dfb138619ab4e6f3a`.
+The archive SHA-256 is
+`1b35e521dd36873265182a3531f9c96bfdb284847c0aedcedcdc17d33f5fcfe4`;
+its decoded SHA-256 is
+`8d6acee21be6c5276e0d82b43de2561a29d9b3d6c403929b869a96ef6e1b41fd`;
+and the manifest digest is
+`b1671dff3be7fdb2447ab1c432b16821f30577253f942b3bea7e9063a3b142e0`.
+`cover:archive:rank19-adaptive` accepts only a sealed terminal obstruction
+cover or all-point witness artifact and produces canonical JSON in a
+deterministic gzip header. `cover:verify:rank19-adaptive` checks the exact
+manifest, bounded compressed and decoded sizes, both byte hashes, and the
+self-contained terminal envelope. The small final Track-B report is not
+accepted from those hashes alone: its finalizer reloads the exact source data
+and replays every selected template, cone certificate, directed link, and
+polarity transport before regenerating the exhaustive global-normal chunks.
+
+`torsion-free/compact_5_cube_index34560_rank19_track_b_final.json` is that
+completed joint replay. Its status is `passed`; its conclusion is that every
+nonzero integral character is obstructed for this recorded Track-B height
+complex. The finalizer freshly matched all five exhaustive point chunks,
+including all 34,560 quotient points and all 46,275 primitive raw-difference
+hyperplanes, then replayed both tie polarities. The file SHA-256 is
+`e2820d9acd4f05ca7f5487c473a5ef534f15b6f86aedb512fac7ff0117228d94`;
+the internal calculation digest is
+`1778a529f57b1be74b62b445d98f3b639d21d3cc44125ac1b3d783e83e94e525`.
+Its invariant cones cover every realizable literal face by refinement, but do
+not materialize one record for each literal face or claim a face count.
+
+`torsion-free/compact_5_cube_index34560_generalized_lawful.json` is the
+action-rooted generalized-lawful calculation derived from the exact
+index-17,280 certificate. It records the canonical Z/2-character lift, all ten
+two-sided walls, the exhaustive 1,024-mask prefilter, all sixteen survivors,
+their coface-closed retained-cell and metric-flag results, and one exact actual
+pulled-link counterexample for every survivor. Its internal report SHA-256 is
+`8de4ac68bb50644cc924ebe67e80fc776c735e824434461ff3d94272b17e8e17`.
+The formatted JSON file SHA-256 is
+`b0229e11f90772fc5e43a60ef68f8acd0be55c7dd07f0f30a7edf0911eb6076e`.
+Every candidate has a disconnected targeted link and an inherited-metric
+flag obstruction. These are failures of the present Morse and CAT(0)
+certificates, not proofs that the retained complexes are non-aspherical and
+not obstructions to another finite cover.
+
+`torsion-free/compact_5_cube_index34560_generalized_compression.json` is the
+chunked all-ranks generalized-compression commitment for the same exact
+degree-34,560 action. It reconstructs 8,398,080 rooted source cells in 884,304
+spherical-coset fibers and checks all 2,882 proper spherical face-type pairs
+without materializing the 32,679,504 strict incidences. Its internal archive
+SHA-256 is
+`42ad6f697c734473ceb26bb88c6d5a1e30a44d77d9f190c4147f3304ff1b29fd`;
+the formatted JSON file SHA-256 is
+`e918828831653d23d14fda61306c02984281e5defb7555aa9fbebaa60ca882e5`.
+
+`torsion-free/compact_5_cube_index34560_direct_cellwise_affine.json` uses that
+fiber certificate to calculate direct, unsubdivided Coxeter-cell Morse links
+for all sixteen canonical prefilter survivors. Each candidate has thirteen
+retained opposite-edge components. An exact retained `A2` cell equation forces
+one required positive inverse zone scale to zero, so the recorded weighted
+root-zonotope realization is not established. Independently of that sufficient
+affine model, the direct sign links were exhausted at all 34,560 quotient
+vertices: each candidate has 972 disconnected ascending and 972 disconnected
+descending links, with no empty links. All sixteen action-rooted artifact
+replays pass. The report SHA-256 is
+`82448a0db6238ee720758888eb09d2adaee0c8764e8d1f764d16400a3a831575`;
+the formatted JSON file SHA-256 is
+`23ef6927ef49975d647ef67007479c664b7e1e30a43629301d24d32a73a2b802`.
+The early affine scan stops at the decisive rank-two equation and therefore
+does not claim a positive higher-cell chart verification. The direct-link
+failure does not establish or refute asphericity.
+
+`torsion-free/compact_5_cube_index34560_streamed_track_b.json` is the exact
+all-cells Track B search for that same degree-34,560 action. It strictly
+replays the parent and derived torsion-free actions and the all-ranks
+generalized compression, retains all 884,304 quotient Coxeter cells, and uses
+the global action-point pulling order without introducing vertices. The
+candidate-odd height identity `F_(-c)=-F_c` reduces the sign vectors to 512
+anchor-positive representatives; both offset polarities are tested, for all
+1,024 height classes. Every class has a disconnected directed-link witness by
+`q7`, with first-failure census `[924, 62, 14, 12, 4, 4, 3, 1]`, and the exact
+batch replay passes. There is no promoted survivor.
+
+The report's internal SHA-256 is
+`37eab9261b7bbd8ac5b29847475827f68423cfe64210a4041b6856a67995eba7`;
+the batch report hash is
+`7fee9e3b2eeef837c366b79df6d656c8e76cf057ac65123501b8e4a96affeec9`;
+the first-failure census digest is
+`25b92ce455a9c0e529330da9dc267c97263b660590a065f49706cb29c7f9c34a`;
+and the formatted JSON file SHA-256 is
+`b5e376dca5a962a23f0384d0c28e3d91c87b681e38aafa3447a1a84f2589d995`.
+Its status, `not-found-for-this-pulling-height-family`, is deliberately
+narrow: it is not a proof that this subgroup has no fibering character, that
+another subdivision cannot work, or that the compact 5-cube is not virtually
+algebraically fibered.

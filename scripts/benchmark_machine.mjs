@@ -33,48 +33,16 @@ const machineClasses = {
 };
 const interactionFeatureFloorOverrides = new Map([
   [
-    "gamma-incidence-selection",
+    "labels-roundtrip",
     {
-      renderedNodes: 10,
-      renderedEdgeSegments: 40,
-      renderedEdgeLabels: 40,
+      semanticVertices: 10,
+      semanticEdges: 10,
+      semanticCells: 1,
+      wallCount: 5,
+      renderedNodeLabels: 10,
+      renderedEdgeLabels: 10,
     },
   ],
-  ["rank-two-pair-focus", { renderedCells: 1, renderedEdgeLabels: 1 }],
-  ["ygamma-preset-switch", { renderedCells: 1, renderedEdgeLabels: 1 }],
-  [
-    "quotient-link-lens",
-    { renderedNodes: 1, renderedEdgeSegments: 1, renderedEdgeLabels: 1 },
-  ],
-  ["topology-generator-star", { renderedCells: 1 }],
-  [
-    "edge-star",
-    { renderedEdgeSegments: 1, renderedCells: 1, renderedEdgeLabels: 1 },
-  ],
-  ["cell-star", { renderedCells: 1, renderedEdgeLabels: 1 }],
-  ["rank-k-lens", { renderedCells: 1 }],
-  ["comparison-view", { renderedNodes: 1, renderedEdgeLabels: 1 }],
-  ["ygamma-cutaway-switch", { renderedCells: 1, renderedEdgeLabels: 1 }],
-  [
-    "ygamma-relation-star",
-    { renderedCells: 1, renderedEdgeLabels: 1, renderedLabelLeaders: 1 },
-  ],
-  ["ygamma-leader-labels", { renderedEdgeLabels: 1, renderedLabelLeaders: 1 }],
-  [
-    "ygamma-relation-atlas",
-    { renderedCells: 1, renderedEdgeLabels: 1, renderedLabelLeaders: 1 },
-  ],
-  [
-    "ygamma-drawing-comparison",
-    { renderedCells: 1, renderedEdgeLabels: 1, renderedLabelLeaders: 1 },
-  ],
-  ["ygamma-camera-path", { renderedCells: 1, renderedEdgeLabels: 1 }],
-  [
-    "progressive-quotient-load",
-    { renderedNodes: 1, renderedEdgeSegments: 1, renderedEdgeLabels: 1 },
-  ],
-  ["import-repair", { renderedNodes: 1, renderedEdgeLabels: 1 }],
-  ["screenshot-export", { renderedNodes: 1, renderedEdgeLabels: 1 }],
 ]);
 
 function parseArgs(argv) {
@@ -142,6 +110,11 @@ function summarizeTimedBaseline(report) {
       id: entry.id ?? `${entry.exampleId}:${entry.radius}`,
       elapsedMs: Number(entry.elapsedMs ?? 0),
       lastGraphUpdateMs: Number(entry.lastGraphUpdateMs ?? 0),
+      semanticVertices: Number(entry.semanticVertices ?? 0),
+      semanticEdges: Number(entry.semanticEdges ?? 0),
+      semanticCells: Number(entry.semanticCells ?? 0),
+      wallCount: Number(entry.wallCount ?? 0),
+      drawingHelperLabels: Number(entry.drawingHelperLabels ?? 0),
       renderedNodes: Number(entry.renderedNodes ?? 0),
       renderedEdgeSegments: Number(entry.renderedEdgeSegments ?? 0),
       renderedCells: Number(entry.renderedCells ?? 0),
@@ -155,6 +128,11 @@ function summarizeTimedBaseline(report) {
       elapsedMs: Number(entry.elapsedMs ?? 0),
       lastGraphUpdateMs: Number(entry.lastGraphUpdateMs ?? 0),
       renderCountDelta: Number(entry.renderCountDelta ?? 0),
+      semanticVertices: Number(entry.semanticVertices ?? 0),
+      semanticEdges: Number(entry.semanticEdges ?? 0),
+      semanticCells: Number(entry.semanticCells ?? 0),
+      wallCount: Number(entry.wallCount ?? 0),
+      drawingHelperLabels: Number(entry.drawingHelperLabels ?? 0),
       renderedNodes: Number(entry.renderedNodes ?? 0),
       renderedEdgeSegments: Number(entry.renderedEdgeSegments ?? 0),
       renderedCells: Number(entry.renderedCells ?? 0),
@@ -181,18 +159,24 @@ function scaledBudgets(summary, scale) {
       maxElapsedMs: elapsedBudget(entry.elapsedMs),
       maxGraphUpdateMs: graphBudget(entry.lastGraphUpdateMs),
       featureFloors: featureFloors(entry),
+      featureCeilings: featureCeilings(entry),
     })),
     interactions: summary.interactions.map((entry) => ({
       id: entry.id,
       maxElapsedMs: elapsedBudget(entry.elapsedMs),
       maxGraphUpdateMs: graphBudget(entry.lastGraphUpdateMs),
       featureFloors: interactionFeatureFloors(entry),
+      featureCeilings: featureCeilings(entry),
     })),
   };
 }
 
 function featureFloors(entry) {
   return {
+    semanticVertices: entry.semanticVertices,
+    semanticEdges: entry.semanticEdges,
+    semanticCells: entry.semanticCells,
+    wallCount: entry.wallCount,
     renderedNodes: entry.renderedNodes,
     renderedEdgeSegments: entry.renderedEdgeSegments,
     renderedCells: entry.renderedCells,
@@ -209,6 +193,10 @@ function interactionFeatureFloors(entry) {
   }
   const floor = {};
   for (const field of [
+    "semanticVertices",
+    "semanticEdges",
+    "semanticCells",
+    "wallCount",
     "renderedNodes",
     "renderedEdgeSegments",
     "renderedCells",
@@ -221,6 +209,10 @@ function interactionFeatureFloors(entry) {
     }
   }
   return floor;
+}
+
+function featureCeilings(entry) {
+  return { drawingHelperLabels: Number(entry.drawingHelperLabels ?? 0) };
 }
 
 function buildMachineBaseline(timedReport) {
@@ -243,7 +235,8 @@ function buildMachineBaseline(timedReport) {
     ),
     notes: [
       "ci-linux-standard is the only hard gate.",
-      "Local classes are stored so larger topology and quotient experiments can be compared without changing CI thresholds.",
+      "Local classes are stored so cover, compression, and wall experiments can be compared without changing CI thresholds.",
+      "drawingHelperLabels has a zero ceiling: drawing-only midpoint and wall-segment helpers must not leak labels into the viewer.",
     ],
   };
 }
@@ -339,6 +332,11 @@ function compareEntry(failures, label, current, budget) {
   for (const [field, floor] of Object.entries(budget.featureFloors ?? {})) {
     if (Number(current[field] ?? 0) < Number(floor ?? 0)) {
       failures.push(`${label} ${field} ${current[field] ?? 0} < ${floor}`);
+    }
+  }
+  for (const [field, ceiling] of Object.entries(budget.featureCeilings ?? {})) {
+    if (Number(current[field] ?? 0) > Number(ceiling ?? 0)) {
+      failures.push(`${label} ${field} ${current[field] ?? 0} > ${ceiling}`);
     }
   }
 }

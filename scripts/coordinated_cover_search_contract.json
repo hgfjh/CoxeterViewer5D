@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://coxeterviewer5d.local/schemas/coordinated-cover-search-v1.json",
+  "title": "Coordinated torsion-free cover search artifacts",
+  "oneOf": [{ "$ref": "#/$defs/track" }, { "$ref": "#/$defs/summary" }],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "trackId": {
+      "enum": [
+        "finite-target-synthesis",
+        "everitt-composite-modules",
+        "geometric-orbifold-cover"
+      ]
+    },
+    "track": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "track",
+        "status",
+        "complete",
+        "inputHash",
+        "lowerBoundDivisor",
+        "bounds",
+        "warnings",
+        "errors",
+        "artifactHash"
+      ],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "artifactType": { "const": "coxeter-cover-search-track" },
+        "track": { "$ref": "#/$defs/trackId" },
+        "status": {
+          "enum": [
+            "planned",
+            "candidate-found",
+            "passed",
+            "exhausted",
+            "incomplete",
+            "skipped",
+            "failed",
+            "timeout",
+            "cancelled"
+          ]
+        },
+        "complete": { "type": "boolean" },
+        "inputHash": { "$ref": "#/$defs/sha256" },
+        "lowerBoundDivisor": { "type": "integer", "minimum": 1 },
+        "bounds": { "type": "object" },
+        "candidates": { "type": "array" },
+        "evidence": {},
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "errors": { "type": "array", "items": { "type": "string" } },
+        "artifactHash": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "artifactType",
+        "status",
+        "complete",
+        "inputHash",
+        "indexDivisibility",
+        "tracks",
+        "promotionGate",
+        "artifactHash"
+      ],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "artifactType": { "const": "coxeter-coordinated-cover-search" },
+        "status": {
+          "enum": ["candidate-found", "exhausted", "incomplete", "failed"]
+        },
+        "complete": { "type": "boolean" },
+        "inputHash": { "$ref": "#/$defs/sha256" },
+        "inputFileSha256": { "$ref": "#/$defs/sha256" },
+        "indexDivisibility": {
+          "type": "object",
+          "required": ["lowerBoundDivisor", "maximalSphericalSubgroups"],
+          "properties": {
+            "lowerBoundDivisor": { "type": "integer", "minimum": 1 },
+            "maximalSphericalSubgroups": { "type": "array" }
+          }
+        },
+        "tracks": { "type": "array" },
+        "promotionGate": { "type": "object" },
+        "artifactHash": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

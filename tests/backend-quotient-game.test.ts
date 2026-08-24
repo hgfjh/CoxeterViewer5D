@@ -463,6 +463,16 @@ describe("quotient preparation validators", () => {
       canUseManifoldLanguage: true,
       label: "torsion-free quotient manifold",
     });
+
+    expect(
+      quotientManifoldStatus({
+        ...verified,
+        subgroup: { ...verified.subgroup, manifoldClaimed: false },
+      }),
+    ).toMatchObject({
+      canUseManifoldLanguage: false,
+      label: "quotient complex",
+    });
   });
 
   it("validates generator-regular quotient graphs against source rank", () => {
@@ -1276,8 +1286,10 @@ describe("local-link topology helpers and scripts", () => {
       encoding: "utf8",
     });
     expect(workflow.status).toBe(0);
-    expect(JSON.parse(workflow.stdout).workflow).toBe("quotient-game-i2-5");
-  }, 60000);
+    expect(JSON.parse(workflow.stdout).workflow).toBe(
+      "cover-compression-walls-i2-5",
+    );
+  }, 180000);
 });
 
 describe("backend reproducibility command contracts", () => {
@@ -1318,13 +1330,23 @@ describe("backend reproducibility command contracts", () => {
       manifests: Array<{
         artifactCount: number;
         artifacts: Array<{
+          id: string;
           artifactHash: { status: string };
           inputHash: { status: string };
         }>;
       }>;
     };
     expect(registryReport.ok).toBe(true);
-    expect(registryReport.manifests[0]?.artifactCount).toBe(19);
+    expect(registryReport.manifests[0]?.artifactCount).toBe(27);
+    expect(
+      registryReport.manifests[0]?.artifacts.map((artifact) => artifact.id),
+    ).toEqual(
+      expect.arrayContaining([
+        "gap-compact-5-cube-mod5-orthogonal-certificate-2026-08-13",
+        "gap-compact-5-cube-mod7-orthogonal-certificate-2026-08-13",
+        "gap-compact-5-cube-mod11-orthogonal-certificate-2026-08-13",
+      ]),
+    );
     expect(
       registryReport.manifests[0]?.artifacts.every(
         (artifact) =>

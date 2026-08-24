@@ -50,13 +50,11 @@ export type DesktopMenuCommand =
   | "toggle-labels"
   | "toggle-cells"
   | "fullscreen"
-  | "guide-hexagon"
-  | "guide-rank-three"
-  | "guide-y-gamma"
-  | "guide-quotient-game"
-  | "lens-generator-star"
-  | "lens-edge-star"
-  | "lens-rank-k-family"
+  | "guide-rank-two-cell"
+  | "guide-finite-cover"
+  | "guide-find-walls"
+  | "guide-coorient-walls"
+  | "guide-morse-links"
   | "help-readme"
   | "help-walkthroughs"
   | "help-about";
@@ -65,6 +63,7 @@ export type DesktopJobKind =
   | "detectTools"
   | "collectDiagnostics"
   | "validateWorkspace"
+  | "discoverTorsionFreeCover"
   | "sageQuotientExport"
   | "gapQuotientExport"
   | "coxiterCompactCheck"
@@ -74,6 +73,11 @@ export type DesktopJobKind =
 export interface DesktopJobRequest {
   kind: DesktopJobKind;
   workspacePath?: string;
+  /**
+   * Structured input for an allowlisted desktop job. Rust validates both the
+   * job kind and this payload before it writes files or starts a process.
+   */
+  payload?: unknown;
 }
 
 export interface DesktopJobRecord {
@@ -144,7 +148,9 @@ export interface DesktopBridge {
   toggleFullscreen(): Promise<DesktopBridgeResult>;
   detectExternalTools(): Promise<ExternalToolStatus[]>;
   startDesktopJob(request: DesktopJobRequest): Promise<DesktopJobRecord>;
+  getDesktopJob(id: string): Promise<DesktopJobRecord | undefined>;
   listDesktopJobs(): Promise<DesktopJobRecord[]>;
+  cancelDesktopJob(id: string): Promise<DesktopJobRecord | undefined>;
   revealPath(path: string): Promise<DesktopBridgeResult>;
   exportDiagnosticBundle(workspacePath?: string): Promise<DesktopBridgeResult>;
   onMenuCommand(
@@ -267,8 +273,19 @@ export function createBrowserDesktopBridge(
         message: "Desktop jobs are unavailable in the browser.",
       };
     },
+    async getDesktopJob() {
+      return undefined;
+    },
     async listDesktopJobs() {
       return [];
+    },
+    async cancelDesktopJob(id) {
+      return {
+        id,
+        kind: "discoverTorsionFreeCover",
+        status: "cancelled",
+        message: "Desktop jobs are unavailable in the browser.",
+      };
     },
     async revealPath() {
       return {
@@ -450,8 +467,16 @@ export function createTauriDesktopBridge(
     async startDesktopJob(request) {
       return invoke<DesktopJobRecord>("start_desktop_job", { request });
     },
+    async getDesktopJob(id) {
+      return invoke<DesktopJobRecord | undefined>("get_desktop_job", { id });
+    },
     async listDesktopJobs() {
       return invoke<DesktopJobRecord[]>("list_desktop_jobs");
+    },
+    async cancelDesktopJob(id) {
+      return invoke<DesktopJobRecord | undefined>("cancel_desktop_job", {
+        id,
+      });
     },
     async revealPath(path) {
       try {

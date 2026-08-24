@@ -1,0 +1,214 @@
+{
+  "artifactHash": "f4fe498006e38eb838babca4f1cfe1e06a82f363bcd063aceb9ebb993f476e9e",
+  "artifactType": "coxeter-candidate-first-frame-globalization",
+  "backendVersion": "1.0.0",
+  "candidate": null,
+  "candidateFound": false,
+  "claims": [],
+  "complete": false,
+  "degree": 5760,
+  "inputHash": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+  "learnedConflicts": {
+    "clauses": [
+      {
+        "coveredSeedCount": 9,
+        "coveredSeedIdsSha256": "64e8e7615b41a2dabea4ad4a995c117a320bdbff5cc4d8d4200617b9145337d1",
+        "edge": [1589, 2883],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-220e72d484d1d9a11bc4",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q3:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 9,
+        "coveredSeedIdsSha256": "d7dbac790297fedd6661d8e058fbb518354ad6474e9e8db953e01f20aaa1dc1c",
+        "edge": [1630, 3603],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-4004cd9c33f1c2f86765",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q4:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 9,
+        "coveredSeedIdsSha256": "a4b37138ab50f8ca82f76f8b808f2a1a01f0a2f7d5719d47743613d3203a6bb5",
+        "edge": [1710, 4323],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-9e8dec29bd755afe6d89",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q6:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 9,
+        "coveredSeedIdsSha256": "fe44291cb59bf0c8b661aac6c2368bf2fcbaf6367103c124c1fd6e16d948aacf",
+        "edge": [1785, 3607],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-3023462720949effe62d",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q7:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 9,
+        "coveredSeedIdsSha256": "a22cc70cc19a7b7a7c1d586868398361726a12d6ceb5f92f0ca4311979b2e499",
+        "edge": [1813, 5122],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-35387fabbb653a95402e",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q10:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 9,
+        "coveredSeedIdsSha256": "4b7ca2a948893455591188b103d40c143f677ee15c89bcd47d3797c2bff5ff65",
+        "edge": [1872, 4327],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-5c4956b304aade2e2ee3",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q9:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 9,
+        "coveredSeedIdsSha256": "3f4586a87dabd761b5861f16e4111a03d2f4fa268ae5940377475e2947566b65",
+        "edge": [1968, 5176],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-22e2798f70bd069f9c24",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q12:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 10,
+        "coveredSeedIdsSha256": "34b487d42a0332dcfa98036fa20b17ced7578951506df0cf47f36bb5c72bd173",
+        "edge": [2592, 4350],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-99e589f68ccd176cf0fb",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q11:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 10,
+        "coveredSeedIdsSha256": "f917e608e546af3ca2be974e997eb9e0ea72e8ea8e4d535b5d494730441ae838",
+        "edge": [2688, 5277],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-9f8bf09cec912aba36fe",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q13:X0", "R0:P4=B4:Q0:X0"]
+      },
+      {
+        "coveredSeedCount": 10,
+        "coveredSeedIdsSha256": "53dbcedb6e0d590e70a4dcfa3acda91b2279054affb70541f0e2d3b8c5ad6512",
+        "edge": [3408, 5326],
+        "kind": "forced-edge-crosses-residues",
+        "learnedFromSeed": "frame-123cc98fc73b14326a20",
+        "support": ["R0:P0=B0:Q0:X0", "R0:P1=B1:Q14:X0", "R0:P4=B4:Q0:X0"]
+      }
+    ],
+    "count": 10,
+    "coveredSeedCount": 93,
+    "substantialFamilyExcluded": true
+  },
+  "nonClaims": [
+    "complete full-frame enumeration",
+    "complete second-gluing classification",
+    "torsion-free cover",
+    "minimal index"
+  ],
+  "promotionCriterion": "Only a row whose independent replay passes may proceed to later generator gluings and full spherical-freeness certification.",
+  "provenance": {
+    "augmentationBackendSha256": "070bf55f360993c34e1de8feae1c0fadf08b57202a0ed257b20f15f93316ffdd",
+    "blockBackendSha256": "893912296632b9ef0aa5eb7c6ef147d736e568659f12a6ae46e0923f95588d29",
+    "implementationSha256": "c908331ed600a93549eae519e2f7dca781b2aeed753f9c58c6f7324a27675d6a"
+  },
+  "schemaVersion": 1,
+  "scope": {
+    "fullFrameCatalogueComplete": false,
+    "globalSecondGluingComplete": false,
+    "kind": "bounded-globalization-of-recorded-R6-frame-seeds",
+    "representativeCount": 93,
+    "seedCatalogueHash": "f75f35286e0c65926c7e4ccb05c09fbeae59f1b63e92c99ab71123f2db57f33f",
+    "seedCount": 93
+  },
+  "search": {
+    "adjacentDomainsGenerated": 0,
+    "boundaryCacheHits": 0,
+    "boundaryCacheMisses": 0,
+    "directSeedReplays": 10,
+    "elapsedSeconds": 2.016,
+    "interruptReason": null,
+    "interrupted": false,
+    "learnedConflictPrunes": 734,
+    "memoryBudgetMb": 6144,
+    "nodeBudget": 5000000,
+    "nodes": 744,
+    "peakResidentBytes": 84529152,
+    "randomSeed": 20260813,
+    "restartsCompleted": 8,
+    "restartsRequested": 8,
+    "rootRelationRejections": 10,
+    "timeoutSeconds": 1800.0,
+    "traces": [
+      {
+        "directReplays": 10,
+        "learnedPrunes": 83,
+        "randomSeed": 20260813,
+        "restart": 0,
+        "seedOrderSha256": "fd53d08c41b0dd051c6a9db86a4cd2a14f9ccfef9e263ef4e420cfad37df1653"
+      },
+      {
+        "directReplays": 0,
+        "learnedPrunes": 93,
+        "randomSeed": 20260814,
+        "restart": 1,
+        "seedOrderSha256": "a5d2f4e271463412c2986a054290edb943fea14246b44665ea1bb7d17db85caa"
+      },
+      {
+        "directReplays": 0,
+        "learnedPrunes": 93,
+        "randomSeed": 20260815,
+        "restart": 2,
+        "seedOrderSha256": "d2c98c91a8024f0274a11a8fb4b9cf5b2de20a3a0430fba9a82c6f8a577dbbec"
+      },
+      {
+        "directReplays": 0,
+        "learnedPrunes": 93,
+        "randomSeed": 20260816,
+        "restart": 3,
+        "seedOrderSha256": "ad63d54186aca44a48097d1ad948609024fee478835e2759a5b55d82b9d2b62b"
+      },
+      {
+        "directReplays": 0,
+        "learnedPrunes": 93,
+        "randomSeed": 20260817,
+        "restart": 4,
+        "seedOrderSha256": "b22a3e244933f841f8a951d489b2e933f9a7d813f4556ee869b3b03e32f0f59e"
+      },
+      {
+        "directReplays": 0,
+        "learnedPrunes": 93,
+        "randomSeed": 20260818,
+        "restart": 5,
+        "seedOrderSha256": "ffb741cc194a74ae2cb0e418e1f2fe30a39e5e47c19c0fbe7cfb45894ac92b57"
+      },
+      {
+        "directReplays": 0,
+        "learnedPrunes": 93,
+        "randomSeed": 20260819,
+        "restart": 6,
+        "seedOrderSha256": "2c112ffc433a5aae6ca5b505cca11c80bc2c0e382bcbb938cb46b093d93e82c5"
+      },
+      {
+        "directReplays": 0,
+        "learnedPrunes": 93,
+        "randomSeed": 20260820,
+        "restart": 7,
+        "seedOrderSha256": "c7e61d1b03df302e9cd31ef22fbd627d85e3153b053ee2128ae47101f422a4a7"
+      }
+    ]
+  },
+  "sourceSystem": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+  "status": "seed-family-excluded-by-reusable-conflicts",
+  "symmetryAudit": {
+    "claim": "Only automorphisms preserving the ordered stage generators and the fixed overlap-map gauge may identify seeds.",
+    "diagramAutomorphismCount": 6,
+    "diagramEnumerationComplete": true,
+    "firstStageCentralizerOrder": 1,
+    "fixedGaugeStabilizerOrder": 1,
+    "fixedGeneratorIds": [0, 2, 3, 4, 5, 6, 7],
+    "reductionApplied": false,
+    "stageChainStabilizer": [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]],
+    "stageChainStabilizerCount": 1
+  },
+  "warnings": [
+    "The 93 inputs are local seeds from a bounded prefix window.",
+    "A learned boundary clause excludes only frames containing its exact assignments and satisfying its checked residue-ownership predicate.",
+    "Failure in this discovery campaign is not a nonexistence proof for degree 5,760 actions."
+  ]
+}

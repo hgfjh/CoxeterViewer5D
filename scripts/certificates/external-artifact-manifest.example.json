@@ -686,6 +686,274 @@
         "This artifact does not certify numerical normal coordinates or chamber basepoints.",
         "This artifact does not certify generated Cayley balls, quotients, or PL Morse/game data."
       ]
+    },
+    {
+      "id": "gap-torsion-free-cover-i2-5-2026-08-10",
+      "tool": "gap-kbmag",
+      "artifactKind": "torsion-free-cover-discovery",
+      "status": "passed",
+      "path": "tests/fixtures/torsion-free-discovery/i2_5.passed.json",
+      "sha256": "9505fc789ad4931a58ad4f79f68f913c5a97ff1dcca5e9ba874b6d5e3ec4f12a",
+      "input": {
+        "example": "tests/fixtures/torsion-free-discovery/i2_5.discovery.json",
+        "sha256": "60c38b9d0b896c2e64f54a05dfb925919d1e895af006d26e563c2f16b2746efe"
+      },
+      "command": [
+        "python",
+        "scripts/torsion_free_discovery.py",
+        "--input",
+        "tests/fixtures/torsion-free-discovery/i2_5.discovery.json",
+        "--output",
+        "tests/fixtures/torsion-free-discovery/i2_5.passed.json",
+        "--timeout",
+        "90"
+      ],
+      "environment": {
+        "runtime": "GAP 4.14.0 through WSL",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/gap",
+        "containerProvided": false,
+        "notes": "The launcher tries native GAP first, then WSL and Sage-environment GAP. The stored action is independently checked by the TypeScript certificate path before the viewer accepts it."
+      },
+      "claims": [
+        "The displayed degree-10 transitive action of I2(5) satisfies the Coxeter relations.",
+        "The stabilizer of a point is torsion-free: all prime-order conjugacy witnesses from the complete maximal spherical catalogue act without fixed points."
+      ],
+      "boundary": [
+        "The bounded search does not prove that no lower-index action exists outside the checked range, although the spherical-order divisor supplies an exact necessary lower bound here.",
+        "The certificate does not claim normality, a canonical subgroup, manifold status, a map to Z, or PL Morse link conditions.",
+        "The quotient 3D placement remains a drawing convention."
+      ]
+    },
+    {
+      "id": "sage-congruence-torsion-free-cover-i2-5-2026-08-10",
+      "tool": "sage",
+      "artifactKind": "torsion-free-cover-discovery",
+      "status": "passed",
+      "path": "tests/fixtures/torsion-free-discovery/i2_5.sage.passed.json",
+      "sha256": "1dc50f3f2c1d6b4a0e2fc647067f25f19c11a5135def724c75079ebe8558463d",
+      "input": {
+        "example": "tests/fixtures/torsion-free-discovery/i2_5.discovery.json",
+        "sha256": "60c38b9d0b896c2e64f54a05dfb925919d1e895af006d26e563c2f16b2746efe"
+      },
+      "command": [
+        "python",
+        "scripts/torsion_free_discovery.py",
+        "--backend",
+        "sage",
+        "--input",
+        "tests/fixtures/torsion-free-discovery/i2_5.discovery.json"
+      ],
+      "environment": {
+        "runtime": "SageMath 10.8 through WSL",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/sage",
+        "containerProvided": false,
+        "notes": "The backend constructs integral Tits matrices in a cyclotomic field, reduces them modulo an exact prime ideal, and independently checks the emitted regular action in TypeScript."
+      },
+      "claims": [
+        "The degree-10 congruence image of I2(5) satisfies the Coxeter relations exactly over its finite residue field.",
+        "Reduction is injective on every maximal spherical special subgroup, so the congruence kernel is torsion-free by the finite-subgroup theorem for Coxeter groups."
+      ],
+      "boundary": [
+        "The bounded prime-ideal search does not claim a canonical congruence quotient or a general minimum-index theorem.",
+        "The artifact does not establish a map to Z, PL Morse link conditions, or virtual algebraic fibering.",
+        "The generated quotient placement is a drawing convention."
+      ]
+    },
+    {
+      "id": "sage-congruence-torsion-free-cover-a3-2026-08-10",
+      "tool": "sage",
+      "artifactKind": "torsion-free-cover-discovery",
+      "status": "passed",
+      "path": "tests/fixtures/torsion-free-discovery/a3.sage.passed.json",
+      "sha256": "c8ea60508cc096a3744170e41d5c5679517bd3c9576343439264062516e77911",
+      "input": {
+        "example": "tests/fixtures/torsion-free-discovery/a3.discovery.json",
+        "sha256": "e626edfc4c265b08d86e62045cb27a361e18a37e401f2712f37e1ec9b1bbe502"
+      },
+      "command": [
+        "python",
+        "scripts/torsion_free_discovery.py",
+        "--backend",
+        "sage",
+        "--input",
+        "tests/fixtures/torsion-free-discovery/a3.discovery.json"
+      ],
+      "environment": {
+        "runtime": "SageMath 10.8 through WSL",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/sage",
+        "containerProvided": false,
+        "notes": "A3 is retained as a finite rank-three regression case for exact spherical-restriction and action-export checks."
+      },
+      "claims": [
+        "The exact congruence image has degree 24 and preserves the full order of every maximal spherical restriction.",
+        "The emitted action passes a second exhaustive spherical-action certificate in the application code."
+      ],
+      "boundary": [
+        "This finite regression artifact is not evidence about hyperbolic compact examples.",
+        "It does not claim a canonical subgroup, a map to Z, or PL Morse conclusions."
+      ]
+    },
+    {
+      "id": "everitt-composite-torsion-free-cover-i2-5-2026-08-10",
+      "tool": "gap-kbmag",
+      "artifactKind": "torsion-free-cover-discovery",
+      "status": "passed",
+      "path": "tests/fixtures/torsion-free-discovery/i2_5.composite.passed.json",
+      "sha256": "07e82b9ddf56619bf1e985c02d557584fa2d9ef16eaffb4770bf0c64f7133679",
+      "input": {
+        "example": "tests/fixtures/torsion-free-discovery/i2_5.discovery.json",
+        "sha256": "60c38b9d0b896c2e64f54a05dfb925919d1e895af006d26e563c2f16b2746efe"
+      },
+      "command": [
+        "python",
+        "scripts/torsion_free_discovery.py",
+        "--backend",
+        "gap",
+        "--max-index",
+        "9",
+        "--input",
+        "tests/fixtures/torsion-free-discovery/i2_5.discovery.json"
+      ],
+      "environment": {
+        "runtime": "GAP 4.14.0 through WSL plus deterministic Python composition",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/gap",
+        "containerProvided": false,
+        "notes": "The direct search is deliberately capped below 10. Degree-2 and degree-5 transitive modules are combined on the reachable diagonal orbit, then independently recertified."
+      },
+      "claims": [
+        "The two factors jointly avoid all prime-order torsion witness classes in the complete I2(5) catalogue.",
+        "Their reachable diagonal orbit is a transitive degree-10 Coxeter action whose point stabilizer passes the independent torsion-free certificate."
+      ],
+      "boundary": [
+        "The bounded set-cover search does not prove that its chosen factor family is globally optimal outside the enumerated module catalogue.",
+        "Composition does not by itself establish virtual algebraic fibering or any PL Morse condition.",
+        "The quotient 3D placement remains a drawing convention."
+      ]
+    },
+    {
+      "id": "gap-compact-5-cube-mod2-degree-classification-2026-08-11",
+      "tool": "gap-kbmag",
+      "artifactKind": "finite-image-bounded-degree-classification",
+      "status": "passed",
+      "path": "scripts/certificates/torsion-free/compact_5_cube_mod2_through_576000.json",
+      "sha256": "15e1dacc6634f3879b5c25a44c7e7e9c492ad7bc38b29c3a49076cf3df1ebc09",
+      "input": {
+        "example": "public/examples/compact_5_cube_gamma1.json",
+        "sha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+      },
+      "command": [
+        "wsl",
+        "/opt/miniforge3/envs/sage/bin/python",
+        "scripts/torsion_free_finite_image.py",
+        "--prime",
+        "2",
+        "--probe-only",
+        "--max-index",
+        "576000",
+        "--recognition",
+        "required"
+      ],
+      "environment": {
+        "runtime": "SageMath 10.8 with isolated GAP 4.16.0",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/python",
+        "containerProvided": false,
+        "notes": "The isolated GAP toolchain pins TomLib, recog, genss, orb, ClassicalMaximals, and ferret. The compact report is extracted only after every requested degree row has a final outcome."
+      },
+      "claims": [
+        "Every multiple of 5,760 through 576,000 is classified for the exact characteristic-two image S3 x (O8^-(2):2).",
+        "Ninety-six degree rows are impossible by the complete index sieve; all 45 exact subgroup classes at the four remaining degrees contain a spherical torsion witness."
+      ],
+      "boundary": [
+        "This finite-image report is not a nonexistence theorem for other congruence images or composite actions.",
+        "It does not supply a manageable torsion-free cover, a map to Z, or a virtual fibering certificate."
+      ]
+    },
+    {
+      "id": "gap-compact-5-cube-mod5-orthogonal-certificate-2026-08-13",
+      "tool": "gap-kbmag",
+      "artifactKind": "finite-image-orthogonal-structure-certificate",
+      "status": "passed",
+      "path": "scripts/certificates/torsion-free/compact_5_cube_mod5_structural_certificate.json",
+      "sha256": "ed4955857e20ed5daa8efec7b96c5e51b6f72cb47dcde96ea231858098644760",
+      "input": {
+        "example": "public/examples/compact_5_cube_gamma1.json",
+        "sha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+      },
+      "command": ["corepack", "pnpm", "cover:certify:mod5:generate"],
+      "environment": {
+        "runtime": "GAP 4.16.0 through WSL",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/gap",
+        "containerProvided": false,
+        "notes": "Uses Forms 1.3.0, GenSS 1.6.9, recog 1.5.1, and ClassicalMaximals 1.1. The stored GenSS/SLP equality proof was replayed independently before sealing."
+      },
+      "claims": [
+        "The characteristic-five image is an index-two extension of Omega+(10,5), of exact order 27,230,655,539,587,500,000,000,000,000,000.",
+        "The congruence kernel is finite index and torsion-free because every maximal spherical restriction is injective.",
+        "Every multiple of 5,760 through 576,000 is impossible as a transitive coset degree inside this finite image by the complete ClassicalMaximals root-index ledger."
+      ],
+      "boundary": [
+        "The exact kernel is far too large to materialize as the desired manageable cover.",
+        "The bounded ledger applies only to this characteristic-five image and is not a global nonexistence theorem.",
+        "No wall coorientation, map to Z, or PL Morse link condition is claimed."
+      ]
+    },
+    {
+      "id": "gap-compact-5-cube-mod7-orthogonal-certificate-2026-08-13",
+      "tool": "gap-kbmag",
+      "artifactKind": "finite-image-orthogonal-structure-certificate",
+      "status": "passed",
+      "path": "scripts/certificates/torsion-free/compact_5_cube_mod7_structural_certificate.json",
+      "sha256": "3c229ef25aaf919f6ec46108819718ac7fa2e79233d2d176ff40f2b2f2caabb4",
+      "input": {
+        "example": "public/examples/compact_5_cube_gamma1.json",
+        "sha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+      },
+      "command": ["corepack", "pnpm", "cover:certify:mod7:generate"],
+      "environment": {
+        "runtime": "GAP 4.16.0 through WSL",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/gap",
+        "containerProvided": false,
+        "notes": "Uses Forms 1.3.0, GenSS 1.6.9, recog 1.5.1, and ClassicalMaximals 1.1. The larger GenSS orbit was allowed explicitly and its stored SLP proof was replayed independently."
+      },
+      "claims": [
+        "The characteristic-seven image is an index-two extension of Omega+(10,7), of exact order 104,772,288,945,650,279,285,144,527,564,308,480,000.",
+        "The congruence kernel is finite index and torsion-free because every maximal spherical restriction is injective.",
+        "Every multiple of 5,760 through 576,000 is impossible as a transitive coset degree inside this finite image by the complete ClassicalMaximals root-index ledger."
+      ],
+      "boundary": [
+        "The exact kernel is far too large to materialize as the desired manageable cover.",
+        "The bounded ledger applies only to this characteristic-seven image and is not a global nonexistence theorem.",
+        "No wall coorientation, map to Z, or PL Morse link condition is claimed."
+      ]
+    },
+    {
+      "id": "gap-compact-5-cube-mod11-orthogonal-certificate-2026-08-13",
+      "tool": "gap-kbmag",
+      "artifactKind": "finite-image-orthogonal-structure-certificate",
+      "status": "passed",
+      "path": "scripts/certificates/torsion-free/compact_5_cube_mod11_structural_certificate.json",
+      "sha256": "94264de79c2addebc0ec436156b50135808c3882eda5bda83d964477d063e6ea",
+      "input": {
+        "example": "public/examples/compact_5_cube_gamma1.json",
+        "sha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+      },
+      "command": ["corepack", "pnpm", "cover:certify:mod11:generate"],
+      "environment": {
+        "runtime": "GAP 4.16.0 through WSL",
+        "runtimePath": "/opt/miniforge3/envs/sage/bin/gap",
+        "containerProvided": false,
+        "notes": "Uses Forms 1.3.0, recog 1.5.1, and ClassicalMaximals 1.1. Exact CM_InOmega containment is paired with a seeded positive one-sided RecogniseClassical containment proof and independent replay."
+      },
+      "claims": [
+        "The characteristic-eleven image is an index-two extension of Omega+(10,11), of exact order 72,282,655,659,789,924,991,879,132,244,787,601,185,792,000,000.",
+        "The congruence kernel is finite index and torsion-free because every maximal spherical restriction is injective.",
+        "Every multiple of 5,760 through 576,000 is impossible as a transitive coset degree inside this finite image by the complete ClassicalMaximals root-index ledger."
+      ],
+      "boundary": [
+        "The positive one-sided classical-containment result is conclusive; a negative randomized result would not have been accepted as proof.",
+        "The bounded ledger applies only to this characteristic-eleven image and is not a global nonexistence theorem.",
+        "No manageable cover, wall coorientation, map to Z, or PL Morse link condition is claimed."
+      ]
     }
   ]
 }

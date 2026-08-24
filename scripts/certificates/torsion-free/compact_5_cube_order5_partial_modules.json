@@ -1,0 +1,850 @@
+{
+  "artifactType": "order5-first-partial-module-campaign",
+  "baselineCatalogue": {
+    "catalogueSha256": "c0b413e1eeb44f7485c0bf921bb0bd58e6e3929db585ec15602074e5b2aca36b",
+    "moduleCount": 1,
+    "supplied": true
+  },
+  "campaignVersion": "1.0.0",
+  "claims": [
+    "exact C2 character actions and relation checks",
+    "exact fixed-point coverage for every reported module",
+    "Pareto optimality within the supplied module set"
+  ],
+  "degreeTwoCharacters": {
+    "enumerationComplete": true,
+    "modules": [
+      {
+        "coveredCount": 82,
+        "degree": 2,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "fixedPointCoverage": {
+          "bitsetHex": "43d32cab47332206f03f9864282a0ef01f8cc224e4395302",
+          "coveredCount": 82,
+          "encoding": "lsb0-hex",
+          "sha256": "dce9e25662eded56010fe8f283f5eed1672b5b61fec636a8cfbb3cc6ae7d684c",
+          "witnessCount": 186
+        },
+        "generatorRows": [
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0]
+        ],
+        "id": "o5mod-745979993b299503c72d",
+        "kind": "odd-component-c2-character",
+        "moduleSha256": "745979993b299503c72d9efb65041f79f25ccba29c555faf19aa9531f8e1cada",
+        "origin": {
+          "activeOddComponents": [
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [8, 9]
+          ],
+          "componentMask": 3,
+          "method": "complete-nonzero-character-enumeration"
+        }
+      },
+      {
+        "coveredCount": 86,
+        "degree": 2,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "fixedPointCoverage": {
+          "bitsetHex": "c0a105804f66a3424abbff06700380a4dd878037e77f7602",
+          "coveredCount": 86,
+          "encoding": "lsb0-hex",
+          "sha256": "1469ae666d94823b66c57caa70372c022168e201e4aa8a4afef4669b2ed0a56b",
+          "witnessCount": 186
+        },
+        "generatorRows": [
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [1, 0],
+          [1, 0]
+        ],
+        "id": "o5mod-7bc6f5fd4362930a1c42",
+        "kind": "odd-component-c2-character",
+        "moduleSha256": "7bc6f5fd4362930a1c42689d2f57df7563aa867e6c53acb303582a33a18fc099",
+        "origin": {
+          "activeOddComponents": [[8, 9]],
+          "componentMask": 2,
+          "method": "complete-nonzero-character-enumeration"
+        }
+      },
+      {
+        "coveredCount": 70,
+        "degree": 2,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "fixedPointCoverage": {
+          "bitsetHex": "8372292b08558144ba84676258298e54c20b421303462500",
+          "coveredCount": 70,
+          "encoding": "lsb0-hex",
+          "sha256": "656d6dce35abbd84d0f977d33b2fe93bc35706b5bdad7202f505c0dc5c2f66ee",
+          "witnessCount": 186
+        },
+        "generatorRows": [
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [0, 1],
+          [0, 1]
+        ],
+        "id": "o5mod-af61100ac2eeaf4573d3",
+        "kind": "odd-component-c2-character",
+        "moduleSha256": "af61100ac2eeaf4573d3816fc950f7c8fc2e193d83a012f51ff2d461971d3af1",
+        "origin": {
+          "activeOddComponents": [[0, 1, 2, 3, 4, 5, 6, 7]],
+          "componentMask": 1,
+          "method": "complete-nonzero-character-enumeration"
+        }
+      }
+    ],
+    "nontrivialCharacterCount": 3
+  },
+  "directStructuredMining": {
+    "allDeclaredAnchorsComplete": true,
+    "anchorSearchCount": 17,
+    "conjugacyReduction": {
+      "S5": "one adjacent-transposition A4 anchor modulo inner automorphisms",
+      "S6": "one adjacent-transposition and one triple-transposition A5 anchor, representing the inner and exceptional-outer classes"
+    },
+    "declaredActionFamilies": [
+      "S5 on 1- and 2-subsets",
+      "S6 on 1-, 2-, and 3-subsets"
+    ],
+    "externalSearchesRun": false,
+    "initialCoverage": {
+      "coveredByPrimeOrder": {
+        "2": 119,
+        "3": 4,
+        "5": 0
+      },
+      "coveredCount": 123,
+      "remainingByPrimeOrder": {
+        "2": 33,
+        "3": 19,
+        "5": 11
+      },
+      "uncoveredIndexes": [
+        2, 3, 4, 5, 10, 11, 17, 20, 22, 23, 26, 28, 30, 36, 37, 39, 43, 47, 50,
+        54, 56, 59, 60, 61, 63, 64, 66, 78, 88, 91, 95, 96, 97, 98, 103, 106,
+        108, 110, 111, 112, 116, 117, 118, 120, 121, 123, 133, 140, 141, 142,
+        144, 146, 147, 148, 149, 155, 158, 159, 163, 175, 179, 183, 184
+      ],
+      "witnessCount": 186
+    },
+    "minedModules": [],
+    "mode": "bounded-canonical-faithful-anchor-csp",
+    "rawRetainedModuleCount": 0,
+    "searches": [
+      {
+        "anchorComponent": [0, 2, 3, 5, 6],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [0, 2, 3, 5, 6],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw5",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [0, 2, 3, 5, 6],
+        "anchorKind": "outer-triple-transpositions",
+        "anchorSubset": [0, 2, 3, 5, 6],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw5",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [0, 2, 3, 6, 7],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [0, 2, 3, 6, 7],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw11",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [0, 2, 3, 6, 7],
+        "anchorKind": "outer-triple-transpositions",
+        "anchorSubset": [0, 2, 3, 6, 7],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw11",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [0, 2, 4, 6, 7],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [0, 2, 4, 6, 7],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw37",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [0, 2, 4, 6, 7],
+        "anchorKind": "outer-triple-transpositions",
+        "anchorSubset": [0, 2, 4, 6, 7],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw37",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [1, 2, 3, 5, 6],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [1, 2, 3, 5, 6],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw98",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [1, 2, 3, 5, 6],
+        "anchorKind": "outer-triple-transpositions",
+        "anchorSubset": [1, 2, 3, 5, 6],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw98",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [1, 2, 4, 5, 6],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [1, 2, 4, 5, 6],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw142",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [1, 2, 4, 5, 6],
+        "anchorKind": "outer-triple-transpositions",
+        "anchorSubset": [1, 2, 4, 5, 6],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw142",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [1, 2, 4, 6, 7],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [1, 2, 4, 6, 7],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw148",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [1, 2, 4, 6, 7],
+        "anchorKind": "outer-triple-transpositions",
+        "anchorSubset": [1, 2, 4, 6, 7],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2, 3],
+        "priorityWitnessId": "tw148",
+        "retainedModuleCount": 0,
+        "searchNodes": 2,
+        "solutionCount": 0,
+        "target": "S6",
+        "targetInvolutionCount": 76
+      },
+      {
+        "anchorComponent": [0, 2, 4, 7],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [0, 2, 4, 7, 9],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2],
+        "priorityWitnessId": "tw39",
+        "retainedModuleCount": 0,
+        "searchNodes": 0,
+        "solutionCount": 0,
+        "target": "S5",
+        "targetInvolutionCount": 26
+      },
+      {
+        "anchorComponent": [0, 3, 6, 7],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [0, 3, 6, 7, 8],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2],
+        "priorityWitnessId": "tw54",
+        "retainedModuleCount": 0,
+        "searchNodes": 0,
+        "solutionCount": 0,
+        "target": "S5",
+        "targetInvolutionCount": 26
+      },
+      {
+        "anchorComponent": [1, 2, 4, 5],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [1, 2, 4, 5, 9],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2],
+        "priorityWitnessId": "tw144",
+        "retainedModuleCount": 0,
+        "searchNodes": 0,
+        "solutionCount": 0,
+        "target": "S5",
+        "targetInvolutionCount": 26
+      },
+      {
+        "anchorComponent": [1, 3, 5, 6],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [1, 3, 5, 6, 8],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2],
+        "priorityWitnessId": "tw159",
+        "retainedModuleCount": 0,
+        "searchNodes": 0,
+        "solutionCount": 0,
+        "target": "S5",
+        "targetInvolutionCount": 26
+      },
+      {
+        "anchorComponent": [1, 4, 6, 7],
+        "anchorKind": "adjacent-transpositions",
+        "anchorSubset": [1, 4, 6, 7, 8],
+        "bounded": false,
+        "completeWithinDeclaredAnchor": true,
+        "inducedSubsetActionSizes": [1, 2],
+        "priorityWitnessId": "tw184",
+        "retainedModuleCount": 0,
+        "searchNodes": 0,
+        "solutionCount": 0,
+        "target": "S5",
+        "targetInvolutionCount": 26
+      }
+    ]
+  },
+  "gate": {
+    "nextStep": "mine exact partial modules covering the prioritized order-5 witnesses",
+    "observedCoverage": 123,
+    "obstruction": {
+      "count": 11,
+      "kind": "uncovered-order-5-witnesses-in-current-module-union",
+      "meaning": "No composite of the currently available modules can remove all torsion because these order-5 witnesses occur in every factor.",
+      "nonClaim": "This does not prove that no useful S5/S6 partial module exists; the replayed artifacts did not enumerate every partial tuple.",
+      "scope": "exact C2 characters, supplied exact module catalogue, and retained candidates in the declared structured artifacts"
+    },
+    "readyForCompositeSearch": false,
+    "requiredCoverage": 186,
+    "status": "blocked-order-5-witness-coverage"
+  },
+  "mode": "real",
+  "nonClaims": [
+    "global completeness outside the declared scopes",
+    "nonexistence of an order-5-covering partial module",
+    "torsion-free subgroup",
+    "virtual fibering"
+  ],
+  "orderFivePriority": {
+    "initialUncoveredCount": 11,
+    "totalOrderFiveWitnesses": 11,
+    "uncoveredCount": 11,
+    "uncoveredWitnesses": [
+      {
+        "catalogueIndex": 5,
+        "id": "tw5",
+        "sphericalType": "A5",
+        "subset": [0, 2, 3, 5, 6],
+        "word": [0, 2, 0, 3, 0, 2, 5, 2]
+      },
+      {
+        "catalogueIndex": 11,
+        "id": "tw11",
+        "sphericalType": "A5",
+        "subset": [0, 2, 3, 6, 7],
+        "word": [0, 2, 0, 3, 0, 2, 6, 3]
+      },
+      {
+        "catalogueIndex": 37,
+        "id": "tw37",
+        "sphericalType": "A5",
+        "subset": [0, 2, 4, 6, 7],
+        "word": [0, 2, 0, 4, 2, 0, 6, 7, 4, 2]
+      },
+      {
+        "catalogueIndex": 98,
+        "id": "tw98",
+        "sphericalType": "A5",
+        "subset": [1, 2, 3, 5, 6],
+        "word": [1, 2, 3, 5, 1, 2, 5, 6, 1, 3]
+      },
+      {
+        "catalogueIndex": 142,
+        "id": "tw142",
+        "sphericalType": "A5",
+        "subset": [1, 2, 4, 5, 6],
+        "word": [1, 2, 4, 2, 5, 1, 2, 4, 5, 2, 6, 1]
+      },
+      {
+        "catalogueIndex": 148,
+        "id": "tw148",
+        "sphericalType": "A5",
+        "subset": [1, 2, 4, 6, 7],
+        "word": [1, 2, 4, 2, 6, 1, 7, 4]
+      },
+      {
+        "catalogueIndex": 39,
+        "id": "tw39",
+        "sphericalType": "A4 x A1",
+        "subset": [0, 2, 4, 7, 9],
+        "word": [0, 2, 0, 4, 2, 0, 7, 4]
+      },
+      {
+        "catalogueIndex": 54,
+        "id": "tw54",
+        "sphericalType": "A4 x A1",
+        "subset": [0, 3, 6, 7, 8],
+        "word": [0, 3, 0, 6, 3, 0, 7, 6]
+      },
+      {
+        "catalogueIndex": 144,
+        "id": "tw144",
+        "sphericalType": "A4 x A1",
+        "subset": [1, 2, 4, 5, 9],
+        "word": [1, 2, 4, 2, 5, 1, 2, 5]
+      },
+      {
+        "catalogueIndex": 159,
+        "id": "tw159",
+        "sphericalType": "A4 x A1",
+        "subset": [1, 3, 5, 6, 8],
+        "word": [1, 3, 5, 1, 6, 1]
+      },
+      {
+        "catalogueIndex": 184,
+        "id": "tw184",
+        "sphericalType": "A4 x A1",
+        "subset": [1, 4, 6, 7, 8],
+        "word": [1, 4, 6, 1, 7, 4, 6, 7]
+      }
+    ]
+  },
+  "paretoPortfolio": {
+    "incomingModuleCount": 4,
+    "modules": [
+      {
+        "coveredCount": 82,
+        "degree": 2,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "fixedPointCoverage": {
+          "bitsetHex": "43d32cab47332206f03f9864282a0ef01f8cc224e4395302",
+          "coveredCount": 82,
+          "encoding": "lsb0-hex",
+          "sha256": "dce9e25662eded56010fe8f283f5eed1672b5b61fec636a8cfbb3cc6ae7d684c",
+          "witnessCount": 186
+        },
+        "generatorRows": [
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0]
+        ],
+        "id": "o5mod-745979993b299503c72d",
+        "kind": "odd-component-c2-character",
+        "moduleSha256": "745979993b299503c72d9efb65041f79f25ccba29c555faf19aa9531f8e1cada",
+        "origin": {
+          "activeOddComponents": [
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [8, 9]
+          ],
+          "componentMask": 3,
+          "method": "complete-nonzero-character-enumeration"
+        }
+      },
+      {
+        "coveredCount": 86,
+        "degree": 2,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "fixedPointCoverage": {
+          "bitsetHex": "c0a105804f66a3424abbff06700380a4dd878037e77f7602",
+          "coveredCount": 86,
+          "encoding": "lsb0-hex",
+          "sha256": "1469ae666d94823b66c57caa70372c022168e201e4aa8a4afef4669b2ed0a56b",
+          "witnessCount": 186
+        },
+        "generatorRows": [
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [0, 1],
+          [1, 0],
+          [1, 0]
+        ],
+        "id": "o5mod-7bc6f5fd4362930a1c42",
+        "kind": "odd-component-c2-character",
+        "moduleSha256": "7bc6f5fd4362930a1c42689d2f57df7563aa867e6c53acb303582a33a18fc099",
+        "origin": {
+          "activeOddComponents": [[8, 9]],
+          "componentMask": 2,
+          "method": "complete-nonzero-character-enumeration"
+        }
+      },
+      {
+        "coveredCount": 70,
+        "degree": 2,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "fixedPointCoverage": {
+          "bitsetHex": "8372292b08558144ba84676258298e54c20b421303462500",
+          "coveredCount": 70,
+          "encoding": "lsb0-hex",
+          "sha256": "656d6dce35abbd84d0f977d33b2fe93bc35706b5bdad7202f505c0dc5c2f66ee",
+          "witnessCount": 186
+        },
+        "generatorRows": [
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [1, 0],
+          [0, 1],
+          [0, 1]
+        ],
+        "id": "o5mod-af61100ac2eeaf4573d3",
+        "kind": "odd-component-c2-character",
+        "moduleSha256": "af61100ac2eeaf4573d3816fc950f7c8fc2e193d83a012f51ff2d461971d3af1",
+        "origin": {
+          "activeOddComponents": [[0, 1, 2, 3, 4, 5, 6, 7]],
+          "componentMask": 1,
+          "method": "complete-nonzero-character-enumeration"
+        }
+      },
+      {
+        "actionSha256": "6c58cabd41f0e811de92dba4c911e2112f175d8608c273b1616362e9f00361fd",
+        "coveredCount": 4,
+        "degree": 3,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "fixedPointCoverage": {
+          "bitsetHex": "000000000000180000000010000000000000000010000000",
+          "coveredCount": 4,
+          "encoding": "lsb0-hex",
+          "sha256": "23521b75fa55637f535c72df2192dbfa61e6c2c54e612aa421f0f859b844553d",
+          "witnessCount": 186
+        },
+        "id": "fimod-fc73e39e40ecdc5fadce",
+        "kind": "validated-existing-catalogue-module",
+        "moduleSha256": "fc73e39e40ecdc5fadce58d8d551c685ffd45950b283d0c23a612f02cac7f700",
+        "origin": {
+          "candidateOrigin": {
+            "compactPermutationDegree": 122,
+            "kind": "compact-bsgs-natural-orbit",
+            "orbitOrdinal": 0,
+            "orbitPointsDigest": "a615eeaee21de5179de080de8c3052c8da901138406ba71c38c032845f7d54f4",
+            "orbitSize": 3,
+            "representativePoint": 1
+          },
+          "kind": "exact-coset-action"
+        }
+      }
+    ],
+    "retainedModuleCount": 4
+  },
+  "reportSha256": "e58ef846cbb3ac77469fa0ec58cbeb317e67fc38b0e7acb0f6885be3cf97493f",
+  "schemaVersion": 1,
+  "scope": {
+    "complete": {
+      "declaredS5S6AnchorSearches": true,
+      "nonzeroC2Characters": true,
+      "retainedStructuredCandidateReplay": true,
+      "suppliedCatalogueValidation": true
+    },
+    "notComplete": [
+      "homomorphisms outside the declared faithful S5/S6 anchor classes",
+      "all transitive partial actions",
+      "S5/S6 coset actions outside the declared subset-action families",
+      "larger structured targets not represented by retained artifact candidates"
+    ]
+  },
+  "source": {
+    "matrixSha256": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+    "moduleSourceSha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+    "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+    "oddLabelComponents": [
+      [0, 1, 2, 3, 4, 5, 6, 7],
+      [8, 9]
+    ],
+    "rank": 10,
+    "sourceObjectSha256": "46286b5778db581987ed64e1370f3d7eeec21e1127fd0809f9942c69dd18468b",
+    "witnessCount": 186,
+    "witnessSha256": "ecb34ecdd386b16765507d1a48ab7ed3c9887ba4b00c80056a9d1af628486140"
+  },
+  "status": "blocked-order-5-witness-coverage",
+  "structuredTargetMining": {
+    "artifactCount": 8,
+    "artifacts": [
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_a6_core_11520.json",
+        "artifactSha256": "04ea0c3ce5a0ccefaa63436febe22a6529b0057cece5d043099a50778d02030a",
+        "completeTargetCount": 302,
+        "conjugacyReductionMethods": [
+          "all-isomorphic-S6-subgroups-up-to-target-conjugacy"
+        ],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 302,
+        "targetIdsSha256": "1adfd5909777a74670d4a1f5f05ed0ad23beebc1e095091c401f6ae37ad54c02"
+      },
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_a6_core_5760.json",
+        "artifactSha256": "cb0a0209b338dce2b9f4e745bd5a410603e9873064e3e2e5155f3145c52bd3c4",
+        "completeTargetCount": 32,
+        "conjugacyReductionMethods": [
+          "all-isomorphic-S6-subgroups-up-to-target-conjugacy"
+        ],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 32,
+        "targetIdsSha256": "b0d2e2afb2c97eec9e10a6528b00a65c990dadf5ff48804ad83cc90ea72c2e8d"
+      },
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_affine_s6_11520.json",
+        "artifactSha256": "ebb3f542e015b3295d3680528bc94b33553b6c14eb12945472180e3cc5a511b4",
+        "completeTargetCount": 1,
+        "conjugacyReductionMethods": ["fitting-complement-classes"],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 1,
+        "targetIdsSha256": "a35873ed5ea8427b9243a07aac3d5cc8b4211f4d1fa3dfbdf888d32580200309"
+      },
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_s6_block_11520.json",
+        "artifactSha256": "89317c5f68f449595fe46ce8a7d5a4737c067e7d45378a3adf31d57442737029",
+        "completeTargetCount": 42,
+        "conjugacyReductionMethods": [
+          "all-isomorphic-S6-subgroups-up-to-target-conjugacy"
+        ],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 42,
+        "targetIdsSha256": "ca3a333c688f0ed33746b2c7772d64043d54207fb09a62647c595e22b64fbc3e"
+      },
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_s6_block_5760.json",
+        "artifactSha256": "05dd44bf25f2031c40645cfb18f21ebed05f671cc33e6c9286b9a86127e7c58d",
+        "completeTargetCount": 12,
+        "conjugacyReductionMethods": [
+          "all-isomorphic-S6-subgroups-up-to-target-conjugacy"
+        ],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 12,
+        "targetIdsSha256": "e07f4182d7e7258e40dd0fd676047d9536ad41abc00c92801911a402e612d3ad"
+      },
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_weyl_b6_negative.json",
+        "artifactSha256": "e75704d1eec7954e78a1f64122426d454edd748528b36b4b1fc11effca4ad73a",
+        "completeTargetCount": 1,
+        "conjugacyReductionMethods": ["fitting-complement-classes"],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 1,
+        "targetIdsSha256": "e87cac36e2fe809d8d3857608f1bea5f2e9d57e76912a8c9a18aeb28cfc44f04"
+      },
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_weyl_d6_negative.json",
+        "artifactSha256": "0320d319fd7ead13fb9cca34875ded587b232cdaa7d315b7d45471ffd2504fc2",
+        "completeTargetCount": 1,
+        "conjugacyReductionMethods": ["fitting-complement-classes"],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 1,
+        "targetIdsSha256": "803a1f132dcb5efe559a238c71800f8147502b983abccd836b5de6b5984278b1"
+      },
+      {
+        "artifact": "scripts/certificates/torsion-free/compact_5_cube_weyl_e6_negative.json",
+        "artifactSha256": "688c8431328a398b798c3ab9794082e39828dbcc327b2cf009113e544374194e",
+        "completeTargetCount": 1,
+        "conjugacyReductionMethods": ["complete-subgroup-conjugacy-classes"],
+        "declaredComplete": true,
+        "faithfulLocalAnchorTypes": ["A5"],
+        "retainedSolutionCount": 0,
+        "targetCount": 1,
+        "targetIdsSha256": "e2222fa9c420da08436ea933b1097ff0fce6ba304990044059e33692c2749c88"
+      }
+    ],
+    "completeTargetResultCount": 392,
+    "configInputs": [
+      {
+        "path": "scripts/search-configs/compact_5_cube_a6_core_11520.json",
+        "sha256": "5cf98edfd1f1344cddf3c183e3be15e546cc01d16476e51e321aa8ee64e43f56"
+      },
+      {
+        "path": "scripts/search-configs/compact_5_cube_a6_core_5760.json",
+        "sha256": "bc6e81e6aacef5af2e4869302fc9a1872e392c40d8e19f9e7d01eb39a148c9f0"
+      },
+      {
+        "path": "scripts/search-configs/compact_5_cube_s6_block_11520.json",
+        "sha256": "69d507b41d7cd078ff547c566bfacc172ab3d0aab2608839342ed4057e61830d"
+      },
+      {
+        "path": "scripts/search-configs/compact_5_cube_s6_block_5760.json",
+        "sha256": "487404bf606eaffb43f0f383c9edfd5a503e91b5c4c5becb742702b505a04ef5"
+      },
+      {
+        "path": "scripts/search-configs/compact_5_cube_weyl_b6.json",
+        "sha256": "d134d81b62006e24ee4f9441e40f62b7b7b08be86405c8ee41c631e911bdc9c3"
+      },
+      {
+        "path": "scripts/search-configs/compact_5_cube_weyl_d6.json",
+        "sha256": "c0cd3dee83f6e317bd95702de407ca557f7a0a8817673ce9013e17b3a4081b19"
+      },
+      {
+        "path": "scripts/search-configs/compact_5_cube_weyl_e6.json",
+        "sha256": "b265910178ce047fc514867cf5e7994c46f3aba84bd06876f16393b33c71384e"
+      }
+    ],
+    "externalSearchesRun": false,
+    "mode": "retained-candidate-artifact-replay",
+    "partialHomomorphismEnumerationComplete": false,
+    "reason": "The source artifacts retain verified global solutions, not every rejected partial tuple. Replay is complete only for retained candidates.",
+    "retainedSolutionCount": 0,
+    "scopeComplete": true,
+    "targetResultCount": 392,
+    "truncatedByBound": false
+  },
+  "unionCoverage": {
+    "coveredByPrimeOrder": {
+      "2": 119,
+      "3": 4,
+      "5": 0
+    },
+    "coveredCount": 123,
+    "remainingByPrimeOrder": {
+      "2": 33,
+      "3": 19,
+      "5": 11
+    },
+    "uncoveredIndexes": [
+      2, 3, 4, 5, 10, 11, 17, 20, 22, 23, 26, 28, 30, 36, 37, 39, 43, 47, 50,
+      54, 56, 59, 60, 61, 63, 64, 66, 78, 88, 91, 95, 96, 97, 98, 103, 106, 108,
+      110, 111, 112, 116, 117, 118, 120, 121, 123, 133, 140, 141, 142, 144, 146,
+      147, 148, 149, 155, 158, 159, 163, 175, 179, 183, 184
+    ],
+    "witnessCount": 186
+  }
+}

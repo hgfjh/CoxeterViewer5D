@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "kind": "generic-sparse-modular-rank-certificate",
+  "status": "passed",
+  "method": "nonzero-pivot-minor-plus-right-kernel-identity-chart",
+  "algorithmVersion": "sparse-rref-pivot-minor-right-kernel-chart-v1",
+  "source": {
+    "sourceBindings": [
+      {
+        "id": "action-rows",
+        "sha256": "e5fd14f05c394278aefe0234eb0581d8953ba5e1514953b186311b9de8afebfa"
+      },
+      {
+        "id": "generic-sparse-matrix",
+        "sha256": "10ef7e193958516dea029422f439b2455d4e1f7fd25a60842fa428e6d7325d84"
+      },
+      {
+        "id": "oracle-structure",
+        "sha256": "22d7f846d6232701eac8ac06f124339a5276d6f45fa95a7ef58ce1380e150893"
+      },
+      {
+        "id": "preparation",
+        "sha256": "704ac75c8ef6ca850b26f8d01a10c0c25261ab8e1d1fd2d0f982ce1cd9fb00fe"
+      },
+      {
+        "id": "prepared-boundary",
+        "sha256": "e0fbaa9b69bcebd642f7612258127efe439c13182a0327d8bddd812558072bb6"
+      },
+      {
+        "id": "torsion-free-certificate",
+        "sha256": "b3211587564a33d633539f4013d066582811b5e7eafd4109dc0efe74b4d28c1d"
+      }
+    ],
+    "matrixDigest": "10ef7e193958516dea029422f439b2455d4e1f7fd25a60842fa428e6d7325d84",
+    "bindingDigest": "7745ed7ede5186f84869221346f41623c7911496487b8ba5bbb3e74e63fea3c8",
+    "workerRequestDigest": "1e002cb66a71a478ddf46fa8489b678229702b0a100bb62c79dca12f65d2f3eb"
+  },
+  "matrix": {
+    "rowCount": 1,
+    "columnCount": 3,
+    "nonzeroCount": 3,
+    "maximumAbsoluteCoefficient": "2"
+  },
+  "modulusPrime": 11,
+  "rank": 1,
+  "nullity": 2,
+  "lowerBound": {
+    "pivotRows": [0],
+    "pivotColumns": [0],
+    "minorDeterminantResidue": 10,
+    "minorDigest": "164aac7c553c62cbd5e8648bc673bd87e64096bf0a65a2585572f36206f83eda"
+  },
+  "upperBound": {
+    "freeColumns": [1, 2],
+    "kernelBasis": [
+      {
+        "chartColumn": 1,
+        "entries": [
+          [0, 10],
+          [1, 1]
+        ]
+      },
+      {
+        "chartColumn": 2,
+        "entries": [
+          [0, 2],
+          [2, 1]
+        ]
+      }
+    ],
+    "kernelBasisDigest": "d00a6accc78df847470a1c939940fa13befbcbf679a94bcb6c6f9ee47ea42808"
+  },
+  "backend": {
+    "name": "TypeScript fixture generator",
+    "version": "1",
+    "algorithm": "bounded sparse RREF",
+    "exactFieldArithmetic": true
+  },
+  "execution": {
+    "fieldOperations": 3,
+    "pivotRowScans": 2,
+    "maximumWorkingNonzeros": 3,
+    "kernelNonzeroCount": 4
+  },
+  "certificateDigest": "4c343cefcec8ce7ffe96f7fe41f973dd49bfc6ce9162707fef537aae04124942"
+}

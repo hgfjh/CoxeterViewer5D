@@ -45,6 +45,7 @@ import {
   type PickedLabelEntry,
   selectLabelBudget,
   selectSegmentLabelBudget,
+  semanticEdgeLabelText,
 } from "./labels";
 import {
   intersectPickingCandidateTriangles,
@@ -95,6 +96,8 @@ export interface SceneEdge {
   target: string;
   generator: number;
   compactLabel?: string;
+  /** Explicit semantic meaning for views whose edge labels are not generators. */
+  semanticLabelKind?: "generator" | "coxeter-order";
   colorHint?: string;
   alwaysLabel?: boolean;
   isRelationBoundary?: boolean;
@@ -109,8 +112,12 @@ export interface SceneEdge {
   selectedHighlight?: "color" | "outline";
   ghost?: boolean;
   directed?: boolean;
+  /** A wall-induced direction, drawn more prominently than a generic directed edge. */
+  coorientationArrow?: boolean;
   visualOffset?: number;
   drawingOnly?: boolean;
+  /** Drawing aid that must remain visible above translucent cell surfaces. */
+  readabilityOverlay?: boolean;
 }
 
 export interface SceneCell {
@@ -124,6 +131,13 @@ export interface SceneCell {
   readabilityRole?: "focus" | "incident" | "context" | "hidden-by-cutaway";
   colorHint?: string;
   drawingOnly?: boolean;
+  /**
+   * Drawing-only subdivision point for a bent disk. The exact cell boundary
+   * remains `boundaryNodeIds`; this point is never a vertex of the complex.
+   */
+  drawingInteriorPoint?: [number, number, number];
+  /** Interior fold ring used to spread a disk while its true boundary stays glued. */
+  drawingInteriorRing?: Array<[number, number, number]>;
 }
 
 export interface SceneGenerator {
@@ -547,9 +561,9 @@ interface CellVisualBucket {
 }
 
 interface ArrowHeadBucket {
-  generator: number;
   color: string;
   ghost: boolean;
+  coorientation: boolean;
   matrices: Matrix4[];
 }
 
@@ -1029,15 +1043,15 @@ class SceneRuntime {
         const pickId = nextPickId++;
         const pickColor = gpuPickIdToColor(pickId);
         this.gpuPickRecords.set(pickId, { kind: "cell", id: cell.id });
-        for (let index = 1; index < vertices.length - 1; index += 1) {
-          for (const vertex of [
-            vertices[0],
-            vertices[index],
-            vertices[index + 1],
-          ]) {
-            positions.push(vertex.x, vertex.y, vertex.z);
-            colors.push(...pickColor);
-          }
+        const cellCoordinates: number[] = [];
+        pushCellFillCoordinates(
+          cellCoordinates,
+          vertices,
+          cellDrawingSurface(cell, update.localCellRenderMode),
+        );
+        positions.push(...cellCoordinates);
+        for (let index = 0; index < cellCoordinates.length / 3; index += 1) {
+          colors.push(...pickColor);
         }
       }
     }
@@ -1214,7 +1228,7 @@ class SceneRuntime {
     const renderEdges = selectRenderableEdges(update);
     const edgeBuckets = new Map<
       string,
-      { generator: number; color: string; coordinates: number[] }
+      { color: string; coordinates: number[] }
     >();
     const arrowBuckets = new Map<string, ArrowHeadBucket>();
     const arrowDirection = new Vector3();
@@ -1228,11 +1242,8 @@ class SceneRuntime {
         continue;
       }
       const color = edgeColor(edge, update);
-      const bucketKey = `${edge.generator}:${color}:${
-        edge.ghost ? "ghost" : "main"
-      }`;
+      const bucketKey = `${color}:${edge.ghost ? "ghost" : "main"}`;
       const bucket = edgeBuckets.get(bucketKey) ?? {
-        generator: edge.generator,
         color,
         coordinates: [],
       };
@@ -1267,13 +1278,14 @@ class SceneRuntime {
           visualTarget,
           arrowDirection,
           arrowObject,
+          edge.coorientationArrow ? 1.35 : 1,
         );
         if (matrix) {
-          const arrowKey = `${edge.generator}:${edge.ghost ? "ghost" : "main"}`;
+          const arrowKey = `${color}:${edge.ghost ? "ghost" : "main"}:${edge.coorientationArrow ? "wall" : "edge"}`;
           const arrowBucket = arrowBuckets.get(arrowKey) ?? {
-            generator: edge.generator,
             color,
             ghost: Boolean(edge.ghost),
+            coorientation: Boolean(edge.coorientationArrow),
             matrices: [],
           };
           arrowBucket.matrices.push(matrix);
@@ -1282,8 +1294,9 @@ class SceneRuntime {
       }
     }
 
-    // Lines and arrowheads are bucketed by generator/ghost state so relation
-    // focus does not create one mesh per edge.
+    // Geometry is batched by rendered material state. Generator identity stays
+    // on the edge records used for labels and picking; putting it in this key
+    // would only multiply draw calls, and would merge wall colors incorrectly.
     for (const [bucketKey, bucket] of edgeBuckets) {
       const geometry = new BufferGeometry();
       geometry.setAttribute(
@@ -1305,6 +1318,8 @@ class SceneRuntime {
         color: bucket.color,
         transparent: true,
         opacity: bucket.ghost ? 0.18 : 0.92,
+        depthTest: !bucket.coorientation,
+        depthWrite: false,
       });
       const mesh = new InstancedMesh(
         geometry,
@@ -1319,6 +1334,7 @@ class SceneRuntime {
       // Three.js bounds them by the source cone unless we opt out, which can
       // make directed edges disappear while orbiting dense local views.
       mesh.frustumCulled = false;
+      mesh.renderOrder = bucket.coorientation ? 40 : 0;
       mesh.userData.kind = "edge-arrowheads";
       this.edgeGroup.add(mesh);
     }
@@ -1331,6 +1347,10 @@ class SceneRuntime {
     const outlineHighlightCoordinates: number[] = [];
     const boundaryCoordinates: number[] = [];
     const readableBoundaryCoordinates: number[] = [];
+    const readabilityOverlays = new Map<
+      string,
+      { color: string; ghost: boolean; coordinates: number[] }
+    >();
 
     for (const edge of update.edges) {
       const source = update.nodePositions.get(edge.source);
@@ -1345,6 +1365,17 @@ class SceneRuntime {
       }
       if (edge.emphasis === "readable-boundary") {
         readableBoundaryCoordinates.push(...coordinates);
+      }
+      if (edge.readabilityOverlay) {
+        const color = edgeColor(edge, update);
+        const key = `${color}:${edge.ghost ? "ghost" : "main"}`;
+        const bucket = readabilityOverlays.get(key) ?? {
+          color,
+          ghost: Boolean(edge.ghost),
+          coordinates: [],
+        };
+        bucket.coordinates.push(...coordinates);
+        readabilityOverlays.set(key, bucket);
       }
 
       const incidentToSelection =
@@ -1386,6 +1417,21 @@ class SceneRuntime {
           geometry,
           edgeOverlayMaterial(readableBoundaryEdgeColor(update), 1),
           21,
+        ),
+      );
+    }
+
+    for (const bucket of readabilityOverlays.values()) {
+      const geometry = new BufferGeometry();
+      geometry.setAttribute(
+        "position",
+        new BufferAttribute(new Float32Array(bucket.coordinates), 3),
+      );
+      this.edgeOverlayGroup.add(
+        createStableLineSegments(
+          geometry,
+          edgeOverlayMaterial(bucket.color, bucket.ghost ? 0.18 : 0.96),
+          19,
         ),
       );
     }
@@ -1479,6 +1525,9 @@ class SceneRuntime {
         maxLabels: update.maxNodeLabels,
         maxCharacters: 14,
         getLabel: (node) => {
+          if (node.drawingOnly && !node.alwaysLabel) {
+            return undefined;
+          }
           if (
             update.semanticLabelsOnly &&
             node.isRelationBoundary &&
@@ -1871,9 +1920,15 @@ class SceneRuntime {
           : update.localCellRenderMode === "lifted-panels"
             ? liftedCellVertices(cell, vertices, update, pairActive)
             : vertices.map((vertex) => vertex.clone());
+      const drawingSurface = cellDrawingSurface(
+        cell,
+        update.localCellRenderMode,
+      );
       this.cellVerticesById.set(cell.id, vertices);
       if (!this.gpuPickingActive) {
-        pickingItems.push(createCellPickingItem(cell, vertices));
+        pickingItems.push(
+          createCellPickingItem(cell, vertices, drawingSurface),
+        );
       }
 
       const cellPairKey = pairKey(cell.generatorPair);
@@ -1885,7 +1940,11 @@ class SceneRuntime {
         styleCell: cell,
         coordinates: [],
       };
-      pushCellOutlineCoordinates(outlineBucket.coordinates, vertices);
+      pushCellOutlineCoordinates(
+        outlineBucket.coordinates,
+        vertices,
+        drawingSurface,
+      );
       outlineBuckets.set(outlineKey, outlineBucket);
 
       if (
@@ -1905,7 +1964,11 @@ class SceneRuntime {
           styleCell: cell,
           coordinates: [],
         };
-        pushCellFillCoordinates(fillBucket.coordinates, vertices);
+        pushCellFillCoordinates(
+          fillBucket.coordinates,
+          vertices,
+          drawingSurface,
+        );
         fillBuckets.set(fillKey, fillBucket);
         filledTransparentCells += 1;
       } else if (update.localCellRenderMode !== "outline-only") {
@@ -2068,7 +2131,10 @@ class SceneRuntime {
         continue;
       }
       if (update.localCellRenderMode !== "outline-only") {
-        const fillGeometry = createCellFillGeometry(vertices);
+        const fillGeometry = createCellFillGeometry(
+          vertices,
+          cellDrawingSurface(cell, update.localCellRenderMode),
+        );
         const fill = new Mesh(
           fillGeometry,
           new MeshBasicMaterial({
@@ -2084,7 +2150,11 @@ class SceneRuntime {
       }
 
       const outlineCoordinates: number[] = [];
-      pushCellOutlineCoordinates(outlineCoordinates, vertices);
+      pushCellOutlineCoordinates(
+        outlineCoordinates,
+        vertices,
+        cellDrawingSurface(cell, update.localCellRenderMode),
+      );
       const outlineGeometry = new BufferGeometry();
       outlineGeometry.setAttribute(
         "position",
@@ -2690,7 +2760,13 @@ class SceneRuntime {
     for (const cell of update.cells) {
       const vertices = this.cellVerticesById.get(cell.id);
       if (vertices && vertices.length >= 3) {
-        items.push(createCellPickingItem(cell, vertices));
+        items.push(
+          createCellPickingItem(
+            cell,
+            vertices,
+            cellDrawingSurface(cell, update.localCellRenderMode),
+          ),
+        );
       }
     }
     const startedAt = performance.now();
@@ -3064,9 +3140,17 @@ function shouldFillTransparentCell(
   return filledCount < budget;
 }
 
-function createCellFillGeometry(vertices: Vector3[]) {
+interface CellDrawingSurface {
+  center?: Vector3;
+  ring?: Vector3[];
+}
+
+function createCellFillGeometry(
+  vertices: Vector3[],
+  surface?: CellDrawingSurface,
+) {
   const coordinates: number[] = [];
-  pushCellFillCoordinates(coordinates, vertices);
+  pushCellFillCoordinates(coordinates, vertices, surface);
 
   const geometry = new BufferGeometry();
   geometry.setAttribute(
@@ -3078,7 +3162,56 @@ function createCellFillGeometry(vertices: Vector3[]) {
   return geometry;
 }
 
-function pushCellFillCoordinates(coordinates: number[], vertices: Vector3[]) {
+function pushCellFillCoordinates(
+  coordinates: number[],
+  vertices: Vector3[],
+  surface?: CellDrawingSurface,
+) {
+  if (surface?.ring?.length === vertices.length) {
+    const ring = surface.ring;
+    vertices.forEach((vertex, index) => {
+      const next = vertices[(index + 1) % vertices.length];
+      const rim = ring[index];
+      const nextRim = ring[(index + 1) % ring.length];
+      coordinates.push(
+        ...vectorToArray(vertex),
+        ...vectorToArray(next),
+        ...vectorToArray(nextRim),
+        ...vectorToArray(vertex),
+        ...vectorToArray(nextRim),
+        ...vectorToArray(rim),
+      );
+    });
+    if (surface.center) {
+      ring.forEach((rim, index) => {
+        coordinates.push(
+          ...vectorToArray(surface.center!),
+          ...vectorToArray(rim),
+          ...vectorToArray(ring[(index + 1) % ring.length]),
+        );
+      });
+    } else {
+      for (let index = 1; index < ring.length - 1; index += 1) {
+        coordinates.push(
+          ...vectorToArray(ring[0]),
+          ...vectorToArray(ring[index]),
+          ...vectorToArray(ring[index + 1]),
+        );
+      }
+    }
+    return;
+  }
+  if (surface?.center) {
+    vertices.forEach((vertex, index) => {
+      const next = vertices[(index + 1) % vertices.length];
+      coordinates.push(
+        ...vectorToArray(surface.center!),
+        ...vectorToArray(vertex),
+        ...vectorToArray(next),
+      );
+    });
+    return;
+  }
   for (let i = 1; i < vertices.length - 1; i += 1) {
     coordinates.push(
       ...vectorToArray(vertices[0]),
@@ -3091,34 +3224,67 @@ function pushCellFillCoordinates(coordinates: number[], vertices: Vector3[]) {
 function pushCellOutlineCoordinates(
   coordinates: number[],
   vertices: Vector3[],
+  surface?: CellDrawingSurface,
 ) {
-  vertices.forEach((vertex, index) => {
-    const next = vertices[(index + 1) % vertices.length];
-    coordinates.push(...vectorToArray(vertex), ...vectorToArray(next));
-  });
+  // Spread disks reuse the exact graph edges as their boundary. Drawing that
+  // boundary once per incident cell stacks several colored lines on the same
+  // rail, so the cell layer contributes only its folds and reading rim.
+  // The unsplit case still draws its own polygon outline as before.
+  if (!surface?.ring || surface.ring.length !== vertices.length) {
+    vertices.forEach((vertex, index) => {
+      const next = vertices[(index + 1) % vertices.length];
+      coordinates.push(...vectorToArray(vertex), ...vectorToArray(next));
+    });
+  }
+  if (surface?.ring?.length === vertices.length) {
+    surface.ring.forEach((rim, index) => {
+      const nextRim = surface.ring![(index + 1) % surface.ring!.length];
+      coordinates.push(...vectorToArray(rim), ...vectorToArray(nextRim));
+      coordinates.push(
+        ...vectorToArray(vertices[index]),
+        ...vectorToArray(rim),
+      );
+    });
+  }
 }
 
 function createCellPickingItem(
   cell: SceneCell,
   vertices: Vector3[],
+  surface?: CellDrawingSurface,
 ): PickingSpatialItem<SceneCell> {
-  const minimum = vertices[0].clone();
-  const maximum = vertices[0].clone();
-  for (let index = 1; index < vertices.length; index += 1) {
-    minimum.min(vertices[index]);
-    maximum.max(vertices[index]);
+  const surfaceVertices = [
+    ...vertices,
+    ...(surface?.ring ?? []),
+    ...(surface?.center ? [surface.center] : []),
+  ];
+  const minimum = surfaceVertices[0].clone();
+  const maximum = surfaceVertices[0].clone();
+  for (let index = 1; index < surfaceVertices.length; index += 1) {
+    minimum.min(surfaceVertices[index]);
+    maximum.max(surfaceVertices[index]);
   }
   const center = minimum.clone().add(maximum).multiplyScalar(0.5);
   let radiusSquared = 0;
-  for (const vertex of vertices) {
+  for (const vertex of surfaceVertices) {
     radiusSquared = Math.max(radiusSquared, center.distanceToSquared(vertex));
   }
+  const fillCoordinates: number[] = [];
+  pushCellFillCoordinates(fillCoordinates, vertices, surface);
   const triangles = [];
-  for (let index = 1; index < vertices.length - 1; index += 1) {
+  for (let index = 0; index < fillCoordinates.length; index += 9) {
     triangles.push({
-      a: vectorToArray(vertices[0]),
-      b: vectorToArray(vertices[index]),
-      c: vectorToArray(vertices[index + 1]),
+      a: fillCoordinates.slice(index, index + 3) as [number, number, number],
+      b: fillCoordinates.slice(index + 3, index + 6) as [
+        number,
+        number,
+        number,
+      ],
+      c: fillCoordinates.slice(index + 6, index + 9) as [
+        number,
+        number,
+        number,
+      ],
     });
   }
   return {
@@ -3134,6 +3300,18 @@ function createCellPickingItem(
     triangles,
     data: cell,
   };
+}
+
+function cellDrawingSurface(
+  cell: SceneCell,
+  renderMode: LocalCellRenderMode,
+): CellDrawingSurface | undefined {
+  if (renderMode !== "in-graph") return undefined;
+  const center = cell.drawingInteriorPoint
+    ? new Vector3(...cell.drawingInteriorPoint)
+    : undefined;
+  const ring = cell.drawingInteriorRing?.map((point) => new Vector3(...point));
+  return center || ring ? { center, ring } : undefined;
 }
 
 function cellBucketStyleKey(cell: SceneCell): string {
@@ -3577,7 +3755,7 @@ function selectEdgeLabelCandidates(update: GraphUpdate): EdgeLabelCandidate[] {
     return [];
   }
 
-  const labelEdges = selectRenderableEdges(update);
+  const labelEdges = selectLabelableEdges(update);
   const candidates = labelEdges
     .map((edge): EdgeLabelCandidate | undefined => {
       const label = edgeLabelText(edge, update);
@@ -3606,16 +3784,32 @@ function selectRenderableEdges(update: GraphUpdate): SceneEdge[] {
     return update.edges;
   }
 
+  return selectSemanticEdgeRepresentatives(update, () => true);
+}
+
+function selectLabelableEdges(update: GraphUpdate): SceneEdge[] {
+  if (!update.semanticLabelsOnly) {
+    return update.edges;
+  }
+
+  return selectSemanticEdgeRepresentatives(
+    update,
+    (edge) => edge.suppressSemanticLabel !== true || edge.alwaysLabel === true,
+  );
+}
+
+function selectSemanticEdgeRepresentatives(
+  update: GraphUpdate,
+  include: (edge: SceneEdge) => boolean,
+): SceneEdge[] {
   const selectedBySegment = new Map<string, SceneEdge>();
   for (const edge of update.edges) {
-    if (
-      edge.suppressSemanticLabel === true &&
-      edge.alwaysLabel !== true &&
-      edge.labelPriority === undefined
-    ) {
+    if (!include(edge)) {
       continue;
     }
-    if (!(edge.directed || edge.isRelationBoundary)) {
+    if (
+      !(edge.directed || edge.isRelationBoundary || edge.readabilityOverlay)
+    ) {
       continue;
     }
 
@@ -3717,24 +3911,25 @@ function edgeLabelText(
   if (
     update.semanticLabelsOnly &&
     edge.suppressSemanticLabel === true &&
-    edge.alwaysLabel !== true &&
-    edge.labelPriority === undefined
+    edge.alwaysLabel !== true
   ) {
     return undefined;
   }
 
-  if (update.semanticLabelsOnly && !edge.directed && !edge.isRelationBoundary) {
+  if (
+    update.semanticLabelsOnly &&
+    !edge.directed &&
+    !edge.isRelationBoundary &&
+    !edge.readabilityOverlay
+  ) {
     return undefined;
   }
 
   const generatorLabel =
     update.generators[edge.generator]?.label ?? `s${edge.generator}`;
 
-  // In Y_Gamma, every drawn edge label names the generator of that 1-cell.
-  // Relation-walk step numbers live in the inspector/overlay text, not on the
-  // edge label itself; otherwise several cells can compete for the same edge.
   if (update.semanticLabelsOnly) {
-    return generatorLabel;
+    return semanticEdgeLabelText(edge, generatorLabel);
   }
 
   const incident =
@@ -3976,6 +4171,7 @@ function arrowHeadMatrix(
   target: Vector3,
   direction: Vector3,
   object: Object3D,
+  scale: number,
 ): Matrix4 | undefined {
   direction.copy(target).sub(source);
   const length = direction.length();
@@ -3983,9 +4179,9 @@ function arrowHeadMatrix(
     return undefined;
   }
   direction.multiplyScalar(1 / length);
-  object.position.copy(target).addScaledVector(direction, -0.09);
+  object.position.copy(target).addScaledVector(direction, -0.09 * scale);
   object.quaternion.setFromUnitVectors(unitY, direction);
-  object.scale.setScalar(1);
+  object.scale.setScalar(scale);
   object.updateMatrix();
   return object.matrix.clone();
 }

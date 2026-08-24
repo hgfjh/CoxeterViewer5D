@@ -1,0 +1,1063 @@
+{
+  "artifactHash": "3276468d2c2f2b6f20d0af689e2064a50b1f0f571deda36a3d194cd846bde204",
+  "artifactType": "coxeter-block-amalgam-cover-search",
+  "backendVersion": "1.1.0",
+  "candidateCount": 0,
+  "candidates": [],
+  "complete": true,
+  "degree": 5760,
+  "inputHash": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+  "lowerBoundDivisor": 5760,
+  "promotionCriterion": "independent replay of all Coxeter relations and regular orbits for every maximal spherical subgroup",
+  "provenance": {
+    "implementationHashes": {
+      "orbifoldValidatorSha256": "ca8140796d68a3579204247cf62d57b0a73c97a39c3633783e02db5e1710183b",
+      "pythonSha256": "72f45446b5f2b8f524d0134011b633cb3b9667dee70f70bff5fdecf26c16d4d8",
+      "sharedClassifierSha256": "44f3c405f8ab62cc9ff0fb3142aea4ead0448310d429cf4e9836e663eadf21d3"
+    },
+    "problemHash": "4f9ae85bc45da8e9730c9d0b7d199d6f1561dd82918b0e4825d3f0472aac6201"
+  },
+  "schemaVersion": 1,
+  "scope": {
+    "claim": "complete only for the listed extension chain, one sorted-label embedding of each abstract incidence type, minimum-root port maps, and zero overlap twist",
+    "extensionChain": [
+      {
+        "existing_subset": [
+          0,
+          2,
+          3,
+          5,
+          6
+        ],
+        "expected_graph_count": 7,
+        "graph_kind": "complement-two-regular",
+        "name": "g7-over-A4",
+        "new_generator": 7,
+        "new_subset": [
+          0,
+          2,
+          3,
+          6,
+          7
+        ],
+        "overlap_subset": [
+          0,
+          2,
+          3,
+          6
+        ]
+      },
+      {
+        "existing_subset": [
+          0,
+          2,
+          3,
+          5,
+          6
+        ],
+        "expected_graph_count": 1,
+        "graph_kind": "complete-bipartite",
+        "name": "g4-over-A3xA1",
+        "new_generator": 4,
+        "new_subset": [
+          0,
+          2,
+          4,
+          5,
+          6
+        ],
+        "overlap_subset": [
+          0,
+          2,
+          5,
+          6
+        ]
+      },
+      {
+        "existing_subset": [
+          0,
+          2,
+          4,
+          6,
+          7
+        ],
+        "expected_graph_count": 7,
+        "graph_kind": "complement-two-regular",
+        "name": "g1-over-A4",
+        "new_generator": 1,
+        "new_subset": [
+          1,
+          2,
+          4,
+          6,
+          7
+        ],
+        "overlap_subset": [
+          2,
+          4,
+          6,
+          7
+        ]
+      },
+      {
+        "existing_subset": [
+          1,
+          2,
+          3,
+          6,
+          7
+        ],
+        "expected_graph_count": 41,
+        "graph_kind": "two-regular",
+        "name": "g8-over-D4",
+        "new_generator": 8,
+        "new_subset": [
+          1,
+          3,
+          6,
+          7,
+          8
+        ],
+        "overlap_subset": [
+          1,
+          3,
+          6,
+          7
+        ]
+      },
+      {
+        "existing_subset": [
+          0,
+          2,
+          4,
+          5,
+          6
+        ],
+        "expected_graph_count": 41,
+        "graph_kind": "two-regular",
+        "name": "g9-over-D4",
+        "new_generator": 9,
+        "new_subset": [
+          0,
+          2,
+          4,
+          5,
+          9
+        ],
+        "overlap_subset": [
+          0,
+          2,
+          4,
+          5
+        ]
+      }
+    ],
+    "globalNonexistenceClaim": false,
+    "graphCounts": [
+      7,
+      1,
+      7,
+      41,
+      41
+    ],
+    "id": "R0-sorted-incidence-zero-overlap-twist",
+    "normalCoverClaim": false,
+    "totalTopologyCombinations": 82369
+  },
+  "search": {
+    "checkpointLoaded": false,
+    "elapsedSeconds": 2.125,
+    "finalStage": {
+      "examinedThisRun": 0,
+      "relationOrLocalRejections": 0,
+      "sphericalRejections": 0
+    },
+    "finalWorkCountAfterExactPrefixPruning": 0,
+    "nextCombination": 0,
+    "resumeFrom": 0,
+    "scopeComplete": true,
+    "stageCounters": [
+      {
+        "attempted": 7,
+        "relationOrLocalRejections": 0,
+        "sphericalRejections": 0,
+        "survivors": 7
+      },
+      {
+        "attempted": 7,
+        "relationOrLocalRejections": 7,
+        "sphericalRejections": 0,
+        "survivors": 0
+      }
+    ],
+    "timeoutReached": false
+  },
+  "sourceSystem": {
+    "certificate": {
+      "backend": "compact5CubeGamma1ExactChecker",
+      "backendVersion": "1.0.0",
+      "command": "python scripts/certify_compact_5_cube.py public/examples/compact_5_cube_gamma1.json",
+      "diagnostics": {
+        "certifiedClaims": [
+          "Gamma_1 source transcription table",
+          "algebraic dotted values e=(1+sqrt(13))/4 and d=sqrt(2(5+sqrt(13)))/4",
+          "exact normal Gram rank and signature"
+        ],
+        "checkedFields": [
+          "rank",
+          "generators",
+          "coxeterMatrix",
+          "geometry.model",
+          "geometry.dimension",
+          "geometry.normalGram",
+          "sourceRefs"
+        ],
+        "dottedValues": {
+          "boundary": {
+            "isolatingInterval": [
+              1.1513,
+              1.1514
+            ],
+            "minimalPolynomial": [
+              4,
+              -2,
+              -3
+            ],
+            "symbol": "e",
+            "value": "(1 + sqrt(13)) / 4"
+          },
+          "diagonal": {
+            "isolatingInterval": [
+              1.0371,
+              1.0372
+            ],
+            "minimalPolynomial": [
+              16,
+              0,
+              -20,
+              0,
+              3
+            ],
+            "symbol": "d",
+            "value": "sqrt(2(5 + sqrt(13))) / 4"
+          },
+          "field": "Q(sqrt(13), sqrt(10 + 2 sqrt(13)))"
+        },
+        "gram": {
+          "expectedForFacetNormalsInH5": {
+            "negative": 1,
+            "positive": 5,
+            "rank": 6,
+            "zero": 4
+          },
+          "field": "Q(sqrt(13), sqrt(10 + 2 sqrt(13)))",
+          "rank": 6,
+          "signature": {
+            "negative": 1,
+            "positive": 5,
+            "zero": 4
+          }
+        },
+        "sourceTranscription": {
+          "boundaryDottedPairs": [
+            [
+              0,
+              1
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "diagonalDottedPairs": [
+            [
+              2,
+              8
+            ],
+            [
+              6,
+              9
+            ]
+          ],
+          "generatorIds": [
+            "g0",
+            "g1",
+            "g2",
+            "g3",
+            "g4",
+            "g5",
+            "g6",
+            "g7",
+            "g8",
+            "g9"
+          ],
+          "rank": 10,
+          "sourceRefId": "jacquemet-tschantz-2018-cube"
+        }
+      },
+      "inputHash": "49527f5bfa7ca8f7733e4bb490c2b5a20e2602191be6cb2ca29c931d7e800fb9",
+      "sourceRefIds": [
+        "jacquemet-tschantz-2018-cube"
+      ],
+      "status": "passed"
+    },
+    "coxeterMatrix": [
+      [
+        1,
+        "inf",
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        "inf",
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        2,
+        2,
+        2
+      ],
+      [
+        3,
+        2,
+        1,
+        2,
+        3,
+        3,
+        2,
+        2,
+        "inf",
+        2
+      ],
+      [
+        3,
+        2,
+        2,
+        1,
+        "inf",
+        2,
+        3,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        3,
+        "inf",
+        1,
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      [
+        2,
+        3,
+        3,
+        2,
+        2,
+        1,
+        2,
+        "inf",
+        2,
+        2
+      ],
+      [
+        2,
+        3,
+        2,
+        3,
+        2,
+        2,
+        1,
+        3,
+        2,
+        "inf"
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        3,
+        "inf",
+        3,
+        1,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        "inf",
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        3
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        "inf",
+        2,
+        3,
+        1
+      ]
+    ],
+    "dataStatus": "certified",
+    "description": "Coxeter matrix transcribed from Jacquemet and Tschantz, Figure 3, for the unique compact hyperbolic Coxeter 5-cube.",
+    "generators": [
+      {
+        "id": "g0",
+        "label": "g0"
+      },
+      {
+        "id": "g1",
+        "label": "g1"
+      },
+      {
+        "id": "g2",
+        "label": "g2"
+      },
+      {
+        "id": "g3",
+        "label": "g3"
+      },
+      {
+        "id": "g4",
+        "label": "g4"
+      },
+      {
+        "id": "g5",
+        "label": "g5"
+      },
+      {
+        "id": "g6",
+        "label": "g6"
+      },
+      {
+        "id": "g7",
+        "label": "g7"
+      },
+      {
+        "id": "g8",
+        "label": "g8"
+      },
+      {
+        "id": "g9",
+        "label": "g9"
+      }
+    ],
+    "geometry": {
+      "certifiedModel": {
+        "certificate": {
+          "backend": "in-repo-interval-geometry-checker",
+          "checkedAt": "1970-01-01T00:00:00.000Z",
+          "command": "python scripts/certify_geometry_intervals.py public/examples/compact_5_cube_gamma1.json",
+          "diagnostics": {
+            "basepointMaxFacetValue": -0.16154116562912996,
+            "factorizationResidual": 2.3856472353145364e-12,
+            "signature": {
+              "negative": 1,
+              "positive": 5,
+              "zero": 4
+            },
+            "tolerance": 1e-08
+          },
+          "scopes": [
+            "geometry-intervals",
+            "geometry-interval-coordinates",
+            "geometry-interval-reflections",
+            "projection-bounds"
+          ],
+          "status": "passed",
+          "warnings": [
+            "This certificate encloses numerical Lorentz residuals in intervals. PCA projections remain visualization-only."
+          ]
+        },
+        "coordinateSystem": "hyperboloid",
+        "coordinateType": "interval-certified-numeric",
+        "lorentzPreservationResidual": {
+          "decimal": 8.881784197001252e-16,
+          "kind": "interval-real",
+          "lower": 0,
+          "upper": 1.1e-12
+        },
+        "reflectionInvolutionResidual": {
+          "decimal": 8.881784197001252e-16,
+          "kind": "interval-real",
+          "lower": 0,
+          "upper": 1.1e-12
+        },
+        "status": "passed",
+        "warnings": [
+          "Interval-certified reflection residuals are available; browser rendering still uses numerical coordinates."
+        ]
+      },
+      "dimension": 5,
+      "model": "hyperboloid",
+      "normalGram": [
+        [
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          }
+        ]
+      ],
+      "source": "Jacquemet and Tschantz, All hyperbolic Coxeter n-cubes, arXiv:1803.10462, Figure 3 and Section 4.2.2."
+    },
+    "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+    "notes": [
+      "The graph is the unique compact hyperbolic Coxeter 5-cube Gamma_1 from Jacquemet-Tschantz, Figure 3.",
+      "Node ids g0..g9 follow the LaTeX source drawing coordinate order: (30,0), (110,0), (30,80), (70,40), (70,120), (110,80), (150,40), (150,120), (60,70), (120,50).",
+      "Unlabeled solid Coxeter graph edges are m=3; omitted edges are m=2; dotted edges are represented as Coxeter-matrix 'inf' entries.",
+      "Dotted diagonal edges (g2,g8) and (g6,g9) use cosh d = sqrt(2(5+sqrt(13)))/4.",
+      "Dotted boundary edges (g0,g1), (g3,g4), and (g5,g7) use cosh e = (1+sqrt(13))/4."
+    ],
+    "rank": 10,
+    "schemaVersion": 1,
+    "sourceRefs": [
+      {
+        "citation": "Matthieu Jacquemet and Steven T. Tschantz, All hyperbolic Coxeter n-cubes, Journal of Combinatorial Theory, Series A 158 (2018), 387-406.",
+        "id": "jacquemet-tschantz-2018-cube",
+        "locator": "Theorem 1, Figure 3, and Section 4.2.2",
+        "notes": "Supports the compact 5-cube Coxeter graph Gamma_1 and its dotted-edge weights.",
+        "url": "https://arxiv.org/abs/1803.10462"
+      }
+    ],
+    "warnings": [
+      "Certified source transcription, algebraic dotted weights, and exact Gram rank/signature are included. Lorentzian normal coordinates and a chamber basepoint are computed numerically from normalGram for visualization."
+    ]
+  },
+  "status": "exhausted",
+  "warnings": [
+    "R0 is a finite representative ansatz, not all degree-5,760 actions.",
+    "An abstract incidence type can have further inequivalent embeddings after an earlier gluing breaks block symmetry.",
+    "A negative result does not rule out noncanonical ports, nontrivial overlap holonomy, repeated incidence, or another extension chain."
+  ]
+}

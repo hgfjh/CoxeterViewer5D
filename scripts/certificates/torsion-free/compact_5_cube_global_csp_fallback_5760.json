@@ -1,0 +1,168 @@
+{
+  "artifactHash": "625531fe26a19954af1adb5c7cf0d24d4aa53ab668ba42655dad798e8a41a9a6",
+  "artifactType": "coxeter-block-amalgam-global-csp",
+  "backendVersion": "1.0.0",
+  "campaignHash": "7af465e4ad1479072441b84baaf7161422aba7e57640d2aac57b1384719eacd2",
+  "candidate": null,
+  "candidateFound": false,
+  "claims": [],
+  "complete": false,
+  "completeness": {
+    "claim": "The declared finite domain was not exhausted; no nonexistence conclusion follows.",
+    "declaredFiniteDomainExhausted": false,
+    "degreeNonexistenceClaim": false,
+    "exhaustedFirstStageBranches": [],
+    "firstStageBranchCount": 7
+  },
+  "degree": 5760,
+  "domain": {
+    "firstStageBranches": 7,
+    "frames": {
+      "framesPerResidue": "2958824445050880",
+      "remainingBlockAssignments": 7,
+      "remainingRootAssignments": 7,
+      "rootDomainSize": 48,
+      "standardPort0Gauge": "B0 with root coordinate 0",
+      "variablesPerResidue": 14
+    },
+    "kind": "global-port-ownership-and-local-equivariant-frame-domain",
+    "ownership": {
+      "assignmentsPerBranch": "6538788315119179526047380411895480779825576867866060412873080832000000000000000000000",
+      "block0Gauge": "identity fixes all residue names",
+      "constraint": "each existing block uses every P-port exactly once",
+      "existingBlockCount": 8,
+      "remainingVariables": 105,
+      "residueCount": 15
+    },
+    "seedRestrictsDomain": false,
+    "totalAssignments": "533805800919660511171699631960596240037561788242588337369967745432107365759356966215198797605941570862877991758126930838623682568898180872449448217634452493431386051405899930184339779302789086254115682011498472459926000390688244959949180203277345068401749207578461178916641091616768000000000000000000000000000000000000"
+  },
+  "inputHash": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+  "learnedConflicts": {
+    "clausesSha256": "dd5bdf2de0660fbb299a8d01960db10dc95e81f33c16a7a57dc30546544f3a75",
+    "count": 5431,
+    "learnedThisRun": 0,
+    "preloadedCount": 10
+  },
+  "nonClaims": [
+    "degree-5,760 nonexistence",
+    "torsion-free cover",
+    "minimal index",
+    "complete Coxeter generator action"
+  ],
+  "optionalSeedOrdering": {
+    "artifactHash": null,
+    "restrictsDomain": false,
+    "used": false
+  },
+  "preloadedR8Conflicts": {
+    "allForcedEdgesReplayed": true,
+    "artifactHash": "f4fe498006e38eb838babca4f1cfe1e06a82f363bcd063aceb9ebb993f476e9e",
+    "clauseCount": 10,
+    "clausesSha256": "83b12a3d5a897e685af7694b33ce98d5d10afd50341f9605d1104fd54ee2ae30"
+  },
+  "propagation": {
+    "candidateGate": "all finite pair relations and newly completed spherical restrictions are independently replayed",
+    "crossRelation": "rollback propagation of (g4 g7)^3 triangles",
+    "localCResidues": "exact equivariant A3xA1 port maps"
+  },
+  "provenance": {
+    "augmentationBackendSha256": "070bf55f360993c34e1de8feae1c0fadf08b57202a0ed257b20f15f93316ffdd",
+    "blockBackendSha256": "893912296632b9ef0aa5eb7c6ef147d736e568659f12a6ae46e0923f95588d29",
+    "globalizerBackendSha256": "c908331ed600a93549eae519e2f7dca781b2aeed753f9c58c6f7324a27675d6a",
+    "implementationSha256": "f602b1725eedbc32300ce32a83d78800f6a9ba5176f6645883ce441cb62043dc"
+  },
+  "schemaVersion": 1,
+  "search": {
+    "counters": {
+      "clausePrunes": 0,
+      "invocations": 1,
+      "learnedClauses": 5431,
+      "learnedThisRun": 0,
+      "nodes": 32768,
+      "relationRejections": 0
+    },
+    "deterministicRandomizedRestarts": true,
+    "interruptReason": "wall-clock-budget",
+    "interrupted": true,
+    "memoryBudgetMb": 2048,
+    "nodeBudget": 100000,
+    "nodeBudgetPerRestart": 25000,
+    "nodesThisRun": 32768,
+    "randomSeed": 20260813,
+    "restartsCompletedThisRun": 2,
+    "restartsRequested": 4,
+    "timeoutSeconds": 60.0,
+    "traces": [
+      {
+        "branchOrder": [3, 2, 5, 1, 0, 6, 4],
+        "branchOrderSha256": "4a492d3e938c30b4bb256cb839777f4d7de3bf801946ebcb2e945d65eebf68f7",
+        "outcomes": [],
+        "restart": 0,
+        "restartCutoff": true
+      },
+      {
+        "branchOrder": [6, 4, 1, 3, 2, 0, 5],
+        "branchOrderSha256": "c4a7942cd6467381de4ebc1d15cf2f090b7e6bb660f3a822359e3186e41cf167",
+        "outcomes": [],
+        "restart": 1,
+        "restartCutoff": false
+      }
+    ]
+  },
+  "sourceSystem": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+  "status": "incomplete-resource-bounded-search",
+  "symmetryReduction": {
+    "diagramAndStageAudit": {
+      "auditSha256": "d85381ec298525da65dd5d0de589db184fdbf92aca260d9d5575162304010574",
+      "branches": [
+        {
+          "branch": 0,
+          "firstStageCentralizerOrder": 2,
+          "fixedGaugeStabilizerOrder": 1
+        },
+        {
+          "branch": 1,
+          "firstStageCentralizerOrder": 1,
+          "fixedGaugeStabilizerOrder": 1
+        },
+        {
+          "branch": 2,
+          "firstStageCentralizerOrder": 1,
+          "fixedGaugeStabilizerOrder": 1
+        },
+        {
+          "branch": 3,
+          "firstStageCentralizerOrder": 1,
+          "fixedGaugeStabilizerOrder": 1
+        },
+        {
+          "branch": 4,
+          "firstStageCentralizerOrder": 1,
+          "fixedGaugeStabilizerOrder": 1
+        },
+        {
+          "branch": 5,
+          "firstStageCentralizerOrder": 1,
+          "fixedGaugeStabilizerOrder": 1
+        },
+        {
+          "branch": 6,
+          "firstStageCentralizerOrder": 1,
+          "fixedGaugeStabilizerOrder": 1
+        }
+      ],
+      "diagramAutomorphismCount": 6,
+      "diagramEnumerationComplete": true,
+      "stageChainStabilizerCount": 1
+    },
+    "localRegularCoordinate": "standard port 0 maps to B0/root 0",
+    "residueRelabeling": "fixed canonically by block-0 ownership identity",
+    "seedWindowUsedAsDomain": false
+  },
+  "warnings": [
+    "A resource-bounded run is a discovery run, not an exhaustion proof.",
+    "R8 clauses are applied only after their forced edges are independently replayed and their boundary predicate is rechecked.",
+    "A second-gluing row must still pass later generator stages and full spherical-freeness certification."
+  ]
+}

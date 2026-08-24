@@ -1928,6 +1928,18 @@ export function quotientManifoldStatus(
   const verification = complex.subgroup?.torsionFreeVerification;
   const certificate = complex.torsionFreeCertificate;
 
+  // Torsion-freeness is necessary for the intended manifold quotients, but it
+  // does not turn an arbitrary quotient cell complex into a manifold. The
+  // producer must opt into that stronger claim as well as supplying evidence.
+  if (complex.subgroup?.manifoldClaimed !== true) {
+    return {
+      canUseManifoldLanguage: false,
+      label: "quotient complex",
+      reason:
+        "The subgroup is not marked with a manifold claim; torsion-free evidence alone certifies only the cover action.",
+    };
+  }
+
   if (verification?.verified === true) {
     return {
       canUseManifoldLanguage: true,

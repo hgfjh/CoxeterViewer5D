@@ -68,6 +68,14 @@
       "infinitePairs": 1
     },
     {
+      "file": "ideal_hyperbolic_3_cube_m3.json",
+      "name": "Regular ideal hyperbolic Coxeter 3-cube (all adjacent m=3)",
+      "dataStatus": "certified",
+      "rank": 6,
+      "finitePairs": 12,
+      "infinitePairs": 3
+    },
+    {
       "file": "jnw_cube_graph.json",
       "name": "JNW cube graph RACG",
       "dataStatus": "verified-source",
@@ -281,7 +289,7 @@
     }
   ],
   "totals": {
-    "examples": 26,
+    "examples": 27,
     "generated": 6,
     "generatedNodes": 80,
     "generatedEdges": 104,

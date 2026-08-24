@@ -1,0 +1,22 @@
+{
+  "classicalTargets": [],
+  "symmetricDegrees": [],
+  "weylTypes": ["B6"],
+  "bounds": {
+    "maxAnchorClasses": 65536,
+    "maxAnchorSearchNodes": 150000000,
+    "maxInvolutionClasses": 2000,
+    "maxInvolutions": 4096,
+    "maxPermutationDegree": 128,
+    "maxPrecheckNodesPerType": 1000000,
+    "maxSearchNodes": 750000000,
+    "maxSolutionsPerTarget": 1,
+    "maxSphericalOrder": 100000,
+    "maxSubsets": 65536,
+    "maxTargetOrderForEnumeration": 60000,
+    "maxVerifyImageOrder": 60000,
+    "timeoutSecondsPerAnchor": 43200,
+    "timeoutSecondsPerPrecheck": 300,
+    "timeoutSecondsPerTarget": 43200
+  }
+}

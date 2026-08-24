@@ -16,3 +16,4 @@ export type {
   MissingFlagSimplex,
   TopologyDiagnosticSummary,
 } from "./diagnostics";
+export * from "./collapsibility";

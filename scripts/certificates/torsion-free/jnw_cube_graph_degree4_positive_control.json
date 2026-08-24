@@ -1,0 +1,5045 @@
+{
+  "schemaVersion": 1,
+  "kind": "jnw-cube-graph-positive-control-certificate",
+  "method": "degree-four-move-kernel-integral-morse",
+  "status": "passed",
+  "source": {
+    "systemName": "JNW cube graph RACG",
+    "systemCanonicalSha256": "d78432eb31287a8c944bb09d403572aca0a7a027b8d4cc9480f23275925bedd1",
+    "sourceReferenceId": "jankiewicz-norin-wise-2017-legal-systems",
+    "initialStateGenerators": [0, 2, 6, 7],
+    "exactCubeGraphTranscription": true,
+    "sourceSystem": {
+      "schemaVersion": 1,
+      "name": "JNW cube graph RACG",
+      "dataStatus": "verified-source",
+      "description": "Right-angled Coxeter system whose defining graph is the 1-skeleton of a 3-cube, used by Jankiewicz-Norin-Wise as a legal-system example.",
+      "rank": 8,
+      "generators": [
+        {
+          "id": "v000",
+          "label": "v000",
+          "colorHint": "#2563eb"
+        },
+        {
+          "id": "v001",
+          "label": "v001",
+          "colorHint": "#16a34a"
+        },
+        {
+          "id": "v010",
+          "label": "v010",
+          "colorHint": "#dc2626"
+        },
+        {
+          "id": "v011",
+          "label": "v011",
+          "colorHint": "#9333ea"
+        },
+        {
+          "id": "v100",
+          "label": "v100",
+          "colorHint": "#ea580c"
+        },
+        {
+          "id": "v101",
+          "label": "v101",
+          "colorHint": "#0891b2"
+        },
+        {
+          "id": "v110",
+          "label": "v110",
+          "colorHint": "#65a30d"
+        },
+        {
+          "id": "v111",
+          "label": "v111",
+          "colorHint": "#be123c"
+        }
+      ],
+      "coxeterMatrix": [
+        [1, 2, 2, "inf", 2, "inf", "inf", "inf"],
+        [2, 1, "inf", 2, "inf", 2, "inf", "inf"],
+        [2, "inf", 1, 2, "inf", "inf", 2, "inf"],
+        ["inf", 2, 2, 1, "inf", "inf", "inf", 2],
+        [2, "inf", "inf", "inf", 1, 2, 2, "inf"],
+        ["inf", 2, "inf", "inf", 2, 1, "inf", 2],
+        ["inf", "inf", 2, "inf", 2, "inf", 1, 2],
+        ["inf", "inf", "inf", 2, "inf", 2, 2, 1]
+      ],
+      "sourceRefs": [
+        {
+          "id": "jankiewicz-norin-wise-2017-legal-systems",
+          "citation": "Kasia Jankiewicz, Sergey Norin, and Daniel T. Wise, Virtually Fibering Right-Angled Coxeter Groups, arXiv:1711.11505.",
+          "url": "https://arxiv.org/abs/1711.11505",
+          "locator": "Section 2 for systems of moves and legal states; Section 5.a.1 for the cube graph example.",
+          "notes": "Section 5.a.1 uses the 1-skeleton of the 3-cube and the bipartition move system as a legal-system example."
+        }
+      ],
+      "notes": [
+        "The generators are the binary vertices of the 3-cube.",
+        "The Coxeter entry is m=2 exactly when the corresponding cube vertices differ in one coordinate; otherwise it is infinite.",
+        "The JNW Legal-System Game preset preloads the JNW21 bipartition color-class moves and the paper's displayed legal initial state {v000, v010, v110, v111}.",
+        "The compact reader displays the derived four-state move-kernel cover with vertices S_1, S_2, ...; it is distinct from the 256-vertex commutator cover in JNW21.",
+        "The app checks the move orbit, move-kernel cover incidence, and induced flag links in-repo; these checks are not an external fibering certificate."
+      ]
+    }
+  },
+  "legalSystem": {
+    "moveSystem": {
+      "id": "jnw-bipartite-color-moves",
+      "label": "Bipartite color-class moves",
+      "moves": [
+        {
+          "generator": 0,
+          "toggles": [0, 3, 5, 6]
+        },
+        {
+          "generator": 1,
+          "toggles": [1, 2, 4, 7]
+        },
+        {
+          "generator": 2,
+          "toggles": [1, 2, 4, 7]
+        },
+        {
+          "generator": 3,
+          "toggles": [0, 3, 5, 6]
+        },
+        {
+          "generator": 4,
+          "toggles": [1, 2, 4, 7]
+        },
+        {
+          "generator": 5,
+          "toggles": [0, 3, 5, 6]
+        },
+        {
+          "generator": 6,
+          "toggles": [0, 3, 5, 6]
+        },
+        {
+          "generator": 7,
+          "toggles": [1, 2, 4, 7]
+        }
+      ]
+    },
+    "summary": {
+      "claimStatus": "jnw-faithful",
+      "rightAngled": true,
+      "orbitComplete": true,
+      "orbitCap": 512,
+      "states": [
+        {
+          "id": "jnw:state:0.1.4.6",
+          "generators": [0, 1, 4, 6],
+          "legal": {
+            "stateId": "jnw:state:0.1.4.6",
+            "state": [0, 1, 4, 6],
+            "nonempty": true,
+            "complementNonempty": true,
+            "stateConnected": true,
+            "complementConnected": true,
+            "stronglyLegal": true,
+            "legal": true
+          }
+        },
+        {
+          "id": "jnw:state:0.2.6.7",
+          "generators": [0, 2, 6, 7],
+          "legal": {
+            "stateId": "jnw:state:0.2.6.7",
+            "state": [0, 2, 6, 7],
+            "nonempty": true,
+            "complementNonempty": true,
+            "stateConnected": true,
+            "complementConnected": true,
+            "stronglyLegal": true,
+            "legal": true
+          }
+        },
+        {
+          "id": "jnw:state:1.3.4.5",
+          "generators": [1, 3, 4, 5],
+          "legal": {
+            "stateId": "jnw:state:1.3.4.5",
+            "state": [1, 3, 4, 5],
+            "nonempty": true,
+            "complementNonempty": true,
+            "stateConnected": true,
+            "complementConnected": true,
+            "stronglyLegal": true,
+            "legal": true
+          }
+        },
+        {
+          "id": "jnw:state:2.3.5.7",
+          "generators": [2, 3, 5, 7],
+          "legal": {
+            "stateId": "jnw:state:2.3.5.7",
+            "state": [2, 3, 5, 7],
+            "nonempty": true,
+            "complementNonempty": true,
+            "stateConnected": true,
+            "complementConnected": true,
+            "stronglyLegal": true,
+            "legal": true
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+          "source": "jnw:state:0.1.4.6",
+          "target": "jnw:state:1.3.4.5",
+          "generator": 0,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:1.3.4.5"
+        },
+        {
+          "id": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+          "source": "jnw:state:0.2.6.7",
+          "target": "jnw:state:2.3.5.7",
+          "generator": 0,
+          "undirectedSource": "jnw:state:0.2.6.7",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        },
+        {
+          "id": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+          "source": "jnw:state:0.1.4.6",
+          "target": "jnw:state:0.2.6.7",
+          "generator": 1,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:0.2.6.7"
+        },
+        {
+          "id": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+          "source": "jnw:state:1.3.4.5",
+          "target": "jnw:state:2.3.5.7",
+          "generator": 1,
+          "undirectedSource": "jnw:state:1.3.4.5",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        },
+        {
+          "id": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+          "source": "jnw:state:0.2.6.7",
+          "target": "jnw:state:0.1.4.6",
+          "generator": 2,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:0.2.6.7"
+        },
+        {
+          "id": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+          "source": "jnw:state:2.3.5.7",
+          "target": "jnw:state:1.3.4.5",
+          "generator": 2,
+          "undirectedSource": "jnw:state:1.3.4.5",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        },
+        {
+          "id": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+          "source": "jnw:state:1.3.4.5",
+          "target": "jnw:state:0.1.4.6",
+          "generator": 3,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:1.3.4.5"
+        },
+        {
+          "id": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+          "source": "jnw:state:2.3.5.7",
+          "target": "jnw:state:0.2.6.7",
+          "generator": 3,
+          "undirectedSource": "jnw:state:0.2.6.7",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        },
+        {
+          "id": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+          "source": "jnw:state:0.1.4.6",
+          "target": "jnw:state:0.2.6.7",
+          "generator": 4,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:0.2.6.7"
+        },
+        {
+          "id": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+          "source": "jnw:state:1.3.4.5",
+          "target": "jnw:state:2.3.5.7",
+          "generator": 4,
+          "undirectedSource": "jnw:state:1.3.4.5",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        },
+        {
+          "id": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+          "source": "jnw:state:1.3.4.5",
+          "target": "jnw:state:0.1.4.6",
+          "generator": 5,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:1.3.4.5"
+        },
+        {
+          "id": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+          "source": "jnw:state:2.3.5.7",
+          "target": "jnw:state:0.2.6.7",
+          "generator": 5,
+          "undirectedSource": "jnw:state:0.2.6.7",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        },
+        {
+          "id": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+          "source": "jnw:state:0.1.4.6",
+          "target": "jnw:state:1.3.4.5",
+          "generator": 6,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:1.3.4.5"
+        },
+        {
+          "id": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+          "source": "jnw:state:0.2.6.7",
+          "target": "jnw:state:2.3.5.7",
+          "generator": 6,
+          "undirectedSource": "jnw:state:0.2.6.7",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        },
+        {
+          "id": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+          "source": "jnw:state:0.2.6.7",
+          "target": "jnw:state:0.1.4.6",
+          "generator": 7,
+          "undirectedSource": "jnw:state:0.1.4.6",
+          "undirectedTarget": "jnw:state:0.2.6.7"
+        },
+        {
+          "id": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+          "source": "jnw:state:2.3.5.7",
+          "target": "jnw:state:1.3.4.5",
+          "generator": 7,
+          "undirectedSource": "jnw:state:1.3.4.5",
+          "undirectedTarget": "jnw:state:2.3.5.7"
+        }
+      ],
+      "moveChecks": [
+        {
+          "generator": 0,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        },
+        {
+          "generator": 1,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        },
+        {
+          "generator": 2,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        },
+        {
+          "generator": 3,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        },
+        {
+          "generator": 4,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        },
+        {
+          "generator": 5,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        },
+        {
+          "generator": 6,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        },
+        {
+          "generator": 7,
+          "includesSelf": true,
+          "adjacentGeneratorViolations": [],
+          "ok": true
+        }
+      ],
+      "rankTwoDiagnostics": [
+        {
+          "id": "jnw:cell:0-1:jnw:state:0.1.4.6",
+          "generatorPair": [0, 1],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:1.3.4.5",
+            "jnw:state:2.3.5.7",
+            "jnw:state:0.2.6.7"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+            "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:0-2:jnw:state:0.1.4.6",
+          "generatorPair": [0, 2],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:1.3.4.5",
+            "jnw:state:2.3.5.7",
+            "jnw:state:0.2.6.7"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+            "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:0-4:jnw:state:0.1.4.6",
+          "generatorPair": [0, 4],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:1.3.4.5",
+            "jnw:state:2.3.5.7",
+            "jnw:state:0.2.6.7"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+            "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:1-3:jnw:state:0.1.4.6",
+          "generatorPair": [1, 3],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:0.2.6.7",
+            "jnw:state:2.3.5.7",
+            "jnw:state:1.3.4.5"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+            "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:1-5:jnw:state:0.1.4.6",
+          "generatorPair": [1, 5],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:0.2.6.7",
+            "jnw:state:2.3.5.7",
+            "jnw:state:1.3.4.5"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+            "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:2-3:jnw:state:0.1.4.6",
+          "generatorPair": [2, 3],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:0.2.6.7",
+            "jnw:state:2.3.5.7",
+            "jnw:state:1.3.4.5"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+            "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:2-6:jnw:state:0.1.4.6",
+          "generatorPair": [2, 6],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:0.2.6.7",
+            "jnw:state:2.3.5.7",
+            "jnw:state:1.3.4.5"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+            "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:3-7:jnw:state:0.1.4.6",
+          "generatorPair": [3, 7],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:1.3.4.5",
+            "jnw:state:2.3.5.7",
+            "jnw:state:0.2.6.7"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+            "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:4-5:jnw:state:0.1.4.6",
+          "generatorPair": [4, 5],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:0.2.6.7",
+            "jnw:state:2.3.5.7",
+            "jnw:state:1.3.4.5"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+            "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:4-6:jnw:state:0.1.4.6",
+          "generatorPair": [4, 6],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:0.2.6.7",
+            "jnw:state:2.3.5.7",
+            "jnw:state:1.3.4.5"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7",
+            "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:5-7:jnw:state:0.1.4.6",
+          "generatorPair": [5, 7],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:1.3.4.5",
+            "jnw:state:2.3.5.7",
+            "jnw:state:0.2.6.7"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+            "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        },
+        {
+          "id": "jnw:cell:6-7:jnw:state:0.1.4.6",
+          "generatorPair": [6, 7],
+          "m": 2,
+          "startStateId": "jnw:state:0.1.4.6",
+          "boundaryStateIds": [
+            "jnw:state:0.1.4.6",
+            "jnw:state:1.3.4.5",
+            "jnw:state:2.3.5.7",
+            "jnw:state:0.2.6.7"
+          ],
+          "boundaryEdgeIds": [
+            "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5",
+            "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7",
+            "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7",
+            "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7"
+          ],
+          "periodClosed": true,
+          "ok": true,
+          "warnings": []
+        }
+      ],
+      "legalOrbit": true,
+      "stronglyLegalOrbit": true,
+      "legalStateCount": 4,
+      "stronglyLegalStateCount": 4,
+      "warnings": [],
+      "errors": []
+    },
+    "quotientDigest": "97b2557d7413e7d1b91bf01cb7da639d92869fe28e15b3ffdc2b8f004c25b5fb",
+    "checks": {
+      "rightAngled": true,
+      "moveProperty": true,
+      "orbitComplete": true,
+      "legalOrbit": true,
+      "stronglyLegalOrbit": true,
+      "rankTwoBoundariesClose": true,
+      "fourStateOrbit": true
+    }
+  },
+  "finiteAction": {
+    "candidate": {
+      "id": "jnw-cube-graph-degree4-move-kernel",
+      "name": "Kernel of the JNW cube-graph move homomorphism",
+      "index": 4,
+      "generatorImages": [
+        [2, 3, 0, 1],
+        [1, 0, 3, 2],
+        [1, 0, 3, 2],
+        [2, 3, 0, 1],
+        [1, 0, 3, 2],
+        [2, 3, 0, 1],
+        [2, 3, 0, 1],
+        [1, 0, 3, 2]
+      ],
+      "pointLabels": [
+        "jnw:state:0.1.4.6",
+        "jnw:state:0.2.6.7",
+        "jnw:state:1.3.4.5",
+        "jnw:state:2.3.5.7"
+      ],
+      "backend": "in-repo-jnw-move-action",
+      "backendVersion": "1.0.0",
+      "source": "jankiewicz-norin-wise-2017-legal-systems",
+      "notes": [
+        "The action is reconstructed from the complete four-state JNW move orbit.",
+        "Torsion-freeness is certified separately on every spherical special subgroup."
+      ]
+    },
+    "sphericalPlan": {
+      "status": "complete",
+      "rank": 8,
+      "candidateSubsetCount": {
+        "decimal": "255",
+        "safeInteger": 255
+      },
+      "checkedSubsetCount": 255,
+      "sphericalSubgroups": [
+        {
+          "id": "T:0",
+          "generators": [0],
+          "generatorLabels": ["v000"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [0],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:1",
+          "generators": [1],
+          "generatorLabels": ["v001"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [1],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:2",
+          "generators": [2],
+          "generatorLabels": ["v010"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [2],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:3",
+          "generators": [3],
+          "generatorLabels": ["v011"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [3],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:4",
+          "generators": [4],
+          "generatorLabels": ["v100"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [4],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:5",
+          "generators": [5],
+          "generatorLabels": ["v101"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [5],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:6",
+          "generators": [6],
+          "generatorLabels": ["v110"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [6],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:7",
+          "generators": [7],
+          "generatorLabels": ["v111"],
+          "rank": 1,
+          "components": [
+            {
+              "generators": [7],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1",
+          "order": {
+            "decimal": "2",
+            "safeInteger": 2
+          }
+        },
+        {
+          "id": "T:0,1",
+          "generators": [0, 1],
+          "generatorLabels": ["v000", "v001"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [0],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [1],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:0,2",
+          "generators": [0, 2],
+          "generatorLabels": ["v000", "v010"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [0],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [2],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:0,4",
+          "generators": [0, 4],
+          "generatorLabels": ["v000", "v100"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [0],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [4],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:1,3",
+          "generators": [1, 3],
+          "generatorLabels": ["v001", "v011"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [1],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [3],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:1,5",
+          "generators": [1, 5],
+          "generatorLabels": ["v001", "v101"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [1],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [5],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:2,3",
+          "generators": [2, 3],
+          "generatorLabels": ["v010", "v011"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [2],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [3],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:2,6",
+          "generators": [2, 6],
+          "generatorLabels": ["v010", "v110"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [2],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [6],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:3,7",
+          "generators": [3, 7],
+          "generatorLabels": ["v011", "v111"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [3],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [7],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:4,5",
+          "generators": [4, 5],
+          "generatorLabels": ["v100", "v101"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [4],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [5],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:4,6",
+          "generators": [4, 6],
+          "generatorLabels": ["v100", "v110"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [4],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [6],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:5,7",
+          "generators": [5, 7],
+          "generatorLabels": ["v101", "v111"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [5],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [7],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        },
+        {
+          "id": "T:6,7",
+          "generators": [6, 7],
+          "generatorLabels": ["v110", "v111"],
+          "rank": 2,
+          "components": [
+            {
+              "generators": [6],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            },
+            {
+              "generators": [7],
+              "type": "A1",
+              "order": {
+                "decimal": "2",
+                "safeInteger": 2
+              }
+            }
+          ],
+          "type": "A1 x A1",
+          "order": {
+            "decimal": "4",
+            "safeInteger": 4
+          }
+        }
+      ],
+      "warnings": []
+    },
+    "certificate": {
+      "status": "passed",
+      "method": "tits-spherical-special-subgroup-action",
+      "candidateId": "jnw-cube-graph-degree4-move-kernel",
+      "candidateIndex": 4,
+      "actionFingerprint": "fnv1a64:b7f5c1bd9d71228f",
+      "indexLowerBound": {
+        "value": {
+          "decimal": "4",
+          "safeInteger": 4
+        },
+        "contributingSubgroupIds": ["T:0", "T:0,1"],
+        "explanation": "A torsion-free coset action restricts freely to every spherical special subgroup, so the action degree is divisible by this LCM."
+      },
+      "checks": {
+        "actionShape": true,
+        "transitive": true,
+        "involutiveGenerators": true,
+        "coxeterRelations": true,
+        "indexDivisibility": true,
+        "sphericalEnumerationComplete": true,
+        "sphericalSubgroupEnumerationsComplete": true,
+        "sphericalActionsFaithful": true,
+        "sphericalActionsFree": true
+      },
+      "sphericalActions": [
+        {
+          "sphericalSubsetId": "T:0",
+          "generators": [0],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:1",
+          "generators": [1],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:2",
+          "generators": [2],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:3",
+          "generators": [3],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:4",
+          "generators": [4],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:5",
+          "generators": [5],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:6",
+          "generators": [6],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:7",
+          "generators": [7],
+          "expectedOrder": {
+            "decimal": "2",
+            "safeInteger": 2
+          },
+          "enumeratedImageElements": 2,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:0,1",
+          "generators": [0, 1],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:0,2",
+          "generators": [0, 2],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:0,4",
+          "generators": [0, 4],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:1,3",
+          "generators": [1, 3],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:1,5",
+          "generators": [1, 5],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:2,3",
+          "generators": [2, 3],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:2,6",
+          "generators": [2, 6],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:3,7",
+          "generators": [3, 7],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:4,5",
+          "generators": [4, 5],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:4,6",
+          "generators": [4, 6],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:5,7",
+          "generators": [5, 7],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        },
+        {
+          "sphericalSubsetId": "T:6,7",
+          "generators": [6, 7],
+          "expectedOrder": {
+            "decimal": "4",
+            "safeInteger": 4
+          },
+          "enumeratedImageElements": 4,
+          "enumerationComplete": true,
+          "faithful": true,
+          "free": true,
+          "fixedPointElementCount": 0
+        }
+      ],
+      "witnesses": [],
+      "witnessCount": 0,
+      "errors": [],
+      "warnings": []
+    },
+    "checks": {
+      "degreeFour": true,
+      "exactIndexLowerBoundFour": true,
+      "twentySphericalSubsets": true,
+      "allSphericalActionsFree": true,
+      "torsionFree": true
+    }
+  },
+  "fullDavisQuotient": {
+    "schemaVersion": 1,
+    "kind": "full-davis-quotient-cell-poset",
+    "systemName": "JNW cube graph RACG",
+    "actionCandidateId": "jnw-cube-graph-degree4-move-kernel",
+    "actionIndex": 4,
+    "actionFingerprint": "fnv1a64:b7f5c1bd9d71228f",
+    "dimension": 2,
+    "vertices": [
+      {
+        "id": "fdq:v:q0",
+        "actionPoint": 0,
+        "sourceQuotientVertexId": "jnw:state:0.1.4.6",
+        "label": "jnw:state:0.1.4.6"
+      },
+      {
+        "id": "fdq:v:q1",
+        "actionPoint": 1,
+        "sourceQuotientVertexId": "jnw:state:0.2.6.7",
+        "label": "jnw:state:0.2.6.7"
+      },
+      {
+        "id": "fdq:v:q2",
+        "actionPoint": 2,
+        "sourceQuotientVertexId": "jnw:state:1.3.4.5",
+        "label": "jnw:state:1.3.4.5"
+      },
+      {
+        "id": "fdq:v:q3",
+        "actionPoint": 3,
+        "sourceQuotientVertexId": "jnw:state:2.3.5.7",
+        "label": "jnw:state:2.3.5.7"
+      }
+    ],
+    "sphericalTypes": [
+      {
+        "id": "T:empty",
+        "generators": [],
+        "generatorLabels": [],
+        "rank": 0,
+        "subgroupOrder": 1,
+        "source": "empty-subset",
+        "cellIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"]
+      },
+      {
+        "id": "T:0",
+        "generators": [0],
+        "generatorLabels": ["v000"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T0:q0", "fdq:cell:T0:q1"]
+      },
+      {
+        "id": "T:1",
+        "generators": [1],
+        "generatorLabels": ["v001"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T1:q0", "fdq:cell:T1:q2"]
+      },
+      {
+        "id": "T:2",
+        "generators": [2],
+        "generatorLabels": ["v010"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T2:q0", "fdq:cell:T2:q2"]
+      },
+      {
+        "id": "T:3",
+        "generators": [3],
+        "generatorLabels": ["v011"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T3:q0", "fdq:cell:T3:q1"]
+      },
+      {
+        "id": "T:4",
+        "generators": [4],
+        "generatorLabels": ["v100"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T4:q0", "fdq:cell:T4:q2"]
+      },
+      {
+        "id": "T:5",
+        "generators": [5],
+        "generatorLabels": ["v101"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T5:q0", "fdq:cell:T5:q1"]
+      },
+      {
+        "id": "T:6",
+        "generators": [6],
+        "generatorLabels": ["v110"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T6:q0", "fdq:cell:T6:q1"]
+      },
+      {
+        "id": "T:7",
+        "generators": [7],
+        "generatorLabels": ["v111"],
+        "rank": 1,
+        "subgroupOrder": 2,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T7:q0", "fdq:cell:T7:q2"]
+      },
+      {
+        "id": "T:0,1",
+        "generators": [0, 1],
+        "generatorLabels": ["v000", "v001"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T0-1:q0"]
+      },
+      {
+        "id": "T:0,2",
+        "generators": [0, 2],
+        "generatorLabels": ["v000", "v010"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T0-2:q0"]
+      },
+      {
+        "id": "T:0,4",
+        "generators": [0, 4],
+        "generatorLabels": ["v000", "v100"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T0-4:q0"]
+      },
+      {
+        "id": "T:1,3",
+        "generators": [1, 3],
+        "generatorLabels": ["v001", "v011"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T1-3:q0"]
+      },
+      {
+        "id": "T:1,5",
+        "generators": [1, 5],
+        "generatorLabels": ["v001", "v101"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T1-5:q0"]
+      },
+      {
+        "id": "T:2,3",
+        "generators": [2, 3],
+        "generatorLabels": ["v010", "v011"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T2-3:q0"]
+      },
+      {
+        "id": "T:2,6",
+        "generators": [2, 6],
+        "generatorLabels": ["v010", "v110"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T2-6:q0"]
+      },
+      {
+        "id": "T:3,7",
+        "generators": [3, 7],
+        "generatorLabels": ["v011", "v111"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T3-7:q0"]
+      },
+      {
+        "id": "T:4,5",
+        "generators": [4, 5],
+        "generatorLabels": ["v100", "v101"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T4-5:q0"]
+      },
+      {
+        "id": "T:4,6",
+        "generators": [4, 6],
+        "generatorLabels": ["v100", "v110"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T4-6:q0"]
+      },
+      {
+        "id": "T:5,7",
+        "generators": [5, 7],
+        "generatorLabels": ["v101", "v111"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T5-7:q0"]
+      },
+      {
+        "id": "T:6,7",
+        "generators": [6, 7],
+        "generatorLabels": ["v110", "v111"],
+        "rank": 2,
+        "subgroupOrder": 4,
+        "source": "torsion-free-certificate",
+        "cellIds": ["fdq:cell:T6-7:q0"]
+      }
+    ],
+    "cells": [
+      {
+        "id": "fdq:v:q0",
+        "dimension": 0,
+        "sphericalSubsetId": "T:empty",
+        "generators": [],
+        "representativePoint": 0,
+        "actionPoints": [0],
+        "vertexIds": ["fdq:v:q0"],
+        "facetCellIds": [],
+        "properFaceCellIds": [],
+        "cofacetCellIds": [
+          "fdq:cell:T0:q0",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0:q0",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:a8e29abdad3383c6"
+      },
+      {
+        "id": "fdq:v:q1",
+        "dimension": 0,
+        "sphericalSubsetId": "T:empty",
+        "generators": [],
+        "representativePoint": 1,
+        "actionPoints": [1],
+        "vertexIds": ["fdq:v:q1"],
+        "facetCellIds": [],
+        "properFaceCellIds": [],
+        "cofacetCellIds": [
+          "fdq:cell:T0:q1",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T3:q1",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T5:q1",
+          "fdq:cell:T6:q1",
+          "fdq:cell:T7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0:q1",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T3:q1",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T5:q1",
+          "fdq:cell:T6:q1",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:a21c9e7a2d2af289"
+      },
+      {
+        "id": "fdq:v:q2",
+        "dimension": 0,
+        "sphericalSubsetId": "T:empty",
+        "generators": [],
+        "representativePoint": 2,
+        "actionPoints": [2],
+        "vertexIds": ["fdq:v:q2"],
+        "facetCellIds": [],
+        "properFaceCellIds": [],
+        "cofacetCellIds": [
+          "fdq:cell:T0:q0",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T7:q2"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0:q0",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T7:q2",
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:ecfe878ac881afd8"
+      },
+      {
+        "id": "fdq:v:q3",
+        "dimension": 0,
+        "sphericalSubsetId": "T:empty",
+        "generators": [],
+        "representativePoint": 3,
+        "actionPoints": [3],
+        "vertexIds": ["fdq:v:q3"],
+        "facetCellIds": [],
+        "properFaceCellIds": [],
+        "cofacetCellIds": [
+          "fdq:cell:T0:q1",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T3:q1",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T5:q1",
+          "fdq:cell:T6:q1",
+          "fdq:cell:T7:q2"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0:q1",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T3:q1",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T5:q1",
+          "fdq:cell:T6:q1",
+          "fdq:cell:T7:q2",
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:fae2150d3aa4a4ab"
+      },
+      {
+        "id": "fdq:cell:T0:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:0",
+        "generators": [0],
+        "representativePoint": 0,
+        "actionPoints": [0, 2],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q2"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0"
+        ],
+        "incidenceHash": "fnv1a64:fb7f7d690c988426"
+      },
+      {
+        "id": "fdq:cell:T0:q1",
+        "dimension": 1,
+        "sphericalSubsetId": "T:0",
+        "generators": [0],
+        "representativePoint": 1,
+        "actionPoints": [1, 3],
+        "vertexIds": ["fdq:v:q1", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T0-4:q0"
+        ],
+        "incidenceHash": "fnv1a64:ecb09cd4c10ad135"
+      },
+      {
+        "id": "fdq:cell:T1:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:1",
+        "generators": [1],
+        "representativePoint": 0,
+        "actionPoints": [0, 1],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0"
+        ],
+        "incidenceHash": "fnv1a64:25f8f664b136e3e2"
+      },
+      {
+        "id": "fdq:cell:T1:q2",
+        "dimension": 1,
+        "sphericalSubsetId": "T:1",
+        "generators": [1],
+        "representativePoint": 2,
+        "actionPoints": [2, 3],
+        "vertexIds": ["fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-1:q0",
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T1-5:q0"
+        ],
+        "incidenceHash": "fnv1a64:81be51479809b508"
+      },
+      {
+        "id": "fdq:cell:T2:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:2",
+        "generators": [2],
+        "representativePoint": 0,
+        "actionPoints": [0, 1],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0"
+        ],
+        "incidenceHash": "fnv1a64:dfb2883a7c91c6a2"
+      },
+      {
+        "id": "fdq:cell:T2:q2",
+        "dimension": 1,
+        "sphericalSubsetId": "T:2",
+        "generators": [2],
+        "representativePoint": 2,
+        "actionPoints": [2, 3],
+        "vertexIds": ["fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-2:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T2-6:q0"
+        ],
+        "incidenceHash": "fnv1a64:f0af562c56b03a34"
+      },
+      {
+        "id": "fdq:cell:T3:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:3",
+        "generators": [3],
+        "representativePoint": 0,
+        "actionPoints": [0, 2],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q2"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "cofacetCellIds": [
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T3-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T3-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:90555a4467120e8e"
+      },
+      {
+        "id": "fdq:cell:T3:q1",
+        "dimension": 1,
+        "sphericalSubsetId": "T:3",
+        "generators": [3],
+        "representativePoint": 1,
+        "actionPoints": [1, 3],
+        "vertexIds": ["fdq:v:q1", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T3-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T1-3:q0",
+          "fdq:cell:T2-3:q0",
+          "fdq:cell:T3-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:47802fc9d025e765"
+      },
+      {
+        "id": "fdq:cell:T4:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:4",
+        "generators": [4],
+        "representativePoint": 0,
+        "actionPoints": [0, 1],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0"
+        ],
+        "incidenceHash": "fnv1a64:f04467140010945a"
+      },
+      {
+        "id": "fdq:cell:T4:q2",
+        "dimension": 1,
+        "sphericalSubsetId": "T:4",
+        "generators": [4],
+        "representativePoint": 2,
+        "actionPoints": [2, 3],
+        "vertexIds": ["fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T0-4:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T4-6:q0"
+        ],
+        "incidenceHash": "fnv1a64:c8acb8a7488fed5c"
+      },
+      {
+        "id": "fdq:cell:T5:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:5",
+        "generators": [5],
+        "representativePoint": 0,
+        "actionPoints": [0, 2],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q2"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "cofacetCellIds": [
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T5-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T5-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:413229a97db99242"
+      },
+      {
+        "id": "fdq:cell:T5:q1",
+        "dimension": 1,
+        "sphericalSubsetId": "T:5",
+        "generators": [5],
+        "representativePoint": 1,
+        "actionPoints": [1, 3],
+        "vertexIds": ["fdq:v:q1", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T5-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T1-5:q0",
+          "fdq:cell:T4-5:q0",
+          "fdq:cell:T5-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:3e7a284604c9a629"
+      },
+      {
+        "id": "fdq:cell:T6:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:6",
+        "generators": [6],
+        "representativePoint": 0,
+        "actionPoints": [0, 2],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q2"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q2"],
+        "cofacetCellIds": [
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:8699aceea1bcce76"
+      },
+      {
+        "id": "fdq:cell:T6:q1",
+        "dimension": 1,
+        "sphericalSubsetId": "T:6",
+        "generators": [6],
+        "representativePoint": 1,
+        "actionPoints": [1, 3],
+        "vertexIds": ["fdq:v:q1", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q1", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T2-6:q0",
+          "fdq:cell:T4-6:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:3a58e3e829b5a895"
+      },
+      {
+        "id": "fdq:cell:T7:q0",
+        "dimension": 1,
+        "sphericalSubsetId": "T:7",
+        "generators": [7],
+        "representativePoint": 0,
+        "actionPoints": [0, 1],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1"],
+        "facetCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "properFaceCellIds": ["fdq:v:q0", "fdq:v:q1"],
+        "cofacetCellIds": [
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:869370ae3043a8fe"
+      },
+      {
+        "id": "fdq:cell:T7:q2",
+        "dimension": 1,
+        "sphericalSubsetId": "T:7",
+        "generators": [7],
+        "representativePoint": 2,
+        "actionPoints": [2, 3],
+        "vertexIds": ["fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "properFaceCellIds": ["fdq:v:q2", "fdq:v:q3"],
+        "cofacetCellIds": [
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "properCofaceCellIds": [
+          "fdq:cell:T3-7:q0",
+          "fdq:cell:T5-7:q0",
+          "fdq:cell:T6-7:q0"
+        ],
+        "incidenceHash": "fnv1a64:106d06a81b497c0c"
+      },
+      {
+        "id": "fdq:cell:T0-1:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:0,1",
+        "generators": [0, 1],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T0:q0",
+          "fdq:cell:T0:q1",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T1:q2"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T0:q0",
+          "fdq:cell:T0:q1",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T1:q2"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:0a92a4518ce8d64e"
+      },
+      {
+        "id": "fdq:cell:T0-2:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:0,2",
+        "generators": [0, 2],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T0:q0",
+          "fdq:cell:T0:q1",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T2:q2"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T0:q0",
+          "fdq:cell:T0:q1",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T2:q2"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:043b3c6b11c91d72"
+      },
+      {
+        "id": "fdq:cell:T0-4:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:0,4",
+        "generators": [0, 4],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T0:q0",
+          "fdq:cell:T0:q1",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T4:q2"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T0:q0",
+          "fdq:cell:T0:q1",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T4:q2"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:57b5237612589436"
+      },
+      {
+        "id": "fdq:cell:T1-3:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:1,3",
+        "generators": [1, 3],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T1:q0",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T3:q1"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T3:q1"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:c2fe5767f7af41ae"
+      },
+      {
+        "id": "fdq:cell:T1-5:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:1,5",
+        "generators": [1, 5],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T1:q0",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T5:q1"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T1:q0",
+          "fdq:cell:T1:q2",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T5:q1"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:6732ae00a925e11a"
+      },
+      {
+        "id": "fdq:cell:T2-3:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:2,3",
+        "generators": [2, 3],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T2:q0",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T3:q1"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T3:q1"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:1da95d8432c5293a"
+      },
+      {
+        "id": "fdq:cell:T2-6:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:2,6",
+        "generators": [2, 6],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T2:q0",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T6:q1"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T2:q0",
+          "fdq:cell:T2:q2",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T6:q1"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:f0cbcb59471ef8b2"
+      },
+      {
+        "id": "fdq:cell:T3-7:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:3,7",
+        "generators": [3, 7],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T3:q0",
+          "fdq:cell:T3:q1",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T7:q2"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T3:q0",
+          "fdq:cell:T3:q1",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T7:q2"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:f1fe59d396f3c1a6"
+      },
+      {
+        "id": "fdq:cell:T4-5:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:4,5",
+        "generators": [4, 5],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T4:q0",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T5:q1"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T5:q1"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:96cfb240e24624b6"
+      },
+      {
+        "id": "fdq:cell:T4-6:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:4,6",
+        "generators": [4, 6],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T4:q0",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T6:q1"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T4:q0",
+          "fdq:cell:T4:q2",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T6:q1"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:3436afa5075c0b82"
+      },
+      {
+        "id": "fdq:cell:T5-7:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:5,7",
+        "generators": [5, 7],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T5:q0",
+          "fdq:cell:T5:q1",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T7:q2"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T5:q0",
+          "fdq:cell:T5:q1",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T7:q2"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:f0df5718595e4e0e"
+      },
+      {
+        "id": "fdq:cell:T6-7:q0",
+        "dimension": 2,
+        "sphericalSubsetId": "T:6,7",
+        "generators": [6, 7],
+        "representativePoint": 0,
+        "actionPoints": [0, 1, 2, 3],
+        "vertexIds": ["fdq:v:q0", "fdq:v:q1", "fdq:v:q2", "fdq:v:q3"],
+        "facetCellIds": [
+          "fdq:cell:T6:q0",
+          "fdq:cell:T6:q1",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T7:q2"
+        ],
+        "properFaceCellIds": [
+          "fdq:v:q0",
+          "fdq:v:q1",
+          "fdq:v:q2",
+          "fdq:v:q3",
+          "fdq:cell:T6:q0",
+          "fdq:cell:T6:q1",
+          "fdq:cell:T7:q0",
+          "fdq:cell:T7:q2"
+        ],
+        "cofacetCellIds": [],
+        "properCofaceCellIds": [],
+        "incidenceHash": "fnv1a64:b1f5924597264192"
+      }
+    ],
+    "faceIncidences": [
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T0:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T0:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T0:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T0:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T1:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T1:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T1:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T1:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T2:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T2:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T2:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T2:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T3:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T3:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T4:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T4:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T4:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T4:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T5:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T5:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T6:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T6:q1",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T7:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T7:q2",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T0:q0",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T0:q1",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T1:q0",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T1:q2",
+        "cofaceCellId": "fdq:cell:T0-1:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T0:q0",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T0:q1",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T2:q0",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T2:q2",
+        "cofaceCellId": "fdq:cell:T0-2:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T0:q0",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T0:q1",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T4:q0",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T4:q2",
+        "cofaceCellId": "fdq:cell:T0-4:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T1:q0",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T1:q2",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T3:q0",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T3:q1",
+        "cofaceCellId": "fdq:cell:T1-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T1:q0",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T1:q2",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T5:q0",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T5:q1",
+        "cofaceCellId": "fdq:cell:T1-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T2:q0",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T2:q2",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T3:q0",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T3:q1",
+        "cofaceCellId": "fdq:cell:T2-3:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T2:q0",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T2:q2",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T6:q0",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T6:q1",
+        "cofaceCellId": "fdq:cell:T2-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T3:q0",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T3:q1",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T7:q0",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T7:q2",
+        "cofaceCellId": "fdq:cell:T3-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T4:q0",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T4:q2",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T5:q0",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T5:q1",
+        "cofaceCellId": "fdq:cell:T4-5:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T4:q0",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T4:q2",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T6:q0",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T6:q1",
+        "cofaceCellId": "fdq:cell:T4-6:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T5:q0",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T5:q1",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T7:q0",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T7:q2",
+        "cofaceCellId": "fdq:cell:T5-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:v:q0",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q1",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q2",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:v:q3",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 2,
+        "immediate": false
+      },
+      {
+        "faceCellId": "fdq:cell:T6:q0",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T6:q1",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T7:q0",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 1,
+        "immediate": true
+      },
+      {
+        "faceCellId": "fdq:cell:T7:q2",
+        "cofaceCellId": "fdq:cell:T6-7:q0",
+        "codimension": 1,
+        "immediate": true
+      }
+    ],
+    "cellCountByDimension": {
+      "0": 4,
+      "1": 16,
+      "2": 12
+    },
+    "posetHash": "fnv1a64:c4cf19b2ab4716a5",
+    "archiveHash": "8c6ef28369c745c6c05d321353fc23b939d6c49582cc10b07c410e14e90e50d7",
+    "certificate": {
+      "status": "passed",
+      "method": "certified-right-action-davis-cell-poset",
+      "actionFingerprint": "fnv1a64:b7f5c1bd9d71228f",
+      "checks": {
+        "sourceCertificatePassed": true,
+        "sourceCertificateMatchesAction": true,
+        "actionShapeValid": true,
+        "actionTransitive": true,
+        "sphericalEnumerationComplete": true,
+        "sphericalActionsFree": true,
+        "hereditarySphericalTypes": true,
+        "orbitCountsMatch": true,
+        "faceIncidenceClosed": true
+      },
+      "countChecks": [
+        {
+          "sphericalSubsetId": "T:empty",
+          "generators": [],
+          "subgroupOrder": 1,
+          "actionIndex": 4,
+          "expectedCellCount": 4,
+          "actualCellCount": 4,
+          "orbitSizes": [1, 1, 1, 1],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:0",
+          "generators": [0],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:1",
+          "generators": [1],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:2",
+          "generators": [2],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:3",
+          "generators": [3],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:4",
+          "generators": [4],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:5",
+          "generators": [5],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:6",
+          "generators": [6],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:7",
+          "generators": [7],
+          "subgroupOrder": 2,
+          "actionIndex": 4,
+          "expectedCellCount": 2,
+          "actualCellCount": 2,
+          "orbitSizes": [2, 2],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:0,1",
+          "generators": [0, 1],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:0,2",
+          "generators": [0, 2],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:0,4",
+          "generators": [0, 4],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:1,3",
+          "generators": [1, 3],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:1,5",
+          "generators": [1, 5],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:2,3",
+          "generators": [2, 3],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:2,6",
+          "generators": [2, 6],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:3,7",
+          "generators": [3, 7],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:4,5",
+          "generators": [4, 5],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:4,6",
+          "generators": [4, 6],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:5,7",
+          "generators": [5, 7],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        },
+        {
+          "sphericalSubsetId": "T:6,7",
+          "generators": [6, 7],
+          "subgroupOrder": 4,
+          "actionIndex": 4,
+          "expectedCellCount": 1,
+          "actualCellCount": 1,
+          "orbitSizes": [4],
+          "passed": true
+        }
+      ],
+      "hashAlgorithm": "fnv1a64",
+      "posetHash": "fnv1a64:c4cf19b2ab4716a5",
+      "archiveHashAlgorithm": "sha256",
+      "archiveHash": "8c6ef28369c745c6c05d321353fc23b939d6c49582cc10b07c410e14e90e50d7",
+      "warnings": []
+    },
+    "warnings": []
+  },
+  "integralH1": {
+    "method": "spanning-tree-gauge-and-unimodular-unit-pivot-kernel",
+    "vertexIds": [
+      "jnw:state:0.1.4.6",
+      "jnw:state:0.2.6.7",
+      "jnw:state:1.3.4.5",
+      "jnw:state:2.3.5.7"
+    ],
+    "orientedEdgeIds": [
+      "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+      "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+      "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+      "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward"
+    ],
+    "faceIds": [
+      "jnw:cell:0-1:jnw:state:0.1.4.6",
+      "jnw:cell:0-2:jnw:state:0.1.4.6",
+      "jnw:cell:0-4:jnw:state:0.1.4.6",
+      "jnw:cell:1-3:jnw:state:0.1.4.6",
+      "jnw:cell:1-5:jnw:state:0.1.4.6",
+      "jnw:cell:2-3:jnw:state:0.1.4.6",
+      "jnw:cell:2-6:jnw:state:0.1.4.6",
+      "jnw:cell:3-7:jnw:state:0.1.4.6",
+      "jnw:cell:4-5:jnw:state:0.1.4.6",
+      "jnw:cell:4-6:jnw:state:0.1.4.6",
+      "jnw:cell:5-7:jnw:state:0.1.4.6",
+      "jnw:cell:6-7:jnw:state:0.1.4.6"
+    ],
+    "rootVertexId": "jnw:state:0.1.4.6",
+    "treeEdgeIds": [
+      "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward"
+    ],
+    "cotreeEdgeIds": [
+      "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+      "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+      "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+      "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+      "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+      "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward"
+    ],
+    "relationMatrix": [
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, -1, 1, 0, 0, 0, 0, 0, 0],
+      [-1, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [-1, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0],
+      [0, -1, 1, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, -1, 1, 0, 0, 0, 0, 0, 0, -1, 1, 0, 0],
+      [0, 0, 0, -1, 1, 0, 0, 0, 0, 0, 0, 1, -1],
+      [0, 0, 0, 0, 0, 1, -1, 1, -1, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, -1, 0, 0, -1, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, -1, 1, 0, 0, 1, -1],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 1, -1]
+    ],
+    "unimodularRowOperations": [
+      {
+        "kind": "add-multiple",
+        "sourceRow": 0,
+        "targetRow": 3,
+        "multiple": 1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 0,
+        "targetRow": 4,
+        "multiple": 1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 1,
+        "targetRow": 5,
+        "multiple": 1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 1,
+        "targetRow": 6,
+        "multiple": 1
+      },
+      {
+        "kind": "swap",
+        "leftRow": 3,
+        "rightRow": 2
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 2,
+        "targetRow": 5,
+        "multiple": -1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 2,
+        "targetRow": 7,
+        "multiple": 1
+      },
+      {
+        "kind": "negate",
+        "row": 3
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 3,
+        "targetRow": 8,
+        "multiple": -1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 3,
+        "targetRow": 9,
+        "multiple": -1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 4,
+        "targetRow": 8,
+        "multiple": -1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 4,
+        "targetRow": 10,
+        "multiple": 1
+      },
+      {
+        "kind": "swap",
+        "leftRow": 6,
+        "rightRow": 5
+      },
+      {
+        "kind": "negate",
+        "row": 5
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 5,
+        "targetRow": 9,
+        "multiple": 1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 5,
+        "targetRow": 11,
+        "multiple": -1
+      },
+      {
+        "kind": "swap",
+        "leftRow": 7,
+        "rightRow": 6
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 6,
+        "targetRow": 10,
+        "multiple": -1
+      },
+      {
+        "kind": "add-multiple",
+        "sourceRow": 6,
+        "targetRow": 11,
+        "multiple": -1
+      }
+    ],
+    "reducedRelationMatrix": [
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, -1],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    "pivotColumns": [0, 1, 3, 5, 7, 9, 11],
+    "freeColumns": [2, 4, 6, 8, 10, 12],
+    "basis": [
+      {
+        "id": "eta0",
+        "freeColumn": 2,
+        "cotreeValues": [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "edgeValues": [
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "id": "eta1",
+        "freeColumn": 4,
+        "cotreeValues": [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        "edgeValues": [
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "id": "eta2",
+        "freeColumn": 6,
+        "cotreeValues": [0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+        "edgeValues": [
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "id": "eta3",
+        "freeColumn": 8,
+        "cotreeValues": [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+        "edgeValues": [
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "id": "eta4",
+        "freeColumn": 10,
+        "cotreeValues": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+        "edgeValues": [
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "id": "eta5",
+        "freeColumn": 12,
+        "cotreeValues": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        "edgeValues": [
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+            "value": 0
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+            "value": 1
+          },
+          {
+            "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "rankC0Coboundaries": 3,
+    "rankCocycleRelations": 7,
+    "rankH1": 6,
+    "isomorphicTo": "Z^6",
+    "checks": {
+      "oneSkeletonConnected": true,
+      "treeHasVMinusOneEdges": true,
+      "treeGaugeIsIntegral": true,
+      "rowOperationsAreUnimodular": true,
+      "reducedMatrixReplays": true,
+      "everyPivotIsAUnit": true,
+      "basisVectorsAreIntegralCocycles": true,
+      "basisParametrizesTheFullIntegralKernel": true,
+      "rankEulerCrossCheck": true
+    },
+    "certificateDigest": "89895cc3b0361708ce27bcce8205f258ce285685d4b1b7418c1ab43d081048c7"
+  },
+  "primitiveCocycle": {
+    "method": "jnw-edge-directions-with-integral-period-normalization",
+    "rawPreferredEdgeValues": [
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 1
+      }
+    ],
+    "rawFaceBoundarySums": [
+      {
+        "faceId": "jnw:cell:0-1:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:0-2:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:0-4:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:1-3:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:1-5:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:2-3:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:2-6:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:3-7:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:4-5:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:4-6:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:5-7:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:6-7:jnw:state:0.1.4.6",
+        "sum": 0
+      }
+    ],
+    "treeGaugePotential": [
+      {
+        "vertexId": "jnw:state:0.1.4.6",
+        "value": 0
+      },
+      {
+        "vertexId": "jnw:state:0.2.6.7",
+        "value": 1
+      },
+      {
+        "vertexId": "jnw:state:1.3.4.5",
+        "value": 1
+      },
+      {
+        "vertexId": "jnw:state:2.3.5.7",
+        "value": 2
+      }
+    ],
+    "treeGaugedRawEdgeValues": [
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 2
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 2
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 2
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 2
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 2
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 2
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 2
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 2
+      }
+    ],
+    "rawH1Coordinates": [2, 2, 0, 2, 0, 2],
+    "rawPeriodImageGcd": 2,
+    "normalizationDivisor": 2,
+    "primitiveH1Coordinates": [1, 1, 0, 1, 0, 1],
+    "primitiveIntegralRepresentative": [
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "value": 0
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "value": 1
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "value": 1
+      }
+    ],
+    "primitiveFaceBoundarySums": [
+      {
+        "faceId": "jnw:cell:0-1:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:0-2:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:0-4:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:1-3:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:1-5:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:2-3:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:2-6:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:3-7:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:4-5:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:4-6:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:5-7:jnw:state:0.1.4.6",
+        "sum": 0
+      },
+      {
+        "faceId": "jnw:cell:6-7:jnw:state:0.1.4.6",
+        "sum": 0
+      }
+    ],
+    "nonzeroMorseSlopes": [
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:0:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:1:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:2:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:3:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:4:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:5:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.1.4.6:jnw:state:1.3.4.5:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:6:jnw:state:0.2.6.7:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      },
+      {
+        "edgeId": "jnw:e:7:jnw:state:1.3.4.5:jnw:state:2.3.5.7:forward",
+        "numerator": 1,
+        "denominator": 2
+      }
+    ],
+    "surjectivityWitness": {
+      "cotreeEdgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+      "cycle": [
+        {
+          "edgeId": "jnw:e:2:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+          "direction": 1
+        },
+        {
+          "edgeId": "jnw:e:1:jnw:state:0.1.4.6:jnw:state:0.2.6.7:forward",
+          "direction": 1
+        }
+      ],
+      "rawPeriod": 2,
+      "primitivePeriod": 1
+    },
+    "checks": {
+      "rawCocycleClosed": true,
+      "rawEveryEdgeNonzero": true,
+      "rawClassCoordinatesInIntegralBasis": true,
+      "rawPeriodImageIsTwoZ": true,
+      "primitiveCoordinatesIntegral": true,
+      "primitiveCoordinatesHaveGcdOne": true,
+      "primitiveRepresentativeClosed": true,
+      "twicePrimitiveRepresentativeEqualsTreeGaugedRaw": true,
+      "rationalMorseRepresentativeHasPrimitiveIntegralPeriods": true,
+      "explicitUnitPeriodCycle": true
+    },
+    "conclusion": "The raw JNW direction cocycle has period image 2Z. Dividing its periods by two gives a primitive epimorphism chi:H->Z; the rational rescaling preserves every ascending and descending direction.",
+    "certificateDigest": "55a23dbce1942148368a683543b5ca0bd0aa657e94f393a5c72840d2da26b6de"
+  },
+  "npcAndDirectedLinks": {
+    "method": "right-angled-square-links-and-gromov-flag-criterion",
+    "dimension": 2,
+    "cellCountByDimension": {
+      "0": 4,
+      "1": 16,
+      "2": 12
+    },
+    "vertexLinks": [
+      {
+        "stateId": "jnw:state:0.1.4.6",
+        "stateGenerators": [0, 1, 4, 6],
+        "complementGenerators": [2, 3, 5, 7],
+        "full": {
+          "kind": "full",
+          "generators": [0, 1, 2, 3, 4, 5, 6, 7],
+          "edges": [
+            [0, 1],
+            [0, 2],
+            [0, 4],
+            [1, 3],
+            [1, 5],
+            [2, 3],
+            [2, 6],
+            [3, 7],
+            [4, 5],
+            [4, 6],
+            [5, 7],
+            [6, 7]
+          ],
+          "components": [[0, 1, 2, 3, 4, 5, 6, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": false,
+          "collapsible": false
+        },
+        "ascending": {
+          "kind": "ascending",
+          "generators": [0, 1, 4, 6],
+          "edges": [
+            [0, 1],
+            [0, 4],
+            [4, 6]
+          ],
+          "components": [[0, 1, 4, 6]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "descending": {
+          "kind": "descending",
+          "generators": [2, 3, 5, 7],
+          "edges": [
+            [2, 3],
+            [3, 7],
+            [5, 7]
+          ],
+          "components": [[2, 3, 5, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "checks": {
+          "fullLinkMatchesIncidentDavisCells": true,
+          "ascendingIsStateInducedSubcomplex": true,
+          "descendingIsComplementInducedSubcomplex": true,
+          "noLevelDirections": true,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        }
+      },
+      {
+        "stateId": "jnw:state:0.2.6.7",
+        "stateGenerators": [0, 2, 6, 7],
+        "complementGenerators": [1, 3, 4, 5],
+        "full": {
+          "kind": "full",
+          "generators": [0, 1, 2, 3, 4, 5, 6, 7],
+          "edges": [
+            [0, 1],
+            [0, 2],
+            [0, 4],
+            [1, 3],
+            [1, 5],
+            [2, 3],
+            [2, 6],
+            [3, 7],
+            [4, 5],
+            [4, 6],
+            [5, 7],
+            [6, 7]
+          ],
+          "components": [[0, 1, 2, 3, 4, 5, 6, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": false,
+          "collapsible": false
+        },
+        "ascending": {
+          "kind": "ascending",
+          "generators": [0, 2, 6, 7],
+          "edges": [
+            [0, 2],
+            [2, 6],
+            [6, 7]
+          ],
+          "components": [[0, 2, 6, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "descending": {
+          "kind": "descending",
+          "generators": [1, 3, 4, 5],
+          "edges": [
+            [1, 3],
+            [1, 5],
+            [4, 5]
+          ],
+          "components": [[1, 3, 4, 5]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "checks": {
+          "fullLinkMatchesIncidentDavisCells": true,
+          "ascendingIsStateInducedSubcomplex": true,
+          "descendingIsComplementInducedSubcomplex": true,
+          "noLevelDirections": true,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        }
+      },
+      {
+        "stateId": "jnw:state:1.3.4.5",
+        "stateGenerators": [1, 3, 4, 5],
+        "complementGenerators": [0, 2, 6, 7],
+        "full": {
+          "kind": "full",
+          "generators": [0, 1, 2, 3, 4, 5, 6, 7],
+          "edges": [
+            [0, 1],
+            [0, 2],
+            [0, 4],
+            [1, 3],
+            [1, 5],
+            [2, 3],
+            [2, 6],
+            [3, 7],
+            [4, 5],
+            [4, 6],
+            [5, 7],
+            [6, 7]
+          ],
+          "components": [[0, 1, 2, 3, 4, 5, 6, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": false,
+          "collapsible": false
+        },
+        "ascending": {
+          "kind": "ascending",
+          "generators": [1, 3, 4, 5],
+          "edges": [
+            [1, 3],
+            [1, 5],
+            [4, 5]
+          ],
+          "components": [[1, 3, 4, 5]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "descending": {
+          "kind": "descending",
+          "generators": [0, 2, 6, 7],
+          "edges": [
+            [0, 2],
+            [2, 6],
+            [6, 7]
+          ],
+          "components": [[0, 2, 6, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "checks": {
+          "fullLinkMatchesIncidentDavisCells": true,
+          "ascendingIsStateInducedSubcomplex": true,
+          "descendingIsComplementInducedSubcomplex": true,
+          "noLevelDirections": true,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        }
+      },
+      {
+        "stateId": "jnw:state:2.3.5.7",
+        "stateGenerators": [2, 3, 5, 7],
+        "complementGenerators": [0, 1, 4, 6],
+        "full": {
+          "kind": "full",
+          "generators": [0, 1, 2, 3, 4, 5, 6, 7],
+          "edges": [
+            [0, 1],
+            [0, 2],
+            [0, 4],
+            [1, 3],
+            [1, 5],
+            [2, 3],
+            [2, 6],
+            [3, 7],
+            [4, 5],
+            [4, 6],
+            [5, 7],
+            [6, 7]
+          ],
+          "components": [[0, 1, 2, 3, 4, 5, 6, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": false,
+          "collapsible": false
+        },
+        "ascending": {
+          "kind": "ascending",
+          "generators": [2, 3, 5, 7],
+          "edges": [
+            [2, 3],
+            [3, 7],
+            [5, 7]
+          ],
+          "components": [[2, 3, 5, 7]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "descending": {
+          "kind": "descending",
+          "generators": [0, 1, 4, 6],
+          "edges": [
+            [0, 1],
+            [0, 4],
+            [4, 6]
+          ],
+          "components": [[0, 1, 4, 6]],
+          "nonempty": true,
+          "connected": true,
+          "triangleCount": 0,
+          "flag": true,
+          "tree": true,
+          "collapsible": true
+        },
+        "checks": {
+          "fullLinkMatchesIncidentDavisCells": true,
+          "ascendingIsStateInducedSubcomplex": true,
+          "descendingIsComplementInducedSubcomplex": true,
+          "noLevelDirections": true,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        }
+      }
+    ],
+    "checks": {
+      "completeDavisCellPoset": true,
+      "noSphericalSubsetsAboveRankTwo": true,
+      "everyTwoCellIsASquare": true,
+      "everyVertexLinkIsTheCubeGraph": true,
+      "everyVertexLinkIsFlag": true,
+      "locallyCatZero": true,
+      "universalCoverCatZero": true,
+      "universalCoverContractible": true,
+      "quotientAspherical": true
+    },
+    "conclusion": "The complete quotient is a finite nonpositively curved square complex. Its universal cover is CAT(0), hence contractible; every ascending and descending link is a nonempty tree.",
+    "nonClaims": [
+      "The infinite universal cover is not materialized; contractibility follows from the certified finite Gromov link condition and the CAT(0) square-complex theorem.",
+      "No hyperbolic 5-manifold or compact hyperbolic polytope is represented by this square complex."
+    ],
+    "certificateDigest": "a10889ff2d35ab44e7c8a3a823f1ec674bdc8194a7f6f035b7f64f8daf53214e"
+  },
+  "theorem": {
+    "scope": "virtual-algebraic-fibering-of-the-jNW-cube-graph-RACG",
+    "claims": [
+      "The kernel H of the four-state move action is a torsion-free subgroup of index four in the JNW cube-graph right-angled Coxeter group.",
+      "The complete Davis quotient H\\Sigma is a finite nonpositively curved square complex with contractible universal cover.",
+      "H^1(H;Z) is isomorphic to Z^6 by the displayed integral spanning-tree gauge and unimodular relation reduction.",
+      "The JNW direction cocycle has image 2Z; normalization by two gives an explicit primitive epimorphism chi:H->Z with the same kernel.",
+      "Every ascending and descending link is a nonempty tree, so the standard Bestvina-Brady/Jankiewicz-Norin-Wise Morse criterion gives a finitely generated kernel.",
+      "Consequently the JNW cube-graph RACG virtually algebraically fibers."
+    ],
+    "nonClaims": [
+      "This is not a compact hyperbolic 5-cube, a compact hyperbolic 5-polytope, or a lattice in Isom(H^5).",
+      "This certificate concerns the degree-four move-kernel cover, not the 256-vertex mod-2 commutator cover displayed in the JNW paper.",
+      "Only finite generation of ker(chi) is claimed; no finite-presentation or higher finiteness property is asserted here.",
+      "No smooth, bundle, or topological fibration over S^1 is claimed.",
+      "No statement is made about every integral character or about the compact-5-cube subgroup studied elsewhere in the repository.",
+      "The theorem step invokes the standard CAT(0) square-complex and PL Morse theorems from the exact finite hypotheses recorded here; it does not re-prove those general theorems."
+    ],
+    "references": [
+      "Jankiewicz-Norin-Wise, Virtually Fibering Right-Angled Coxeter Groups, arXiv:1711.11505, Sections 2 and 5.a.1.",
+      "Davis, The Geometry and Topology of Coxeter Groups, for the Davis complex and its CAT(0) realization.",
+      "Bestvina-Brady PL Morse theory, for finite generation from connected nonempty ascending and descending links."
+    ],
+    "result": {
+      "finiteIndexTorsionFreeSubgroup": true,
+      "subgroupIndex": 4,
+      "h1IsomorphicTo": "Z^6",
+      "primitiveEpimorphismToZ": true,
+      "allAscendingAndDescendingLinksNonemptyConnected": true,
+      "kernelFinitelyGenerated": true,
+      "virtualAlgebraicFibration": true,
+      "exactSequence": "1 -> ker(chi) -> H -> Z -> 1"
+    }
+  },
+  "checks": {
+    "sourceBound": true,
+    "legalSystemPassed": true,
+    "torsionFreeActionPassed": true,
+    "fullDavisQuotientPassed": true,
+    "integralH1Passed": true,
+    "primitiveCharacterPassed": true,
+    "npcAsphericityPassed": true,
+    "directedLinksPassed": true,
+    "theoremInferencePassed": true
+  },
+  "sectionDigests": {
+    "source": "9a698a71298f287fe441aee32fc8dec7a732adba77c57f843fbc2741284ee79a",
+    "legalSystem": "9835a3e6e94754dd535b9800d95776762cadc64a43b71bcbc5ae9b764a5db3fd",
+    "finiteAction": "44beddc97c2e4893f95ad23bb344dca702824effe145e449b662fc7713f82ef7",
+    "fullDavisQuotient": "3f459a3128a003f52e0c529ae3ebf45f14bae3a9fffd141b3c9e4f408fcabbd2",
+    "integralH1": "9831d75ba6435fba7f69995b6a3a073f04182d847833c8eaa17da8c3415b705f",
+    "primitiveCocycle": "adc30e80c1dfc938a91b4580c141eb1dfaa9bbc5596d71d415fd549f3f2bacf0",
+    "npcAndDirectedLinks": "6425f08a3a47a2d08c0777411c9ef1322de5f5b5f2d579356f3da3b19bab5343",
+    "theorem": "3149a0733e884555b1667d2d4c036f723a0cd1d1e3588fb9d45a8b400dde2be6"
+  },
+  "artifactDigest": "8c1a391da160e587cc9167b98f1e215d3ea5fa4924373ec3da6f08844958885c"
+}

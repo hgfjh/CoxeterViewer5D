@@ -1,137 +1,91 @@
 # Demo Media
 
-Demo media should teach inspection habits. A good screenshot or short clip
-shows the selected mathematical object, the relevant warnings, and enough UI
-context to tell exact data from drawing convention.
+Demo images should teach a mathematical operation, not merely advertise the
+renderer. Each capture should name the selected object, leave its status visible,
+and distinguish exact incidence from the 3D drawing.
 
-## Research-Preview Demo Set
+## Current Demo Set
 
-The research preview uses four primary captures. They are small enough to keep
-in the repo as screenshots and specific enough to teach the main inspection
-habits.
+The cover-and-wall reader has four primary captures:
 
-- Find a hexagon: `A2`, rank-two pair `s0-s1` with `m = 3`, one filled
-  six-sided Davis cell, and the selected-cell inspector visible.
-- Inspect A3 rank-three cell: `A3`, `Y_Gamma(A3)` rank-three focus, with square
-  and hexagon face families visible as one 3D incidence object.
-- Inspect `Y_Gamma` for P2: `compact_5_prism_makarov_p2`, one relation or
-  around-generator focus first, then the full two-skeleton if it remains
-  readable.
-- Run `I2(5)` quotient/game: identity-subgroup workflow with ten cosets, one
-  decagon quotient cell, the `s0 = +1`, `s1 = -1` generator-uniform cochain,
-  and the boundary-sum diagnostic visible. The JNW Legal-System tab can be
-  shown separately when explaining state-dependent directions.
+1. **Find a rank-two cell.** Open `A2`, focus the `m = 3` pair, and read the
+   alternating six-edge Davis boundary.
+2. **Build `hat X`.** Load the bundled `I2(5)` action and compare its directed
+   generator lifts, generator bigons, and lifted relation cells.
+3. **Find walls in `bar X`.** Compress the cover, select an opposite-edge wall
+   class, and inspect embeddedness, two-sidedness, and self-osculation.
+4. **Coorient walls.** Flip wall signs, run the lawful-subcomplex search, and
+   inspect the induced ascending or descending link at a compressed vertex.
 
-Other views, such as geometric projection or a full compact-example overview,
-belong in later release notes unless the screenshot makes the projection caveat
-easy to read.
-
-## Capture Tooling
-
-The repository has three useful capture paths:
-
-- **In-app stills**: use **Export screenshot** for a PNG, and export the sidecar
-  or experiment notebook bundle when the image will be cited. The sidecar tells
-  readers which dataset, selected object, filters, warnings, and scene stats the
-  image records.
-- **Storyboard metadata**: run `corepack pnpm demo:record` from the repository
-  root. This validates that the walkthrough headings named in
-  `docs/demo-media-manifest.json` exist and prints deterministic storyboard
-  metadata. Use `corepack pnpm demo:record -- --write docs/demo-media-manifest.json`
-  only when updating the manifest is part of the release task.
-- **Playwright traces**: `corepack pnpm e2e` uses the checked-in Playwright
-  config, which records traces on first retry. Traces are useful for debugging a
-  failed capture path, but they are not polished demo videos.
-
-There is no checked-in research-preview video recorder beyond the storyboard
-manifest. For motion, use a local screen recorder or a temporary Playwright
-video configuration, keep clips short, and publish large videos as release
-artifacts instead of committing them to the repo.
-
-## Capture Checklist
-
-Before saving media:
-
-- Select the object being explained.
-- Show the inspector or reader panel that names the selected object.
-- Leave the warnings panel accessible when approximations or truncation matter.
-- Use labels only where they clarify the object; crowded labels make poor
-  teaching images.
-- Prefer local or focused views for cells. Use full-graph views for context.
-- Export the view sidecar JSON when the image will be cited, filed in an issue,
-  or used in documentation.
-- Keep the browser viewport and app theme consistent across the four guided
-  demos, so the images feel like one tour rather than four unrelated captures.
-
-## Suggested Captions
-
-Use captions that identify both the object and the drawing layer:
-
-- "A rank-two Davis hexagon for an `m = 3` Coxeter pair. The boundary data is
-  exact in the generated ball; the planar fill is a drawing."
-- "`A3` rank-three incidence proxy. The square and hexagon faces record
-  spherical rank-two subsets in the selected triple."
-- "`Y_Gamma(P2)` one-relation view. The visible face is a singular relation
-  sheet attached to the one-vertex generator spine for the certified P2 source
-  system."
-- "`I2(5)` quotient/game demo. The decagon boundary sum vanishes for the
-  generator-uniform cochain `s0 = +1`, `s1 = -1`."
-- "Hyperbolic chamber barycenters projected to 3D by PCA. Distances and
-  intersections in the image are not exact hyperbolic data."
-
-## File Naming
-
-Use names that can be sorted and understood without opening the file:
+The corresponding screenshots are:
 
 ```text
 docs/screenshots/hexagon-a2-rank-two-m3.png
-docs/screenshots/a3-rank-three-square-hexagon.png
-docs/screenshots/y-gamma-p2-m5-relation.png
-docs/screenshots/i2-5-quotient-game-cocycle.png
+docs/screenshots/cover-walls-01-hat-x.png
+docs/screenshots/cover-walls-02-bar-x-walls.png
+docs/screenshots/cover-walls-04-largest-lawful-subcomplex.png
 ```
 
-When a sidecar is exported, use the same stem:
+The last three can be regenerated by the focused Playwright suite in
+`e2e/demo-media.spec.ts`.
 
-```text
-docs/screenshots/hexagon-a2-rank-two-m3.sidecar.json
-```
+## Capture Paths
 
-Do not commit large videos by default. Prefer short clips, compressed assets,
-or links to release artifacts when motion is essential.
+- **In-app PNG:** use **Export PNG**. The renderer performs one high-quality
+  frame for the export; it does not keep `preserveDrawingBuffer` enabled.
+- **Experiment JSON:** use **Export experiment JSON** when a figure needs the
+  selected model, cover provenance, wall signs, warnings, and scene counts.
+- **Storyboard manifest:** run `corepack pnpm demo:record`. Use
+  `corepack pnpm demo:record -- --write docs/demo-media-manifest.json` only when
+  intentionally updating the checked-in manifest.
+- **Playwright trace:** use the normal E2E configuration for debugging. A trace
+  is not a polished demo video.
 
-Suggested video stems:
+Large videos belong in release assets, not in the source tree. The ordinary
+build and test path does not require `ffmpeg`.
 
-```text
-release-media/find-a-hexagon-a2.webm
-release-media/a3-rank-three-cell.webm
-release-media/y-gamma-p2-reader.webm
-release-media/i2-5-quotient-game.webm
-```
+## Capture Checklist
 
-## Accessibility Notes
+- Select the wall, relation cell, or vertex being explained.
+- Keep **Focus Inspector** visible so the reader can identify the object.
+- Keep the exact/drawing status and important caveats available.
+- Show the complete exact 1-skeleton when explaining a cover or compression.
+- Use wall arcs as secondary drawing aids; they must not hide generator edges.
+- Prefer one focused operation over a dense overview.
+- Use the same viewport and theme across a sequence.
 
-Every image used in documentation should have alt text that states the
-mathematical object, not just the visual style. Good alt text:
+## Suggested Captions
 
-```text
-Rank-two Davis hexagon for generators s0 and s1 in A2, with six alternating
-boundary edges and one filled relation cell.
-```
+- “A rank-two Davis hexagon for an `m = 3` pair. The boundary incidence is
+  exact in the generated ball; the filled surface is a drawing.”
+- “The finite presentation cover `hat X` reconstructed from the bundled
+  `I2(5)` permutation action. Directed lifts and attaching maps are exact
+  finite data; positions are drawings.”
+- “The compression `bar X`. Generator bigons have become geometric edges and
+  each family of parallel relation lifts has become one relation polygon.”
+- “A wall of `bar X`, generated by opposition across relation polygons. The
+  straight arc is a drawing of the exact opposite-edge incidences.”
+- “The largest lawful subcomplex found by a completed exact search. Its status
+  is a browser certificate for the loaded finite compression, not a general
+  incoherence theorem.”
 
-Avoid alt text such as "colorful graph view" because it does not tell a reader
-what mathematical structure is being shown.
+## Accessibility
+
+Alt text should identify the mathematical object and the operation shown. For
+example:
+
+> Decagonal relation cell in the `I2(5)` compression, with five wall arcs
+> joining opposite generator edges and one selected wall emphasized.
+
+Avoid descriptions such as “colorful graph.” Color is never the only carrier
+of generator, wall, or status information in the viewer.
 
 ## What Not To Show
 
-Avoid screenshots that:
-
-- Hide all warnings while showing approximate geometry.
-- Present a force layout as if it were hyperbolic geometry.
-- Show a clipped cell as filled.
-- Use dense all-face `Y_Gamma` views when a local reader preset would explain
-  the same idea more clearly.
-- Crop away the selected-object inspector.
-- Mix `A3` and P2 labels in the same `Y_Gamma` capture. The research-preview P2
-  demo should visibly be the P2 source, not a generic `Y_Gamma` scene.
-
-The demo should make the viewer more honest, not more dramatic.
+- A clipped relation cell presented as complete.
+- A projection or shell layout presented as exact geometry.
+- Wall arcs without the generator 1-skeleton they cross.
+- A heuristic lawful-subcomplex result called “maximum.”
+- A finite action called torsion-free without matching evidence.
+- Screenshots from the retired one-vertex/state-game interface as if they
+  described the current cover-compression workflow.

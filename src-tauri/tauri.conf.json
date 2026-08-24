@@ -25,6 +25,14 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "resources": [
+      "../scripts/torsion_free_discovery.py",
+      "../scripts/gap_torsion_free_discovery.g",
+      "../scripts/sage_congruence_torsion_free.py",
+      "../scripts/torsion_free_finite_image.py",
+      "../scripts/packed_composite_solver.py",
+      "../scripts/discovery_runtime/**/*"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

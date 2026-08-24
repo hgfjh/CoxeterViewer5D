@@ -5,355 +5,259 @@
   "timedBaselinePath": "scripts/benchmarks/timed-browser-v1.json",
   "summary": {
     "sourceReport": "timed-browser-benchmark",
-    "sourceCreatedAt": "2026-08-01T07:49:10.301Z",
+    "sourceCreatedAt": "2026-08-10T14:58:08.585Z",
     "cases": [
       {
-        "id": "I2_5:5",
-        "elapsedMs": 417.528,
-        "lastGraphUpdateMs": 4.4,
-        "renderedNodes": 10,
+        "id": "bar-x-cold",
+        "elapsedMs": 614.766,
+        "lastGraphUpdateMs": 31.3,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
         "renderedEdgeSegments": 10,
         "renderedCells": 1,
         "renderedNodeLabels": 10,
         "renderedEdgeLabels": 10,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 28
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
       },
       {
-        "id": "A3:4",
-        "elapsedMs": 210.674,
-        "lastGraphUpdateMs": 1.9,
+        "id": "bar-x-warm",
+        "elapsedMs": 362.127,
+        "lastGraphUpdateMs": 7.2,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
         "renderedNodes": 20,
-        "renderedEdgeSegments": 27,
-        "renderedCells": 3,
-        "renderedNodeLabels": 20,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 1,
+        "renderedNodeLabels": 10,
         "renderedEdgeLabels": 10,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 45
-      },
-      {
-        "id": "universal_rank3:4",
-        "elapsedMs": 82.294,
-        "lastGraphUpdateMs": 4,
-        "renderedNodes": 46,
-        "renderedEdgeSegments": 45,
-        "renderedCells": 0,
-        "renderedNodeLabels": 46,
-        "renderedEdgeLabels": 20,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 71
-      },
-      {
-        "id": "compact_5_cube_gamma1:2",
-        "elapsedMs": 163.791,
-        "lastGraphUpdateMs": 0.5,
-        "renderedNodes": 10,
-        "renderedEdgeSegments": 9,
-        "renderedCells": 0,
-        "renderedNodeLabels": 4,
-        "renderedEdgeLabels": 1,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 11
-      },
-      {
-        "id": "compact_5_cube_gamma1:3",
-        "elapsedMs": 449.833,
-        "lastGraphUpdateMs": 4.3,
-        "renderedNodes": 71,
-        "renderedEdgeSegments": 100,
-        "renderedCells": 30,
-        "renderedNodeLabels": 13,
-        "renderedEdgeLabels": 10,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 127
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
       }
     ],
     "interactions": [
       {
-        "id": "label-toggle",
-        "elapsedMs": 65.642,
-        "lastGraphUpdateMs": 0.1,
+        "id": "model-switch-davis",
+        "elapsedMs": 415.513,
+        "lastGraphUpdateMs": 4.8,
         "renderCountDelta": 2,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 0,
+        "drawingHelperLabels": 0,
         "renderedNodes": 10,
         "renderedEdgeSegments": 10,
         "renderedCells": 1,
-        "renderedNodeLabels": 0,
-        "renderedEdgeLabels": 0,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 8
-      },
-      {
-        "id": "gamma-incidence-selection",
-        "elapsedMs": 15.817,
-        "lastGraphUpdateMs": 0.7,
-        "renderCountDelta": 1,
-        "renderedNodes": 10,
-        "renderedEdgeSegments": 40,
-        "renderedCells": 0,
         "renderedNodeLabels": 10,
-        "renderedEdgeLabels": 40,
-        "renderedLabelLeaders": 38,
-        "drawCalls": 58
-      },
-      {
-        "id": "rank-two-pair-focus",
-        "elapsedMs": 93.526,
-        "lastGraphUpdateMs": 0.7,
-        "renderCountDelta": 1,
-        "renderedNodes": 6,
-        "renderedEdgeSegments": 6,
-        "renderedCells": 1,
-        "renderedNodeLabels": 6,
-        "renderedEdgeLabels": 6,
+        "renderedEdgeLabels": 10,
         "renderedLabelLeaders": 0,
-        "drawCalls": 20
+        "drawCalls": 26
       },
       {
-        "id": "ygamma-preset-switch",
-        "elapsedMs": 150.836,
-        "lastGraphUpdateMs": 1.6,
+        "id": "model-switch-hat-x",
+        "elapsedMs": 268.498,
+        "lastGraphUpdateMs": 4.5,
         "renderCountDelta": 2,
-        "renderedNodes": 24,
-        "renderedEdgeSegments": 42,
-        "renderedCells": 8,
-        "renderedNodeLabels": 1,
-        "renderedEdgeLabels": 42,
-        "renderedLabelLeaders": 42,
-        "drawCalls": 59
-      },
-      {
-        "id": "quotient-link-lens",
-        "elapsedMs": 44.576,
-        "lastGraphUpdateMs": 0.6,
-        "renderCountDelta": 2,
-        "renderedNodes": 3,
-        "renderedEdgeSegments": 4,
-        "renderedCells": 0,
-        "renderedNodeLabels": 3,
-        "renderedEdgeLabels": 1,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 10
-      },
-      {
-        "id": "topology-generator-star",
-        "elapsedMs": 94.612,
-        "lastGraphUpdateMs": 2.9,
-        "renderCountDelta": 1,
-        "renderedNodes": 23,
-        "renderedEdgeSegments": 33,
-        "renderedCells": 3,
-        "renderedNodeLabels": 23,
-        "renderedEdgeLabels": 14,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 52
-      },
-      {
-        "id": "edge-star",
-        "elapsedMs": 221.611,
-        "lastGraphUpdateMs": 1.8,
-        "renderCountDelta": 2,
+        "semanticVertices": 10,
+        "semanticEdges": 20,
+        "semanticCells": 10,
+        "wallCount": 0,
+        "drawingHelperLabels": 0,
         "renderedNodes": 10,
-        "renderedEdgeSegments": 12,
-        "renderedCells": 3,
-        "renderedNodeLabels": 1,
-        "renderedEdgeLabels": 12,
-        "renderedLabelLeaders": 12,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 10,
+        "renderedNodeLabels": 10,
+        "renderedEdgeLabels": 10,
+        "renderedLabelLeaders": 10,
         "drawCalls": 29
       },
       {
-        "id": "cell-star",
-        "elapsedMs": 45.091,
-        "lastGraphUpdateMs": 3.7,
-        "renderCountDelta": 0,
-        "renderedNodes": 23,
-        "renderedEdgeSegments": 33,
-        "renderedCells": 3,
-        "renderedNodeLabels": 23,
-        "renderedEdgeLabels": 14,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 52
-      },
-      {
-        "id": "rank-k-lens",
-        "elapsedMs": 48.447,
-        "lastGraphUpdateMs": 2.7,
-        "renderCountDelta": 0,
-        "renderedNodes": 23,
-        "renderedEdgeSegments": 33,
-        "renderedCells": 3,
-        "renderedNodeLabels": 23,
-        "renderedEdgeLabels": 14,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 52
-      },
-      {
-        "id": "comparison-view",
-        "elapsedMs": 139.847,
-        "lastGraphUpdateMs": 2,
+        "id": "model-switch-bar-x",
+        "elapsedMs": 232.607,
+        "lastGraphUpdateMs": 2.4,
         "renderCountDelta": 1,
-        "renderedNodes": 10,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
         "renderedEdgeSegments": 10,
         "renderedCells": 1,
         "renderedNodeLabels": 10,
-        "renderedEdgeLabels": 10,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 28
-      },
-      {
-        "id": "ygamma-cutaway-switch",
-        "elapsedMs": 128.344,
-        "lastGraphUpdateMs": 1.5,
-        "renderCountDelta": 1,
-        "renderedNodes": 11,
-        "renderedEdgeSegments": 14,
-        "renderedCells": 1,
-        "renderedNodeLabels": 1,
-        "renderedEdgeLabels": 14,
-        "renderedLabelLeaders": 14,
-        "drawCalls": 45
-      },
-      {
-        "id": "ygamma-relation-star",
-        "elapsedMs": 205.836,
-        "lastGraphUpdateMs": 15.2,
-        "renderCountDelta": 2,
-        "renderedNodes": 11,
-        "renderedEdgeSegments": 90,
-        "renderedCells": 81,
-        "renderedNodeLabels": 1,
-        "renderedEdgeLabels": 90,
-        "renderedLabelLeaders": 90,
-        "drawCalls": 113
-      },
-      {
-        "id": "ygamma-leader-labels",
-        "elapsedMs": 94.769,
-        "lastGraphUpdateMs": 1.1,
-        "renderCountDelta": 1,
-        "renderedNodes": 11,
-        "renderedEdgeSegments": 14,
-        "renderedCells": 1,
-        "renderedNodeLabels": 1,
-        "renderedEdgeLabels": 14,
-        "renderedLabelLeaders": 14,
-        "drawCalls": 45
-      },
-      {
-        "id": "ygamma-relation-atlas",
-        "elapsedMs": 61.727,
-        "lastGraphUpdateMs": 1.5,
-        "renderCountDelta": 0,
-        "renderedNodes": 11,
-        "renderedEdgeSegments": 14,
-        "renderedCells": 1,
-        "renderedNodeLabels": 1,
-        "renderedEdgeLabels": 14,
-        "renderedLabelLeaders": 14,
-        "drawCalls": 45
-      },
-      {
-        "id": "ygamma-drawing-comparison",
-        "elapsedMs": 127.869,
-        "lastGraphUpdateMs": 12.6,
-        "renderCountDelta": 0,
-        "renderedNodes": 22,
-        "renderedEdgeSegments": 220,
-        "renderedCells": 80,
-        "renderedNodeLabels": 0,
-        "renderedEdgeLabels": 220,
-        "renderedLabelLeaders": 220,
-        "drawCalls": 151
-      },
-      {
-        "id": "ygamma-camera-path",
-        "elapsedMs": 9.396,
-        "lastGraphUpdateMs": 1.2,
-        "renderCountDelta": 1,
-        "renderedNodes": 11,
-        "renderedEdgeSegments": 14,
-        "renderedCells": 1,
-        "renderedNodeLabels": 1,
-        "renderedEdgeLabels": 14,
-        "renderedLabelLeaders": 14,
-        "drawCalls": 45
-      },
-      {
-        "id": "annotation-toggle",
-        "elapsedMs": 48.187,
-        "lastGraphUpdateMs": 0,
-        "renderCountDelta": 1,
-        "renderedNodes": 10,
-        "renderedEdgeSegments": 10,
-        "renderedCells": 1,
-        "renderedNodeLabels": 0,
-        "renderedEdgeLabels": 0,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 8
-      },
-      {
-        "id": "bookmark-restore",
-        "elapsedMs": 225.04,
-        "lastGraphUpdateMs": 1.4,
-        "renderCountDelta": 4,
-        "renderedNodes": 3,
-        "renderedEdgeSegments": 10,
-        "renderedCells": 1,
-        "renderedNodeLabels": 1,
         "renderedEdgeLabels": 10,
         "renderedLabelLeaders": 10,
-        "drawCalls": 22
+        "drawCalls": 30
       },
       {
-        "id": "progressive-quotient-load",
-        "elapsedMs": 75.479,
-        "lastGraphUpdateMs": 0.6,
-        "renderCountDelta": 3,
-        "renderedNodes": 3,
-        "renderedEdgeSegments": 4,
+        "id": "model-switch-gamma",
+        "elapsedMs": 173.873,
+        "lastGraphUpdateMs": 1.8,
+        "renderCountDelta": 2,
+        "semanticVertices": 2,
+        "semanticEdges": 1,
+        "semanticCells": 0,
+        "wallCount": 0,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 2,
+        "renderedEdgeSegments": 1,
         "renderedCells": 0,
-        "renderedNodeLabels": 3,
+        "renderedNodeLabels": 2,
         "renderedEdgeLabels": 1,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 10
+        "renderedLabelLeaders": 1,
+        "drawCalls": 7
       },
       {
-        "id": "import-repair",
-        "elapsedMs": 52.327,
-        "lastGraphUpdateMs": 2,
-        "renderCountDelta": 0,
+        "id": "model-switch-projection",
+        "elapsedMs": 254.8,
+        "lastGraphUpdateMs": 4.3,
+        "renderCountDelta": 2,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 0,
+        "drawingHelperLabels": 0,
         "renderedNodes": 10,
         "renderedEdgeSegments": 10,
         "renderedCells": 1,
         "renderedNodeLabels": 10,
         "renderedEdgeLabels": 10,
         "renderedLabelLeaders": 0,
-        "drawCalls": 28
+        "drawCalls": 27
+      },
+      {
+        "id": "selected-wall-flip",
+        "elapsedMs": 73.468,
+        "lastGraphUpdateMs": 0.9,
+        "renderCountDelta": 2,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 1,
+        "renderedNodeLabels": 10,
+        "renderedEdgeLabels": 10,
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
+      },
+      {
+        "id": "wall-search-worker",
+        "elapsedMs": 254.719,
+        "lastGraphUpdateMs": 0.9,
+        "renderCountDelta": 2,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 1,
+        "renderedNodeLabels": 10,
+        "renderedEdgeLabels": 10,
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
+      },
+      {
+        "id": "labels-roundtrip",
+        "elapsedMs": 220.088,
+        "lastGraphUpdateMs": 1,
+        "renderCountDelta": 4,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 1,
+        "renderedNodeLabels": 10,
+        "renderedEdgeLabels": 10,
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
       },
       {
         "id": "screenshot-export",
-        "elapsedMs": 204.186,
-        "lastGraphUpdateMs": 2.1,
-        "renderCountDelta": 2,
-        "renderedNodes": 10,
+        "elapsedMs": 328.951,
+        "lastGraphUpdateMs": 2.4,
+        "renderCountDelta": 1,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
         "renderedEdgeSegments": 10,
         "renderedCells": 1,
         "renderedNodeLabels": 10,
         "renderedEdgeLabels": 10,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 28
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
+      },
+      {
+        "id": "viewer-only-roundtrip",
+        "elapsedMs": 229.929,
+        "lastGraphUpdateMs": 2.3,
+        "renderCountDelta": 2,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 1,
+        "renderedNodeLabels": 10,
+        "renderedEdgeLabels": 10,
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
+      },
+      {
+        "id": "research-export",
+        "elapsedMs": 89.332,
+        "lastGraphUpdateMs": 2.5,
+        "renderCountDelta": 0,
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 1,
+        "renderedNodeLabels": 10,
+        "renderedEdgeLabels": 10,
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
       },
       {
         "id": "idle-render-count",
-        "elapsedMs": 0,
-        "lastGraphUpdateMs": 0,
+        "elapsedMs": 900,
+        "lastGraphUpdateMs": 2.2,
         "renderCountDelta": 0,
-        "renderedNodes": 0,
-        "renderedEdgeSegments": 0,
-        "renderedCells": 0,
-        "renderedNodeLabels": 0,
-        "renderedEdgeLabels": 0,
-        "renderedLabelLeaders": 0,
-        "drawCalls": 0
+        "semanticVertices": 10,
+        "semanticEdges": 10,
+        "semanticCells": 1,
+        "wallCount": 5,
+        "drawingHelperLabels": 0,
+        "renderedNodes": 20,
+        "renderedEdgeSegments": 10,
+        "renderedCells": 1,
+        "renderedNodeLabels": 10,
+        "renderedEdgeLabels": 10,
+        "renderedLabelLeaders": 10,
+        "drawCalls": 30
       }
     ]
   },
@@ -364,261 +268,193 @@
       "budgets": {
         "cases": [
           {
-            "id": "I2_5:5",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 11,
+            "id": "bar-x-cold",
+            "maxElapsedMs": 1076,
+            "maxGraphUpdateMs": 78,
             "featureFloors": {
-              "renderedNodes": 10,
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
+              "renderedNodes": 20,
               "renderedEdgeSegments": 10,
               "renderedCells": 1,
               "renderedNodeLabels": 10,
               "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
+              "renderedLabelLeaders": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "A3:4",
+            "id": "bar-x-warm",
             "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
+            "maxGraphUpdateMs": 18,
             "featureFloors": {
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
               "renderedNodes": 20,
-              "renderedEdgeSegments": 27,
-              "renderedCells": 3,
-              "renderedNodeLabels": 20,
+              "renderedEdgeSegments": 10,
+              "renderedCells": 1,
+              "renderedNodeLabels": 10,
               "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "universal_rank3:4",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 10,
-            "featureFloors": {
-              "renderedNodes": 46,
-              "renderedEdgeSegments": 45,
-              "renderedCells": 0,
-              "renderedNodeLabels": 46,
-              "renderedEdgeLabels": 20,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "compact_5_cube_gamma1:2",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 10,
-              "renderedEdgeSegments": 9,
-              "renderedCells": 0,
-              "renderedNodeLabels": 4,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "compact_5_cube_gamma1:3",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 11,
-            "featureFloors": {
-              "renderedNodes": 71,
-              "renderedEdgeSegments": 100,
-              "renderedCells": 30,
-              "renderedNodeLabels": 13,
-              "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
+              "renderedLabelLeaders": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           }
         ],
         "interactions": [
           {
-            "id": "label-toggle",
+            "id": "model-switch-davis",
             "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
+            "maxGraphUpdateMs": 12,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "gamma-incidence-selection",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 10,
-              "renderedEdgeSegments": 40,
-              "renderedEdgeLabels": 40
-            }
-          },
-          {
-            "id": "rank-two-pair-focus",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
               "renderedCells": 1,
+              "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "ygamma-preset-switch",
+            "id": "model-switch-hat-x",
             "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
+            "maxGraphUpdateMs": 11,
             "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "quotient-link-lens",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeSegments": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "topology-generator-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "edge-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedEdgeSegments": 1,
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "cell-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 9,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "rank-k-lens",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "comparison-view",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "ygamma-cutaway-switch",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "ygamma-relation-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 38,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-leader-labels",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-relation-atlas",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-drawing-comparison",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 32,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-camera-path",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "annotation-toggle",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeSegments": 1,
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "bookmark-restore",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
               "renderedCells": 1,
               "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1,
               "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "progressive-quotient-load",
+            "id": "model-switch-bar-x",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
-              "renderedEdgeLabels": 1
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "import-repair",
+            "id": "model-switch-gamma",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
               "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "model-switch-projection",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 11,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "selected-wall-flip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "wall-search-worker",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "labels-roundtrip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
+              "renderedNodeLabels": 10,
+              "renderedEdgeLabels": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
@@ -626,15 +462,80 @@
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
               "renderedNodes": 1,
-              "renderedEdgeLabels": 1
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "viewer-only-roundtrip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "research-export",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
             "id": "idle-render-count",
-            "maxElapsedMs": 1000,
+            "maxElapsedMs": 1575,
             "maxGraphUpdateMs": 8,
-            "featureFloors": {}
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
           }
         ]
       }
@@ -645,261 +546,193 @@
       "budgets": {
         "cases": [
           {
-            "id": "I2_5:5",
+            "id": "bar-x-cold",
             "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
+            "maxGraphUpdateMs": 31,
             "featureFloors": {
-              "renderedNodes": 10,
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
+              "renderedNodes": 20,
               "renderedEdgeSegments": 10,
               "renderedCells": 1,
               "renderedNodeLabels": 10,
               "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
+              "renderedLabelLeaders": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "A3:4",
+            "id": "bar-x-warm",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
               "renderedNodes": 20,
-              "renderedEdgeSegments": 27,
-              "renderedCells": 3,
-              "renderedNodeLabels": 20,
+              "renderedEdgeSegments": 10,
+              "renderedCells": 1,
+              "renderedNodeLabels": 10,
               "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "universal_rank3:4",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 46,
-              "renderedEdgeSegments": 45,
-              "renderedCells": 0,
-              "renderedNodeLabels": 46,
-              "renderedEdgeLabels": 20,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "compact_5_cube_gamma1:2",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 10,
-              "renderedEdgeSegments": 9,
-              "renderedCells": 0,
-              "renderedNodeLabels": 4,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "compact_5_cube_gamma1:3",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 71,
-              "renderedEdgeSegments": 100,
-              "renderedCells": 30,
-              "renderedNodeLabels": 13,
-              "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
+              "renderedLabelLeaders": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           }
         ],
         "interactions": [
           {
-            "id": "label-toggle",
+            "id": "model-switch-davis",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "gamma-incidence-selection",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 10,
-              "renderedEdgeSegments": 40,
-              "renderedEdgeLabels": 40
-            }
-          },
-          {
-            "id": "rank-two-pair-focus",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
               "renderedCells": 1,
+              "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "ygamma-preset-switch",
+            "id": "model-switch-hat-x",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "quotient-link-lens",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeSegments": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "topology-generator-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "edge-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedEdgeSegments": 1,
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "cell-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "rank-k-lens",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "comparison-view",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "ygamma-cutaway-switch",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "ygamma-relation-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 15,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-leader-labels",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-relation-atlas",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-drawing-comparison",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 13,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-camera-path",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "annotation-toggle",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeSegments": 1,
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "bookmark-restore",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
               "renderedCells": 1,
               "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1,
               "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "progressive-quotient-load",
+            "id": "model-switch-bar-x",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
-              "renderedEdgeLabels": 1
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "import-repair",
+            "id": "model-switch-gamma",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
               "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "model-switch-projection",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "selected-wall-flip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "wall-search-worker",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "labels-roundtrip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
+              "renderedNodeLabels": 10,
+              "renderedEdgeLabels": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
@@ -907,15 +740,80 @@
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
               "renderedNodes": 1,
-              "renderedEdgeLabels": 1
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "viewer-only-roundtrip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "research-export",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
             "id": "idle-render-count",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
-            "featureFloors": {}
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
           }
         ]
       }
@@ -926,261 +824,193 @@
       "budgets": {
         "cases": [
           {
-            "id": "I2_5:5",
+            "id": "bar-x-cold",
             "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
+            "maxGraphUpdateMs": 25,
             "featureFloors": {
-              "renderedNodes": 10,
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
+              "renderedNodes": 20,
               "renderedEdgeSegments": 10,
               "renderedCells": 1,
               "renderedNodeLabels": 10,
               "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
+              "renderedLabelLeaders": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "A3:4",
+            "id": "bar-x-warm",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
               "renderedNodes": 20,
-              "renderedEdgeSegments": 27,
-              "renderedCells": 3,
-              "renderedNodeLabels": 20,
+              "renderedEdgeSegments": 10,
+              "renderedCells": 1,
+              "renderedNodeLabels": 10,
               "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "universal_rank3:4",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 46,
-              "renderedEdgeSegments": 45,
-              "renderedCells": 0,
-              "renderedNodeLabels": 46,
-              "renderedEdgeLabels": 20,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "compact_5_cube_gamma1:2",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 10,
-              "renderedEdgeSegments": 9,
-              "renderedCells": 0,
-              "renderedNodeLabels": 4,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 0
-            }
-          },
-          {
-            "id": "compact_5_cube_gamma1:3",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 71,
-              "renderedEdgeSegments": 100,
-              "renderedCells": 30,
-              "renderedNodeLabels": 13,
-              "renderedEdgeLabels": 10,
-              "renderedLabelLeaders": 0
+              "renderedLabelLeaders": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           }
         ],
         "interactions": [
           {
-            "id": "label-toggle",
+            "id": "model-switch-davis",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "gamma-incidence-selection",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 10,
-              "renderedEdgeSegments": 40,
-              "renderedEdgeLabels": 40
-            }
-          },
-          {
-            "id": "rank-two-pair-focus",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
               "renderedCells": 1,
+              "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "ygamma-preset-switch",
+            "id": "model-switch-hat-x",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "quotient-link-lens",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeSegments": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "topology-generator-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "edge-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedEdgeSegments": 1,
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "cell-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "rank-k-lens",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "comparison-view",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "ygamma-cutaway-switch",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "ygamma-relation-star",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 12,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-leader-labels",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-relation-atlas",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-drawing-comparison",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 10,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1,
-              "renderedLabelLeaders": 1
-            }
-          },
-          {
-            "id": "ygamma-camera-path",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedCells": 1,
-              "renderedEdgeLabels": 1
-            }
-          },
-          {
-            "id": "annotation-toggle",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
-              "renderedNodes": 1,
-              "renderedEdgeSegments": 1,
-              "renderedCells": 1
-            }
-          },
-          {
-            "id": "bookmark-restore",
-            "maxElapsedMs": 1000,
-            "maxGraphUpdateMs": 8,
-            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
               "renderedCells": 1,
               "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1,
               "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "progressive-quotient-load",
+            "id": "model-switch-bar-x",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
               "renderedNodes": 1,
               "renderedEdgeSegments": 1,
-              "renderedEdgeLabels": 1
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
-            "id": "import-repair",
+            "id": "model-switch-gamma",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
               "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "model-switch-projection",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
               "renderedEdgeLabels": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "selected-wall-flip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "wall-search-worker",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "labels-roundtrip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 10,
+              "semanticEdges": 10,
+              "semanticCells": 1,
+              "wallCount": 5,
+              "renderedNodeLabels": 10,
+              "renderedEdgeLabels": 10
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
@@ -1188,15 +1018,80 @@
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
             "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
               "renderedNodes": 1,
-              "renderedEdgeLabels": 1
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "viewer-only-roundtrip",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
+          },
+          {
+            "id": "research-export",
+            "maxElapsedMs": 1000,
+            "maxGraphUpdateMs": 8,
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
             }
           },
           {
             "id": "idle-render-count",
             "maxElapsedMs": 1000,
             "maxGraphUpdateMs": 8,
-            "featureFloors": {}
+            "featureFloors": {
+              "semanticVertices": 1,
+              "semanticEdges": 1,
+              "semanticCells": 1,
+              "wallCount": 1,
+              "renderedNodes": 1,
+              "renderedEdgeSegments": 1,
+              "renderedCells": 1,
+              "renderedNodeLabels": 1,
+              "renderedEdgeLabels": 1,
+              "renderedLabelLeaders": 1
+            },
+            "featureCeilings": {
+              "drawingHelperLabels": 0
+            }
           }
         ]
       }
@@ -1204,6 +1099,7 @@
   },
   "notes": [
     "ci-linux-standard is the only hard gate.",
-    "Local classes are stored so larger topology and quotient experiments can be compared without changing CI thresholds."
+    "Local classes are stored so cover, compression, and wall experiments can be compared without changing CI thresholds.",
+    "drawingHelperLabels has a zero ceiling: drawing-only midpoint and wall-segment helpers must not leak labels into the viewer."
   ]
 }

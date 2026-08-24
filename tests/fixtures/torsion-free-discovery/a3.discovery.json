@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "sourceSystem": {
+    "schemaVersion": 1,
+    "name": "A3",
+    "rank": 3,
+    "generators": [
+      {
+        "id": "s0",
+        "label": "s0"
+      },
+      {
+        "id": "s1",
+        "label": "s1"
+      },
+      {
+        "id": "s2",
+        "label": "s2"
+      }
+    ],
+    "coxeterMatrix": [
+      [1, 3, 2],
+      [3, 1, 3],
+      [2, 3, 1]
+    ],
+    "notes": ["Self-test input for automatic torsion-free subgroup discovery."]
+  },
+  "search": {
+    "maxIndex": 24,
+    "maxCandidates": 4,
+    "maxWitnesses": 128,
+    "maxSphericalOrder": 1000,
+    "maxSubsets": 32,
+    "timeoutSeconds": 60
+  }
+}

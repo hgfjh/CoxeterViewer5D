@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "name": "Regular ideal hyperbolic Coxeter 3-cube (all adjacent m=3)",
+  "dataStatus": "certified",
+  "description": "The finite-relation graph is the octahedron: adjacent cube facets meet at angle pi/3, while the three opposite facet pairs are ultraparallel. All eight cube vertices are ideal, so this is finite-volume but noncompact.",
+  "rank": 6,
+  "generators": [
+    { "id": "t12", "label": "t12", "colorHint": "#2563eb" },
+    { "id": "t13", "label": "t13", "colorHint": "#16a34a" },
+    { "id": "t14", "label": "t14", "colorHint": "#dc2626" },
+    { "id": "t23", "label": "t23", "colorHint": "#9333ea" },
+    { "id": "t24", "label": "t24", "colorHint": "#ea580c" },
+    { "id": "t34", "label": "t34", "colorHint": "#0891b2" }
+  ],
+  "coxeterMatrix": [
+    [1, 3, 3, 3, 3, "inf"],
+    [3, 1, 3, 3, "inf", 3],
+    [3, 3, 1, "inf", 3, 3],
+    [3, 3, "inf", 1, 3, 3],
+    [3, "inf", 3, 3, 1, 3],
+    ["inf", 3, 3, 3, 3, 1]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 3,
+    "normalGram": [
+      [
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        {
+          "kind": "dotted",
+          "coshDistance": 2,
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2,
+            "minimalPolynomial": [1, -2],
+            "isolatingInterval": [1.999999999, 2.000000001]
+          }
+        }
+      ],
+      [
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        {
+          "kind": "dotted",
+          "coshDistance": 2,
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2,
+            "minimalPolynomial": [1, -2],
+            "isolatingInterval": [1.999999999, 2.000000001]
+          }
+        },
+        { "kind": "coxeter", "m": 3 }
+      ],
+      [
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 },
+        {
+          "kind": "dotted",
+          "coshDistance": 2,
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2,
+            "minimalPolynomial": [1, -2],
+            "isolatingInterval": [1.999999999, 2.000000001]
+          }
+        },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 }
+      ],
+      [
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        {
+          "kind": "dotted",
+          "coshDistance": 2,
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2,
+            "minimalPolynomial": [1, -2],
+            "isolatingInterval": [1.999999999, 2.000000001]
+          }
+        },
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 }
+      ],
+      [
+        { "kind": "coxeter", "m": 3 },
+        {
+          "kind": "dotted",
+          "coshDistance": 2,
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2,
+            "minimalPolynomial": [1, -2],
+            "isolatingInterval": [1.999999999, 2.000000001]
+          }
+        },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 },
+        { "kind": "coxeter", "m": 3 }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2,
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2,
+            "minimalPolynomial": [1, -2],
+            "isolatingInterval": [1.999999999, 2.000000001]
+          }
+        },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "coxeter", "m": 3 },
+        { "kind": "numericGram", "value": 1 }
+      ]
+    ],
+    "normalCoordinates": [
+      [0.7071067811865476, 1.224744871391589, 0, 0],
+      [0.7071067811865476, 0, 1.224744871391589, 0],
+      [0.7071067811865476, 0, 0, 1.224744871391589],
+      [0.7071067811865476, 0, 0, -1.224744871391589],
+      [0.7071067811865476, 0, -1.224744871391589, 0],
+      [0.7071067811865476, -1.224744871391589, 0, 0]
+    ],
+    "basepoint": [1, 0, 0, 0],
+    "projection": "poincare-axes",
+    "source": "Exact construction in J=diag(-1,1,1,1): each normal is (1/sqrt(2), plus or minus sqrt(3/2) on one spatial axis). The Klein chamber is the cube |x_i| <= 1/sqrt(3), whose eight corners lie on the unit sphere."
+  },
+  "sourceRefs": [
+    {
+      "id": "jacquemet-tschantz-2018-all-cubes",
+      "citation": "Matthieu Jacquemet and Steven T. Tschantz, All hyperbolic Coxeter n-cubes, Journal of Combinatorial Theory, Series A 158 (2018), 387-406; arXiv:1803.10462.",
+      "url": "https://arxiv.org/abs/1803.10462",
+      "locator": "Sections 2.1-2.2 for Gram and cube conventions; Theorem 1 and the Appendix for the complete 3-cube classification.",
+      "notes": "The paper distinguishes ideal vertices by Euclidean vertex links and records that an ideal cube is noncompact."
+    },
+    {
+      "id": "everitt-2004-coxeter-hyperbolic-manifolds",
+      "citation": "Brent Everitt, Coxeter groups and hyperbolic manifolds, Mathematische Annalen 330 (2004), 127-150; arXiv:math/0205157.",
+      "url": "https://arxiv.org/abs/math/0205157",
+      "locator": "Proposition 1 and Theorem 4 for finite permutation modules and torsion in finite special subgroups.",
+      "notes": "Used for the finite-action criterion behind the bundled S4-kernel cover."
+    }
+  ],
+  "certificate": {
+    "status": "passed",
+    "backend": "idealHyperbolic3CubeExactChecker",
+    "backendVersion": "1.0.0",
+    "scopes": ["gram-signature", "geometry"],
+    "command": "python scripts/certify_ideal_hyperbolic_3_cube.py public/examples/ideal_hyperbolic_3_cube_m3.json",
+    "sourceRefIds": ["jacquemet-tschantz-2018-all-cubes"],
+    "diagnostics": {
+      "gram": {
+        "rank": 4,
+        "signature": { "positive": 3, "negative": 1, "zero": 2 },
+        "eigenvalues": { "3": 3, "0": 2, "-3": 1 }
+      },
+      "polyhedron": {
+        "combinatorics": "3-cube",
+        "finiteVolume": true,
+        "compact": false,
+        "idealVertexCount": 8,
+        "vertexLinkType": "affine A~2",
+        "oppositeFacetCoshDistance": 2
+      },
+      "exactNormals": {
+        "timeCoordinateSquared": "1/2",
+        "spatialCoordinateSquared": "3/2",
+        "basepoint": [1, 0, 0, 0]
+      }
+    },
+    "warnings": [
+      "This object is the regular ideal finite-volume 3-cube, not a compact hyperbolic cube."
+    ]
+  },
+  "notes": [
+    "The finite-relation graph is the octahedron L(K4). The generator labels t12, ..., t34 identify its vertices with the six transpositions of S4.",
+    "Two generators have m=3 exactly when the corresponding transpositions share a letter. The three disjoint pairs have m=inf.",
+    "Mapping each Coxeter generator tij to the transposition (ij) gives a surjection onto S4. Its kernel has index 24.",
+    "The bundled action checker proves that this kernel is torsion-free by checking every spherical A1 and A2 subgroup.",
+    "The browser stores decimal caches of the exact radical normal coordinates; the certificate checks the radical construction and exact Gram data."
+  ],
+  "warnings": [
+    "All-m=3 cube vertices have Euclidean (3,3,3) links, so compactness would be false. The example is ideal and noncompact.",
+    "Rendered chamber barycenters are a numerical projection of the certified reflection data."
+  ]
+}

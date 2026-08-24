@@ -1,0 +1,1725 @@
+{
+  "artifactType": "mod2-partial-module-marks-request",
+  "builderVersion": "1.0.0",
+  "claims": [
+    "request for exact fixed-point vectors of the 45 p2 subgroup classes"
+  ],
+  "classes": [
+    {
+      "classId": "mod2-class-ba484030e219c06fd412",
+      "classOrdinalWithinDegree": 1,
+      "classProvenanceSha256": "ba484030e219c06fd4125564ade2b333e0c5bcec072e8281679b99117e835b92",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 16320,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 16320,
+            "tomPosition": 5313
+          }
+        ],
+        "b0Structure": "C2 x (PSU(3,3) : C2)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 1,
+        "s3Order": 1,
+        "s3ProjectionIndex": 6,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5313,
+            "b0Index": 16320,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 1,
+            "s3Order": 1,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5313
+      }
+    },
+    {
+      "classId": "mod2-class-58b1bca8891122f200b1",
+      "classOrdinalWithinDegree": 2,
+      "classProvenanceSha256": "58b1bca8891122f200b1a9ec4b9fc0ab8a1c186ad88c9495cc8e029ab6751c70",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 16320,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 16320,
+            "tomPosition": 5313
+          }
+        ],
+        "b0Structure": "C2 x (PSU(3,3) : C2)",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5313,
+            "b0Index": 16320,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5313
+      }
+    },
+    {
+      "classId": "mod2-class-cc99d1b4edfcc9c4afc0",
+      "classOrdinalWithinDegree": 3,
+      "classProvenanceSha256": "cc99d1b4edfcc9c4afc05d17ea64927b652bda184e765b6cf82a851a3ce40496",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 16320,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 16320,
+            "tomPosition": 5313
+          }
+        ],
+        "b0Structure": "C2 x (PSU(3,3) : C2)",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5313,
+            "b0Index": 16320,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5313
+      }
+    },
+    {
+      "classId": "mod2-class-072790f6b42e9f66dd10",
+      "classOrdinalWithinDegree": 4,
+      "classProvenanceSha256": "072790f6b42e9f66dd1084a0095581360657cf80fa6e0019c7cd4ba618d3ca29",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 16320,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 16320,
+            "tomPosition": 5313
+          }
+        ],
+        "b0Structure": "C2 x (PSU(3,3) : C2)",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5313,
+            "b0Index": 16320,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 3
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5313
+      }
+    },
+    {
+      "classId": "mod2-class-75ae4b1c35da9d095d4c",
+      "classOrdinalWithinDegree": 5,
+      "classProvenanceSha256": "75ae4b1c35da9d095d4ce299eeecb3dd7444bf321cb7528f7ea61bc4bef0dd19",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 16320,
+            "tomPosition": 5313
+          }
+        ],
+        "b0Structure": "PSU(3,3) : C2",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5313,
+            "b0Index": 32640,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5313
+      }
+    },
+    {
+      "classId": "mod2-class-00f2caeb5ad148e662e7",
+      "classOrdinalWithinDegree": 6,
+      "classProvenanceSha256": "00f2caeb5ad148e662e79ce3e016e23c33aa55ba7224cd5eafa163908561be22",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "PSU(3,3) : C2",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 32640,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-6f183008a9bc47537c43",
+      "classOrdinalWithinDegree": 7,
+      "classProvenanceSha256": "6f183008a9bc47537c43a84eb9338632a266fd3ba3c018a546f55c7f8f3f5d8b",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 2,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "C2 x PSU(3,3)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 32640,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-3b2f0bd7e9ffa3cbf2ce",
+      "classOrdinalWithinDegree": 8,
+      "classProvenanceSha256": "3b2f0bd7e9ffa3cbf2ce6cac385e6e1704a1bf6fafe72555868ed05ad50bd10c",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 48960,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "((C2 x C2 x C2) : PSL(3,2)) x S3",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 3,
+        "s3Order": 3,
+        "s3ProjectionIndex": 2,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 48960,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 3,
+            "s3Order": 3,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-f6889a7b9392023ee5f9",
+      "classOrdinalWithinDegree": 9,
+      "classProvenanceSha256": "f6889a7b9392023ee5f9f8f40f060d15a850331e89801d97a233423a015d7c2c",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 48960,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "((C2 x C2 x C2) : PSL(3,2)) x S3",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 48960,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 3
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-9d481e621142391237ce",
+      "classOrdinalWithinDegree": 10,
+      "classProvenanceSha256": "9d481e621142391237ce8802360608108ab140c471304e1799b2b5501405d020",
+      "degree": 97920,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 97920,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "C3 x ((C2 x C2 x C2) : PSL(3,2))",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 97920,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 97920,
+        "subgroupOrder": 24192,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-7ead99fa43c6f57cc9df",
+      "classOrdinalWithinDegree": 1,
+      "classProvenanceSha256": "7ead99fa43c6f57cc9df5d59bcc65991aabe251c12251a0944522b640c2eadad",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 16320,
+            "tomPosition": 5313
+          }
+        ],
+        "b0Structure": "PSU(3,3) : C2",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 1,
+        "s3Order": 1,
+        "s3ProjectionIndex": 6,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5313,
+            "b0Index": 32640,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 1,
+            "s3Order": 1,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5313
+      }
+    },
+    {
+      "classId": "mod2-class-21c914dca245b1f36f08",
+      "classOrdinalWithinDegree": 2,
+      "classProvenanceSha256": "21c914dca245b1f36f08fd14523f13b77551a40b9d50f126bff11ac6a3efeb54",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "PSU(3,3) : C2",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 1,
+        "s3Order": 1,
+        "s3ProjectionIndex": 6,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 32640,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 1,
+            "s3Order": 1,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-5bdac49c455410c87600",
+      "classOrdinalWithinDegree": 3,
+      "classProvenanceSha256": "5bdac49c455410c8760053137de128df21169e4c99d857743a07abd6d028304c",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 2,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "C2 x PSU(3,3)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 1,
+        "s3Order": 1,
+        "s3ProjectionIndex": 6,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 32640,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 1,
+            "s3Order": 1,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-ab6442f746ee8f6b9cb2",
+      "classOrdinalWithinDegree": 4,
+      "classProvenanceSha256": "ab6442f746ee8f6b9cb2919e7748234ef4429102efdecc749ceec2b0bb8f7888",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 16320,
+            "tomPosition": 5313
+          }
+        ],
+        "b0Structure": "PSU(3,3) : C2",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5313,
+            "b0Index": 32640,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5313
+      }
+    },
+    {
+      "classId": "mod2-class-f05d6d6b675b474b6b41",
+      "classOrdinalWithinDegree": 5,
+      "classProvenanceSha256": "f05d6d6b675b474b6b41a1e9f3cf48b7124b114c48a99d7a384074d49b0488ea",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "PSU(3,3) : C2",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 32640,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-4a38aa224f55c377c2fd",
+      "classOrdinalWithinDegree": 6,
+      "classProvenanceSha256": "4a38aa224f55c377c2fd6a73809f5dfb0361d857ca8e27deb76c51cfbb9d3dda",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 32640,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 2,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "C2 x PSU(3,3)",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 32640,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-c83afd01a9facdfc538f",
+      "classOrdinalWithinDegree": 7,
+      "classProvenanceSha256": "c83afd01a9facdfc538fef9a062841e47fbb9d8143a29fce57b217083d7df768",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 65280,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "PSU(3,3)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 65280,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-d38a264b3f13459462aa",
+      "classOrdinalWithinDegree": 8,
+      "classProvenanceSha256": "d38a264b3f13459462aa0f7a3808214a362269a114364ccf2b67c0a41debb2b0",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 97920,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "C3 x ((C2 x C2 x C2) : PSL(3,2))",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 3,
+        "s3Order": 3,
+        "s3ProjectionIndex": 2,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 97920,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 3,
+            "s3Order": 3,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-0ddc0c054c568447c870",
+      "classOrdinalWithinDegree": 9,
+      "classProvenanceSha256": "0ddc0c054c568447c870535006df57264480d32ac8ff088de2bfaddddd04a921",
+      "degree": 195840,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 195840,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 195840,
+            "tomPosition": 5083
+          }
+        ],
+        "b0Structure": "(PSL(3,2) : C2) x S3",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5083,
+            "b0Index": 195840,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 195840,
+        "subgroupOrder": 12096,
+        "tomPosition": 5083
+      }
+    },
+    {
+      "classId": "mod2-class-247cb74e373f456a4bcf",
+      "classOrdinalWithinDegree": 1,
+      "classProvenanceSha256": "247cb74e373f456a4bcf507c57b5b647f0397e961bfc1d16011c75743acde980",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 48960,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "((C2 x C2 x C2) : PSL(3,2)) x S3",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 1,
+        "s3Order": 1,
+        "s3ProjectionIndex": 6,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 48960,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 1,
+            "s3Order": 1,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-9650c029e5fecd0876aa",
+      "classOrdinalWithinDegree": 2,
+      "classProvenanceSha256": "9650c029e5fecd0876aa80fa26ea8f671a2e2d12ae6a6d7a53367591ebec86e6",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 48960,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "((C2 x C2 x C2) : PSL(3,2)) x S3",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 48960,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-454b722b2830bd9f6ebb",
+      "classOrdinalWithinDegree": 3,
+      "classProvenanceSha256": "454b722b2830bd9f6ebbe700f33ccdeb57194c7d638bbc04a3e3bbfc54a29207",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 97920,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "C3 x ((C2 x C2 x C2) : PSL(3,2))",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 97920,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-28b7a67944870af54bd7",
+      "classOrdinalWithinDegree": 4,
+      "classProvenanceSha256": "28b7a67944870af54bd72ccd21fae2d669146cbb4ef9397b0abbff968bf54d1e",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 146880,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 3,
+            "family": "outer-surjective",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5141
+          }
+        ],
+        "b0Structure": "C2 x ((C2 x C2 x C2) : PSL(3,2))",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 3,
+        "s3Order": 3,
+        "s3ProjectionIndex": 2,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5141,
+            "b0Index": 146880,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 3,
+            "s3Order": 3,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5141
+      }
+    },
+    {
+      "classId": "mod2-class-57406a8cbc788cdabf71",
+      "classOrdinalWithinDegree": 5,
+      "classProvenanceSha256": "57406a8cbc788cdabf717dc52a2ffa200f20c7ac5be10754f06518c8c26756c2",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 146880,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5144
+          }
+        ],
+        "b0Structure": "C2 x ((C2 x C2 x C2) . PSL(3,2))",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 3,
+        "s3Order": 3,
+        "s3ProjectionIndex": 2,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5144,
+            "b0Index": 146880,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 3,
+            "s3Order": 3,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5144
+      }
+    },
+    {
+      "classId": "mod2-class-f8f9f68b8316f62398ed",
+      "classOrdinalWithinDegree": 6,
+      "classProvenanceSha256": "f8f9f68b8316f62398edf6a0297d202ff4218c47c15f1387f725ed4851fc7ac1",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 146880,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5145
+          }
+        ],
+        "b0Structure": "C2 x ((C2 x C2 x C2 x C2 x C2 x C2) : (C7 : C3))",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 3,
+        "s3Order": 3,
+        "s3ProjectionIndex": 2,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5145,
+            "b0Index": 146880,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 3,
+            "s3Order": 3,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5145
+      }
+    },
+    {
+      "classId": "mod2-class-6a0b6addb6e74677a057",
+      "classOrdinalWithinDegree": 7,
+      "classProvenanceSha256": "6a0b6addb6e74677a0577e5f2da957fe2df2889e84d869dfd50978884ec10109",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 48960,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 48960,
+            "tomPosition": 5265
+          }
+        ],
+        "b0Structure": "((C2 x C2 x C2) : PSL(3,2)) x S3",
+        "commonQuotientOrder": 6,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5265,
+            "b0Index": 48960,
+            "commonQuotientOrder": 6,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5265
+      }
+    },
+    {
+      "classId": "mod2-class-09ffd141d4c56fc83fc9",
+      "classOrdinalWithinDegree": 8,
+      "classProvenanceSha256": "09ffd141d4c56fc83fc9911b67e06039383d2b6ba2b0b249581e04854efd825c",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 146880,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 3,
+            "family": "outer-surjective",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5141
+          }
+        ],
+        "b0Structure": "C2 x ((C2 x C2 x C2) : PSL(3,2))",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5141,
+            "b0Index": 146880,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5141
+      }
+    },
+    {
+      "classId": "mod2-class-f6a3a55d596d0ec8b7a9",
+      "classOrdinalWithinDegree": 9,
+      "classProvenanceSha256": "f6a3a55d596d0ec8b7a992c133ca71e9f14e8f01fcf24b55593dc5b1d4570c89",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 146880,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5144
+          }
+        ],
+        "b0Structure": "C2 x ((C2 x C2 x C2) . PSL(3,2))",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5144,
+            "b0Index": 146880,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5144
+      }
+    },
+    {
+      "classId": "mod2-class-0ac3d8d6402164fe36cc",
+      "classOrdinalWithinDegree": 10,
+      "classProvenanceSha256": "0ac3d8d6402164fe36cc8144e0aa2c5cd7214934fcb9b82d0d8a1c797eb32c93",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 146880,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5145
+          }
+        ],
+        "b0Structure": "C2 x ((C2 x C2 x C2 x C2 x C2 x C2) : (C7 : C3))",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5145,
+            "b0Index": 146880,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5145
+      }
+    },
+    {
+      "classId": "mod2-class-e906d754089bac31d293",
+      "classOrdinalWithinDegree": 11,
+      "classProvenanceSha256": "e906d754089bac31d2931ff738fbd2c6e2ea0906a4c0374ecfc75bd296f149c1",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 293760,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5141
+          }
+        ],
+        "b0Structure": "(C2 x C2 x C2) : PSL(3,2)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5141,
+            "b0Index": 293760,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5141
+      }
+    },
+    {
+      "classId": "mod2-class-0b5e11fd05ccfd8eb29b",
+      "classOrdinalWithinDegree": 12,
+      "classProvenanceSha256": "0b5e11fd05ccfd8eb29bf7b07f30fe3ba62f92271afc9863db8ab950ec3a7b2c",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 293760,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5142
+          },
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5143
+          }
+        ],
+        "b0Structure": "((C2 x C2 x C2) . (C2 x C2 x C2)) : (C7 : C3)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5142,
+            "b0Index": 293760,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5142
+      }
+    },
+    {
+      "classId": "mod2-class-9be5f7d12948273c34ff",
+      "classOrdinalWithinDegree": 13,
+      "classProvenanceSha256": "9be5f7d12948273c34ffca985ef85a9032dd59475d89e8ffc77522ef238ee924",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 293760,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5144
+          }
+        ],
+        "b0Structure": "(C2 x C2 x C2) . PSL(3,2)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5144,
+            "b0Index": 293760,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5144
+      }
+    },
+    {
+      "classId": "mod2-class-9e794ea49c3aa76e8dab",
+      "classOrdinalWithinDegree": 14,
+      "classProvenanceSha256": "9e794ea49c3aa76e8dab4638c203431cabf018493ec127d1de38a4682992c906",
+      "degree": 293760,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 293760,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 146880,
+            "tomPosition": 5145
+          }
+        ],
+        "b0Structure": "(C2 x C2 x C2 x C2 x C2 x C2) : (C7 : C3)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5145,
+            "b0Index": 293760,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 293760,
+        "subgroupOrder": 8064,
+        "tomPosition": 5145
+      }
+    },
+    {
+      "classId": "mod2-class-5b26d8986262f222ee4a",
+      "classOrdinalWithinDegree": 1,
+      "classProvenanceSha256": "5b26d8986262f222ee4a0e360692d1e711a7b8cda6e62087796f1aa32558996f",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 65280,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 32640,
+            "tomPosition": 5280
+          }
+        ],
+        "b0Structure": "PSU(3,3)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 1,
+        "s3Order": 1,
+        "s3ProjectionIndex": 6,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5280,
+            "b0Index": 65280,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 1,
+            "s3Order": 1,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 5280
+      }
+    },
+    {
+      "classId": "mod2-class-73463aea349598f4297b",
+      "classOrdinalWithinDegree": 2,
+      "classProvenanceSha256": "73463aea349598f4297b3f2ffb32ae98e8a365c8d31b404e4705a1c320defb55",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 130560,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 130560,
+            "tomPosition": 5147
+          }
+        ],
+        "b0Structure": "C2 x (PSL(2,8) : C3)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 2,
+        "s3Order": 2,
+        "s3ProjectionIndex": 3,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5147,
+            "b0Index": 130560,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 2,
+            "s3Order": 2,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 5147
+      }
+    },
+    {
+      "classId": "mod2-class-75627a2179517d7f0b72",
+      "classOrdinalWithinDegree": 3,
+      "classProvenanceSha256": "75627a2179517d7f0b72be7a94f3919539dcb7a444a642b2add5e82d97d3f839",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 195840,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 195840,
+            "tomPosition": 5083
+          }
+        ],
+        "b0Structure": "(PSL(3,2) : C2) x S3",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 3,
+        "s3Order": 3,
+        "s3ProjectionIndex": 2,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5083,
+            "b0Index": 195840,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 3,
+            "s3Order": 3,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 5083
+      }
+    },
+    {
+      "classId": "mod2-class-bb0188cb134762d9ff2e",
+      "classOrdinalWithinDegree": 4,
+      "classProvenanceSha256": "bb0188cb134762d9ff2ee7f0d1e16acf7072709027ecde52db603648f81bb6f3",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 195840,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 195840,
+            "tomPosition": 5083
+          }
+        ],
+        "b0Structure": "(PSL(3,2) : C2) x S3",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5083,
+            "b0Index": 195840,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 3
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 5083
+      }
+    },
+    {
+      "classId": "mod2-class-e7c75236a88947c9fed2",
+      "classOrdinalWithinDegree": 5,
+      "classProvenanceSha256": "e7c75236a88947c9fed24062d82bd88fe0592eb4f9871abbedc7ef92c3b30725",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 195840,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 195840,
+            "tomPosition": 5083
+          }
+        ],
+        "b0Structure": "(PSL(3,2) : C2) x S3",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5083,
+            "b0Index": 195840,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 4
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 5083
+      }
+    },
+    {
+      "classId": "mod2-class-cbaac1a6957d6d9cb464",
+      "classOrdinalWithinDegree": 6,
+      "classProvenanceSha256": "cbaac1a6957d6d9cb46442b8b295ac7e30a01aad22c18fc7079bc0c7f1ec850c",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 195840,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 195840,
+            "tomPosition": 5083
+          }
+        ],
+        "b0Structure": "(PSL(3,2) : C2) x S3",
+        "commonQuotientOrder": 2,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5083,
+            "b0Index": 195840,
+            "commonQuotientOrder": 2,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 5
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 5083
+      }
+    },
+    {
+      "classId": "mod2-class-eaab1d1fc9672ede23d6",
+      "classOrdinalWithinDegree": 7,
+      "classProvenanceSha256": "eaab1d1fc9672ede23d65023ddf295edc8d4dc0f45b7831247932d484eb75485",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "contained-in-normal-factor",
+        "b0Index": 391680,
+        "b0SourceRecords": [
+          {
+            "family": "contained-in-normal-factor",
+            "normalFactorIndex": 195840,
+            "tomPosition": 5083
+          }
+        ],
+        "b0Structure": "C3 : (PSL(3,2) : C2)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 5083,
+            "b0Index": 391680,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 5083
+      }
+    },
+    {
+      "classId": "mod2-class-de89c1d0ccbdf1af9471",
+      "classOrdinalWithinDegree": 8,
+      "classProvenanceSha256": "de89c1d0ccbdf1af947117746e8fac98985e6feb460b42496cdc9ce5d4721985",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 391680,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 3,
+            "family": "outer-surjective",
+            "normalFactorIndex": 391680,
+            "tomPosition": 4842
+          }
+        ],
+        "b0Structure": "C2 x PSL(2,8)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 4842,
+            "b0Index": 391680,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 4842
+      }
+    },
+    {
+      "classId": "mod2-class-5022033585b5367b0c20",
+      "classOrdinalWithinDegree": 9,
+      "classProvenanceSha256": "5022033585b5367b0c20334eeed6cd13ebca1459dbe90e8be1b1428f69046f20",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 391680,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 391680,
+            "tomPosition": 4843
+          }
+        ],
+        "b0Structure": "PSL(3,2) x S3",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 4843,
+            "b0Index": 391680,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 4843
+      }
+    },
+    {
+      "classId": "mod2-class-2f99776143721730c7b9",
+      "classOrdinalWithinDegree": 10,
+      "classProvenanceSha256": "2f99776143721730c7b9199e43fc1544bd63a29d52eaf88aa38920aa3e55220b",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 391680,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 2,
+            "diagonalTomMark": 2,
+            "family": "outer-surjective",
+            "normalFactorIndex": 391680,
+            "tomPosition": 4843
+          }
+        ],
+        "b0Structure": "C3 x (PSL(3,2) : C2)",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 4843,
+            "b0Index": 391680,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 1
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 4843
+      }
+    },
+    {
+      "classId": "mod2-class-99878bf475224700b074",
+      "classOrdinalWithinDegree": 11,
+      "classProvenanceSha256": "99878bf475224700b074006b0fdddd6315537ba5dc807852b593ec04933b9dd8",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 391680,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 391680,
+            "tomPosition": 4844
+          }
+        ],
+        "b0Structure": "PSL(3,2) x S3",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 4844,
+            "b0Index": 391680,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 4844
+      }
+    },
+    {
+      "classId": "mod2-class-641b2de85ac10edde881",
+      "classOrdinalWithinDegree": 12,
+      "classProvenanceSha256": "641b2de85ac10edde881fb86c9b1252423358a76d948d457e4c351d4f211c28b",
+      "degree": 391680,
+      "provenance": {
+        "b0Family": "outer-surjective",
+        "b0Index": 391680,
+        "b0SourceRecords": [
+          {
+            "complementClassPosition": 1,
+            "diagonalTomMark": 1,
+            "family": "outer-surjective",
+            "normalFactorIndex": 391680,
+            "tomPosition": 4845
+          }
+        ],
+        "b0Structure": "((C2 x C2 x C2) : (C7 : C3)) x S3",
+        "commonQuotientOrder": 1,
+        "s3ClassPosition": 4,
+        "s3Order": 6,
+        "s3ProjectionIndex": 1,
+        "sourceMultiplicity": 1,
+        "sourceRows": [
+          {
+            "b0ClassTomPosition": 4845,
+            "b0Index": 391680,
+            "commonQuotientOrder": 1,
+            "s3ClassPosition": 4,
+            "s3Order": 6,
+            "subdirectClassPosition": 2
+          }
+        ],
+        "subgroupIndex": 391680,
+        "subgroupOrder": 6048,
+        "tomPosition": 4845
+      }
+    }
+  ],
+  "nonClaims": [
+    "identity of transfer envelopes whose hashes differ",
+    "a torsion-free subgroup",
+    "completeness beyond the sealed finite-image ledger"
+  ],
+  "requestSha256": "43d73a4cc7da7d5d4cb47bdfd2f83b842b919181b2327bd8928713d2982495d7",
+  "schemaVersion": 1,
+  "scope": {
+    "classCount": 45,
+    "degreeCount": 4,
+    "largeCosetRowsMaterialized": false,
+    "maximumDegree": 391680
+  },
+  "sourceHashes": {
+    "gapMarksScriptSha256": "cd4368c9413d82ecc21e86470e20a588a399b41c41fd4e8b9270572eb089759f",
+    "ledgerFileSha256": "2feec938b7c200eb9761e98de699ef45f664fdb5d4f41d81c634738bfd90c301",
+    "ledgerReportSha256": "675da9ba119490d8ce6ecb6743ee3e4e7529087fb3bdec770b892cb74be8e499",
+    "p2ArtifactSha256": "a2d3341aa9e66a1a9dab69f17602eb549c7c8f5feb4104cd0e68e6a50da20a1d",
+    "p2FileSha256": "42d703de361a6bb2b8f21116709b47cfe7c6c9b3eb8c0eb463af1a080eb5b2a2",
+    "recognitionActionSha256": "73cefb5af2e02dbfd53fe5e6f330226a2ad61141490cb0fe60e212ee79e6a283",
+    "recognizerLibraryPrefixSha256": "1083b8acae66f84cb7933804e784544e2edf7c8f524abc78172ad8707a23b22b",
+    "recognizerScriptSha256": "b0ed4c46817251b45aea9c47a300deef2674131d877c56c0e19ca0f372f2bd19",
+    "sealedLedgerRecognitionActionSha256": "742877f94fe20bd6083ba08c41507ca6c450342d3f34d2f4856c8c6fb3217119"
+  },
+  "transferWitnessSha256": "e3fbfe96375ed4a09c409f1fcb06c414a685b083969185ed88c36f6e9489e02c",
+  "witnessCatalogueSha256": "ecb34ecdd386b16765507d1a48ab7ed3c9887ba4b00c80056a9d1af628486140",
+  "witnessCount": 186
+}

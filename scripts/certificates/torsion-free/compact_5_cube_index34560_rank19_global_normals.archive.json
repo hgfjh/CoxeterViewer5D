@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "kind": "streamed-rank19-global-normal-catalogue-archive",
+  "archive": {
+    "path": "scripts/certificates/torsion-free/compact_5_cube_index34560_rank19_global_normals.json.gz",
+    "encoding": "gzip-json",
+    "byteLength": 5378116,
+    "sha256": "6a5ddcd80e8bf39331888af9090d9eb8876429bb4e7cd2b28e460977310fee2d"
+  },
+  "decoded": {
+    "byteLength": 52784429,
+    "sha256": "d6c14e64d5920c28417e9744791b8011d2d8d93cae2248618e124fefdd9870d1",
+    "artifactDigest": "46914a6e832d92e19206e5c0e75ce2b3ccd3a2480be79e497643a58055fdedad",
+    "bindingDigest": "679cbef59b376f429a779bf09639894fc4405b0a18c254b8ab3c16132fd7b76a",
+    "normalCatalogueDigest": "6cf32c34bb84fcf7c42a0f5064b8aac9c93d1f124e90453e9170c748f8cf9e8b",
+    "chunkManifestDigest": "0bfd30eee514f2e36d3328b2d63a69a42510638efae57dcc443c37c462c64d4e",
+    "degree": 34560,
+    "rank": 19,
+    "germOccurrenceCount": 4467168,
+    "identicallyZeroGermCount": 856530,
+    "normalCount": 46275
+  },
+  "replayChecks": {
+    "envelopeValid": true,
+    "storedDigestValid": true,
+    "bindingValid": true,
+    "expectedBindingMatches": true,
+    "preflightReplayValid": true,
+    "gapFreePointCoverage": true,
+    "everyChunkStreamReportValid": true,
+    "adjacencyAndLinkNonClaimsExplicit": true,
+    "chunkManifestDigestValid": true,
+    "catalogueAndCountsRecomputed": true,
+    "completionClaimValid": true
+  },
+  "compression": {
+    "method": "node-zlib-gzip-level-9",
+    "nodeVersion": "24.16.0",
+    "zlibVersion": "1.3.1-e00f703"
+  },
+  "manifestDigest": "ba233b3cf6d19546134abb1fb5540d998f7d4dbf953f066d97951b49b94ba5e4"
+}

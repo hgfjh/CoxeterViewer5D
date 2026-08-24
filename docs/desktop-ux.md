@@ -60,9 +60,11 @@ Core movement and inspection controls are:
   small `Show UI` button over the canvas.
 - Fullscreen from the desktop menu uses the native Tauri window fullscreen API
   when available. Browser fullscreen remains the web fallback.
-- Reset view, focus selected object, toggle labels, toggle rank-two cells,
-  increase/decrease radius, and switch mode through the same app actions used
-  by browser shortcuts.
+- Reset view, toggle labels, toggle relation cells, and switch models through
+  the same app actions used by browser controls.
+- The **Workflow** menu opens the current sequence: find a rank-two cell,
+  inspect a finite cover, find walls in `bar X`, coorient walls, and inspect
+  ascending or descending links.
 
 WASD is a camera/navigation convention only. It must not change Coxeter words,
 selected generators, quotient cocycles, or generated graph data.
@@ -73,10 +75,11 @@ geometric object out of view, that is a layout regression.
 
 ## Native File Behavior
 
-The Tauri shell currently owns only narrow local session-file operations:
+The Tauri shell owns narrow local session-file operations:
 
 - Read `.coxeter-session.json`.
-- Write `.coxeter-session.json`.
+- Write `.coxeter-session.json` with the active source cover, wall signs,
+  selected objects, labels, link lens, and drawing state.
 
 Mathematical JSON imports still pass through the browser-side validators. A
 desktop import dialog may choose a file path, but validation, warnings,
@@ -85,14 +88,23 @@ approximation labels, and certificate boundaries stay the same as the web app.
 ## External Tool Jobs
 
 Sage, GAP/KBMAG, CoxIter, polymake, Regina, and similar tools are external jobs.
-The desktop app may help launch or inspect job artifacts in a later milestone,
-but the release contract is:
+The desktop bridge launches only approved job kinds and records their artifacts;
+it is not an arbitrary shell. The release contract is:
 
 - External tools emit JSON or certificate artifacts through `scripts/`.
 - Every artifact records tool id, command shape, input hash, output hash, and
   claim boundary.
 - Missing tools report `skipped`, `missing-runtime`, `missing-kbmag`, or another
   explicit status. Missing tools must not be silently replaced by weaker claims.
+
+The cover-discovery desktop job uses the bounded `auto` ladder described in
+[torsion-free-cover-discovery.md](torsion-free-cover-discovery.md). It belongs in
+the controlled job queue, with cancellation, an index bound, progress, logs,
+and a complete torsion/fixed-point artifact. It tries Sage finite-image and
+congruence reductions, recognition/marks and composite modules, then a small
+GAP low-index fallback. The desktop bridge exposes this job without granting
+arbitrary shell access. CoxIter remains a diagram checker rather than a
+subgroup finder.
 
 The browser and desktop shells consume validated artifacts. They do not become
 Sage, GAP, KBMAG, or CoxIter front ends.
@@ -105,8 +117,9 @@ Diagnostics are part of the product surface:
   unavailable exact backends.
 - Geometry diagnostics distinguish certified source transcription, numerical
   normals, interval checks, and 3D projection.
-- Quotient/game diagnostics distinguish in-repo finite checks from external
-  subgroup/coset certificates.
+- Cover/compression diagnostics distinguish the imported finite action,
+  in-repo attaching-map checks, wall diagnostics, and external subgroup/coset
+  certificates.
 - Release diagnostics report build readiness, bundle files, signing status, and
   updater status in deterministic JSON.
 

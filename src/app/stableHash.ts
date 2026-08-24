@@ -417,6 +417,7 @@ function revisionsForEdges(
       edges.map((edge) => [
         edge.id,
         edge.compactLabel,
+        edge.semanticLabelKind,
         edge.alwaysLabel === true ? 1 : 0,
         edge.labelAnchor,
         edge.labelPosition,
@@ -453,6 +454,8 @@ function revisionsForCells(
         cell.localDistance,
         cell.readabilityRole,
         cell.isRelationBoundary === true ? 1 : 0,
+        cell.drawingInteriorPoint,
+        cell.drawingInteriorRing,
       ]),
     ),
     appearance: stableValueHash(

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "kind": "fibering-research-portfolio",
+  "status": "passed",
+  "policy": {
+    "cubeRescueIsBounded": true,
+    "compactPromotionOrder": [
+      "source-certification",
+      "spherical-planning",
+      "torsion-free-action",
+      "integral-h1-wall-saturation",
+      "cheap-link-screen",
+      "generalized-compression",
+      "exact-chamber-arrangement"
+    ],
+    "compactB1ZeroAction": "deprioritize",
+    "expensiveCompactStagesRequireCheapSurvivor": true,
+    "globalNormalCatalogueRerunForbidden": true
+  },
+  "cubeRescue": {
+    "path": "scripts/certificates/torsion-free/compact_5_cube_index34560_rank19_bounded_rescue.json",
+    "bytesSha256": "a7ff87b3227f7764ac53c8282b7a2414197016f48bafca3048246ad8bce7067a",
+    "runnerArtifactDigest": "320558bf1fed0996d7ccbec8a9071d83c14c4f6c2d152fec06ddb134f624d864",
+    "certificateDigest": "0a1ef440ca43ca8c6a4370d06bfe9362170761526039a9e7eeeafceb8fab0375",
+    "replayDigest": "ab4b13ee77376a524311ccc7cd117d94caf07104d95bcc3176389b78223b939c",
+    "status": "local-connectors-only",
+    "extractedMotifCount": 38,
+    "selectedMotifCount": 38,
+    "trialCount": 380,
+    "localConnectorCount": 104,
+    "originalVertexPassCount": 0,
+    "noGlobalNormalCatalogueLoaded": true,
+    "decision": "archive-current-action-as-benchmark-with-local-connectors"
+  },
+  "compactActions": {
+    "path": "scripts/certificates/portfolio/compact_h5_action_portfolio.json",
+    "bytesSha256": "0db882138cd5d7f9fa9edc8edc5bda2d86f7c2aef02ac2fe1e2884a8e8b6ba87",
+    "artifactHash": "c62806047a32f76e2c4ffd1bb328744988219a642c68f10826d54cf08b67049a",
+    "replayDigest": "2c54640856ca8f272246c7d2c425f24c27cd4716db86493cf0bc5de2ceac8921",
+    "orderedTargetIds": [
+      "makarov-p0",
+      "makarov-p1",
+      "tumarkin-g11411-15",
+      "tumarkin-g11411-04"
+    ],
+    "dispositions": [
+      {
+        "id": "makarov-p0",
+        "disposition": "ready-for-torsion-free-search"
+      },
+      {
+        "id": "makarov-p1",
+        "disposition": "ready-for-torsion-free-search"
+      },
+      {
+        "id": "tumarkin-g11411-15",
+        "disposition": "ready-for-torsion-free-search"
+      },
+      {
+        "id": "tumarkin-g11411-04",
+        "disposition": "ready-for-torsion-free-search"
+      }
+    ],
+    "exactP0P1Index": 2,
+    "excludedTarget": "tumarkin-g12221"
+  },
+  "jnwPositiveControl": {
+    "path": "scripts/certificates/torsion-free/jnw_cube_graph_degree4_positive_control.json",
+    "bytesSha256": "68386525fb0b6750248086c6ffcbb7f0c23a0105a7503a3015ef5514be94d7be",
+    "artifactDigest": "8c1a391da160e587cc9167b98f1e215d3ea5fa4924373ec3da6f08844958885c",
+    "replayDigest": "69f32527306dd6788fe71a516e6879cc4dc498cadc3035d52dc31bd85e4b7f5d",
+    "subgroupIndex": 4,
+    "h1IsomorphicTo": "Z^6",
+    "directedLinkCount": 8,
+    "universalCoverContractible": true,
+    "virtualAlgebraicFibration": true
+  },
+  "conclusions": [
+    "The existing cube action ended its single bounded rescue with status local-connectors-only.",
+    "P0, P1, Tumarkin G11411 #15, and G11411 #04 are source-bound and ordered for action discovery; no new compact action has yet been materialized for the registered bounded post-action stages.",
+    "The JNW rank-8 degree-four control passes the complete torsion-free, integral-H1, NPC/asphericity, directed-link, and PL-Morse pipeline."
+  ],
+  "nonClaims": [
+    "A bounded cube-rescue failure is not a BNS or non-fibering theorem.",
+    "The compact-target preflight does not assert that a torsion-free action at the necessary degree divisor exists.",
+    "The JNW control is a two-dimensional RACG Davis-complex example, not a compact hyperbolic 5-polytope."
+  ],
+  "artifactHash": "dce5a63d5363e025fc8a93a52f32313f7db0330de768f96279b335392ae02af5"
+}

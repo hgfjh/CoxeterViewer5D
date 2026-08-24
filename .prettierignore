@@ -5,7 +5,21 @@ dist
 AGENTS.md
 playwright-report
 test-results
+tests/fixtures/torsion-free-discovery/*.passed.json
+scripts/certificates/torsion-free/compact_5_cube_mod2_through_576000.json
+scripts/certificates/torsion-free/compact_5_cube_mod*_structural_certificate.json
+# Search artifacts are canonicalized and hash-sealed by their generators.
+# Reflowing their large numeric arrays adds noise without changing the payload.
+scripts/certificates/torsion-free/compact_5_cube_a6_core_*.json
+scripts/certificates/torsion-free/compact_5_cube_affine_s6_11520.json
+scripts/certificates/torsion-free/compact_5_cube_block_amalgam_*.json
+scripts/certificates/torsion-free/compact_5_cube_index34560_generalized_lawful.json
+scripts/certificates/torsion-free/compact_5_cube_s6_block_*.json
 .benchmark-current
+.cover-search
+.portfolio-plan
+.tmp
+.h1-jobs
 src-tauri/gen
 src-tauri/target
 pnpm-lock.yaml

@@ -1,351 +1,409 @@
 # Walkthroughs
 
-These are presenter scripts for the research-preview guided demos. They are
-meant to teach inspection habits: name the Coxeter object, show the exact
-incidence data, then say which parts of the 3D picture are only a drawing.
-
-The demos are not proofs. Treat the warnings panel, selected-object inspector,
-and sidecar/export metadata as part of the mathematical readout.
+These walkthroughs are short enough to use beside the app. Each one ends by
+separating exact incidence from the 3D drawing.
 
 ## Before You Start
 
-Use the named example before starting each guide. Some guided buttons preserve
-the current dataset, so a clean research-preview run should load the example first
-and then press the guide button.
+Use **Teaching** mode for the first three walkthroughs. Switch to **Research**
+mode for finite-action imports, compression certificates, wall search settings,
+and exports.
 
-Suggested order:
+The model switch has five entries:
 
-1. `A2`: find a hexagon for one `m = 3` rank-two relation.
-2. `A3`: inspect one rank-three spherical cell.
-3. `compact_5_prism_makarov_p2`: inspect `Y_Gamma` for the certified P2 prism.
-4. `compact_5_cube_gamma1`: read the finite-relation defining graph `Gamma`.
-5. `I2(5)` quotient/game workflow: inspect a generator-uniform cochain on a
-   quotient/coset artifact.
-6. `jnw_cube_graph`: play the JNW state/move game on the 3-cube defining
-   graph.
+```text
+Davis | hat X | bar X | Gamma | Projection
+```
 
-Keep labels focused, not global. A radius that is too small may clip a cell
-boundary; a radius that is too large can make labels and cells visually noisy.
-Filled cells should mean the whole boundary is present.
+The **Focus Inspector** is the reference point. It should always tell you what
+is selected, why it exists, and whether the claim is exact data, a browser
+diagnostic, or a drawing.
 
-## Reference Captures
+## Find A Rank-Two Cell
 
-These stills are checked into `docs/screenshots/` so a reader can see the
-intended research-preview tour without running the app first. They are teaching
-captures, not certificates; pair them with the inspector, warnings, and exported
-sidecar when the exact data matters.
+Goal: see why a finite Coxeter relation gives a polygon in the Davis complex.
 
-| Demo                | Capture                                                                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Find a hexagon      | ![Rank-two Davis hexagon for generators s0 and s1 in A2.](screenshots/hexagon-a2-rank-two-m3.png)                                     |
-| A3 rank-three cell  | ![A3 rank-three Y_Gamma focus showing square and hexagon face families in one 3D view.](screenshots/a3-rank-three-square-hexagon.png) |
-| P2 Y_Gamma          | ![P2 Y_Gamma relation view for an m=5 face attached to the generator spine.](screenshots/y-gamma-p2-m5-relation.png)                  |
-| I2(5) quotient/game | ![I2(5) quotient/game workflow with cocycle and decagon diagnostic.](screenshots/i2-5-quotient-game-cocycle.png)                      |
-| JNW cube game       | Open **Study a quotient/game** for the source graph, bipartition moves, legal orbit, and ascending/descending-link diagnostics.       |
-
-## Hexagon Relation: Find A Hexagon
-
-Goal: read `(s_i s_j)^3 = 1` as one six-sided rank-two Davis cell.
-
-Public-alpha path:
-
-1. Load `A2`.
-2. Set radius to `3` or higher. In `A2`, the full finite group appears quickly.
-3. Press **Start Here** -> **Find a relation cell**.
-4. In the rank-two/Davis controls, focus the pair `s0-s1` with `m = 3`.
-5. Select a filled rank-two cell and use relation-walk labels if they are
-   helpful.
-
-What to say:
-
-- A finite Coxeter pair with `m = 3` gives a `2m = 6` boundary.
-- The boundary labels alternate between the two generators.
-- The same cyclic cell can be read from any boundary vertex.
-- If the cell is outlined but not filled, the radius has probably clipped the
-  boundary.
-
-Exact in this demo:
-
-- The generator pair `s0-s1`.
-- The Coxeter value `m = 3`.
-- The six boundary node ids and alternating edge labels.
-- The statement that this is one Davis cell for a coset of `<s0, s1>`.
-
-Drawing convention:
-
-- The Euclidean-looking hexagon.
-- Camera angle, panel opacity, label placement, and ghost context.
-- Any apparent metric angle or length in the scene.
-
-If the guide opens on `I2(5)`, load `A2` first and start the guide again.
-`I2(5)` is the decagon example, not the hexagon example.
-
-## Rank-Three Cell: Inspect A3
-
-Goal: see how rank-two faces assemble around one finite rank-three spherical
-subset.
-
-Public-alpha path:
-
-1. Load `A3`.
-2. Press **Start Here** -> **Understand Y_Gamma**, or use
-   **Research Workflow** -> **Read one rank-three cell** in Research mode.
-3. Confirm the main scene is `Y_Gamma(A3)`.
-4. Use the `Y_Gamma` rank-three reader preset.
-5. Orbit until a square face family and a hexagon face family are visible
-   together.
-
-What to say:
-
-- `A3` has one spherical triple `{s0, s1, s2}`.
-- The boundary of the rank-three cell is organized by rank-two spherical
-  faces.
-- In the bundled `A3` view, a commuting square face and an `m = 3` hexagon
-  face can be inspected as incident pieces of one 3D object.
-- The local-link or nerve schematic is useful for checking the subset list, but
-  the main teaching view should remain three-dimensional.
-
-Exact in this demo:
-
-- Which three generators form the spherical subset.
-- Which rank-two faces are in its boundary.
-- The incidence records between the higher cell and those faces.
-
-Drawing convention:
-
-- The 3D proxy hull or separated panels used to make the incidence readable.
-- The apparent Euclidean shape of the cell.
-- Any small face offset introduced to prevent visual overlap.
-
-The question to answer out loud is not "is this a literal Euclidean polytope?"
-It is "which spherical subset and which face incidences am I seeing?"
-
-## The Base Complex `Y_Gamma`: Inspect P2
-
-Goal: inspect the one-vertex fundamental-domain complex for the certified
-Makarov P2 compact 5-prism example.
-
-Public-alpha path:
-
-1. Load **Compact 5-prism P2 Makarov** (`compact_5_prism_makarov_p2`).
-2. Check that the example status is certified for source transcription and
-   Gram/signature diagnostics.
-3. Click **Y_Gamma** in the top view switch.
-4. Press **Start Here** -> **Understand Y_Gamma**.
-5. In the `Y_Gamma Reader`, begin with **Read one relation** or **Show cells
-   around one generator**. Use **Show all relation faces** only after the local
-   pieces are clear.
-6. Use **Focus relation star** when a relation is still hard to isolate. It
-   keeps the selected relation family, incident rank-three pieces, and faint
-   context without changing the complex.
-7. Use **Show only...** to filter by generator family, relation order, rank-three
-   faces, selected edge, or selected relation. Treat it like a microscope, not
-   a new dataset.
-8. Turn on **Compare shared vs separated drawing** when teaching the difference between the
-   coherent shared-spine drawing and the expanded readability drawing. Both
-   panes use the same cell ids and incidence.
-9. Point out that edge labels name generator arrows and relation-boundary
-   segments. Leader ticks show which edge a label belongs to; relation-walk
-   numbering stays in the inspector.
-10. Point out that finite pairs contribute relation faces; the dotted/infinite
-    pair does not contribute a finite rank-two Davis face.
-
-What to say:
-
-- `Y_Gamma` has one base vertex.
-- Each Coxeter generator is shown as an oriented arrow from that vertex.
-- Each finite Coxeter pair contributes a rank-two relation sheet attached along
-  an alternating word.
-- P2 is a 5-dimensional hyperbolic Coxeter source, but this `Y_Gamma` scene is
-  a 3D readability layout for incidence.
-- Hidden construction corners complete visible `2m`-gons; they are not extra
-  quotient vertices.
-
-Exact in this demo:
-
-- The P2 Coxeter matrix and generator labels.
-- Which finite pairs attach relation faces.
-- The one-vertex 1-skeleton and the relation attaching words.
-- The source/certificate metadata shown for the bundled example.
-
-Drawing convention:
-
-- The placement of generator arrows around the base vertex.
-- The singular 3D sheets used to show relation faces.
-- Any face peeling, spacing, or camera preset used to keep the dense P2
-  two-skeleton legible.
-- **Show only...** filters, relation-star extraction, label leader lanes, and
-  side-by-side coherent/expanded comparison.
-
-Do not call `Y_Gamma` a torsion-free quotient manifold. It is the base
-orbicomplex or fundamental-domain style complex associated to the Coxeter
-system being inspected.
-
-## Defining Graph `Gamma`: Read Compact 5-Cube
-
-Goal: read the finite-relation defining graph for the compact 5-cube without
-hiding commuting `m = 2` pairs.
-
-Public-alpha path:
-
-1. Load **Compact 5-cube gamma1** (`compact_5_cube_gamma1`).
-2. Click **Gamma** in the top view switch.
-3. Start with **3D viewer** when you want to orbit the labelled defining graph.
-4. Switch to **2D planar** when you want the planar-obstruction diagnostic.
-5. Confirm every drawn finite relation edge has a label, including `m = 2`
-   commuting pairs. Infinite `m = inf` pairs are intentionally absent.
-6. Read **Relation-order connected components**. For `m = 3`, the compact
-   5-cube splits into the components `{g0, ..., g7}` and `{g8, g9}`. Click a
-   generator chip to inspect its incident relation classes above.
-
-What to say:
-
-- `Gamma` is the defining Coxeter graph, not `Y_Gamma`.
-- This app includes `m = 2` commuting edges that a conventional Coxeter diagram
-  would omit.
-- It omits `m = inf` pairs because they are non-relations, not hidden finite
-  cells.
-- The planar view is a drawing aid. If the graph is not planar, the app names a
-  standard obstruction such as `K5` or `K3,3` when it detects one.
-- Edge labels belong to relation edges; they are not vertex labels.
-- The `Gamma_m` component rows use only edges with that one value of `m`;
-  isolated generators are shown separately as singleton components.
-
-Exact in this demo:
-
-- Generator vertices.
-- Coxeter matrix values on every drawn finite relation edge.
-- The detected non-planarity obstruction when present.
-
-Drawing convention:
-
-- The 3D layout.
-- Any 2D crossing-minimization placement.
-- Label nudging used to avoid crossings and edge-label collisions.
-
-## Quotient And Game Demo: Run I2(5)
-
-Goal: follow a small quotient experiment from group data to a cochain.
-
-Public-alpha path:
-
-1. Open the **Research Workflow** panel.
-2. Choose the `I2(5)` identity-subgroup demo.
-3. Confirm that the quotient has ten visible cosets and one rank-two decagon
-   cell.
-4. Open **Generator-Uniform Cochain** and select the named cochain with
-   `s0 = +1` and `s1 = -1`.
-5. Inspect the boundary-sum diagnostic for the decagon.
-6. Switch between ascending, descending, level, and full local-link lenses.
-7. Save an experiment notebook run if a reproducible inspection record is
-   needed.
-
-What to say:
-
-- The identity subgroup of the finite group `I2(5)` leaves all ten group
-  elements visible as quotient vertices.
-- Generator actions should be involutions on quotient vertices.
-- The finite relation should close around the decagon.
-- The named generator-uniform cochain has zero boundary sum on that decagon.
-- Ascending and descending views are filters for the active assignment or
-  state-dependent direction model.
-
-Exact when supplied by the artifact:
-
-- Quotient vertices and generator actions.
-- Edge inverse pairing.
-- Rank-two cell boundary references.
-- Schreier-style relation checks recorded in the certificate block.
-
-Still not claimed:
-
-- A quotient complex is not automatically a manifold.
-- The in-repo visible stabilizer guard is useful evidence, not a published
-  torsion-free proof.
-- A generator-uniform label assignment should not be called a cocycle until its
-  boundary checks pass on the displayed cell structure.
-  Use "quotient complex" until a torsion-free certificate is present and its
-  scope is clear.
-
-## JNW Legal-System Demo: Play The Cube Graph
-
-Goal: inspect the Jankiewicz-Norin-Wise state/move game on the right-angled
-Coxeter group whose defining graph is the 1-skeleton of a 3-cube. The key is
-to keep the paper's commutator cover separate from the app's compact cover
-reader.
-
-1. Press **Start Here** -> **Study a quotient/game**, or open Research mode
-   and press **Load JNW cube game**.
-2. Confirm that the source is **JNW cube graph RACG**. In **Gamma**, the eight
-   vertices are the binary cube vertices and the twelve drawn `m = 2` edges are
-   the cube edges.
-3. Open **JNW Legal-System Game**. The preset uses the cube's two color-class
-   moves and JNW21's displayed legal state
-   `{v000, v010, v110, v111}`.
-4. Keep the cover hierarchy in view:
-
-   ```text
-   Davis complex Sigma -> commutator cover X_ab
-                       -> four-state move-kernel cover X_mu
-                       -> Y_Gamma
-   ```
-
-   `X_ab` is the finite complex used in the paper. It has `2^8 = 256` vertices.
-   The app's compact reader shows `X_mu = ker(mu o alpha) \ Sigma`, a further
-   quotient with four state vertices. It does not claim that `X_ab` has only
-   four vertices.
-
-5. Press **Show four-state cover**. You should see four state vertices
-   `S_1`, ..., `S_4`, sixteen geometric generator rails, and twelve commuting
-   relation squares. A rail labeled `g` joins `S` to `S xor m_g`. Parallel
-   rails with different generator labels are different cover edges.
-6. Under **Drawing options**, compare **Exact cover 1-skeleton** with
-   **Four-chart cover drawing**. The first is the exact state/rail graph. The
-   second adds one shared midpoint to each rail and one shared center to each
-   square, dividing every square into four colored sectors. Follow one color
-   through the object to see one lift of the `Y_Gamma` fundamental domain; the
-   shared midpoint and center show where neighboring lifts are glued.
-7. Use **Drawing details** to build the picture in order:
-   `States -> Generator rails -> Relation boundaries -> Glass relation sheets -> Orientations`.
-   **Outlines only** or **Glass faces** keeps the 1-skeleton readable.
-8. Use **Choose state** to inspect `S_1`, ..., `S_4`. The panel expands the
-   short name into its defining-graph subset. **Mirror selected state on
-   Gamma** switches to the main defining-graph viewer and colors exactly those
-   cube vertices in the selected state.
-9. Use **Highlight g-edge gluing** to isolate one generator rail. The reader
-   shows its source, target, and move equation `S -> S xor m_g`.
-10. Use **Choose relation**, **Next relation**, and **Focus selected relation**
-    to read one lifted square. The bold numbered boundary alternates the two
-    generator labels; unrelated cover cells become faint context.
-11. Use **Show every generator rail** for the exact 1-skeleton. **Bundle equal
-    moves** is only an explanatory drawing for generators with the same move;
-    its banner says that rails have been bundled.
-12. Press **Ascending link at selected state**. For selected state `S`, the
-    viewer now draws the induced flag subcomplex `Flag(Gamma)[S]`. Press
-    **Descending link at selected state** for
-    `Flag(Gamma)[V - S]`. These are simplicial links of generator directions,
-    not just lists of incoming and outgoing cover rails. **Level link at
-    selected state** is empty for the faithful JNW diagonal map; level
-    directions belong to the generalized cochain editor.
-13. Use **Compare source chart with state link** to place the base
-    `Y_Gamma` model beside the selected link. Save an experiment run when you
-    want the state, moves, diagnostics, and view settings recorded together.
-
-What is exact in this reader:
-
-- the cube defining graph and its finite-relation edges;
-- the state orbit and move-dependent rail endpoints;
-- the four-state move-kernel cover incidence and its projection to `Y_Gamma`;
-- the twelve square attaching cycles;
-- the induced ascending and descending flag subcomplexes.
-
-What is a drawing convention:
-
-- the 3D coordinates, chart colors, glass fills, and camera angle;
-- the distance used to spread sectors apart;
-- the shared midpoint/center subdivision used to reveal the four lifts;
-- move-class bundling and ghosted context.
-
-The **JNW faithful** badge means the right-angled move property and legal-orbit
-checks pass for the supplied data. It is not an external fibering, subgroup, or
-manifold certificate.
+1. Load `A2` or `I2(3)`.
+2. Open **Davis**.
+3. Turn on rank-two cells and choose the pair `(s0,s1)`.
+4. Select the filled polygon.
+5. Read its boundary in the inspector.
+
+For `m_01 = 3`, the attaching word alternates:
+
+```text
+s0, s1, s0, s1, s0, s1.
+```
+
+The cell is therefore a hexagon. With `I2(5)`, the same construction gives a
+decagon.
+
+Exact here:
+
+- the finite pair;
+- boundary length `2m`;
+- boundary vertex and edge IDs;
+- the alternating generator sequence.
+
+Drawing here:
+
+- the polygon's Euclidean shape;
+- the 3D node positions;
+- fill opacity and camera angle.
+
+## Read Gamma
+
+Goal: read the Coxeter presentation before building a cover.
+
+1. Load the compact 5-cube or a small finite example.
+2. Open **Gamma**.
+3. Select a generator vertex.
+4. Read its incident relation counts and neighbor list.
+5. Open the relation-order components for `m = 2`, `m = 3`, and any other
+   finite labels present.
+
+The app's full finite-relation graph includes commuting `m = 2` pairs. Pairs
+with `m = inf` are absent because they give no finite rank-two relation.
+
+In the 2D view, **Why crossings remain** distinguishes a poor layout from a
+nonplanar graph and reports a `K5` or `K3,3` obstruction when one is found.
+
+Exact here:
+
+- generator IDs;
+- finite Coxeter matrix entries;
+- relation-order connected components;
+- a verified planarity obstruction.
+
+Drawing here:
+
+- 2D or 3D vertex placement;
+- crossing minimization;
+- label offsets.
+
+## Discover A Torsion-Free Cover
+
+Goal: begin with a Coxeter system and obtain a certified coset action without
+writing the permutations by hand.
+
+The intended workflow is:
+
+1. Choose the source Coxeter system and an index bound.
+2. Enumerate prime-order torsion representatives from its spherical special
+   subgroups.
+3. Run the bounded automatic finite-image/composite/GAP strategy ladder.
+4. Inspect the subgroup index, generators, and fixed-point table.
+5. Continue only after every representative has zero fixed points.
+
+The result must say **Found and verified**, **Exhausted through index N**,
+**Inconclusive**, or **Blocked**. Only the first status supplies a torsion-free
+cover. Exhausting a bound does not contradict Selberg's lemma.
+
+The automatic ladder starts with exact Sage finite-image/congruence reductions,
+recognition and fixed-point marks, and compatible smaller permutation modules.
+It uses bounded GAP low-index enumeration as the final small fallback. Run it
+through the controlled desktop job or the command documented in
+`docs/tooling.md`, then open its finite-action artifact in Covers + Walls. The
+browser itself cannot launch GAP or Sage. The bundled action in the next
+walkthrough remains the quickest small example.
+
+## Build hat X From I2(5)
+
+Goal: use the current fallback to turn a complete finite action into the lifted
+presentation complex.
+
+1. Load `I2(5)`.
+2. Open **Research** -> **Covers + Walls**.
+3. Choose the bundled identity-action fixture.
+4. Inspect the action checks: both generators must act as involutions and the
+   length-ten relation must close.
+5. Press **Build hat X**.
+6. Open **hat X** in the model switch.
+
+The identity subgroup of `I2(5)` is torsion-free and gives a ten-sheet action.
+It is a transparent fixture, not evidence that identity-subgroup covers are a
+practical choice for infinite Coxeter groups. In `\hat X`, inspect:
+
+- the ten cover vertices;
+- directed lifts of `s0` and `s1`;
+- twenty lifted `s_i^2` bigons, one at each vertex for each generator;
+- the lifted decagonal relation cells.
+
+Select one directed lift. Its inspector entry should name its inverse partner
+and generator bigon. Select one relation lift and follow all ten signed boundary
+occurrences in order.
+
+Exact here, after validation:
+
+- the finite action and lifted incidence;
+- inverse pairing;
+- signed attaching maps;
+- source hashes and supplied evidence status.
+
+Not proved by the picture:
+
+- that an arbitrary imported action comes from a torsion-free subgroup;
+- that the 3D spacing is a covering-space metric.
+
+## Compress hat X To bar X
+
+Goal: see the two cellular identifications in the paper.
+
+1. Continue from the `I2(5)` cover.
+2. Press **Compress to bar X**.
+3. Open **bar X**.
+4. Open the compression certificate.
+
+For rank `r = 2` and degree `d = 10`, the paper's count gives:
+
+```text
+vertices                 d = 10
+geometric edges          d r / 2 = 10
+decagonal cells          d / (2m) = 1
+```
+
+Select a compressed edge. The linked `\hat X` view should highlight the two
+directed generator lifts and the two bigons in its fiber. Select the decagon. Its
+fiber should contain the ten lifted relation cells with the same compressed
+boundary.
+
+The compression certificate checks the actual data. A matching count by itself
+is not enough; boundary signs and complete fiber coverage must also agree.
+
+Exact here:
+
+- the compression map and its fibers;
+- the compressed signed boundary;
+- passed count and closure checks.
+
+Drawing here:
+
+- separation between fiber members;
+- glass faces and exploded views;
+- linked-view camera placement.
+
+## Read The Ideal 3-Cube Hexagons
+
+Goal: see why the compression has four hexagons for each finite edge of Gamma
+and 48 hexagons altogether.
+
+1. Load **Regular ideal hyperbolic Coxeter 3-cube**.
+2. Open **bar X compression**.
+3. In **Finite edge of Gamma**, keep the first pair selected.
+4. Read the four highlighted boundary cycles on the shared quotient skeleton.
+   The faint rails between them show how the rest of the complex remains glued.
+5. Choose **All families** to spread all 48 disk interiors into twelve groups
+   of four. Orbit the object to follow each disk back to the common rails.
+6. Choose **Compact gluing** to remove the drawing folds before inspecting
+   walls.
+
+The count is
+
+```text
+d/(2m) = 24/(2 x 3) = 4 hexagons per finite pair,
+12 finite pairs x 4 = 48 hexagons in bar X.
+```
+
+The spread drawing retains the exact 24 vertices, 72 edges, cell IDs, and cyclic
+attaching words. Its interior folds make crowded disks readable; they do not
+split `bar X` into separate polygons.
+
+## Find The Walls Of bar X
+
+Goal: construct walls from opposite sides, not from generator colors.
+
+1. Continue with the `I2(5)` decagon.
+2. Press **Find walls**.
+3. Choose **All walls**, then **Selected wall**.
+4. Step through the five wall classes.
+
+A decagon has five opposite edge pairs. In this one-cell example each pair
+gives one wall segment. Notice that a wall is defined by the transitive closure
+of opposition; in a larger complex it can pass through many cells and can meet
+edges carrying different generator labels.
+
+Open **Wall diagnostics** and inspect:
+
+- embeddedness;
+- two-sidedness;
+- self-osculation;
+- any retained witness.
+
+The midpoint arcs are only how the wall immersion is drawn. The exact data are
+the dual edge IDs, opposite-pair occurrences, relation-cell IDs, and parity
+constraints.
+
+## Coorient Walls And Read A Lawful Cell
+
+Goal: see how wall coorientations produce edge directions and lawful polygons.
+
+1. In **Coorientation**, choose a direction for each two-sided wall.
+2. Turn on **Show induced edge arrows**.
+3. Select the decagon.
+4. Read its cyclic sign word.
+5. Flip one wall and compare the result.
+
+The colored arcs are not directed paths. Their coorientation is transverse:
+the arrowheads appear on the dual edges of `bar X`. Turn on **Color dual edges
+by wall** to match each edge to the wall that controls its arrow. Use **All
+walls** for the global pattern and **Selected wall** to isolate one parity
+class without removing the surrounding complex.
+
+A lawful cell has exactly two cyclic sign changes. The viewer marks its unique
+source and sink and shows two positively directed boundary paths between them.
+If the sign word has more than two transitions, the cell is discarded from the
+lawful subcomplex.
+
+The word **maximal** needs care:
+
+- after the coorientation is fixed, the displayed lawful subcomplex already
+  contains every lawful cell for that assignment;
+- finding a coorientation that retains the largest possible number of cells is
+  a separate optimization problem.
+
+## Search For A Large Lawful Subcomplex
+
+Goal: compare a proven finite optimum with a heuristic result.
+
+1. Load a `\bar X` with more than one relation cell.
+2. Open **Search coorientations**.
+3. Start with the unweighted lawful-cell objective.
+4. Leave link constraints off for the first run.
+5. Run the exact search when the wall count is below the displayed limit.
+6. Compare with a time-limited run.
+
+Read the result literally:
+
+- **Maximum proven** means exact search completed and lower and upper bounds
+  agree.
+- **Best found** means the assignment is only a lower bound.
+- **No feasible assignment** refers to the selected constraints, not to every
+  possible mathematical reformulation.
+- **Invalid wall system** means the required coorientation data could not be
+  formed.
+
+Turn on nonempty/connected ascending and descending link constraints only after
+inspecting the unconstrained result. The search certificate records all options
+and budgets.
+
+## Inspect Ascending And Descending Links
+
+Goal: understand the local condition without overreading it.
+
+1. Choose a lawful coorientation.
+2. Select a vertex of `\bar X`.
+3. Open **Ascending link** and **Descending link** in turn.
+4. Inspect their vertices, retained corners, and connected components.
+
+An ascending link vertex corresponds to an edge directed away from the selected
+vertex. A descending link vertex corresponds to an edge directed toward it.
+Link edges come from corners of retained lawful cells and the wall directions
+through those cells.
+
+A green nonempty/connected result is an exact finite check for the selected
+data. It does not prove that the complex is aspherical or affine, that the
+finite action is torsion-free, or that all hypotheses of Bestvina--Brady or
+Jankiewicz--Wise hold.
+
+## Find And Certify A Virtual Algebraic Fibration
+
+Goal: obtain an explicit map `phi: H -> Z` and see exactly why the Morse
+conclusion passes or fails.
+
+1. Load a source with a certified finite action and open **bar X compression**.
+2. Choose **Compact gluing** so the wall controls are available.
+3. Press **Run lawful-first certification**. Use **Check full Davis quotient**
+   when you want the all-cell fallback even if the lawful track passes.
+4. Expand **Schreier values and PL Morse hypotheses**.
+5. Read the raw image, normalization divisor, primitive values, relator sums,
+   cell-boundary sums, and the per-hypothesis status list.
+6. Press **Export fibering certificate**.
+
+The original wall cochain assigns `+1` or `-1` to each stored edge and drives
+the Morse orientation. Its periods may generate `dZ`. The exported primitive
+map divides those loop periods by `d`; it does not divide the edge arrows.
+The Bezout row is the short proof that the normalized generator values span
+all of `Z`.
+
+The bundled ideal 3-cube is a useful diagnostic: its wall map has raw image
+`2Z` and normalizes to an epimorphism. The current compression also reports
+self-osculation. That warning means the paper's random-orientation probability
+estimate does not apply unchanged; it is not a theorem gate after the app has
+checked this concrete orientation and every directed link directly.
+
+## Use A Compact Hyperbolic Example Responsibly
+
+Goal: separate a useful wall experiment from a theorem claim.
+
+1. Load the compact 5-cube or a compact 5-prism example.
+2. Inspect **Gamma** and its certificate scopes.
+3. Open **Projection** to examine chamber barycenters.
+4. Return to **Covers + Walls**.
+
+The Coxeter matrix guarantees neither a canonical cover nor a useful index
+bound. The implemented automatic backend is bounded and may finish
+inconclusively. A complete materialized finite action is still required before
+constructing `\hat X`; a matrix-only congruence kernel is not enough. If no
+suitable torsion-free evidence is attached, the app labels the derived
+incidence as a browser construction rather than a certified torsion-free cover.
+
+These high-dimensional examples can contain finite rank-three special
+subgroups. The paper's dimension-at-most-two/asphericity argument therefore
+does not automatically apply. Wall, coorientation, lawful-cell, and link
+results remain worthwhile diagnostics, but they are not an incoherence proof.
+
+## Inspect A Geometric Projection
+
+Goal: read reflection placement without mistaking it for an exact 3D embedding.
+
+1. Load an example with supplied geometric data.
+2. Open **Projection**.
+3. Read the projection name and geometry status.
+4. Compare axes-based Klein or Poincare coordinates with PCA where available.
+
+The reference sphere belongs only to actual ball-model coordinates. PCA output
+does not inherit the unit sphere after dimension reduction.
+
+Certified interval normals, basepoints, reflections, and projection bounds
+support their named algebraic/numerical scopes. Cell shapes, occlusion, and the
+final 3D mesh remain drawings.
+
+## Check Data And Certificates
+
+Goal: understand what a green status actually certifies.
+
+1. Switch to **Research** mode.
+2. Open **Status/tools**.
+3. Read the source-data, finite-action, compression, wall, and geometry rows
+   separately.
+4. Expand a row to see hashes, tool versions, claims, and limitations.
+
+Typical distinctions:
+
+- source transcription passed;
+- exact Gram/signature check passed;
+- finite action passed in-repo checks;
+- torsion-free evidence not supplied;
+- compression passed for the supplied action;
+- walls passed finite browser diagnostics;
+- external checker skipped because the tool was unavailable.
+
+No row inherits a stronger status from another row.
+
+## Save A Reproducible Run
+
+1. Save the active Covers + Walls run in the notebook.
+2. Add a note describing the question and any unverified hypothesis.
+3. Export the experiment bundle.
+4. Export a figure bundle if a screenshot is needed.
+
+The research bundle should contain or hash the source, action, `\hat X`,
+`\bar X`, compression certificate, wall system, coorientation/search result,
+lawful subcomplex, links, warnings, and view state. The figure bundle records
+the camera and selected IDs but is not a substitute for the research data.
+
+An automatic-discovery bundle includes the bounded-search report, prime-order
+torsion words, and fixed-point table. The fibering block adds the subgroup
+presentation, raw values of `chi` and normalized values of `phi` on Schreier
+generators, rewritten-relator sums, compressed-cell sums, a Bezout primitivity
+witness, directed links, and the complete PL Morse checklist.

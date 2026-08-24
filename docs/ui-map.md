@@ -1,37 +1,34 @@
 # UI Map
 
-This page is the quick orientation map for CoxeterViewer5D. It is intentionally
-short: the main viewer should feel like the center of the app, and every panel
-around it should answer one job.
-
-For a button-by-button explanation, see [UI Controls](ui-controls.md).
-
-![Annotated schematic of the CoxeterViewer5D interface.](screenshots/ui-map-orientation.svg)
+The viewer stays in the center. The surrounding controls follow the same order
+as the mathematics: choose a source, choose a model, select an object, and read
+its status.
 
 ## Main Regions
 
-- **Choose Example** chooses the source Coxeter system, generated graph, or
-  quotient artifact. In Research mode the same area is **Choose / Load**.
-- **Model switch** changes the mathematical object: Davis, `Y_Gamma`, Gamma,
-  Projection, or Quotient + Games.
-- **Start Here + Focus controls** choose a goal and keep the first-time
-  Teaching mode quiet.
-- **Viewer** is the primary object. Panels should support the scene, not push
-  it off screen.
-- **Current model badge** states which model is active and whether the selected
-  object is exact, certified, approximate, projection-only, or experimental.
-- **Caveats drawer** keeps warnings visible without turning the UI into a wall
-  of text.
-- **Inspector** always answers three questions: what is selected, why it is
-  here, and whether it is exact data or a drawing convention.
-- **Research tools** contain import/export, backend, certificate, notebook, and
-  catalogue controls. They are hidden in Teaching mode.
-- **Export + notebook** records a reproducible inspection when a view becomes
-  research evidence.
+- **Choose Example** selects the source Coxeter system. Radius appears only for
+  the Davis and Projection views.
+- **Model switch** changes among **Davis complex**, **hat X cover**,
+  **bar X compression**, **Defining graph Gamma**, and **Projection drawing**.
+- **Start Here + Focus controls** provide short paths into the source,
+  cover/compression, and wall workflows.
+- **Covers + Walls** is designed to discover or import a finite action,
+  construct `hat X`, certify the compression, find walls, flip
+  coorientations, and inspect the induced `H -> Z` and Morse links. Automatic
+  GAP discovery runs as an external or controlled desktop job; manual import is
+  the advanced fallback.
+- **Viewer** is the main 3D scene. Press `U` to hide or restore the side rails.
+- **Inspector** always answers what is selected, why it exists, and which parts
+  are exact data or drawings.
+- **Caveats drawer** groups active limitations without occupying the scene.
+- **Research tools** show evidence, backend status, render statistics, and
+  detailed wall witnesses.
+- **Export + notebook** writes the source cover, compression map, wall system,
+  coorientation, lawful-cell result, link diagnostics, and view state.
 
-## Reading The App
+## Reading Controls
 
-If a control changes the mathematics, it belongs in data, import, quotient, or
-certificate workflows. If a control changes visibility, spacing, camera, labels,
-or **Show only...** filters, it is a drawing control. The UI uses that split
-throughout the app.
+Importing a cover or changing a wall sign changes the combinatorial object or
+its coorientation. Labels, opacity, wall-arc visibility, camera, and clipping
+change only the drawing. The inspector states this distinction for the current
+selection.

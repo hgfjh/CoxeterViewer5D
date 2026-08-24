@@ -1,311 +1,516 @@
 # Mathematical Conventions
 
-This viewer is meant to make finite neighborhoods of Coxeter groups visible. It is not a theorem prover. The code and UI should distinguish algebraic data, drawing conventions, and geometric reflection data at every point where those meanings can diverge.
+This chapter fixes the mathematical meaning of the five viewer models. The
+central construction follows Jankiewicz and Wise, _Incoherent Coxeter Groups_.
+The browser computes finite cellular data; it does not infer the hypotheses of
+their theorems from a picture.
 
 ## Coxeter Systems
 
-A Coxeter system is written `(W, S)`, where `S = {s0, ..., s_{n-1}}` is a finite set of involutory generators and `W` has presentation
+A Coxeter system has generators
 
 ```text
-W = < S | (s_i s_j)^{m_ij} = 1 >
+S = {s_0, ..., s_(r-1)}
 ```
 
-with the usual conventions:
+and a symmetric matrix `M = (m_ij)` with `m_ii = 1`. For `i != j`:
 
-- `m_ii = 1`.
-- `m_ij = m_ji`.
-- `m_ij = 2` means `s_i` and `s_j` commute. Coxeter diagrams usually omit this edge.
-- Finite `m_ij >= 3` records a braid relation of length `m_ij`.
-- `m_ij = Infinity` records that `s_i s_j` has infinite order in the Coxeter presentation.
+- `m_ij = 2` means `s_i` and `s_j` commute;
+- finite `m_ij >= 3` gives `(s_i s_j)^(m_ij) = 1`;
+- `m_ij = inf` means there is no finite rank-two relation.
 
-The Coxeter matrix is combinatorial data. It does not, by itself, give distances between hyperplanes in a chosen hyperbolic realization. If geometric data is supplied, dotted or numeric Gram entries belong to that geometric layer.
+The defining graph `Gamma` has one vertex per generator. In this app a full
+finite-relation view may draw `m = 2` edges, even though standard Coxeter
+diagrams omit them. Infinite pairs are not edges.
 
-## Cayley Graph Convention
+## Davis Complex
 
-The Cayley graph uses right multiplication:
+The Davis complex has the Cayley graph as its 1-skeleton. The app uses right
+multiplication:
 
 ```text
-w --i--> w * s_i
+w --s_i--> w s_i.
 ```
 
-Since each Coxeter generator is an involution, the rendered edge can be undirected. The edge record should still preserve the generator index, because generator labels control colors, filters, rank-two cells, and inspector output.
+A finite rank-two special subgroup `<s_i,s_j>` contributes a `2m_ij`-gon for
+each coset. More generally, spherical subsets index higher Davis cells. A
+finite-radius viewer can omit or clip cells whose full boundary lies outside
+the generated ball; such a cell must not be filled as though it were complete.
 
-The radius-`R` ball contains nodes whose word length is at most `R`, measured from the identity with respect to `S`. A displayed word is a preferred reduced word, not necessarily the only reduced expression for the element.
+The Davis view and the cover-compression views answer different questions.
+The Davis view is organized by group elements and spherical cosets. The
+`\hat X` and `\bar X` views below are finite cellular complexes built from a
+finite action.
 
-Compact vertex labels in the scene are this preferred word rendered in generator labels, with long words shortened for display. Edge labels are generator labels. These labels are inspection aids; the graph records remain the source of truth.
+## The Standard Complex X
 
-## Drawing Conventions
-
-The combinatorial shell layout is a stable drawing convention:
-
-- The identity lies at the origin.
-- Nodes of word length `k` lie on a shell with radius proportional to `k`.
-- Angular placement may be deterministic hash order, sorted Fibonacci-sphere placement, or another stable rule.
-
-Force-directed layout, if enabled, is also a drawing convention. It may clarify local adjacency, but it is not Coxeter geometry and should not be labeled as such.
-
-## Rank-Two Davis Cells
-
-The Davis complex adds cells for spherical special subgroups. In the first implementation milestone, the viewer focuses on rank-two cells.
-
-For a finite pair `m_ij < Infinity`, the special subgroup `<s_i, s_j>` is dihedral of order `2*m_ij`. Each coset of this subgroup contributes one polygon with `2*m_ij` sides. With the right-multiplication Cayley convention, the boundary is traced by alternating right multiplication by `s_i` and `s_j`.
-
-The viewer should emit one polygon per coset, not one duplicate polygon from every boundary vertex. A canonical key can use the sorted generator pair and the minimum node id found along the completed boundary cycle.
-
-If the radius cutoff clips a boundary, the viewer may draw a partial outline, but it should not fill the polygon. Filled cells should mean that the whole boundary is present in the generated ball.
-
-A relation-focus view chooses one finite pair `(i, j)` and displays one cyclic
-representative of the relation walk
+Write the Coxeter presentation as
 
 ```text
-w, w*s_i, w*s_i*s_j, w*s_i*s_j*s_i, ...
+<s_0, ..., s_(r-1) |
+  s_i^2,
+  (s_i s_j)^(m_ij) for finite m_ij>.
 ```
 
-until `2*m_ij` boundary vertices have been reached. The same cell can be read
-from any boundary vertex and in either direction, so boundary labels are
-inspection labels rather than a new algebraic normal form. For `m_ij = 3`, the
-filled cell is a hexagon recording `(s_i s_j)^3 = 1`; for `m_ij = 2`, it is the
-commuting square.
+`X` is the standard presentation 2-complex. It has one vertex, one oriented
+generator loop for each `s_i`, a bigon for `s_i^2`, and a `2m_ij`-gon for each
+finite relation `(s_i s_j)^(m_ij)`.
 
-The Relation atlas in the UI is just the Coxeter matrix restricted to rank-two
-subsets, decorated with view state such as enabled, hidden, clipped, or
-ghosted. A ghosted boundary edge or shell node is context from the same finite
-ball. It is not an extra Davis cell and it should not be counted as visible
-cell data.
+`X` is the source of the finite-cover construction. It is not a Davis chamber,
+and it is not one of the main 3D model-switch views.
 
-## Spherical Subsets And Local Links
+## Finding A Torsion-Free Subgroup
 
-Higher-dimensional Davis cells come from higher-rank spherical subsets `T subset S`. For a finite Coxeter matrix on `T`, the viewer forms the Coxeter Gram matrix with diagonal entries `1` and off-diagonal entries `-cos(pi / m_ij)`. The subset is treated as spherical when all entries in `T` are finite and this finite Gram matrix is positive definite.
+The faithful Tits reflection representation shows that a finitely generated
+Coxeter group is linear in characteristic zero. Selberg's lemma therefore
+guarantees a finite-index torsion-free subgroup, but it does not construct one
+or bound the smallest useful index.
 
-Singletons are always spherical. A rank-two subset is spherical exactly when its Coxeter entry is finite, so the existing rank-two Davis polygons are the two-dimensional part of the same test. Infinite entries are rejected before the positive-definiteness check because they do not define a finite Coxeter angle.
+The computational criterion comes from the torsion structure of Coxeter
+groups. Every finite-order element is conjugate into a finite spherical special
+subgroup. It is enough to consider prime-order elements. If `W` acts
+transitively on a finite set `Omega` and `H` is a point stabilizer, then `H` is
+torsion-free exactly when every prime-order torsion conjugacy class acts without
+a fixed point on `Omega`.
 
-The local link at a chamber vertex has one vertex for each generator. Its simplices are the nonempty spherical subsets. For now this link is the same at every chamber of the full Davis complex, but the API records the selected `nodeId` so quotient links can later depend on the chosen representative.
+The automatic GAP backend enumerates a complete, possibly redundant, list
+of prime-order representatives from the maximal spherical special subgroups.
+GAP then searches for a bounded-index subgroup containing no conjugate of any
+representative. Every returned action is checked again by the fixed-point test.
+See [Automatic torsion-free cover discovery](torsion-free-cover-discovery.md).
 
-Any rendered higher-cell hull should be labeled as a visual proxy unless an exact embedding of that cell has been implemented.
+A failed bounded search is not a contradiction to Selberg's lemma. Exhausting
+indices through `N` rules out only that bounded range; stopping on a resource
+limit is inconclusive.
 
-The current higher-rank display follows this rule: it can list spherical subsets
-and draw bounded visual proxies for some higher-rank cells, but those proxies
-are not mathematical embeddings of the Coxeter cells. They are inspection aids
-for seeing where a spherical subset acts near the displayed graph.
+### Golden example: the ideal 3-cube and its `S4` cover
 
-## Hyperboloid Model
-
-When valid hyperbolic reflection data is available, the preferred convention is the hyperboloid model in `R^{d,1}`:
+The bundled regular ideal hyperbolic 3-cube has six facet generators
 
 ```text
-<x, y>_J = -x0*y0 + x1*y1 + ... + xd*yd
-H^d = { x : <x, x>_J = -1, x0 > 0 }
+t12, t13, t14, t23, t24, t34.
 ```
 
-Facet normals `n_i` are spacelike:
+Two generators have exponent `3` exactly when the corresponding
+transpositions share a letter. Disjoint transpositions form the three opposite
+facet pairs and have exponent `inf`. Thus the finite-relation graph is the
+octahedron `L(K4)`.
+
+With Lorentz form `J = diag(-1,1,1,1)`, put `a = 1/sqrt(2)` and
+`b = sqrt(3/2)`. The six outward normals are `(a, +/-b, 0, 0)`,
+`(a, 0, +/-b, 0)`, and `(a, 0, 0, +/-b)`. Their Gram matrix has signature
+`(3,1,2)`: adjacent facets have inner product `-1/2`, while opposite facets
+have inner product `-2`. In Klein coordinates the chamber is
+`|x_i| <= 1/sqrt(3)`. Its eight corners lie on the unit sphere, so the cube has
+eight ideal vertices. Equivalently, every vertex link is the Euclidean
+`(3,3,3)` triangle. This is a finite-volume noncompact cube, not a compact one.
+
+The assignment `tij -> (ij)` defines a surjection `W -> S4`. Its kernel has
+index 24. The only nontrivial spherical special subgroups are the six `A1`
+groups and the twelve `I2(3)` groups. Their images in `S4` have orders `2` and
+`6`, respectively, so the kernel meets each trivially. The finite-torsion
+criterion therefore proves that the kernel is torsion-free. The app ships the
+regular 24-point action and independently repeats these spherical-restriction
+checks before constructing `hat X`; it makes no claim that index 24 is minimal.
+
+## The Finite Cover hat X
+
+Let `G'` be a finite-index torsion-free subgroup of index `d`. The corresponding
+cover is
 
 ```text
-<n_i, n_i>_J = 1
+hat X -> X.
 ```
 
-The reflection in the hyperplane `<x, n_i>_J = 0` is
+Its vertices are the `d` sheets or cosets. Every generator loop of `X` lifts to
+`d` directed generator edges. Every open 2-cell also has `d` lifts. Thus a
+rank-`r` cover has `d r` lifted generator bigons, and each finite pair has `d`
+lifted relation polygons, all with their signed attaching maps.
+
+The two bigons based at `x` and `x s_i` are distinct open 2-cells even though
+they use the same two directed edges in opposite cyclic order. This is the
+same elementary phenomenon by which the universal cover of the presentation
+complex `<s | s^2>` has two 2-cells, not one.
+
+The paper uses torsion-freeness to ensure the relevant lifted edges and cells
+embed. The viewer can construct the incidence of `\hat X` from a discovered or
+supplied finite permutation action. That construction does **not** prove the
+action comes from a torsion-free subgroup. A certified cover claim therefore
+needs the complete prime-order fixed-point test or equivalent subgroup
+evidence.
+
+The implementation stores each use of an edge in a cell boundary as a signed
+occurrence. If `t = +1`, the boundary follows the stored edge direction. If
+`t = -1`, it traverses that edge backwards. This sign is part of the attaching
+map, not a drawing choice.
+
+## The Compression bar X
+
+Jankiewicz--Wise form `\bar X` in two steps:
+
+1. For every generator orbit `{x,xs_i}`, collapse its two lifted `s_i^2`
+   bigons and two directed boundary edges to a single geometric edge.
+2. For finite `m_ij`, identify the `2m_ij` lifted relation polygons that have
+   the same compressed boundary.
+
+The resulting cellular map is
 
 ```text
-R_i(x) = x - 2 * <x, n_i>_J * n_i
+hat X -> bar X.
 ```
 
-The base chamber convention should be explicit. The app uses the inequality `<x_base, n_i>_J <= 0` for every facet normal. Validation checks this inequality, normal norms, reflection involutions, and preservation of the Lorentz form. If the supplied normals satisfy the same chamber inequalities after a global orientation flip, the app may reorient all normals together and warn about it.
-
-Geometric inputs may supply either explicit `normalCoordinates` or a `normalGram`.
-Explicit coordinates are preferred. When only `normalGram` is supplied, the app
-performs a numerical Lorentzian factorization to recover spacelike normal
-coordinates with the requested signature. This is useful for visualization, but
-it is not an exact certificate of a published Coxeter polytope. The app records
-factorization residual and signature warnings when the numerical data does not
-meet tolerance or when unused spatial directions must be padded.
-
-If `geometry.basepoint` is absent, the app attempts to solve numerically for a
-future-directed timelike point satisfying `<x_base, x_base>_J = -1` and the
-chamber inequalities. A solved basepoint is also visualization data, not a
-classification proof. Inputs that need theorem-level geometric claims should
-ship explicit coordinates or cite an independently verified computation.
-
-The matrix-composition convention for a word must match the right-multiplication convention used by the Cayley graph. Tests should verify that traversing an edge labeled `i` applies the same reflection `R_i` used by geometric placement.
-
-The bundled `hyperbolic_toy_rank2.json` example supplies explicit normals and a basepoint so geometric mode can be exercised end to end. It is a self-contained toy fixture and is not compact 5-prism or 5-cube data. The bundled compact 5-cube, Makarov `P0` prism, Emery-Kellerhals `P1 = D P0` double, Makarov `P2` prism, and all 16 compact 5D eight-facet cases in Tumarkin's table carry machine-checkable certificates for source transcription, algebraic dotted weights, and normal Gram rank/signature diagnostics. The eight-facet list comprises 15 `G11411` cases and the unique `G12221` case. `P1` remains labeled as a double of the prism, not as a simplicial prism. All compact examples still rely on numerical `normalGram` factorization and basepoint solving for visualization.
-
-## Projection To 3D
-
-Hyperbolic chamber barycenters may live in dimension greater than three. The viewer can still draw a 3D scene, but that scene is a projection.
-
-Two common ball projections are:
+For a degree-`d`, rank-`r` torsion-free cover, the paper records:
 
 ```text
-klein(x) = spatial(x) / x0
-poincare(x) = spatial(x) / (x0 + 1)
+vertices of bar X                         d
+geometric edges of bar X                 d r / 2
+cells of type {i,j} in bar X              d / (2 m_ij)
 ```
 
-The Klein model makes geodesics appear as straight chords, but it does not preserve hyperbolic lengths or angles. The Poincare model is conformal in the full dimension, but after selecting three axes or applying PCA, the displayed 3D scene is no longer the full model.
+The divisibility in the last line is a consequence of the free finite
+dihedral action in the intended cover. The app checks the actual fibers rather
+than assuming these counts.
 
-The reference sphere in the viewer is meaningful only for axis-based Klein or Poincare coordinates: in those modes the chamber barycenter coordinates should lie inside the ball. PCA coordinates are centered drawing coordinates, not ball coordinates, so the viewer hides the reference sphere for PCA projections. Axis-based ball views are drawn at an enlarged 12x display scale; this changes only the drawing size, not the underlying Klein or Poincare model coordinates.
+Compression does not mean geometric flattening. It is a cellular quotient with
+explicit fibers:
 
-For `d > 3`, the viewer may choose three coordinates or apply deterministic PCA. These choices are useful for inspection, but they can create apparent crossings, separations, or cell intersections that are artifacts of projection. For compact high-dimensional examples, the geometric preset fits the PCA basis to the selected chamber's local graph-neighborhood and centers that chamber at the origin. This makes the local topology easier to read, but it is still a projection convention. The UI should say that geometric mode shows hyperbolic chamber barycenters projected to 3D, not an exact 3D embedding of the Davis complex.
+- two directed generator lifts map to one geometric edge;
+- two generator-bigon lifts map to that edge;
+- `2m_ij` compatible lifted relation cells map to one relation polygon.
 
-## Approximation Policy
+### The finite-dihedral orbit calculation
 
-Floating-point checks are acceptable for visualization:
-
-- Reflection matrices can be checked with tolerances.
-- Hyperboloid points can be checked with tolerances.
-- Matrix keys may be rounded for approximate deduplication.
-- `normalGram` factorization and chamber-basepoint solving may be numerical.
-
-Every such approximation must be named as an approximation in warnings and exported metadata. The viewer should not present approximate enumeration as a proof of group order, classification, compactness, or manifold status.
-
-Provenance language should be conservative. A source citation can verify a
-Coxeter graph, a dotted-edge formula, or a theorem quoted from that source, but
-it does not automatically certify every numerical coordinate or projected view
-derived inside the app. Schema version 1 validates `dataStatus`, `sourceRefs`,
-and certificate summaries, but the meaning stays narrow: `verified-source`
-means the cited source supports the stated diagram or value, while `certified`
-requires a passed machine-checkable certificate. The compact 5-cube certificate
-checks exact Gram inertia `(5 positive, 1 negative, 4 zero)`. The bundled
-compact 5-prism family certificates check exact Gram inertia `(5 positive, 1
-negative, 1 zero)`. Neither scope certifies a rendered 3D projection or
-numerically solved chamber point.
-
-## Quotients And Game Data
-
-Finite quotient complexes are separate from the base Davis viewer. A quotient can carry vertices, generator-labeled edges, rank-two cells, and subgroup metadata, but it should not be called a manifold unless torsion-free verification is supplied.
-
-In this project, `Y_Gamma` is the base fundamental-domain orbicomplex for the
-Coxeter system. In covering notation,
+Fix a finite pair `{i,j}` and write `W_ij = <s_i,s_j>`. This is the dihedral
+special subgroup of order `2m_ij`. Let the degree-`d` cover be represented by
+left cosets `H\W`, with `W_ij` acting on the right. For a cover vertex `Hg`,
 
 ```text
-Sigma_Gamma -> X = H \ Sigma_Gamma -> Y_Gamma = W \ Sigma_Gamma.
+Hg w = Hg
+  iff g w g^{-1} lies in H
+  iff w lies in W_ij intersect g^{-1} H g.
 ```
 
-The app records `Y_Gamma` through a base vertex, one oriented arrow for each
-Coxeter generator/facet direction, and one rank-two `2m`-gon for each finite
-Coxeter pair. Higher spherical subsets are recorded as higher-cell
-incidence/proxy data when the viewer can enumerate them. A finite cover `X` is
-assembled from lifted copies of this fundamental domain. `Y_Gamma` itself is
-not a torsion-free quotient manifold.
-
-The defining graph `Gamma` is a different object. It has one vertex for each
-Coxeter generator and an edge for each finite off-diagonal Coxeter matrix
-entry. The app labels every drawn edge by `m`; `m=2` commuting pairs are
-included even though standard Coxeter diagrams usually omit them, while
-`m=inf` pairs are not drawn. For a selected generator `s_i`, the inspector
-groups the other generators into the disjoint classes
-`N_m(s_i) = {s_j : m_ij = m}`. It lists `N_inf(s_i)` as an omitted class so the
-partition still accounts for every `j != i`. `Gamma` is useful for reading the
-full presentation matrix, but it is not the Davis complex, not the `Y_Gamma`
-fundamental-domain complex, and not the nerve/local-link diagnostic.
-
-The app represents `Y_Gamma` primarily as a 3D 2-skeleton scene in the main
-viewer and as a cell inventory in the side panel: a base vertex, generator
-arrows, rank-two relation cells, higher spherical cells, and attaching-word
-data. The 2D nerve/local-link schematic is a separate diagnostic derived from
-the spherical subsets; it is not `Y_Gamma` itself. The 3D relation faces are drawn as singular sheets
-glued to the visible generator arrows, because the quotient attaches the
-alternating `2m` boundary word to the same one-vertex 1-skeleton. The viewer
-draws hidden construction corners to complete the visible hexagon, octagon, or
-decagon outline, but it displays only the true quotient 0/1-skeleton vertices.
-A faithful affine coordinate realization would require additional polytope
-coordinates or face-lattice data that is separate from the Coxeter presentation.
-Rank-three spherical cells are drawn from the finite rank-three Coxeter cell
-boundary and glued to the base vertex and three generator endpoints. Thus a
-right-angled rank-three relation is cube-like, with six square rank-two faces.
-Other finite rank-three types use their finite Coxeter-cell rank-two boundary
-faces in the all-faces overview. The viewer orders each displayed square or
-hexagon by its cyclic drawing boundary so the face is simply embedded; edge
-labels still record the corresponding relation generators. These fills explain
-incidence and local topology; they are not certified affine 3-polytopes unless
-such coordinates are imported separately.
-
-The in-repo quotient certificate is a Schreier-action check. It verifies that
-each generator acts as a bijective involution on quotient vertices, that the
-directed generator edges agree with the action, that finite Coxeter relations
-hold on the quotient action, and that visible rank-two orbits have exactly one
-matching quotient two-cell. This is a certificate of the imported finite action,
-not a derivation of the subgroup from a presentation.
-
-The bounded torsion-free guard checks visible stabilizers of spherical special
-subgroups in the quotient action. A nonidentity finite-special-subgroup element
-fixing a quotient vertex is a torsion witness. Passing this in-repo guard is
-useful evidence, but manifold language is reserved for external Sage/GAP or
-published torsion-free certificates.
-
-PL Morse/game experiments have two distinct exploratory editors. The
-**Generator-Uniform Cochain** editor assigns one integer to each generator and
-propagates that value to every edge with that generator label. Boundary sums
-around rank-two cells are the first consistency check; a nonzero sum means the
-assignment is not a cocycle on the displayed cell structure.
-
-The **JNW Legal-System Game** editor follows the state/move model from
-Jankiewicz-Norin-Wise. A state is a subset of defining-graph vertices, a move
-`m_i` acts by symmetric difference, and the direction of an `s_i` edge depends
-on whether `i` lies in the current state. This is not the same as assigning one
-global orientation to all `s_i` edges. For right-angled Coxeter systems, the
-viewer can label a passing move property and legal orbit as JNW faithful. For
-non-right-angled examples, the same state-orbit drawing is available only as an
-experimental diagnostic and does not carry the JNW theorem.
-
-The guiding bundled example is `jnw_cube_graph.json`. Its defining graph is the
-1-skeleton of a 3-cube, with generators labeled by binary cube vertices. The
-JNW preset uses the cube bipartition/color-class moves from JNW21 and the
-paper's displayed legal initial state `{v000, v010, v110, v111}`. Edge directions
-depend on the current state, not on a global sign attached to a generator.
-
-Two finite covers must be distinguished. JNW use the commutator cover
+Hence
 
 ```text
-X_ab = W' \ Sigma_Gamma,
-W' = ker(W -> (Z/2)^V).
+Stab_Wij(Hg) = W_ij intersect g^{-1} H g.
 ```
 
-For the eight-generator cube group, `X_ab` has 256 vertices. Its vertices carry
-only four distinct state patterns under the chosen move system. The compact
-four-state reader instead targets the derived move-kernel cover
+If `H` is torsion-free, so is `g^{-1}Hg`. Its intersection with the finite
+group `W_ij` is therefore trivial. Orbit-stabilizer now gives
 
 ```text
-X_mu = H_mu \ Sigma_Gamma,
-H_mu = ker(mu o alpha),    mu(e_v) = m_v.
+|Hg W_ij| = |W_ij| / |Stab_Wij(Hg)| = 2m_ij.
 ```
 
-Its deck group is the four-element move group. Consequently
+The `d` cover vertices consequently split into `d/(2m_ij)` orbits. Since the
+uncompressed cover has one lifted `(s_i s_j)^m_ij` cell based at every vertex,
+each orbit indexes `2m_ij` lifted cells. Collapsing the generator bigons makes
+their attaching cycles equal up to cyclic reparametrization, so compression
+identifies that entire orbit to one polygon. Equivalently, compressed
+rank-two cells are indexed by the double cosets `H\W/W_ij`.
+
+When these fiber checks fail, the object may still be inspected as imported
+data, but it is not labeled a passed Jankiewicz--Wise compression.
+
+## Walls In bar X
+
+Every relation cell of `\bar X` has an even number of sides. In a `2m`-gon,
+boundary positions `k` and `k + m` are opposite.
+
+Two geometric edges are **parallel** when they occur in opposite positions of
+one relation cell. An **abstract wall** is an equivalence class generated by
+this parallelism relation.
+
+The corresponding wall is a graph:
+
+- it has one wall vertex at the midpoint of every dual geometric edge;
+- each relation cell contributes an arc joining the midpoints of one opposite
+  pair;
+- the map of this graph into `\bar X` is the wall immersion.
+
+The colored wall arcs in the viewer are a drawing of this exact midpoint-and-
+opposition incidence. Their curvature, height, and separation have no
+mathematical significance.
+
+### Wall diagnostics
+
+The paper distinguishes three local/global properties:
+
+- **embedded**: the wall map into `\bar X` is injective;
+- **two-sided**: the map extends to an embedded product neighborhood
+  `W x (-1,1)`;
+- **no self-osculation**: at each vertex of `\bar X`, the wall is adjacent at
+  no more than one vertex or edge of the local link.
+
+The app reports witnesses when a finite combinatorial check fails. A passed
+browser check is exact for the imported finite incidence, but it is not a
+certificate that the input is the intended finite cover.
+
+Only global coorientability is needed to direct the dual edges and construct
+the cellular map used by the deterministic PL Morse check. Embeddedness and
+absence of self-osculation are valuable diagnostics: in Jankiewicz--Wise they
+make the random local orientation events controllable. A self-osculating wall
+does not by itself invalidate a particular orientation when the resulting
+ascending and descending links have been computed and verified directly.
+
+## Coorienting Walls
+
+The paper calls this an orientation of a wall. In the UI we use
+**coorientation** to stress what is oriented: every 1-cell dual to the wall.
+
+A two-sided wall has two possible coorientations. They assign directions to all
+dual geometric edges so that opposite edges in each relation polygon have
+opposite directions when read around that polygon.
+
+Choose one coorientation for each wall. Mapping every positively directed edge
+once around the oriented 1-cell of `S^1` gives a combinatorial map
 
 ```text
-Sigma_Gamma -> X_mu -> Y_Gamma
+bar X^1 -> S^1.
 ```
 
-has four lifted copies of the `Y_Gamma` fundamental domain. The state names
-`S_1`, ..., `S_4` index those copies; they do not define `Y_Gamma`. For the cube
-move system, `X_mu` has four state vertices, sixteen distinct generator edges,
-and twelve square commuting-relation cells.
+Opposite sides of every relation polygon contribute with opposite signs, so
+the boundary sum is zero and the map extends across every 2-cell. This
+extension alone is not yet a Morse function on every cell.
 
-The intended readable subdivision keeps the gluing visible. Each generator
-rail has one midpoint shared by the two adjacent lifted charts. Each commuting
-square has one relation center, and its rail midpoints and center divide it into
-four chart sectors. Thus the picture shows four fundamental domains joined
-along shared data, rather than four detached models or duplicated endpoint
-handles. Chart spreading and glass fills are drawing conventions only; they do
-not change the exact rails, cells, or covering map.
+Compression preserves the fundamental group: duplicate cells with the same
+attaching map carry redundant relations. Thus a cover belonging to `H` gives
+`pi_1(bar X) = H`, and the circle-valued map induces an explicit homomorphism
 
-Let `L = Flag(Gamma)` be the local link. At a quotient vertex carrying state
-`S`, the JNW ascending and descending links are the full induced subcomplexes
-`L[S]` and `L[V - S]`. They are complexes of generator directions, not merely
-the outgoing and incoming quotient edges. Highlighting `S` in `Gamma` is an
-explanatory linked view, while the actual link is based at the selected vertex
-of `X_mu`. The faithful JNW diagonal map has no level link; level directions
-belong to the separate generalized cochain workflow.
+```text
+chi: H -> Z.
+```
 
-Experiment logs record the assignment or state/move system, input hash,
-diagnostics, and certificate summary for reproducibility.
+The algebraic record evaluates `chi` on Reidemeister--Schreier generators,
+checks every rewritten relator sum, and computes the positive generator `d` of
+its image. If `chi` is nonzero, then `image(chi) = dZ` and
+`phi(h) = chi(h)/d` is the primitive epimorphism `H -> Z`. The two maps have
+the same kernel. This normalization is global period arithmetic; it does not
+divide the original `+1` and `-1` edge arrows.
 
-Local-link topology is computed as finite simplicial homology over `F2` in the
-first version. The summary reports rank counts, reduced `H0`, and `H1`; it is a
-small-link diagnostic, not a general high-dimensional homology engine.
+## Lawful Cells And The Lawful Subcomplex
 
-Quotient imports are rendered as quotient complexes first. The app validates
-vertex references, generator indices, inverse-edge pairing, rank-two cell
-boundaries, and torsion-free metadata. It may display ascending, descending, and
-level incident edges for integer labels, but that is game/PL-Morse preparation;
-it is not a claim that the quotient is a manifold or that a Morse function has
-been certified.
+Fix a coorientation of every two-sided wall. Give each boundary occurrence of
+a relation cell a sign:
+
+```text
+boundary sign = edge coorientation * boundary traversal sign.
+```
+
+A relation cell is **lawful** when its attaching map can be written
+
+```text
+alpha beta^(-1)
+```
+
+with `alpha` and `beta` positively directed. Equivalently, its cyclic sign
+sequence has exactly two sign changes. The boundary then has one source and one
+sink, and the circle-valued map lifts to an affine Morse function on that cell.
+
+For a **fixed** coorientation, the lawful subcomplex is canonical: keep the
+entire 1-skeleton and every lawful 2-cell. It is maximal by inclusion among
+subcomplexes with that full 1-skeleton on which this particular orientation
+has the lawful-cell property. There is no additional cell choice to optimize
+after the coorientation is fixed.
+
+### Optimization over coorientations
+
+The app also asks a separate finite optimization question:
+
+> Which choice of wall coorientations retains the largest number, or greatest
+> specified weight, of lawful relation cells?
+
+This is not a definition or theorem from the paper. It is a search over one
+binary choice per two-sided wall.
+
+Different coorientations can produce incomparable sets of lawful cells. Thus
+"largest" needs an explicit objective such as retained-cell count or total
+weight; it is not a canonical largest subcomplex across all coorientations.
+
+- A completed exhaustive or branch-and-bound run can certify an optimum for
+  the supplied finite complex.
+- A heuristic or interrupted run reports only the best assignment found.
+- Optional link constraints can require every ascending and descending link to
+  be nonempty and connected.
+- One-sided or otherwise noncoorientable walls are obstructions, not variables
+  that may be silently ignored.
+
+Global reversal of every wall coorientation gives the same lawful-cell count
+with ascending and descending exchanged. A solver may fix one wall to remove
+this symmetry, provided it records that normalization.
+
+## Ascending And Descending Links
+
+The app has two link calculations, and their scopes must not be confused.
+
+### Compression diagnostic
+
+Let `x` be a vertex of a cooriented `\bar X` or of its lawful subcomplex.
+
+- A link vertex is ascending when its geometric edge points away from `x`, and
+  descending when the edge points toward `x`.
+- A link edge comes from a corner of a retained relation cell. Its ascending or
+  descending status is determined by the wall directions through that cell,
+  as in the paper's local definition.
+
+The viewer computes these as finite combinatorial subgraphs of `link(x)`. It
+can report emptiness, connected components, and homology diagnostics where the
+available link is represented simplicially.
+
+Together, a certified finite-index torsion-free `H`, a primitive `phi`, and the
+required nonempty connected links are the visible ingredients of a virtual
+algebraic fibration. Finite generation of `ker(phi)` still depends on the
+affine/aspherical Morse hypotheses; it is not inferred from the scene.
+
+The link tests do not prove primitivity. They see only local up/down directions
+and are unchanged when every closed-loop period is multiplied by the same
+positive integer. Surjectivity is the separate gcd/Bezout calculation on the
+Schreier generator values. See
+[Certifying a virtual algebraic fibration](virtual-algebraic-fibering.md) for
+the complete dependency chain and the subgroup-presentation definitions.
+
+### Two certification tracks
+
+The app tries the lawful rank-two subcomplex first. It retains the full
+1-skeleton and the polygons with one source and one sink, certifies that actual
+polygonal complex by exact metric-link arithmetic, checks its directed links,
+and verifies the presentation-level surjection onto `H`. Finite generation of
+the lawful kernel then descends to the kernel in `H`.
+
+An optional generalized model retains a higher Coxeter cell precisely when
+all of its 2-faces are lawful. Equivalently, it removes every unlawful 2-cell
+and its full coface upset. This is a valid downward-closed subcomplex, but the
+app requires separate higher-cell affine, asphericity, and full-link evidence
+before using it in a fibering claim. The executable implementation streams
+spherical cell orbits, applies one global quotient-vertex pulling order, and
+uses the height `h_0(q) + q/(4N)`, where `h_0` integrates the raw integral wall
+cocycle on each retained cell. Pulling introduces no vertices. Ascending and
+descending connectivity is computed in the actual pulled retained complex,
+not in its rank-two truncation.
+
+There is also a direct, unsubdivided calculation. A retained spherical
+`T`-cell contributes its Coxeter-cell vertex-figure simplex to the ascending
+link at `q` exactly when every `T`-edge germ at `q` has positive cocycle value;
+the descending condition uses negative values. This is the polyhedral Morse
+definition itself, so no diagonal edges or tie-breaking heights are added.
+Before treating those sign links as Morse links, the direct certificate checks
+whether the unit wall cocycle is affine on compatible convex cell charts. The
+implemented sufficient model uses positive inverse zone scales on the
+simply-laced/right-angled Coxeter root zonotopes. Zone variables are the
+opposite-edge components generated by retained polygons, so deleting a polygon
+is allowed to split an ambient wall into independently scaled pieces. The
+scales deform cell geometry while the edge cocycle remains `+/-1`. Exact
+root-transition equations and the generalized-compression face fibers bind the
+charts across retained faces. Infeasibility in this model is deliberately
+narrower than infeasibility for all possible affine realizations.
+
+For asphericity, the generalized certificate checks the inherited
+Davis--Moussong metric. Exact metric-flag links certify local CAT(0), hence a
+CAT(0) contractible universal cover. Failure has the deliberately weaker
+meaning “not established by this metric”; it is not a decision procedure for
+asphericity.
+
+See [Two-track fibering certification](two-track-fibering-certification.md)
+for the exact gates and the kernel-surjection argument.
+
+### Full Davis-quotient certificate
+
+For a theorem-facing higher-dimensional run, the Morse complex is the complete
+quotient `K = H\Sigma`, not `\bar X`. The app enumerates every cell `HwW_T`
+for every spherical subset `T`, fixes one global order on quotient vertices,
+and applies the corresponding pulling triangulation to every Coxeter cell.
+The same order on a common face makes the subdivisions agree.
+
+The wall cocycle is integrated on lifted cell charts. Its values are divided
+by the gcd of the Reidemeister--Schreier generator periods, producing a
+primitive `phi:H->Z`. Small quotient-periodic rational offsets then break equal
+vertex heights. Each offset inequality is checked exactly so no generator edge
+is reversed. Extending these values affinely over each simplex gives the PL
+height used for the full directed links.
+
+At every quotient vertex orbit, the ascending and descending links are the
+full subcomplexes of the subdivided simplicial link spanned by higher and lower
+vertices. Nonemptiness and connectedness of every such link are the local
+conditions used for finite generation of `ker(phi)`. Collapsibility is checked
+separately by replaying elementary collapses; it is stronger than connectedness
+and is not needed for the algebraic-fibration conclusion.
+
+See [Full Davis-quotient fibering certification](full-davis-fibering-certification.md)
+for the exact construction and its claim boundary.
+
+## What The Browser Does Not Prove
+
+The Bestvina--Brady criterion used in the paper requires a finite aspherical
+affine cell complex, a circle-valued map whose lift is Morse, and nonempty
+connected ascending and descending links. Under those hypotheses the kernel of
+the induced map to `Z` is finitely generated.
+
+The Jankiewicz--Wise incoherence argument needs more: their cover and wall
+hypotheses, dimension/asphericity conditions, and group-theoretic Euler
+characteristic input. In their dimension-at-most-two setting, every
+three-generator special subgroup must satisfy
+
+```text
+1/m_ij + 1/m_jk + 1/m_ki <= 1.
+```
+
+If a three-generator special subgroup is finite, `\bar X` contains higher
+spherical behavior (in the paper's discussion, a copy of `S^2`) and the
+2-dimensional asphericity argument does not apply as stated. When every triple
+satisfies the displayed inequality, regular Euclidean metrics on the relation
+polygons give the nonpositively curved 2-dimensional setting used there.
+
+Therefore:
+
+- a wall decomposition is not an incoherence proof;
+- a lawful-cell optimum is not a fibering proof;
+- passing local-link checks do not certify the cover or asphericity;
+- compact 5-dimensional examples remain experiments unless all required
+  hypotheses are supplied separately.
+
+The older right-angled state/move legal-system construction can be interpreted
+as a special way of organizing coorientations in a cubical setting. It is not
+the current general workflow and should not be applied unchanged to arbitrary
+finite Coxeter exponents.
+
+## Hyperbolic Reflection Data
+
+When geometric data are supplied, the app uses the Lorentz form
+
+```text
+<x,y>_J = -x_0 y_0 + x_1 y_1 + ... + x_d y_d
+```
+
+and the hyperboloid
+
+```text
+H^d = {x : <x,x>_J = -1 and x_0 > 0}.
+```
+
+For a spacelike unit normal `n`, reflection is
+
+```text
+R_n(x) = x - 2 <x,n>_J n.
+```
+
+The app checks normal norms, chamber inequalities, involutions, and Lorentz
+residuals when the relevant numerical or interval data are present.
+
+## Projection To Three Dimensions
+
+Klein and Poincare coordinates in `R^d` are
+
+```text
+klein(x)    = spatial(x) / x_0
+poincare(x) = spatial(x) / (x_0 + 1).
+```
+
+If `d > 3`, selected axes or PCA reduce these coordinates to three dimensions.
+PCA is deterministic for a fixed ordered input, but it is a readability
+projection. It does not preserve all distances, angles, intersections, or the
+unit-ball boundary.
+
+Certified interval coordinates and projection bounds support only the claims
+listed in their certificate scopes. They do not turn the browser mesh into an
+exact embedded model.

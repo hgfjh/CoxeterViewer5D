@@ -23,6 +23,34 @@ export interface SegmentLabelCandidate {
   priority: number;
 }
 
+export interface SemanticEdgeLabelSource {
+  id: string;
+  compactLabel?: string;
+  semanticLabelKind?: "generator" | "coxeter-order";
+  readabilityOverlay?: boolean;
+}
+
+/**
+ * Resolves the mathematical meaning of an edge label in a semantic view.
+ * Gamma edges carry Coxeter exponents; edges in cell complexes carry the
+ * generator traversed by that 1-cell. Drawing overlays may supply an explicit
+ * compact label, but they do not change either convention.
+ */
+export function semanticEdgeLabelText(
+  edge: SemanticEdgeLabelSource,
+  generatorLabel: string,
+): string {
+  if (
+    edge.semanticLabelKind === "coxeter-order" ||
+    edge.id.startsWith("Gamma:e:")
+  ) {
+    return edge.compactLabel ?? generatorLabel;
+  }
+  return edge.readabilityOverlay
+    ? (edge.compactLabel ?? generatorLabel)
+    : generatorLabel;
+}
+
 /**
  * Shortens long algebraic/word labels without changing their stable identity.
  */

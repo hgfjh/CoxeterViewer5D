@@ -1,0 +1,546 @@
+{
+  "artifactType": "partial-module-search-campaign",
+  "campaignVersion": "1.0.0",
+  "claims": [
+    "hash-bound union of exact fixed-point coverage",
+    "hard coverage gate before composite enumeration"
+  ],
+  "compositionGate": {
+    "nextArithmeticFrontier": 195840,
+    "observedCoverage": 186,
+    "policy": "Enumerate every compatible diagonal orbit and double coset only after exact union coverage reaches every torsion witness.",
+    "ready": true,
+    "requestedTargetRangeExhausted": true,
+    "requiredCoverage": 186,
+    "status": "ready-for-diagonal-orbit-search",
+    "targetDegrees": [5760, 11520, 17280, 23040, 46080, 97920],
+    "targetScreen": [
+      {
+        "completeSingleModuleIds": [],
+        "degree": 5760,
+        "eligibleModuleCount": 4,
+        "reason": "Strictly smaller compatible factors do not cover every witness, and a target-degree factor cannot gain coverage without increasing the diagonal-orbit degree.",
+        "status": "impossible-by-coverage-and-index",
+        "strictlySmallerModuleCount": 4,
+        "strictlySmallerUnionCoverage": 123
+      },
+      {
+        "completeSingleModuleIds": [],
+        "degree": 11520,
+        "eligibleModuleCount": 4,
+        "reason": "Strictly smaller compatible factors do not cover every witness, and a target-degree factor cannot gain coverage without increasing the diagonal-orbit degree.",
+        "status": "impossible-by-coverage-and-index",
+        "strictlySmallerModuleCount": 4,
+        "strictlySmallerUnionCoverage": 123
+      },
+      {
+        "completeSingleModuleIds": [],
+        "degree": 17280,
+        "eligibleModuleCount": 4,
+        "reason": "Strictly smaller compatible factors do not cover every witness, and a target-degree factor cannot gain coverage without increasing the diagonal-orbit degree.",
+        "status": "impossible-by-coverage-and-index",
+        "strictlySmallerModuleCount": 4,
+        "strictlySmallerUnionCoverage": 123
+      },
+      {
+        "completeSingleModuleIds": [],
+        "degree": 23040,
+        "eligibleModuleCount": 4,
+        "reason": "Strictly smaller compatible factors do not cover every witness, and a target-degree factor cannot gain coverage without increasing the diagonal-orbit degree.",
+        "status": "impossible-by-coverage-and-index",
+        "strictlySmallerModuleCount": 4,
+        "strictlySmallerUnionCoverage": 123
+      },
+      {
+        "completeSingleModuleIds": [],
+        "degree": 46080,
+        "eligibleModuleCount": 4,
+        "reason": "Strictly smaller compatible factors do not cover every witness, and a target-degree factor cannot gain coverage without increasing the diagonal-orbit degree.",
+        "status": "impossible-by-coverage-and-index",
+        "strictlySmallerModuleCount": 4,
+        "strictlySmallerUnionCoverage": 123
+      },
+      {
+        "completeSingleModuleIds": [],
+        "degree": 97920,
+        "eligibleModuleCount": 14,
+        "reason": "Strictly smaller compatible factors do not cover every witness, and a target-degree factor cannot gain coverage without increasing the diagonal-orbit degree.",
+        "status": "impossible-by-coverage-and-index",
+        "strictlySmallerModuleCount": 4,
+        "strictlySmallerUnionCoverage": 123
+      }
+    ]
+  },
+  "globalCspFallback": {
+    "artifact": "scripts/certificates/torsion-free/compact_5_cube_global_csp_fallback_5760.json",
+    "artifactSha256": "625531fe26a19954af1adb5c7cf0d24d4aa53ab668ba42655dad798e8a41a9a6",
+    "candidateFound": false,
+    "complete": false,
+    "executed": true,
+    "interruptReason": "wall-clock-budget",
+    "learnedConflictCount": 5431,
+    "nodes": 32768,
+    "returnCode": null,
+    "status": "incomplete-resource-bounded-search"
+  },
+  "nonClaims": [
+    "complete partial-module enumeration",
+    "torsion-free subgroup",
+    "minimal cover degree",
+    "virtual fibering"
+  ],
+  "portfolio": {
+    "coverage": {
+      "byPrimeOrder": {
+        "2": {
+          "covered": 152,
+          "remaining": 0,
+          "total": 152
+        },
+        "3": {
+          "covered": 23,
+          "remaining": 0,
+          "total": 23
+        },
+        "5": {
+          "covered": 11,
+          "remaining": 0,
+          "total": 11
+        }
+      },
+      "coveredCount": 186,
+      "coveredWitnessIndexes": [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
+        38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55,
+        56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
+        74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91,
+        92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107,
+        108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121,
+        122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135,
+        136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149,
+        150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163,
+        164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177,
+        178, 179, 180, 181, 182, 183, 184, 185
+      ],
+      "uncoveredCount": 0,
+      "uncoveredWitnessIndexes": [],
+      "witnessCount": 186
+    },
+    "moduleCount": 49,
+    "modules": [
+      {
+        "coveredCount": 82,
+        "degree": 2,
+        "id": "o5mod-745979993b299503c72d",
+        "materialization": "inline-generator-rows",
+        "source": "order-5-primary"
+      },
+      {
+        "coveredCount": 86,
+        "degree": 2,
+        "id": "o5mod-7bc6f5fd4362930a1c42",
+        "materialization": "inline-generator-rows",
+        "source": "order-5-primary"
+      },
+      {
+        "coveredCount": 70,
+        "degree": 2,
+        "id": "o5mod-af61100ac2eeaf4573d3",
+        "materialization": "inline-generator-rows",
+        "source": "order-5-primary"
+      },
+      {
+        "coveredCount": 4,
+        "degree": 3,
+        "id": "fimod-fc73e39e40ecdc5fadce",
+        "materialization": "content-addressed-packed-action",
+        "source": "order-5-primary"
+      },
+      {
+        "coveredCount": 137,
+        "degree": 97920,
+        "id": "mod2-symbolic-09f631feb239cd8f8190",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 87,
+        "degree": 97920,
+        "id": "mod2-symbolic-2aa0649f6806562a44fd",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 126,
+        "degree": 97920,
+        "id": "mod2-symbolic-49b261f7a146c1fad9cb",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 168,
+        "degree": 97920,
+        "id": "mod2-symbolic-5cb1ae43d6bd8eea4011",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 101,
+        "degree": 97920,
+        "id": "mod2-symbolic-79ddcc4fba94319f91d0",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 97,
+        "degree": 97920,
+        "id": "mod2-symbolic-79edd9ef1fbe57371df4",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 114,
+        "degree": 97920,
+        "id": "mod2-symbolic-a49ef1c7191c5b6e95ee",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 132,
+        "degree": 97920,
+        "id": "mod2-symbolic-a780c048b3e365331d34",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 141,
+        "degree": 97920,
+        "id": "mod2-symbolic-a8ebee7bb4e3a3581252",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 104,
+        "degree": 97920,
+        "id": "mod2-symbolic-fe3bb69844674aa515c7",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 161,
+        "degree": 195840,
+        "id": "mod2-symbolic-22c8266183180814976a",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 153,
+        "degree": 195840,
+        "id": "mod2-symbolic-44621a206029a20171ea",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 174,
+        "degree": 195840,
+        "id": "mod2-symbolic-7211ee11f3670c809322",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 141,
+        "degree": 195840,
+        "id": "mod2-symbolic-82ab2e313909b166515d",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 81,
+        "degree": 195840,
+        "id": "mod2-symbolic-ba731cb23ef0fbdf185e",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 145,
+        "degree": 195840,
+        "id": "mod2-symbolic-e8283b674dd51f8a059e",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 134,
+        "degree": 195840,
+        "id": "mod2-symbolic-eb5e6765445567c30c54",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 174,
+        "degree": 195840,
+        "id": "mod2-symbolic-fb4261a8b10234ad26d5",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 176,
+        "degree": 195840,
+        "id": "mod2-symbolic-ff7b70b7ecb74a55cb8e",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 97,
+        "degree": 293760,
+        "id": "mod2-symbolic-05fd7af485adfdc00d3e",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 111,
+        "degree": 293760,
+        "id": "mod2-symbolic-11415eccd6dc7b702524",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 113,
+        "degree": 293760,
+        "id": "mod2-symbolic-1309281f74a145e783c7",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 140,
+        "degree": 293760,
+        "id": "mod2-symbolic-28f3743da769a60411c9",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 136,
+        "degree": 293760,
+        "id": "mod2-symbolic-337b5d5b520699e183cb",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 113,
+        "degree": 293760,
+        "id": "mod2-symbolic-6e53a4efa160f6a9a4b0",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 167,
+        "degree": 293760,
+        "id": "mod2-symbolic-778a8b668b0e8e7ef632",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 109,
+        "degree": 293760,
+        "id": "mod2-symbolic-bf95e7116548deba96fa",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 105,
+        "degree": 293760,
+        "id": "mod2-symbolic-bfc13128b43e54639388",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 179,
+        "degree": 293760,
+        "id": "mod2-symbolic-d1bf3d0c9890657522ce",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 103,
+        "degree": 293760,
+        "id": "mod2-symbolic-d4ce6f472f5153e9e427",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 117,
+        "degree": 293760,
+        "id": "mod2-symbolic-f18913560866497b0a28",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 101,
+        "degree": 293760,
+        "id": "mod2-symbolic-f7bc5167037e47408c7b",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 91,
+        "degree": 293760,
+        "id": "mod2-symbolic-fb2805d65f137e5a8591",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 102,
+        "degree": 391680,
+        "id": "mod2-symbolic-000008636f990608f382",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 87,
+        "degree": 391680,
+        "id": "mod2-symbolic-1df0ab12b6687e504dc5",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 178,
+        "degree": 391680,
+        "id": "mod2-symbolic-2e5d16f29dd2216c0a47",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 120,
+        "degree": 391680,
+        "id": "mod2-symbolic-3e00d64cd878142ffd5e",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 115,
+        "degree": 391680,
+        "id": "mod2-symbolic-5556a18de1022865fda7",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 97,
+        "degree": 391680,
+        "id": "mod2-symbolic-604d6a5334dab3b2d423",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 151,
+        "degree": 391680,
+        "id": "mod2-symbolic-732bb0b73216247c3bf7",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 87,
+        "degree": 391680,
+        "id": "mod2-symbolic-94d74600623f749325e1",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 124,
+        "degree": 391680,
+        "id": "mod2-symbolic-990fda7c5b45113abd7b",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 109,
+        "degree": 391680,
+        "id": "mod2-symbolic-9b1a642c770bf8d73283",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 107,
+        "degree": 391680,
+        "id": "mod2-symbolic-d85df8f1987021149f0e",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      },
+      {
+        "coveredCount": 21,
+        "degree": 391680,
+        "id": "mod2-symbolic-d99a706045d8777b6a01",
+        "materialization": "compact-stabilizer-symbolic-coset-action",
+        "source": "mod-2-symbolic-marks"
+      }
+    ],
+    "paretoModuleIds": [
+      "o5mod-745979993b299503c72d",
+      "o5mod-7bc6f5fd4362930a1c42",
+      "o5mod-af61100ac2eeaf4573d3",
+      "fimod-fc73e39e40ecdc5fadce",
+      "mod2-symbolic-09f631feb239cd8f8190",
+      "mod2-symbolic-2aa0649f6806562a44fd",
+      "mod2-symbolic-49b261f7a146c1fad9cb",
+      "mod2-symbolic-5cb1ae43d6bd8eea4011",
+      "mod2-symbolic-79ddcc4fba94319f91d0",
+      "mod2-symbolic-79edd9ef1fbe57371df4",
+      "mod2-symbolic-a49ef1c7191c5b6e95ee",
+      "mod2-symbolic-a780c048b3e365331d34",
+      "mod2-symbolic-a8ebee7bb4e3a3581252",
+      "mod2-symbolic-22c8266183180814976a",
+      "mod2-symbolic-44621a206029a20171ea",
+      "mod2-symbolic-7211ee11f3670c809322",
+      "mod2-symbolic-eb5e6765445567c30c54",
+      "mod2-symbolic-fb4261a8b10234ad26d5",
+      "mod2-symbolic-ff7b70b7ecb74a55cb8e",
+      "mod2-symbolic-d1bf3d0c9890657522ce",
+      "mod2-symbolic-000008636f990608f382",
+      "mod2-symbolic-2e5d16f29dd2216c0a47",
+      "mod2-symbolic-d85df8f1987021149f0e",
+      "mod2-symbolic-d99a706045d8777b6a01"
+    ]
+  },
+  "reportSha256": "0298b394f7099cb43db37632b21360cc06e81f06300ff95bf6f448ab208f80d4",
+  "schemaVersion": 1,
+  "source": {
+    "matrixSha256": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+    "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+    "path": "public/examples/compact_5_cube_gamma1.json",
+    "sourceFileSha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+    "witnessSha256": "ecb34ecdd386b16765507d1a48ab7ed3c9887ba4b00c80056a9d1af628486140"
+  },
+  "status": "requested-target-range-eliminated-next-frontier-incomplete",
+  "subcampaigns": {
+    "mod2Symbolic": {
+      "artifactSha256": "9c54c2cbd081c6c60e78b93384b8e59f1ff6dcb372e0e5eae566bed777b96cee",
+      "exactModuleCount": 45,
+      "fileSha256": "48f8ac10330430030e66b9377316bc347c4861756acc49961b23ef01c23e5a2e"
+    },
+    "mod2SymbolicComposite": {
+      "artifactSha256": "aea234598b093e44b22d1b23756835c482f2985ec64f6b121a2ea7506bda3561",
+      "baseExactThroughDegree": 97920,
+      "completeAtNextFrontier": false,
+      "fileSha256": "c01a0e907601b3ffbd526ae235f83952b9175dc786aef97778213fa2a4d5212c",
+      "independentlyCertifiedCandidate": false,
+      "nextFrontierDegree": 195840,
+      "reason": "GAP exceeded the 120-second wall-clock bound.",
+      "status": "incomplete-resource-bounded",
+      "survivorDegree": null
+    },
+    "order5Primary": {
+      "fileSha256": "db6ca8a5fb4929573d6debe6df7d95c43ef1829e3fa48736b2df931af1765253",
+      "moduleCount": 4,
+      "reportSha256": "e58ef846cbb3ac77469fa0ec58cbeb317e67fc38b0e7acb0f6885be3cf97493f"
+    }
+  },
+  "symbolicComposite": {
+    "artifactSha256": "aea234598b093e44b22d1b23756835c482f2985ec64f6b121a2ea7506bda3561",
+    "baseExactThroughDegree": 97920,
+    "completeAtNextFrontier": false,
+    "independentlyCertifiedCandidate": false,
+    "nextFrontierDegree": 195840,
+    "reason": "GAP exceeded the 120-second wall-clock bound.",
+    "status": "incomplete-resource-bounded",
+    "survivorDegree": null
+  }
+}

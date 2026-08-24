@@ -1,0 +1,2329 @@
+{
+  "acceptedKernelCount": 0,
+  "artifactHash": "5ad901ae5a96b73c011290533a622363c2dd645ad4b63a6fbe6dc24b9c95a98d",
+  "artifactType": "coxeter-cover-search-track",
+  "backendVersion": "2.5.0",
+  "bounds": {
+    "maxAnchorClasses": 65536,
+    "maxAnchorSearchNodes": 100000000,
+    "maxInvolutionClasses": 2000,
+    "maxInvolutions": 4096,
+    "maxPermutationDegree": 128,
+    "maxPrecheckNodesPerType": 1000000,
+    "maxSearchNodes": 500000000,
+    "maxSolutionsPerTarget": 1,
+    "maxSphericalOrder": 100000,
+    "maxSubsets": 65536,
+    "maxTargetOrderForEnumeration": 60000,
+    "maxVerifyImageOrder": 60000,
+    "timeoutSecondsPerAnchor": 43200,
+    "timeoutSecondsPerPrecheck": 300,
+    "timeoutSecondsPerTarget": 43200
+  },
+  "candidates": [],
+  "complete": true,
+  "errors": [],
+  "evidence": {
+    "boundedSearchResults": [
+      {
+        "attempts": [
+          {
+            "returnCode": 127,
+            "runtime": "wsl gap",
+            "status": "failed",
+            "stderrTail": "/bin/bash: line 1: gap: command not found\n",
+            "stdoutTail": ""
+          },
+          {
+            "returnCode": 0,
+            "runtime": "wsl Sage GAP",
+            "status": "completed",
+            "stderrTail": "Syntax warning: Unbound global variable in scripts/gap_finite_target_synthesis.g:33\n  AppendTo(CoxeterRawStream,\n           ^^^^^^^^^^^^^^^^\nSyntax warning: Unbound global variable in scripts/gap_finite_target_synthesis.g:553\n  CoxeterWrite(CoxeterRawPath, [\"PRECHECK\", input.target.id, precheckIndex,\n               ^^^^^^^^^^^^^^\nSyntax warning: Unbound global variable in scripts/gap_finite_target_synthesis.g:559\n      CoxeterWrite(CoxeterRawPath, [\"PRECHECK_GENERATOR\", input.target.id,\n                   ^^^^^^^^^^^^^^\n",
+            "stdoutTail": ""
+          }
+        ],
+        "complete": true,
+        "containmentGate": {
+          "anchor": {
+            "catalogueMethod": "fitting-complement-classes",
+            "complete": true,
+            "embeddingClassCount": 4,
+            "expectedOrder": 720,
+            "reason": "complete-structural-catalogue-and-centralizer-extensions",
+            "searchNodes": 2880,
+            "sourceSubset": [
+              0,
+              2,
+              3,
+              5,
+              6
+            ],
+            "status": "complete",
+            "strategy": "a5-subgroup-catalogue-centralizer-extension",
+            "structuralSeedCount": 2,
+            "subgroupClassCount": 2,
+            "targetId": "affine-2pow4-Sp4-2",
+            "type": "A5"
+          },
+          "checks": [],
+          "complete": true,
+          "localPromotionCriterion": "every maximal spherical image has its exact classified order",
+          "passed": true,
+          "precheckSuperseded": true,
+          "status": "exact-global-anchor-search"
+        },
+        "containmentPrechecks": [],
+        "involutionClassCount": 5,
+        "involutionCount": 375,
+        "permutationDegree": 16,
+        "protocol": {
+          "anchorExpectedOrder": 720,
+          "backendVersion": "2.5.0",
+          "expectedTargetOrder": 11520,
+          "gapVersion": "4.14.0",
+          "protocolVersion": 4,
+          "sourceRank": 10,
+          "sphericalPruningSubsetCount": 242,
+          "targetId": "affine-2pow4-Sp4-2"
+        },
+        "reason": "complete-structural-catalogue-and-centralizer-extensions",
+        "runtime": "wsl Sage GAP",
+        "searchNodes": 2880,
+        "searchStatistics": {
+          "anchorBranchesCompleted": 4,
+          "anchorBranchesStarted": 4,
+          "candidateCountBeforeOrbitReduction": 0,
+          "centralizerCalls": 0,
+          "compatibilityTests": 6750,
+          "orbitRepresentativeCount": 0,
+          "sphericalPrunes": 0
+        },
+        "solutionCount": 0,
+        "solutions": [],
+        "status": "exhausted",
+        "structuralAnchor": {
+          "catalogueMethod": "fitting-complement-classes",
+          "complete": true,
+          "embeddingClassCount": 4,
+          "expectedOrder": 720,
+          "reason": "complete-structural-catalogue-and-centralizer-extensions",
+          "searchNodes": 2880,
+          "sourceSubset": [
+            0,
+            2,
+            3,
+            5,
+            6
+          ],
+          "status": "complete",
+          "strategy": "a5-subgroup-catalogue-centralizer-extension",
+          "structuralSeedCount": 2,
+          "subgroupClassCount": 2,
+          "targetId": "affine-2pow4-Sp4-2",
+          "type": "A5"
+        },
+        "targetId": "affine-2pow4-Sp4-2",
+        "targetOrder": 11520,
+        "transcriptSha256": "1b94f7e3aa314014053910c0c23a997f2cb7b24da1c6bab8932b385054943fa4",
+        "verifiedSolutions": []
+      }
+    ],
+    "searchProblemHash": "5d0ab693012233baef42d5f3547d086273741356aff536634067ca9237547322",
+    "structuralAnchorPlans": {
+      "affine-2pow4-Sp4-2": {
+        "completenessCriterion": "all labeled anchor tuples modulo simultaneous target conjugacy, followed by all extensions modulo the pointwise centralizer",
+        "coxeterMatrix": [
+          [
+            1,
+            3,
+            3,
+            2,
+            2
+          ],
+          [
+            3,
+            1,
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            1,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            3,
+            2,
+            1
+          ]
+        ],
+        "expectedOrder": 720,
+        "sourceSubset": [
+          0,
+          2,
+          3,
+          5,
+          6
+        ],
+        "strategy": "a5-subgroup-catalogue-centralizer-extension",
+        "targetType": "2^4:Sp4(2)",
+        "type": "A5"
+      }
+    },
+    "targetPlans": [
+      {
+        "boundedSearch": {
+          "eligible": true,
+          "reason": "within exact element-enumeration bound"
+        },
+        "declaredPermutationDegree": 16,
+        "degreeSemantics": {
+          "ambientPermutationDegree": 16,
+          "kernelIndexIfSurjective": "11520",
+          "note": "The target permutation degree encodes a finite quotient. It is not the index of the kernel unless it equals the quotient order.",
+          "transitiveCosetCoverDegree": null
+        },
+        "dimension": 4,
+        "family": "Sp",
+        "fieldOrder": 2,
+        "id": "affine-2pow4-Sp4-2",
+        "kind": "affine-classical",
+        "linearOrder": 720,
+        "moduleCopies": 1,
+        "moduleDimension": 4,
+        "moduleOrder": 16,
+        "order": 11520,
+        "orderSource": "exact-natural-affine-symplectic-formula",
+        "screen": {
+          "complete": true,
+          "localContainmentPrecheck": "superseded-by-exact-global-spherical-checks",
+          "localEmbeddingsProved": false,
+          "localSphericalOrderChecks": [
+            {
+              "dividesTargetOrder": true,
+              "order": 720,
+              "subset": [
+                0,
+                2,
+                3,
+                5,
+                6
+              ],
+              "type": "A5"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 240,
+              "subset": [
+                0,
+                2,
+                3,
+                5,
+                9
+              ],
+              "type": "A4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 720,
+              "subset": [
+                0,
+                2,
+                3,
+                6,
+                7
+              ],
+              "type": "A5"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 96,
+              "subset": [
+                0,
+                2,
+                3,
+                7,
+                9
+              ],
+              "type": "A3 x A1 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 384,
+              "subset": [
+                0,
+                2,
+                4,
+                5,
+                6
+              ],
+              "type": "D4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 384,
+              "subset": [
+                0,
+                2,
+                4,
+                5,
+                9
+              ],
+              "type": "D4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 720,
+              "subset": [
+                0,
+                2,
+                4,
+                6,
+                7
+              ],
+              "type": "A5"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 240,
+              "subset": [
+                0,
+                2,
+                4,
+                7,
+                9
+              ],
+              "type": "A4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 96,
+              "subset": [
+                0,
+                3,
+                5,
+                6,
+                8
+              ],
+              "type": "A3 x A1 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 72,
+              "subset": [
+                0,
+                3,
+                5,
+                8,
+                9
+              ],
+              "type": "I2(3) x A1 x I2(3)"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 240,
+              "subset": [
+                0,
+                3,
+                6,
+                7,
+                8
+              ],
+              "type": "A4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 72,
+              "subset": [
+                0,
+                3,
+                7,
+                8,
+                9
+              ],
+              "type": "I2(3) x A1 x I2(3)"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 32,
+              "subset": [
+                0,
+                4,
+                5,
+                6,
+                8
+              ],
+              "type": "A1 x A1 x A1 x A1 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 48,
+              "subset": [
+                0,
+                4,
+                5,
+                8,
+                9
+              ],
+              "type": "A1 x A1 x A1 x I2(3)"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 96,
+              "subset": [
+                0,
+                4,
+                6,
+                7,
+                8
+              ],
+              "type": "A1 x A3 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 72,
+              "subset": [
+                0,
+                4,
+                7,
+                8,
+                9
+              ],
+              "type": "A1 x I2(3) x I2(3)"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 720,
+              "subset": [
+                1,
+                2,
+                3,
+                5,
+                6
+              ],
+              "type": "A5"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 96,
+              "subset": [
+                1,
+                2,
+                3,
+                5,
+                9
+              ],
+              "type": "A3 x A1 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 384,
+              "subset": [
+                1,
+                2,
+                3,
+                6,
+                7
+              ],
+              "type": "D4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 32,
+              "subset": [
+                1,
+                2,
+                3,
+                7,
+                9
+              ],
+              "type": "A1 x A1 x A1 x A1 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 720,
+              "subset": [
+                1,
+                2,
+                4,
+                5,
+                6
+              ],
+              "type": "A5"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 240,
+              "subset": [
+                1,
+                2,
+                4,
+                5,
+                9
+              ],
+              "type": "A4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 720,
+              "subset": [
+                1,
+                2,
+                4,
+                6,
+                7
+              ],
+              "type": "A5"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 96,
+              "subset": [
+                1,
+                2,
+                4,
+                7,
+                9
+              ],
+              "type": "A1 x A3 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 240,
+              "subset": [
+                1,
+                3,
+                5,
+                6,
+                8
+              ],
+              "type": "A4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 72,
+              "subset": [
+                1,
+                3,
+                5,
+                8,
+                9
+              ],
+              "type": "I2(3) x A1 x I2(3)"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 384,
+              "subset": [
+                1,
+                3,
+                6,
+                7,
+                8
+              ],
+              "type": "D4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 48,
+              "subset": [
+                1,
+                3,
+                7,
+                8,
+                9
+              ],
+              "type": "A1 x A1 x A1 x I2(3)"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 96,
+              "subset": [
+                1,
+                4,
+                5,
+                6,
+                8
+              ],
+              "type": "A3 x A1 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 72,
+              "subset": [
+                1,
+                4,
+                5,
+                8,
+                9
+              ],
+              "type": "I2(3) x A1 x I2(3)"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 240,
+              "subset": [
+                1,
+                4,
+                6,
+                7,
+                8
+              ],
+              "type": "A4 x A1"
+            },
+            {
+              "dividesTargetOrder": true,
+              "order": 72,
+              "subset": [
+                1,
+                4,
+                7,
+                8,
+                9
+              ],
+              "type": "A1 x I2(3) x I2(3)"
+            }
+          ],
+          "reasons": [],
+          "status": "eligible",
+          "targetOrderDivisibleByLowerBound": true
+        },
+        "structuralAnchorType": "A5",
+        "type": "2^4:Sp4(2)"
+      }
+    ]
+  },
+  "inputHash": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+  "lowerBoundDivisor": 5760,
+  "lowerBoundExplanation": "Every maximal spherical subgroup must act freely on a torsion-free transitive coset action. Its orbits therefore have size |W_T|, so the action degree is divisible by every |W_T| and hence by their lcm.",
+  "matrixHash": "0bbececbf69aed7c672eb5d4e4f850c3702d3d36676f0898eaa3e21409319bd0",
+  "provenance": {
+    "implementationHashes": {
+      "classifierSha256": "44f3c405f8ab62cc9ff0fb3142aea4ead0448310d429cf4e9836e663eadf21d3",
+      "gapSha256": "3a94e2881faea7fdcc5956ed906989bafc885fa059955dc62a3f7e359b0f1344",
+      "pythonSha256": "c0337ee5830261407c98a97e5f6a9e290ab26313232ed7c7e31cd6685e89bedc"
+    }
+  },
+  "schemaVersion": 1,
+  "scope": {
+    "boundedHomomorphismSearchComplete": true,
+    "claim": "complete only relative to the declared finite target list and bounds",
+    "containmentPrecheckComplete": true,
+    "declaredTargetCount": 1,
+    "dryRun": false,
+    "orderScreenComplete": true
+  },
+  "sourceHash": "46286b5778db581987ed64e1370f3d7eeec21e1127fd0809f9942c69dd18468b",
+  "sourceSystem": {
+    "certificate": {
+      "backend": "compact5CubeGamma1ExactChecker",
+      "backendVersion": "1.0.0",
+      "command": "python scripts/certify_compact_5_cube.py public/examples/compact_5_cube_gamma1.json",
+      "diagnostics": {
+        "certifiedClaims": [
+          "Gamma_1 source transcription table",
+          "algebraic dotted values e=(1+sqrt(13))/4 and d=sqrt(2(5+sqrt(13)))/4",
+          "exact normal Gram rank and signature"
+        ],
+        "checkedFields": [
+          "rank",
+          "generators",
+          "coxeterMatrix",
+          "geometry.model",
+          "geometry.dimension",
+          "geometry.normalGram",
+          "sourceRefs"
+        ],
+        "dottedValues": {
+          "boundary": {
+            "isolatingInterval": [
+              1.1513,
+              1.1514
+            ],
+            "minimalPolynomial": [
+              4,
+              -2,
+              -3
+            ],
+            "symbol": "e",
+            "value": "(1 + sqrt(13)) / 4"
+          },
+          "diagonal": {
+            "isolatingInterval": [
+              1.0371,
+              1.0372
+            ],
+            "minimalPolynomial": [
+              16,
+              0,
+              -20,
+              0,
+              3
+            ],
+            "symbol": "d",
+            "value": "sqrt(2(5 + sqrt(13))) / 4"
+          },
+          "field": "Q(sqrt(13), sqrt(10 + 2 sqrt(13)))"
+        },
+        "gram": {
+          "expectedForFacetNormalsInH5": {
+            "negative": 1,
+            "positive": 5,
+            "rank": 6,
+            "zero": 4
+          },
+          "field": "Q(sqrt(13), sqrt(10 + 2 sqrt(13)))",
+          "rank": 6,
+          "signature": {
+            "negative": 1,
+            "positive": 5,
+            "zero": 4
+          }
+        },
+        "sourceTranscription": {
+          "boundaryDottedPairs": [
+            [
+              0,
+              1
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "diagonalDottedPairs": [
+            [
+              2,
+              8
+            ],
+            [
+              6,
+              9
+            ]
+          ],
+          "generatorIds": [
+            "g0",
+            "g1",
+            "g2",
+            "g3",
+            "g4",
+            "g5",
+            "g6",
+            "g7",
+            "g8",
+            "g9"
+          ],
+          "rank": 10,
+          "sourceRefId": "jacquemet-tschantz-2018-cube"
+        }
+      },
+      "inputHash": "49527f5bfa7ca8f7733e4bb490c2b5a20e2602191be6cb2ca29c931d7e800fb9",
+      "sourceRefIds": [
+        "jacquemet-tschantz-2018-cube"
+      ],
+      "status": "passed"
+    },
+    "coxeterMatrix": [
+      [
+        1,
+        "inf",
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        "inf",
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        2,
+        2,
+        2
+      ],
+      [
+        3,
+        2,
+        1,
+        2,
+        3,
+        3,
+        2,
+        2,
+        "inf",
+        2
+      ],
+      [
+        3,
+        2,
+        2,
+        1,
+        "inf",
+        2,
+        3,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        3,
+        "inf",
+        1,
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      [
+        2,
+        3,
+        3,
+        2,
+        2,
+        1,
+        2,
+        "inf",
+        2,
+        2
+      ],
+      [
+        2,
+        3,
+        2,
+        3,
+        2,
+        2,
+        1,
+        3,
+        2,
+        "inf"
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        3,
+        "inf",
+        3,
+        1,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        "inf",
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        3
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        "inf",
+        2,
+        3,
+        1
+      ]
+    ],
+    "dataStatus": "certified",
+    "description": "Coxeter matrix transcribed from Jacquemet and Tschantz, Figure 3, for the unique compact hyperbolic Coxeter 5-cube.",
+    "generators": [
+      {
+        "id": "g0",
+        "label": "g0"
+      },
+      {
+        "id": "g1",
+        "label": "g1"
+      },
+      {
+        "id": "g2",
+        "label": "g2"
+      },
+      {
+        "id": "g3",
+        "label": "g3"
+      },
+      {
+        "id": "g4",
+        "label": "g4"
+      },
+      {
+        "id": "g5",
+        "label": "g5"
+      },
+      {
+        "id": "g6",
+        "label": "g6"
+      },
+      {
+        "id": "g7",
+        "label": "g7"
+      },
+      {
+        "id": "g8",
+        "label": "g8"
+      },
+      {
+        "id": "g9",
+        "label": "g9"
+      }
+    ],
+    "geometry": {
+      "certifiedModel": {
+        "certificate": {
+          "backend": "in-repo-interval-geometry-checker",
+          "checkedAt": "1970-01-01T00:00:00.000Z",
+          "command": "python scripts/certify_geometry_intervals.py public/examples/compact_5_cube_gamma1.json",
+          "diagnostics": {
+            "basepointMaxFacetValue": -0.16154116562912996,
+            "factorizationResidual": 2.3856472353145364e-12,
+            "signature": {
+              "negative": 1,
+              "positive": 5,
+              "zero": 4
+            },
+            "tolerance": 1e-08
+          },
+          "scopes": [
+            "geometry-intervals",
+            "geometry-interval-coordinates",
+            "geometry-interval-reflections",
+            "projection-bounds"
+          ],
+          "status": "passed",
+          "warnings": [
+            "This certificate encloses numerical Lorentz residuals in intervals. PCA projections remain visualization-only."
+          ]
+        },
+        "coordinateSystem": "hyperboloid",
+        "coordinateType": "interval-certified-numeric",
+        "lorentzPreservationResidual": {
+          "decimal": 8.881784197001252e-16,
+          "kind": "interval-real",
+          "lower": 0,
+          "upper": 1.1e-12
+        },
+        "reflectionInvolutionResidual": {
+          "decimal": 8.881784197001252e-16,
+          "kind": "interval-real",
+          "lower": 0,
+          "upper": 1.1e-12
+        },
+        "status": "passed",
+        "warnings": [
+          "Interval-certified reflection residuals are available; browser rendering still uses numerical coordinates."
+        ]
+      },
+      "dimension": 5,
+      "model": "hyperboloid",
+      "normalGram": [
+        [
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "coshDistance": 1.1513878188659974,
+            "exact": {
+              "decimal": 1.1513878188659974,
+              "isolatingInterval": [
+                1.1513,
+                1.1514
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                4,
+                -2,
+                -3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          }
+        ],
+        [
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "coshDistance": 1.0371566465259714,
+            "exact": {
+              "decimal": 1.0371566465259714,
+              "isolatingInterval": [
+                1.0371,
+                1.0372
+              ],
+              "kind": "algebraic-real",
+              "minimalPolynomial": [
+                16,
+                0,
+                -20,
+                0,
+                3
+              ]
+            },
+            "kind": "dotted",
+            "sourceRefId": "jacquemet-tschantz-2018-cube"
+          },
+          {
+            "kind": "right"
+          },
+          {
+            "kind": "coxeter",
+            "m": 3
+          },
+          {
+            "kind": "numericGram",
+            "value": 1
+          }
+        ]
+      ],
+      "source": "Jacquemet and Tschantz, All hyperbolic Coxeter n-cubes, arXiv:1803.10462, Figure 3 and Section 4.2.2."
+    },
+    "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+    "notes": [
+      "The graph is the unique compact hyperbolic Coxeter 5-cube Gamma_1 from Jacquemet-Tschantz, Figure 3.",
+      "Node ids g0..g9 follow the LaTeX source drawing coordinate order: (30,0), (110,0), (30,80), (70,40), (70,120), (110,80), (150,40), (150,120), (60,70), (120,50).",
+      "Unlabeled solid Coxeter graph edges are m=3; omitted edges are m=2; dotted edges are represented as Coxeter-matrix 'inf' entries.",
+      "Dotted diagonal edges (g2,g8) and (g6,g9) use cosh d = sqrt(2(5+sqrt(13)))/4.",
+      "Dotted boundary edges (g0,g1), (g3,g4), and (g5,g7) use cosh e = (1+sqrt(13))/4."
+    ],
+    "rank": 10,
+    "schemaVersion": 1,
+    "sourceRefs": [
+      {
+        "citation": "Matthieu Jacquemet and Steven T. Tschantz, All hyperbolic Coxeter n-cubes, Journal of Combinatorial Theory, Series A 158 (2018), 387-406.",
+        "id": "jacquemet-tschantz-2018-cube",
+        "locator": "Theorem 1, Figure 3, and Section 4.2.2",
+        "notes": "Supports the compact 5-cube Coxeter graph Gamma_1 and its dotted-edge weights.",
+        "url": "https://arxiv.org/abs/1803.10462"
+      }
+    ],
+    "warnings": [
+      "Certified source transcription, algebraic dotted weights, and exact Gram rank/signature are included. Lorentzian normal coordinates and a chamber basepoint are computed numerically from normalGram for visualization."
+    ]
+  },
+  "sphericalCatalogue": {
+    "complete": true,
+    "distinctMaximalTypes": [
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            1
+          ]
+        ],
+        "id": "local-type-0",
+        "order": 32,
+        "sourceSubset": [
+          0,
+          4,
+          5,
+          6,
+          8
+        ],
+        "type": "A1 x A1 x A1 x A1 x A1"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            1,
+            3
+          ],
+          [
+            2,
+            2,
+            2,
+            3,
+            1
+          ]
+        ],
+        "id": "local-type-1",
+        "order": 48,
+        "sourceSubset": [
+          0,
+          4,
+          5,
+          8,
+          9
+        ],
+        "type": "A1 x A1 x A1 x I2(3)"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            2,
+            3,
+            2
+          ],
+          [
+            2,
+            2,
+            1,
+            3,
+            2
+          ],
+          [
+            2,
+            3,
+            3,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            1
+          ]
+        ],
+        "id": "local-type-2",
+        "order": 96,
+        "sourceSubset": [
+          0,
+          4,
+          6,
+          7,
+          8
+        ],
+        "type": "A1 x A3 x A1"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            3,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            1,
+            3
+          ],
+          [
+            2,
+            2,
+            2,
+            3,
+            1
+          ]
+        ],
+        "id": "local-type-3",
+        "order": 72,
+        "sourceSubset": [
+          0,
+          4,
+          7,
+          8,
+          9
+        ],
+        "type": "A1 x I2(3) x I2(3)"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            3,
+            3,
+            2,
+            2
+          ],
+          [
+            3,
+            1,
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            2,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            1
+          ]
+        ],
+        "id": "local-type-4",
+        "order": 96,
+        "sourceSubset": [
+          0,
+          2,
+          3,
+          7,
+          9
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            3,
+            3,
+            2,
+            2
+          ],
+          [
+            3,
+            1,
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            1
+          ]
+        ],
+        "id": "local-type-5",
+        "order": 240,
+        "sourceSubset": [
+          0,
+          2,
+          3,
+          5,
+          9
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            3,
+            3,
+            2,
+            2
+          ],
+          [
+            3,
+            1,
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            1,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            3,
+            2,
+            1
+          ]
+        ],
+        "id": "local-type-6",
+        "order": 720,
+        "sourceSubset": [
+          0,
+          2,
+          3,
+          5,
+          6
+        ],
+        "type": "A5"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            3,
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            1,
+            3,
+            3,
+            2
+          ],
+          [
+            2,
+            3,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            1
+          ]
+        ],
+        "id": "local-type-7",
+        "order": 384,
+        "sourceSubset": [
+          0,
+          2,
+          4,
+          5,
+          6
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "coxeterMatrix": [
+          [
+            1,
+            3,
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            1,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            1,
+            3
+          ],
+          [
+            2,
+            2,
+            2,
+            3,
+            1
+          ]
+        ],
+        "id": "local-type-8",
+        "order": 72,
+        "sourceSubset": [
+          0,
+          3,
+          5,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      }
+    ],
+    "maximalSubgroups": [
+      {
+        "id": "T:0,2,3,5,6",
+        "order": 720,
+        "subset": [
+          0,
+          2,
+          3,
+          5,
+          6
+        ],
+        "type": "A5"
+      },
+      {
+        "id": "T:0,2,3,5,9",
+        "order": 240,
+        "subset": [
+          0,
+          2,
+          3,
+          5,
+          9
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "id": "T:0,2,3,6,7",
+        "order": 720,
+        "subset": [
+          0,
+          2,
+          3,
+          6,
+          7
+        ],
+        "type": "A5"
+      },
+      {
+        "id": "T:0,2,3,7,9",
+        "order": 96,
+        "subset": [
+          0,
+          2,
+          3,
+          7,
+          9
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "id": "T:0,2,4,5,6",
+        "order": 384,
+        "subset": [
+          0,
+          2,
+          4,
+          5,
+          6
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "id": "T:0,2,4,5,9",
+        "order": 384,
+        "subset": [
+          0,
+          2,
+          4,
+          5,
+          9
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "id": "T:0,2,4,6,7",
+        "order": 720,
+        "subset": [
+          0,
+          2,
+          4,
+          6,
+          7
+        ],
+        "type": "A5"
+      },
+      {
+        "id": "T:0,2,4,7,9",
+        "order": 240,
+        "subset": [
+          0,
+          2,
+          4,
+          7,
+          9
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "id": "T:0,3,5,6,8",
+        "order": 96,
+        "subset": [
+          0,
+          3,
+          5,
+          6,
+          8
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "id": "T:0,3,5,8,9",
+        "order": 72,
+        "subset": [
+          0,
+          3,
+          5,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "id": "T:0,3,6,7,8",
+        "order": 240,
+        "subset": [
+          0,
+          3,
+          6,
+          7,
+          8
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "id": "T:0,3,7,8,9",
+        "order": 72,
+        "subset": [
+          0,
+          3,
+          7,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "id": "T:0,4,5,6,8",
+        "order": 32,
+        "subset": [
+          0,
+          4,
+          5,
+          6,
+          8
+        ],
+        "type": "A1 x A1 x A1 x A1 x A1"
+      },
+      {
+        "id": "T:0,4,5,8,9",
+        "order": 48,
+        "subset": [
+          0,
+          4,
+          5,
+          8,
+          9
+        ],
+        "type": "A1 x A1 x A1 x I2(3)"
+      },
+      {
+        "id": "T:0,4,6,7,8",
+        "order": 96,
+        "subset": [
+          0,
+          4,
+          6,
+          7,
+          8
+        ],
+        "type": "A1 x A3 x A1"
+      },
+      {
+        "id": "T:0,4,7,8,9",
+        "order": 72,
+        "subset": [
+          0,
+          4,
+          7,
+          8,
+          9
+        ],
+        "type": "A1 x I2(3) x I2(3)"
+      },
+      {
+        "id": "T:1,2,3,5,6",
+        "order": 720,
+        "subset": [
+          1,
+          2,
+          3,
+          5,
+          6
+        ],
+        "type": "A5"
+      },
+      {
+        "id": "T:1,2,3,5,9",
+        "order": 96,
+        "subset": [
+          1,
+          2,
+          3,
+          5,
+          9
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "id": "T:1,2,3,6,7",
+        "order": 384,
+        "subset": [
+          1,
+          2,
+          3,
+          6,
+          7
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "id": "T:1,2,3,7,9",
+        "order": 32,
+        "subset": [
+          1,
+          2,
+          3,
+          7,
+          9
+        ],
+        "type": "A1 x A1 x A1 x A1 x A1"
+      },
+      {
+        "id": "T:1,2,4,5,6",
+        "order": 720,
+        "subset": [
+          1,
+          2,
+          4,
+          5,
+          6
+        ],
+        "type": "A5"
+      },
+      {
+        "id": "T:1,2,4,5,9",
+        "order": 240,
+        "subset": [
+          1,
+          2,
+          4,
+          5,
+          9
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "id": "T:1,2,4,6,7",
+        "order": 720,
+        "subset": [
+          1,
+          2,
+          4,
+          6,
+          7
+        ],
+        "type": "A5"
+      },
+      {
+        "id": "T:1,2,4,7,9",
+        "order": 96,
+        "subset": [
+          1,
+          2,
+          4,
+          7,
+          9
+        ],
+        "type": "A1 x A3 x A1"
+      },
+      {
+        "id": "T:1,3,5,6,8",
+        "order": 240,
+        "subset": [
+          1,
+          3,
+          5,
+          6,
+          8
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "id": "T:1,3,5,8,9",
+        "order": 72,
+        "subset": [
+          1,
+          3,
+          5,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "id": "T:1,3,6,7,8",
+        "order": 384,
+        "subset": [
+          1,
+          3,
+          6,
+          7,
+          8
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "id": "T:1,3,7,8,9",
+        "order": 48,
+        "subset": [
+          1,
+          3,
+          7,
+          8,
+          9
+        ],
+        "type": "A1 x A1 x A1 x I2(3)"
+      },
+      {
+        "id": "T:1,4,5,6,8",
+        "order": 96,
+        "subset": [
+          1,
+          4,
+          5,
+          6,
+          8
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "id": "T:1,4,5,8,9",
+        "order": 72,
+        "subset": [
+          1,
+          4,
+          5,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "id": "T:1,4,6,7,8",
+        "order": 240,
+        "subset": [
+          1,
+          4,
+          6,
+          7,
+          8
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "id": "T:1,4,7,8,9",
+        "order": 72,
+        "subset": [
+          1,
+          4,
+          7,
+          8,
+          9
+        ],
+        "type": "A1 x I2(3) x I2(3)"
+      }
+    ],
+    "method": "shared exact finite-Coxeter classifier",
+    "pruningCatalogueHash": "4e04f27365afa9c74bbdac1ef79b54d4a274feeea06ab306bb32f855c48818f0",
+    "pruningSubsetCount": 242
+  },
+  "status": "exhausted",
+  "track": "finite-target-synthesis",
+  "warnings": []
+}

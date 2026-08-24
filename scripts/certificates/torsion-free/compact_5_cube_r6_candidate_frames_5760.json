@@ -1,0 +1,1425 @@
+{
+  "artifactHash": "f75f35286e0c65926c7e4ccb05c09fbeae59f1b63e92c99ab71123f2db57f33f",
+  "artifactType": "coxeter-full-frame-seed-catalogue",
+  "backendVersion": "1.0.0",
+  "degree": 5760,
+  "inputHash": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+  "nonClaims": [
+    "complete full-frame enumeration",
+    "complete second-gluing search",
+    "torsion-free cover"
+  ],
+  "provenance": {
+    "certificateArtifactHash": "fcfda442b18066a65640025f45a374b52749ad995ed1045ead91290d564daaeb",
+    "checkpointArtifactHash": "db04dca2c46857c5f4cba494652b747277897c793dd83cb8331e8dca08b25a0d",
+    "checkpointCampaignHash": "ea5b1b453631f44f93886b1476e1857c4345e916f93db3c79c9c1b02462f9c75",
+    "checkpointOutcomesSha256": "38ada0947244021a120b89f7a32764d02509dfbe7edc56b52e896e0ba205fe89",
+    "implementationSha256": "c908331ed600a93549eae519e2f7dca781b2aeed753f9c58c6f7324a27675d6a",
+    "sourceSha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+  },
+  "schemaVersion": 1,
+  "scope": {
+    "claim": "This is the complete set of 93 local frames found in the recorded first-100-prefix window. It is not a complete full-frame catalogue.",
+    "complete": true,
+    "kind": "R6-depth-5-prefix-window-local-frame-seeds"
+  },
+  "seedCount": 93,
+  "seeds": [
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-53990028ba214026b540"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-4fb5a39481d81c860b2d"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-c8910df7f439afdb32c6"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-a2fc137ee5b0e42a78a2"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-b999abc3db2b1b097991"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-c7faefc1267f9408b7a7"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-a630996bd67929d72a03"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-220e72d484d1d9a11bc4"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 3, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 3, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-9c3874b85a2126d83a52"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-64d3d595a7f349556916"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-4004cd9c33f1c2f86765"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-65a7bef74d36590317ba"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-844e69b1fa1ef212d167"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-904e191fa2eb2ffeddc1"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-e6f572abcb54c8d4697c"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-864e9d06bf4e4be044ef"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-69247cbe729ce9222c78"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 4, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 4, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-c61c17969427d33c089d"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-0e9cd60689aa0fb54c9c"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-992e7d39744447a9cab6"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-ee72c49d407d5cf20632"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-9e8dec29bd755afe6d89"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-ab9f1af70d19630be69d"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-ea9c1a685d65729b6cb3"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-eae30333443ef82586cc"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-6cae156042f248448191"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 6, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 6, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-f0f760e7e6dc2639f73e"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-3023462720949effe62d"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-ab43925329948f2257bc"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-d8f107d76ea2ed2add30"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-e5a308c4079094b409cd"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-4098946018de8c54b9de"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-30560f86c8e6c6eed5e1"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-294d5f83e5663e5a2d64"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-223e39f15b0eb960c929"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 7, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 7, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-1fc4450c9e1d262ecb33"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-1d79ab26f540adb5da94"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-c4f1fb146decd63f4d3e"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-5d62f11224f28bc207bb"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-f0833ab935d1a28af800"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-38217b73c7b5000f6c1c"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-f5c1b0cb75c8e904120f"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-6158925f1f028d6509a9"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-5c4956b304aade2e2ee3"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 9, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 9, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-5dea11ca5c891f7946ae"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-301a4e46363a17b0ff66"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-d2f38de85df9b1b37c2e"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-e8f44fc2254ee9388c49"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-cca443a78c5ed607bb5d"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-a0408b8ef5e194d3bade"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-e954dc7fe77a8f826f65"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-c5eadf79bef74f1851b0"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-35387fabbb653a95402e"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 10, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 10, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-4edc683e0ff11d8a8de7"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-cc2676a3ae0edb86fb08"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-d2ef426fe947fd94a359"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-c6576865cac9478b2a5c"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-2cf3f836183c3121b74b"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-089c95256474dadcac6b"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-a15f6e5a7a66dcec3008"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-3e66a85f5551044ec881"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-99e589f68ccd176cf0fb"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-13ebc4472a9b8f32bcda"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 11, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 11, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-2f9d44c0a7bd6c129fe9"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-a7c97199d6b124e6c5d8"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-3a9dfbf74939ac42ec2b"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-3b90cc6200560db2184c"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-22e2798f70bd069f9c24"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-49bcd7b61527f8a424f2"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-5a9097907d511a87062f"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-5ec98f17aa47e45381ee"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-121c46c2586c50c2bd37"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 12, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 12, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-e71c38b3c4aa56023b3b"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-bafd2ef4b177da861adb"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-123adf611c62c557dd6a"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-5cbae09a540375b04eb4"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-22c24bfdb7171799e33d"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-89c9d167bb35155eb680"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-645a3b2360866984a4bf"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-da31ec8ab8ac98c0d2e1"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-0faba7a1c1c06938a0bb"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-afc1f2f82648155f9010"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 13, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 13, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-9f8bf09cec912aba36fe"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 3, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 3, 0, 0, 0, 0, 0],
+      "seedId": "frame-6224cc05945289dd6f8a"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 4, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 4, 0, 0, 0, 0, 0],
+      "seedId": "frame-6a19b17270c15572f9b3"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 6, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 6, 0, 0, 0, 0, 0],
+      "seedId": "frame-5300ac85095258b4e0ec"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 7, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 7, 0, 0, 0, 0, 0],
+      "seedId": "frame-7edceaaeda27e0af4d76"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 9, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 9, 0, 0, 0, 0, 0],
+      "seedId": "frame-1dd2954df8ce9cf5f2a5"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 10, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 10, 0, 0, 0, 0, 0],
+      "seedId": "frame-743b87489ce6c4833dbd"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 11, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 11, 0, 0, 0, 0, 0],
+      "seedId": "frame-123cc98fc73b14326a20"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 12, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 12, 0, 0, 0, 0, 0],
+      "seedId": "frame-3b929767729aef590295"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 13, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 13, 0, 0, 0, 0, 0],
+      "seedId": "frame-b24ad53d52cd71f618ab"
+    },
+    {
+      "firstStageBranch": 6,
+      "frame": [
+        [0, 0, 0],
+        [1, 14, 0],
+        [2, 14, 0],
+        [3, 0, 0],
+        [4, 0, 0],
+        [5, 0, 0],
+        [6, 0, 0],
+        [7, 0, 0]
+      ],
+      "rootSignature": [0, 14, 14, 0, 0, 0, 0, 0],
+      "seedId": "frame-a78448db00acccee2c78"
+    }
+  ],
+  "sourceSystem": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)"
+}

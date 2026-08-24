@@ -8,7 +8,7 @@
     {
       "id": "find-a-hexagon",
       "title": "Find a hexagon",
-      "docNeedle": "Hexagon Relation",
+      "docNeedle": "Find A Rank-Two Cell",
       "sourceExample": "A2",
       "guideId": "find-a-hexagon",
       "media": {
@@ -21,49 +21,48 @@
       ]
     },
     {
-      "id": "rank-three-cell",
-      "title": "Understand a rank-three cell",
-      "docNeedle": "Rank-Three Cell",
-      "sourceExample": "A3",
-      "guideId": "understand-rank-three-cell",
-      "media": {
-        "screenshot": "docs/screenshots/a3-rank-three-square-hexagon.png"
-      },
-      "storyboardFrames": [
-        "Open Y_Gamma.",
-        "Choose the rank-three spherical-cell lens.",
-        "Orbit until square and hexagon faces share a visible edge."
-      ]
-    },
-    {
-      "id": "inspect-ygamma-p2",
-      "title": "Inspect Y_Gamma for P2",
-      "docNeedle": "The Base Complex `Y_Gamma`",
-      "sourceExample": "compact_5_prism_makarov_p2",
-      "guideId": "inspect-ygamma",
-      "media": {
-        "screenshot": "docs/screenshots/y-gamma-p2-m5-relation.png"
-      },
-      "storyboardFrames": [
-        "Show the single base vertex and generator arrows.",
-        "Focus an m=5 relation face in the 3D model.",
-        "Compare the 3D model with the cell inventory, not the 2D nerve schematic."
-      ]
-    },
-    {
-      "id": "quotient-game",
-      "title": "Run a quotient/game experiment",
-      "docNeedle": "Quotient And Game Demo",
+      "id": "build-hat-x",
+      "title": "Build hat X from a finite action",
+      "docNeedle": "Build hat X From I2(5)",
       "sourceExample": "I2_5_identity_quotient",
-      "guideId": "quotient-game-experiment",
+      "guideId": "inspect-finite-cover",
       "media": {
-        "screenshot": "docs/screenshots/i2-5-quotient-game-cocycle.png"
+        "screenshot": "docs/screenshots/cover-walls-01-hat-x.png"
       },
       "storyboardFrames": [
-        "Load the I2(5) quotient workflow.",
-        "Use the s0=+1, s1=-1 cocycle preset.",
-        "Inspect ascending and descending link lenses.",
-        "Export a workflow bundle."
+        "Load the complete I2(5) permutation action.",
+        "Open the hat X cover model.",
+        "Compare directed lifts, generator bigons, and relation-cell lifts."
+      ]
+    },
+    {
+      "id": "find-walls",
+      "title": "Find walls in bar X",
+      "docNeedle": "Find The Walls Of bar X",
+      "sourceExample": "I2_5_identity_quotient",
+      "guideId": "find-walls",
+      "media": {
+        "screenshot": "docs/screenshots/cover-walls-02-bar-x-walls.png"
+      },
+      "storyboardFrames": [
+        "Compress generator bigons and parallel relation lifts.",
+        "Open the bar X compression model.",
+        "Select an opposite-edge wall class and inspect its diagnostics."
+      ]
+    },
+    {
+      "id": "lawful-subcomplex",
+      "title": "Coorient walls and retain lawful cells",
+      "docNeedle": "Search For A Large Lawful Subcomplex",
+      "sourceExample": "I2_5_identity_quotient",
+      "guideId": "coorient-walls",
+      "media": {
+        "screenshot": "docs/screenshots/cover-walls-04-largest-lawful-subcomplex.png"
+      },
+      "storyboardFrames": [
+        "Flip wall coorientations and watch relation-cell lawfulness update.",
+        "Run the exact search and read its optimality certificate.",
+        "Inspect ascending and descending links at a compressed vertex."
       ]
     }
   ],

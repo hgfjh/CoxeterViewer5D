@@ -1,0 +1,30 @@
+export {
+  CoverCompressionError,
+  buildCoverCompression,
+  buildHatXFromQuotient,
+  compressHatX,
+} from "./construction";
+export { validateBarX, validateHatX } from "./validation";
+export type {
+  BarXCompressedComplex,
+  BarXGeometricEdge,
+  BarXRelationCell,
+  BarXVertex,
+  BoundaryOccurrence,
+  CompressionBigonFiber,
+  CompressionCertificate,
+  CompressionCountCheck,
+  CompressionEdgeFiber,
+  CompressionMap,
+  CompressionPairCountCheck,
+  CompressionRelationFiber,
+  CompressionValidationResult,
+  CoverCompressionResult,
+  CoverConstructionProvenance,
+  CoverEvidenceStatus,
+  HatXCoverComplex,
+  HatXDirectedLiftEdge,
+  HatXGeneratorBigonCell,
+  HatXLiftedRelationCell,
+  HatXVertex,
+} from "./types";

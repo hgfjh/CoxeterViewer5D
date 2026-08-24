@@ -1,0 +1,86 @@
+{
+  "artifactHash": "958991ae3ae2fa600a546da705cc8296feacbfb18e82a4370c20e1ccd3d890df",
+  "artifactType": "coxeter-nonnormal-finite-image-campaign",
+  "bounds": {
+    "maxIndex": 576000,
+    "primes": [2, 3]
+  },
+  "campaignVersion": "1.0.0",
+  "children": [
+    {
+      "artifactHash": "a2d3341aa9e66a1a9dab69f17602eb549c7c8f5feb4104cd0e68e6a50da20a1d",
+      "boundedComplete": true,
+      "fileName": "p2.json",
+      "fileSha256": "42d703de361a6bb2b8f21116709b47cfe7c6c9b3eb8c0eb463af1a080eb5b2a2",
+      "outcome": "exhausted",
+      "prime": 2,
+      "searchCompleteness": {
+        "acceptedFiniteImages": 1,
+        "boundedComplete": true,
+        "residueCandidatesExamined": 1,
+        "scope": "Recognition certificates decide only their listed finite images and target degrees. Other residues and larger degrees remain open; this is not a global nonexistence or minimal-index proof.",
+        "status": "index-obstruction-within-recorded-bounds"
+      },
+      "status": "exhausted"
+    },
+    {
+      "artifactHash": "b9ea00cd2c05d12677cb2c4e0c0ec911e8e9e2fdeec03f4dd77137a5722040d0",
+      "boundedComplete": true,
+      "fileName": "p3.json",
+      "fileSha256": "1fbf34d2f09e9942851a7b633a4b06b699ac26970b076ec779504e7c5c1299f0",
+      "outcome": "exhausted",
+      "prime": 3,
+      "searchCompleteness": {
+        "acceptedFiniteImages": 1,
+        "boundedComplete": true,
+        "residueCandidatesExamined": 1,
+        "scope": "Recognition certificates decide only their listed finite images and target degrees. Other residues and larger degrees remain open; this is not a global nonexistence or minimal-index proof.",
+        "status": "index-obstruction-within-recorded-bounds"
+      },
+      "status": "exhausted"
+    }
+  ],
+  "claims": ["bounded p2/p3 finite-image scopes exhausted"],
+  "complete": true,
+  "errors": [],
+  "geometryPruningCertificate": {
+    "kind": "geometry-local-development-pruning-certificate",
+    "matrixDigest": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+    "maximalSphericalRestrictionCount": 32,
+    "meaning": "The 32 maximal spherical restrictions and their prime-order torsion witnesses are the exact local-development sieve for these finite images.",
+    "primeOrderWitnessesChecked": 186,
+    "sphericalDigest": "91a67f1a594fc75c531b3ba7e365ee54f4be2c6e9217ecb6d7bea95fc8e65894",
+    "status": "cross-prime-matched",
+    "witnessCount": 186,
+    "witnessDigest": "ecb34ecdd386b16765507d1a48ab7ed3c9887ba4b00c80056a9d1af628486140"
+  },
+  "inputHash": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+  "missingPrimes": [],
+  "nonClaims": [
+    "all nonnormal actions",
+    "minimal torsion-free index",
+    "finite images outside the supplied characteristic-2 and characteristic-3 artifacts",
+    "actions of degree greater than 576000",
+    "virtual algebraic fibering"
+  ],
+  "partialModuleCatalogueReferences": [
+    {
+      "catalogueSha256": "c0b413e1eeb44f7485c0bf921bb0bd58e6e3929db585ec15602074e5b2aca36b",
+      "complete": true,
+      "finiteImageCount": 1,
+      "hashes": {
+        "matrixSha256": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+        "sourceSha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c",
+        "witnessSha256": "ecb34ecdd386b16765507d1a48ab7ed3c9887ba4b00c80056a9d1af628486140"
+      },
+      "moduleCount": 1,
+      "prime": 2
+    }
+  ],
+  "provenance": {
+    "implementationSha256": "430012795449f39a95cf3cda52cc030011e352634c8fff22804def033313c2bb"
+  },
+  "schemaVersion": 1,
+  "scope": "Exhaustion is relative only to the supplied finite images and transitive coset actions of degree at most 576000.",
+  "status": "exhausted"
+}

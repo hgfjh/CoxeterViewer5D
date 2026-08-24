@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "sourceSystem": {
+    "schemaVersion": 1,
+    "name": "I2(5)",
+    "rank": 2,
+    "generators": [
+      {
+        "id": "s0",
+        "label": "s0"
+      },
+      {
+        "id": "s1",
+        "label": "s1"
+      }
+    ],
+    "coxeterMatrix": [
+      [1, 5],
+      [5, 1]
+    ],
+    "notes": ["Self-test input for automatic torsion-free subgroup discovery."]
+  },
+  "search": {
+    "maxIndex": 10,
+    "maxCandidates": 4,
+    "maxWitnesses": 64,
+    "maxSphericalOrder": 1000,
+    "maxSubsets": 16,
+    "timeoutSeconds": 60
+  }
+}

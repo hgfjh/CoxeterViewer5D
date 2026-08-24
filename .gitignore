@@ -9,6 +9,10 @@ playwright-report
 test-results
 coverage
 .benchmark-current
+.cover-search
+.portfolio-plan
+.tmp/
+.h1-jobs/
 __pycache__
 *.pyc
 *.tsbuildinfo

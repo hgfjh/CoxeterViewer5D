@@ -1,0 +1,7834 @@
+{
+  "artifactHash": "f14e12531cce0fe8aaf4e633c4e486b5c04e0b8f375514aab825577e3ae76986",
+  "certificateKind": "compact-5-cube-odd-prime-structural-certificate-p11",
+  "certificateVersion": "1.0.0",
+  "characteristic": 11,
+  "coxeterMatrix": [
+    [
+      1,
+      0,
+      3,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    [
+      0,
+      1,
+      2,
+      2,
+      2,
+      3,
+      3,
+      2,
+      2,
+      2
+    ],
+    [
+      3,
+      2,
+      1,
+      2,
+      3,
+      3,
+      2,
+      2,
+      0,
+      2
+    ],
+    [
+      3,
+      2,
+      2,
+      1,
+      0,
+      2,
+      3,
+      2,
+      2,
+      2
+    ],
+    [
+      2,
+      2,
+      3,
+      0,
+      1,
+      2,
+      2,
+      3,
+      2,
+      2
+    ],
+    [
+      2,
+      3,
+      3,
+      2,
+      2,
+      1,
+      2,
+      0,
+      2,
+      2
+    ],
+    [
+      2,
+      3,
+      2,
+      3,
+      2,
+      2,
+      1,
+      3,
+      2,
+      0
+    ],
+    [
+      2,
+      2,
+      2,
+      2,
+      3,
+      0,
+      3,
+      1,
+      2,
+      2
+    ],
+    [
+      2,
+      2,
+      0,
+      2,
+      2,
+      2,
+      2,
+      2,
+      1,
+      3
+    ],
+    [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      0,
+      2,
+      3,
+      1
+    ]
+  ],
+  "degreeSieve": {
+    "ambientGroup": "Omega+(10,11):2",
+    "appliesToImage": true,
+    "degreeLedger": [
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 2880,
+          "outcome": "impossible"
+        },
+        "degree": 5760,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 5760,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 5760,
+          "outcome": "impossible"
+        },
+        "degree": 11520,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 11520,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 8640,
+          "outcome": "impossible"
+        },
+        "degree": 17280,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 17280,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 11520,
+          "outcome": "impossible"
+        },
+        "degree": 23040,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 23040,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 14400,
+          "outcome": "impossible"
+        },
+        "degree": 28800,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 28800,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 17280,
+          "outcome": "impossible"
+        },
+        "degree": 34560,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 34560,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 20160,
+          "outcome": "impossible"
+        },
+        "degree": 40320,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 40320,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 23040,
+          "outcome": "impossible"
+        },
+        "degree": 46080,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 46080,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 25920,
+          "outcome": "impossible"
+        },
+        "degree": 51840,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 51840,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 28800,
+          "outcome": "impossible"
+        },
+        "degree": 57600,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 57600,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 31680,
+          "outcome": "impossible"
+        },
+        "degree": 63360,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 63360,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 34560,
+          "outcome": "impossible"
+        },
+        "degree": 69120,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 69120,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 37440,
+          "outcome": "impossible"
+        },
+        "degree": 74880,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 74880,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 40320,
+          "outcome": "impossible"
+        },
+        "degree": 80640,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 80640,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 43200,
+          "outcome": "impossible"
+        },
+        "degree": 86400,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 86400,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 46080,
+          "outcome": "impossible"
+        },
+        "degree": 92160,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 92160,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 48960,
+          "outcome": "impossible"
+        },
+        "degree": 97920,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 97920,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 51840,
+          "outcome": "impossible"
+        },
+        "degree": 103680,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 103680,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 54720,
+          "outcome": "impossible"
+        },
+        "degree": 109440,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 109440,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 57600,
+          "outcome": "impossible"
+        },
+        "degree": 115200,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 115200,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 60480,
+          "outcome": "impossible"
+        },
+        "degree": 120960,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 120960,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 63360,
+          "outcome": "impossible"
+        },
+        "degree": 126720,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 126720,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 66240,
+          "outcome": "impossible"
+        },
+        "degree": 132480,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 132480,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 69120,
+          "outcome": "impossible"
+        },
+        "degree": 138240,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 138240,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 72000,
+          "outcome": "impossible"
+        },
+        "degree": 144000,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 144000,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 74880,
+          "outcome": "impossible"
+        },
+        "degree": 149760,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 149760,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 77760,
+          "outcome": "impossible"
+        },
+        "degree": 155520,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 155520,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 80640,
+          "outcome": "impossible"
+        },
+        "degree": 161280,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 161280,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 83520,
+          "outcome": "impossible"
+        },
+        "degree": 167040,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 167040,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 86400,
+          "outcome": "impossible"
+        },
+        "degree": 172800,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 172800,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 89280,
+          "outcome": "impossible"
+        },
+        "degree": 178560,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 178560,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 92160,
+          "outcome": "impossible"
+        },
+        "degree": 184320,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 184320,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 95040,
+          "outcome": "impossible"
+        },
+        "degree": 190080,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 190080,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 97920,
+          "outcome": "impossible"
+        },
+        "degree": 195840,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 195840,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 100800,
+          "outcome": "impossible"
+        },
+        "degree": 201600,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 201600,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 103680,
+          "outcome": "impossible"
+        },
+        "degree": 207360,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 207360,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 106560,
+          "outcome": "impossible"
+        },
+        "degree": 213120,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 213120,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 109440,
+          "outcome": "impossible"
+        },
+        "degree": 218880,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 218880,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 112320,
+          "outcome": "impossible"
+        },
+        "degree": 224640,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 224640,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 115200,
+          "outcome": "impossible"
+        },
+        "degree": 230400,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 230400,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 118080,
+          "outcome": "impossible"
+        },
+        "degree": 236160,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 236160,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 120960,
+          "outcome": "impossible"
+        },
+        "degree": 241920,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 241920,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 123840,
+          "outcome": "impossible"
+        },
+        "degree": 247680,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 247680,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 126720,
+          "outcome": "impossible"
+        },
+        "degree": 253440,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 253440,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 129600,
+          "outcome": "impossible"
+        },
+        "degree": 259200,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 259200,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 132480,
+          "outcome": "impossible"
+        },
+        "degree": 264960,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 264960,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 135360,
+          "outcome": "impossible"
+        },
+        "degree": 270720,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 270720,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 138240,
+          "outcome": "impossible"
+        },
+        "degree": 276480,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 276480,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 141120,
+          "outcome": "impossible"
+        },
+        "degree": 282240,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 282240,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 144000,
+          "outcome": "impossible"
+        },
+        "degree": 288000,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 288000,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 146880,
+          "outcome": "impossible"
+        },
+        "degree": 293760,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 293760,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 149760,
+          "outcome": "impossible"
+        },
+        "degree": 299520,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 299520,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 152640,
+          "outcome": "impossible"
+        },
+        "degree": 305280,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 305280,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 155520,
+          "outcome": "impossible"
+        },
+        "degree": 311040,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 311040,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 158400,
+          "outcome": "impossible"
+        },
+        "degree": 316800,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 316800,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 161280,
+          "outcome": "impossible"
+        },
+        "degree": 322560,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 322560,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 164160,
+          "outcome": "impossible"
+        },
+        "degree": 328320,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 328320,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 167040,
+          "outcome": "impossible"
+        },
+        "degree": 334080,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 334080,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 169920,
+          "outcome": "impossible"
+        },
+        "degree": 339840,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 339840,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 172800,
+          "outcome": "impossible"
+        },
+        "degree": 345600,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 345600,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 175680,
+          "outcome": "impossible"
+        },
+        "degree": 351360,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 351360,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 178560,
+          "outcome": "impossible"
+        },
+        "degree": 357120,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 357120,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 181440,
+          "outcome": "impossible"
+        },
+        "degree": 362880,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 362880,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 184320,
+          "outcome": "impossible"
+        },
+        "degree": 368640,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 368640,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 187200,
+          "outcome": "impossible"
+        },
+        "degree": 374400,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 374400,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 190080,
+          "outcome": "impossible"
+        },
+        "degree": 380160,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 380160,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 192960,
+          "outcome": "impossible"
+        },
+        "degree": 385920,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 385920,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 195840,
+          "outcome": "impossible"
+        },
+        "degree": 391680,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 391680,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 198720,
+          "outcome": "impossible"
+        },
+        "degree": 397440,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 397440,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 201600,
+          "outcome": "impossible"
+        },
+        "degree": 403200,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 403200,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 204480,
+          "outcome": "impossible"
+        },
+        "degree": 408960,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 408960,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 207360,
+          "outcome": "impossible"
+        },
+        "degree": 414720,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 414720,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 210240,
+          "outcome": "impossible"
+        },
+        "degree": 420480,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 420480,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 213120,
+          "outcome": "impossible"
+        },
+        "degree": 426240,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 426240,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 216000,
+          "outcome": "impossible"
+        },
+        "degree": 432000,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 432000,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 218880,
+          "outcome": "impossible"
+        },
+        "degree": 437760,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 437760,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 221760,
+          "outcome": "impossible"
+        },
+        "degree": 443520,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 443520,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 224640,
+          "outcome": "impossible"
+        },
+        "degree": 449280,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 449280,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 227520,
+          "outcome": "impossible"
+        },
+        "degree": 455040,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 455040,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 230400,
+          "outcome": "impossible"
+        },
+        "degree": 460800,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 460800,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 233280,
+          "outcome": "impossible"
+        },
+        "degree": 466560,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 466560,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 236160,
+          "outcome": "impossible"
+        },
+        "degree": 472320,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 472320,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 239040,
+          "outcome": "impossible"
+        },
+        "degree": 478080,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 478080,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 241920,
+          "outcome": "impossible"
+        },
+        "degree": 483840,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 483840,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 244800,
+          "outcome": "impossible"
+        },
+        "degree": 489600,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 489600,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 247680,
+          "outcome": "impossible"
+        },
+        "degree": 495360,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 495360,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 250560,
+          "outcome": "impossible"
+        },
+        "degree": 501120,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 501120,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 253440,
+          "outcome": "impossible"
+        },
+        "degree": 506880,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 506880,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 256320,
+          "outcome": "impossible"
+        },
+        "degree": 512640,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 512640,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 259200,
+          "outcome": "impossible"
+        },
+        "degree": 518400,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 518400,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 262080,
+          "outcome": "impossible"
+        },
+        "degree": 524160,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 524160,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 264960,
+          "outcome": "impossible"
+        },
+        "degree": 529920,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 529920,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 267840,
+          "outcome": "impossible"
+        },
+        "degree": 535680,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 535680,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 270720,
+          "outcome": "impossible"
+        },
+        "degree": 541440,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 541440,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 273600,
+          "outcome": "impossible"
+        },
+        "degree": 547200,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 547200,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 276480,
+          "outcome": "impossible"
+        },
+        "degree": 552960,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 552960,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 279360,
+          "outcome": "impossible"
+        },
+        "degree": 558720,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 558720,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 282240,
+          "outcome": "impossible"
+        },
+        "degree": 564480,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 564480,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 285120,
+          "outcome": "impossible"
+        },
+        "degree": 570240,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 570240,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      },
+      {
+        "classificationComplete": true,
+        "containedCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 288000,
+          "outcome": "impossible"
+        },
+        "degree": 576000,
+        "outcome": "impossible",
+        "outerSurjectiveCase": {
+          "compatibleMaximalIndices": "",
+          "omegaIndex": 576000,
+          "outcome": "impossible"
+        },
+        "reason": "No complete root maximal class can contain a subgroup of either required Omega index."
+      }
+    ],
+    "degreeLedgerSha256": "0a19ebe88692d1d97d038171bbd75585a78a51d99a9debe3c3b341cd4658d616",
+    "extensionLogic": {
+      "containedCase": "[G:L]=2[Omega:L] when L is contained in Omega",
+      "outerSurjectiveCase": "[G:L]=[Omega:L intersect Omega] with an outer-coset lift",
+      "rootDivisibilityCompleteForRejection": true
+    },
+    "maximalCatalogue": {
+      "aschbacherClasses": [
+        {
+          "class": 1,
+          "representativeCount": 13,
+          "status": "verified"
+        },
+        {
+          "class": 2,
+          "representativeCount": 2,
+          "status": "verified"
+        },
+        {
+          "class": 3,
+          "representativeCount": 1,
+          "status": "verified"
+        },
+        {
+          "class": 4,
+          "representativeCount": 0,
+          "status": "verified"
+        },
+        {
+          "class": 5,
+          "representativeCount": 0,
+          "status": "verified"
+        },
+        {
+          "class": 6,
+          "representativeCount": 0,
+          "status": "verified"
+        },
+        {
+          "class": 7,
+          "representativeCount": 0,
+          "status": "verified"
+        },
+        {
+          "class": 8,
+          "representativeCount": 0,
+          "status": "verified"
+        },
+        {
+          "class": 9,
+          "representativeCount": 0,
+          "status": "verified"
+        }
+      ],
+      "completeByPackageRange": true,
+      "maximalClassCount": 16,
+      "maximalIndices": [
+        235809410,
+        1178966525,
+        28552602816,
+        38319972362640,
+        4675036628242080,
+        21058723648880500,
+        25273920628435105,
+        3730936163169590200100,
+        4921471776548214351656500,
+        5011020360753076597754310,
+        53725450673642028545880000,
+        54628336719685179303387150,
+        376472164894739192666037147108268756176
+      ],
+      "packageVersion": "1.1",
+      "representatives": [
+        {
+          "class": 1,
+          "classRepresentative": 1,
+          "compatibleTargetDegrees": "",
+          "index": 235809410,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 153264994089485073966893713539225600000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 2,
+          "compatibleTargetDegrees": "",
+          "index": 38319972362640,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 943145978495822096483124806400000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 3,
+          "compatibleTargetDegrees": "",
+          "index": 4675036628242080,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 7730704741769033577730531200000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 4,
+          "compatibleTargetDegrees": "",
+          "index": 28552602816,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 1265780498639601238655060417256000000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 5,
+          "compatibleTargetDegrees": "",
+          "index": 28552602816,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 1265780498639601238655060417256000000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 6,
+          "compatibleTargetDegrees": "",
+          "index": 1178966525,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 30655092458961006120118267244605440000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 7,
+          "compatibleTargetDegrees": "",
+          "index": 1178966525,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 30655092458961006120118267244605440000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 8,
+          "compatibleTargetDegrees": "",
+          "index": 25273920628435105,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 1429985017410919158202675200000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 9,
+          "compatibleTargetDegrees": "",
+          "index": 21058723648880500,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 1716216444666449042164227072000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 10,
+          "compatibleTargetDegrees": "",
+          "index": 3730936163169590200100,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 9686932782894724008960000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 11,
+          "compatibleTargetDegrees": "",
+          "index": 3730936163169590200100,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 9686932782894724008960000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 12,
+          "compatibleTargetDegrees": "",
+          "index": 5011020360753076597754310,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 7212368984360601600000
+        },
+        {
+          "class": 1,
+          "classRepresentative": 13,
+          "compatibleTargetDegrees": "",
+          "index": 4921471776548214351656500,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 7343601562873027584000
+        },
+        {
+          "class": 2,
+          "classRepresentative": 1,
+          "compatibleTargetDegrees": "",
+          "index": 376472164894739192666037147108268756176,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 96000000
+        },
+        {
+          "class": 2,
+          "classRepresentative": 2,
+          "compatibleTargetDegrees": "",
+          "index": 54628336719685179303387150,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 661585726384957440000
+        },
+        {
+          "class": 3,
+          "classRepresentative": 1,
+          "compatibleTargetDegrees": "",
+          "index": 53725450673642028545880000,
+          "outerLift": {
+            "liftExists": false,
+            "reason": "No bounded requested degree requires an outer lift of this class.",
+            "status": "verified"
+          },
+          "status": "verified",
+          "subgroupOrder": 672704042064482419200
+        }
+      ],
+      "source": "ClassicalMaximalsGeneric(\"O+\",10,11,[1..9])",
+      "status": "verified"
+    },
+    "maximalCatalogueSha256": "192bd60979709deead8bc24ef2666e968f9b16fad6d1e98a190c76c0567cacb0",
+    "reason": "Every requested degree is decided by the complete maximal-index catalogue.",
+    "status": "verified",
+    "targetCount": 100,
+    "targetLowerBound": 5760,
+    "targetMaximum": 576000,
+    "unresolvedFrontier": ""
+  },
+  "equalitySearch": {
+    "classicalRecognition": {
+      "randomSeed": 20260811,
+      "requestedRandomElements": 256
+    },
+    "orbitLengthLimit": 1000000,
+    "strategy": "classical-containment-first"
+  },
+  "execution": {
+    "returnCode": 0,
+    "stderrTail": "",
+    "stdoutTail": "",
+    "timedOut": false
+  },
+  "generationOutcome": {
+    "execution": {
+      "returnCode": 0,
+      "stderrTail": "",
+      "stdoutTail": "",
+      "timedOut": false
+    },
+    "reason": "Omega equality, outer coset, and every bounded degree row are verified.",
+    "status": "verified"
+  },
+  "implementation": {
+    "generationOrchestratorSha256": "df1d0bb5195e2185973b18a8852f9a0dc68dcf34690af55417074ab0ba3fe6da",
+    "generationToolSha256": "2deb7c71ed00cdf9ee857f90d90e4e02535ae78b8268928b2f1fbff89161b728",
+    "replayVerifierSha256": "8d12203d82442a159355e06cc7ae3d28c12465e8b309b216e40b7faae8c86522",
+    "sealingOrchestratorSha256": "8c8c7674598db906756de96099e5a70997c1c3da61823e6912f352fdc5606c7e"
+  },
+  "kernelCertificate": {
+    "claim": "The congruence kernel is torsion-free and finite index.",
+    "exactIndex": 72282655659789924991879132244787601185792000000,
+    "finiteImage": true,
+    "level": "torsion-free-finite-index-kernel-exact-index-known",
+    "maximalSphericalCatalogueComplete": true,
+    "maximalSphericalRestrictionChecks": [
+      {
+        "actualOrder": 720,
+        "expectedOrder": 720,
+        "id": "T:0,2,3,5,6",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          3,
+          5,
+          6
+        ],
+        "type": "A5"
+      },
+      {
+        "actualOrder": 240,
+        "expectedOrder": 240,
+        "id": "T:0,2,3,5,9",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          3,
+          5,
+          9
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "actualOrder": 720,
+        "expectedOrder": 720,
+        "id": "T:0,2,3,6,7",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          3,
+          6,
+          7
+        ],
+        "type": "A5"
+      },
+      {
+        "actualOrder": 96,
+        "expectedOrder": 96,
+        "id": "T:0,2,3,7,9",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          3,
+          7,
+          9
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "actualOrder": 384,
+        "expectedOrder": 384,
+        "id": "T:0,2,4,5,6",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          4,
+          5,
+          6
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "actualOrder": 384,
+        "expectedOrder": 384,
+        "id": "T:0,2,4,5,9",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          4,
+          5,
+          9
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "actualOrder": 720,
+        "expectedOrder": 720,
+        "id": "T:0,2,4,6,7",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          4,
+          6,
+          7
+        ],
+        "type": "A5"
+      },
+      {
+        "actualOrder": 240,
+        "expectedOrder": 240,
+        "id": "T:0,2,4,7,9",
+        "injective": true,
+        "subset": [
+          0,
+          2,
+          4,
+          7,
+          9
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "actualOrder": 96,
+        "expectedOrder": 96,
+        "id": "T:0,3,5,6,8",
+        "injective": true,
+        "subset": [
+          0,
+          3,
+          5,
+          6,
+          8
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "actualOrder": 72,
+        "expectedOrder": 72,
+        "id": "T:0,3,5,8,9",
+        "injective": true,
+        "subset": [
+          0,
+          3,
+          5,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "actualOrder": 240,
+        "expectedOrder": 240,
+        "id": "T:0,3,6,7,8",
+        "injective": true,
+        "subset": [
+          0,
+          3,
+          6,
+          7,
+          8
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "actualOrder": 72,
+        "expectedOrder": 72,
+        "id": "T:0,3,7,8,9",
+        "injective": true,
+        "subset": [
+          0,
+          3,
+          7,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "actualOrder": 32,
+        "expectedOrder": 32,
+        "id": "T:0,4,5,6,8",
+        "injective": true,
+        "subset": [
+          0,
+          4,
+          5,
+          6,
+          8
+        ],
+        "type": "A1 x A1 x A1 x A1 x A1"
+      },
+      {
+        "actualOrder": 48,
+        "expectedOrder": 48,
+        "id": "T:0,4,5,8,9",
+        "injective": true,
+        "subset": [
+          0,
+          4,
+          5,
+          8,
+          9
+        ],
+        "type": "A1 x A1 x A1 x I2(3)"
+      },
+      {
+        "actualOrder": 96,
+        "expectedOrder": 96,
+        "id": "T:0,4,6,7,8",
+        "injective": true,
+        "subset": [
+          0,
+          4,
+          6,
+          7,
+          8
+        ],
+        "type": "A1 x A3 x A1"
+      },
+      {
+        "actualOrder": 72,
+        "expectedOrder": 72,
+        "id": "T:0,4,7,8,9",
+        "injective": true,
+        "subset": [
+          0,
+          4,
+          7,
+          8,
+          9
+        ],
+        "type": "A1 x I2(3) x I2(3)"
+      },
+      {
+        "actualOrder": 720,
+        "expectedOrder": 720,
+        "id": "T:1,2,3,5,6",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          3,
+          5,
+          6
+        ],
+        "type": "A5"
+      },
+      {
+        "actualOrder": 96,
+        "expectedOrder": 96,
+        "id": "T:1,2,3,5,9",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          3,
+          5,
+          9
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "actualOrder": 384,
+        "expectedOrder": 384,
+        "id": "T:1,2,3,6,7",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          3,
+          6,
+          7
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "actualOrder": 32,
+        "expectedOrder": 32,
+        "id": "T:1,2,3,7,9",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          3,
+          7,
+          9
+        ],
+        "type": "A1 x A1 x A1 x A1 x A1"
+      },
+      {
+        "actualOrder": 720,
+        "expectedOrder": 720,
+        "id": "T:1,2,4,5,6",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          4,
+          5,
+          6
+        ],
+        "type": "A5"
+      },
+      {
+        "actualOrder": 240,
+        "expectedOrder": 240,
+        "id": "T:1,2,4,5,9",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          4,
+          5,
+          9
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "actualOrder": 720,
+        "expectedOrder": 720,
+        "id": "T:1,2,4,6,7",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          4,
+          6,
+          7
+        ],
+        "type": "A5"
+      },
+      {
+        "actualOrder": 96,
+        "expectedOrder": 96,
+        "id": "T:1,2,4,7,9",
+        "injective": true,
+        "subset": [
+          1,
+          2,
+          4,
+          7,
+          9
+        ],
+        "type": "A1 x A3 x A1"
+      },
+      {
+        "actualOrder": 240,
+        "expectedOrder": 240,
+        "id": "T:1,3,5,6,8",
+        "injective": true,
+        "subset": [
+          1,
+          3,
+          5,
+          6,
+          8
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "actualOrder": 72,
+        "expectedOrder": 72,
+        "id": "T:1,3,5,8,9",
+        "injective": true,
+        "subset": [
+          1,
+          3,
+          5,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "actualOrder": 384,
+        "expectedOrder": 384,
+        "id": "T:1,3,6,7,8",
+        "injective": true,
+        "subset": [
+          1,
+          3,
+          6,
+          7,
+          8
+        ],
+        "type": "D4 x A1"
+      },
+      {
+        "actualOrder": 48,
+        "expectedOrder": 48,
+        "id": "T:1,3,7,8,9",
+        "injective": true,
+        "subset": [
+          1,
+          3,
+          7,
+          8,
+          9
+        ],
+        "type": "A1 x A1 x A1 x I2(3)"
+      },
+      {
+        "actualOrder": 96,
+        "expectedOrder": 96,
+        "id": "T:1,4,5,6,8",
+        "injective": true,
+        "subset": [
+          1,
+          4,
+          5,
+          6,
+          8
+        ],
+        "type": "A3 x A1 x A1"
+      },
+      {
+        "actualOrder": 72,
+        "expectedOrder": 72,
+        "id": "T:1,4,5,8,9",
+        "injective": true,
+        "subset": [
+          1,
+          4,
+          5,
+          8,
+          9
+        ],
+        "type": "I2(3) x A1 x I2(3)"
+      },
+      {
+        "actualOrder": 240,
+        "expectedOrder": 240,
+        "id": "T:1,4,6,7,8",
+        "injective": true,
+        "subset": [
+          1,
+          4,
+          6,
+          7,
+          8
+        ],
+        "type": "A4 x A1"
+      },
+      {
+        "actualOrder": 72,
+        "expectedOrder": 72,
+        "id": "T:1,4,7,8,9",
+        "injective": true,
+        "subset": [
+          1,
+          4,
+          7,
+          8,
+          9
+        ],
+        "type": "A1 x I2(3) x I2(3)"
+      }
+    ],
+    "nonClaim": "No manageable coset action is claimed until a bounded degree survives.",
+    "reason": "Every maximal spherical special subgroup injects into the finite matrix image.",
+    "status": "verified"
+  },
+  "maximalSphericalSubgroups": [
+    {
+      "expectedOrder": 720,
+      "id": "T:0,2,3,5,6",
+      "subset": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "type": "A5"
+    },
+    {
+      "expectedOrder": 240,
+      "id": "T:0,2,3,5,9",
+      "subset": [
+        0,
+        2,
+        3,
+        5,
+        9
+      ],
+      "type": "A4 x A1"
+    },
+    {
+      "expectedOrder": 720,
+      "id": "T:0,2,3,6,7",
+      "subset": [
+        0,
+        2,
+        3,
+        6,
+        7
+      ],
+      "type": "A5"
+    },
+    {
+      "expectedOrder": 96,
+      "id": "T:0,2,3,7,9",
+      "subset": [
+        0,
+        2,
+        3,
+        7,
+        9
+      ],
+      "type": "A3 x A1 x A1"
+    },
+    {
+      "expectedOrder": 384,
+      "id": "T:0,2,4,5,6",
+      "subset": [
+        0,
+        2,
+        4,
+        5,
+        6
+      ],
+      "type": "D4 x A1"
+    },
+    {
+      "expectedOrder": 384,
+      "id": "T:0,2,4,5,9",
+      "subset": [
+        0,
+        2,
+        4,
+        5,
+        9
+      ],
+      "type": "D4 x A1"
+    },
+    {
+      "expectedOrder": 720,
+      "id": "T:0,2,4,6,7",
+      "subset": [
+        0,
+        2,
+        4,
+        6,
+        7
+      ],
+      "type": "A5"
+    },
+    {
+      "expectedOrder": 240,
+      "id": "T:0,2,4,7,9",
+      "subset": [
+        0,
+        2,
+        4,
+        7,
+        9
+      ],
+      "type": "A4 x A1"
+    },
+    {
+      "expectedOrder": 96,
+      "id": "T:0,3,5,6,8",
+      "subset": [
+        0,
+        3,
+        5,
+        6,
+        8
+      ],
+      "type": "A3 x A1 x A1"
+    },
+    {
+      "expectedOrder": 72,
+      "id": "T:0,3,5,8,9",
+      "subset": [
+        0,
+        3,
+        5,
+        8,
+        9
+      ],
+      "type": "I2(3) x A1 x I2(3)"
+    },
+    {
+      "expectedOrder": 240,
+      "id": "T:0,3,6,7,8",
+      "subset": [
+        0,
+        3,
+        6,
+        7,
+        8
+      ],
+      "type": "A4 x A1"
+    },
+    {
+      "expectedOrder": 72,
+      "id": "T:0,3,7,8,9",
+      "subset": [
+        0,
+        3,
+        7,
+        8,
+        9
+      ],
+      "type": "I2(3) x A1 x I2(3)"
+    },
+    {
+      "expectedOrder": 32,
+      "id": "T:0,4,5,6,8",
+      "subset": [
+        0,
+        4,
+        5,
+        6,
+        8
+      ],
+      "type": "A1 x A1 x A1 x A1 x A1"
+    },
+    {
+      "expectedOrder": 48,
+      "id": "T:0,4,5,8,9",
+      "subset": [
+        0,
+        4,
+        5,
+        8,
+        9
+      ],
+      "type": "A1 x A1 x A1 x I2(3)"
+    },
+    {
+      "expectedOrder": 96,
+      "id": "T:0,4,6,7,8",
+      "subset": [
+        0,
+        4,
+        6,
+        7,
+        8
+      ],
+      "type": "A1 x A3 x A1"
+    },
+    {
+      "expectedOrder": 72,
+      "id": "T:0,4,7,8,9",
+      "subset": [
+        0,
+        4,
+        7,
+        8,
+        9
+      ],
+      "type": "A1 x I2(3) x I2(3)"
+    },
+    {
+      "expectedOrder": 720,
+      "id": "T:1,2,3,5,6",
+      "subset": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ],
+      "type": "A5"
+    },
+    {
+      "expectedOrder": 96,
+      "id": "T:1,2,3,5,9",
+      "subset": [
+        1,
+        2,
+        3,
+        5,
+        9
+      ],
+      "type": "A3 x A1 x A1"
+    },
+    {
+      "expectedOrder": 384,
+      "id": "T:1,2,3,6,7",
+      "subset": [
+        1,
+        2,
+        3,
+        6,
+        7
+      ],
+      "type": "D4 x A1"
+    },
+    {
+      "expectedOrder": 32,
+      "id": "T:1,2,3,7,9",
+      "subset": [
+        1,
+        2,
+        3,
+        7,
+        9
+      ],
+      "type": "A1 x A1 x A1 x A1 x A1"
+    },
+    {
+      "expectedOrder": 720,
+      "id": "T:1,2,4,5,6",
+      "subset": [
+        1,
+        2,
+        4,
+        5,
+        6
+      ],
+      "type": "A5"
+    },
+    {
+      "expectedOrder": 240,
+      "id": "T:1,2,4,5,9",
+      "subset": [
+        1,
+        2,
+        4,
+        5,
+        9
+      ],
+      "type": "A4 x A1"
+    },
+    {
+      "expectedOrder": 720,
+      "id": "T:1,2,4,6,7",
+      "subset": [
+        1,
+        2,
+        4,
+        6,
+        7
+      ],
+      "type": "A5"
+    },
+    {
+      "expectedOrder": 96,
+      "id": "T:1,2,4,7,9",
+      "subset": [
+        1,
+        2,
+        4,
+        7,
+        9
+      ],
+      "type": "A1 x A3 x A1"
+    },
+    {
+      "expectedOrder": 240,
+      "id": "T:1,3,5,6,8",
+      "subset": [
+        1,
+        3,
+        5,
+        6,
+        8
+      ],
+      "type": "A4 x A1"
+    },
+    {
+      "expectedOrder": 72,
+      "id": "T:1,3,5,8,9",
+      "subset": [
+        1,
+        3,
+        5,
+        8,
+        9
+      ],
+      "type": "I2(3) x A1 x I2(3)"
+    },
+    {
+      "expectedOrder": 384,
+      "id": "T:1,3,6,7,8",
+      "subset": [
+        1,
+        3,
+        6,
+        7,
+        8
+      ],
+      "type": "D4 x A1"
+    },
+    {
+      "expectedOrder": 48,
+      "id": "T:1,3,7,8,9",
+      "subset": [
+        1,
+        3,
+        7,
+        8,
+        9
+      ],
+      "type": "A1 x A1 x A1 x I2(3)"
+    },
+    {
+      "expectedOrder": 96,
+      "id": "T:1,4,5,6,8",
+      "subset": [
+        1,
+        4,
+        5,
+        6,
+        8
+      ],
+      "type": "A3 x A1 x A1"
+    },
+    {
+      "expectedOrder": 72,
+      "id": "T:1,4,5,8,9",
+      "subset": [
+        1,
+        4,
+        5,
+        8,
+        9
+      ],
+      "type": "I2(3) x A1 x I2(3)"
+    },
+    {
+      "expectedOrder": 240,
+      "id": "T:1,4,6,7,8",
+      "subset": [
+        1,
+        4,
+        6,
+        7,
+        8
+      ],
+      "type": "A4 x A1"
+    },
+    {
+      "expectedOrder": 72,
+      "id": "T:1,4,7,8,9",
+      "subset": [
+        1,
+        4,
+        7,
+        8,
+        9
+      ],
+      "type": "A1 x I2(3) x I2(3)"
+    }
+  ],
+  "provenance": {
+    "matrixDigest": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+    "representationSha256": "af65fe3394fb1b14c93f371b3d8b222abf5d283a9287edb83cb57767fd881bd8",
+    "source": {
+      "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+      "path": "public/examples/compact_5_cube_gamma1.json",
+      "sha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+    },
+    "sphericalCatalogueSha256": "d811d758f7c65fdf6484f90ef8eee022bf5bc065d9e4535a0396aedf13d0b020",
+    "toolchainManifestSha256": "fa1ed2a0c4cfd03f9715cb6e5c808af00a793d11b3e52094dcaa728059df32d2"
+  },
+  "provenanceChain": {
+    "claimBoundary": "Spherical injectivity certifies a finite-index torsion-free kernel. Exact index and bounded degree screening require replayed Omega equality.",
+    "generationEvidenceSha256": "8920804ac8b568e4f7358f1b91e8a75635794104ad58ac2c03a53652ac2d6a1e",
+    "predecessorArtifactHash": "d494414ec9ea86ba38bc427194ca62f21cc35623d269383f5bceef409ff2efdd"
+  },
+  "reason": "Exact replay verified the structural proof and degree ledger.",
+  "replayVerification": {
+    "certificateKind": "compact-5-cube-odd-prime-structural-certificate-p11",
+    "characteristic": 11,
+    "classicalContainmentReplay": {
+      "algorithm": "RecogniseClassical",
+      "isOmegaContained": true,
+      "oneSidedPositiveIsConclusive": true,
+      "randomSeed": 20260811,
+      "requestedRandomElements": 256,
+      "status": "verified"
+    },
+    "execution": {
+      "returnCode": 0,
+      "stderrTail": "",
+      "stdoutTail": "",
+      "timedOut": false
+    },
+    "generationEvidenceSha256": "8920804ac8b568e4f7358f1b91e8a75635794104ad58ac2c03a53652ac2d6a1e",
+    "provenance": {
+      "matrixDigest": "b9550752af54e2d30d3106856d443384c66acb39b3ecd247b750f8732c695d67",
+      "representationSha256": "af65fe3394fb1b14c93f371b3d8b222abf5d283a9287edb83cb57767fd881bd8",
+      "source": {
+        "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
+        "path": "public/examples/compact_5_cube_gamma1.json",
+        "sha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+      },
+      "sphericalCatalogueSha256": "d811d758f7c65fdf6484f90ef8eee022bf5bc065d9e4535a0396aedf13d0b020",
+      "toolchainManifestSha256": "fa1ed2a0c4cfd03f9715cb6e5c808af00a793d11b3e52094dcaa728059df32d2"
+    },
+    "reason": "Matrices, spherical restrictions, Omega containment, outer coset, and bounded index ledger replayed.",
+    "replayedDegreeRows": 100,
+    "replayedRelationChecks": 50,
+    "replayedSphericalRestrictions": 32,
+    "replayedStandardGeneratorSlps": 0,
+    "schemaVersion": 1,
+    "status": "verified",
+    "tools": {
+      "classicalMaximals": "1.1",
+      "forms": "1.3.0",
+      "gap": "4.16.0",
+      "recog": "1.5.1"
+    }
+  },
+  "representation": {
+    "characteristic": 11,
+    "dimension": 10,
+    "matrixGeneratorRows": [
+      [
+        [
+          10,
+          2,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          10,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          10,
+          0,
+          1,
+          1,
+          0,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          10,
+          2,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          2,
+          10,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          0,
+          0,
+          10,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          10,
+          1,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          1,
+          10,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          10,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          1,
+          10
+        ]
+      ]
+    ],
+    "preservedFormRows": [
+      [
+        1,
+        10,
+        5,
+        5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        1,
+        0,
+        0,
+        0,
+        5,
+        5,
+        0,
+        0,
+        0
+      ],
+      [
+        5,
+        0,
+        1,
+        0,
+        5,
+        5,
+        0,
+        0,
+        10,
+        0
+      ],
+      [
+        5,
+        0,
+        0,
+        1,
+        10,
+        0,
+        5,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        5,
+        10,
+        1,
+        0,
+        0,
+        5,
+        0,
+        0
+      ],
+      [
+        0,
+        5,
+        5,
+        0,
+        0,
+        1,
+        0,
+        10,
+        0,
+        0
+      ],
+      [
+        0,
+        5,
+        0,
+        5,
+        0,
+        0,
+        1,
+        5,
+        0,
+        10
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        5,
+        10,
+        5,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        10,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        5
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        5,
+        1
+      ]
+    ],
+    "relationChecks": [
+      {
+        "generator": 0,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 1,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 2,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 3,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 4,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 5,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 6,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 7,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 8,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "generator": 9,
+        "kind": "involution",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 0,
+        "generatorB": 2,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 0,
+        "generatorB": 3,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 0,
+        "generatorB": 4,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 0,
+        "generatorB": 5,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 0,
+        "generatorB": 6,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 0,
+        "generatorB": 7,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 0,
+        "generatorB": 8,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 0,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 1,
+        "generatorB": 2,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 1,
+        "generatorB": 3,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 1,
+        "generatorB": 4,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 1,
+        "generatorB": 5,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 1,
+        "generatorB": 6,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 1,
+        "generatorB": 7,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 1,
+        "generatorB": 8,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 1,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 2,
+        "generatorB": 3,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 2,
+        "generatorB": 4,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 2,
+        "generatorB": 5,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 2,
+        "generatorB": 6,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 2,
+        "generatorB": 7,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 2,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 3,
+        "generatorB": 5,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 3,
+        "generatorB": 6,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 3,
+        "generatorB": 7,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 3,
+        "generatorB": 8,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 3,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 4,
+        "generatorB": 5,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 4,
+        "generatorB": 6,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 4,
+        "generatorB": 7,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 4,
+        "generatorB": 8,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 4,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 5,
+        "generatorB": 6,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 5,
+        "generatorB": 8,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 5,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 6,
+        "generatorB": 7,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 6,
+        "generatorB": 8,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 7,
+        "generatorB": 8,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 2,
+        "generatorA": 7,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      },
+      {
+        "exponent": 3,
+        "generatorA": 8,
+        "generatorB": 9,
+        "kind": "coxeter",
+        "passed": true
+      }
+    ],
+    "status": "verified"
+  },
+  "schemaVersion": 1,
+  "status": "verified",
+  "structuralIdentification": {
+    "indexTwoExtension": {
+      "determinant": 10,
+      "imageEqualsExtension": true,
+      "involution": true,
+      "normalizesOmega": true,
+      "outsideOmega": true,
+      "preservesStandardForm": true,
+      "quotient": "C2",
+      "quotientIndex": 2,
+      "sourceGeneratorCosetChecks": [
+        {
+          "generator": 0,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 1,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 2,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 3,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 4,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 5,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 6,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 7,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 8,
+          "omegaCosetMembership": true
+        },
+        {
+          "generator": 9,
+          "omegaCosetMembership": true
+        }
+      ],
+      "sourceGeneratorIndex": 0,
+      "standardBasisRows": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "status": "verified"
+    },
+    "omegaDerivedSubgroup": {
+      "classicalContainment": {
+        "algorithm": "RecogniseClassical",
+        "basicPpdExponents": [
+          8
+        ],
+        "case": "orthogonalplus",
+        "evidenceSha256": "97825a237aa1c76a6899b4d437288d6a069a9c321d7ef47b4b68e92d7fd75be8",
+        "isOmegaContained": true,
+        "largeBasicPpdExponents": [
+          8
+        ],
+        "largePpdExponents": [
+          6,
+          8
+        ],
+        "negativeWouldBeInconclusive": true,
+        "observedElementOrders": "",
+        "oneSidedPositiveIsConclusive": true,
+        "orderTakenFromStandardOmegaAfterMutualContainment": true,
+        "package": "recog",
+        "packageVersion": "1.5.1",
+        "ppdExponents": [
+          6,
+          8
+        ],
+        "randomSeed": 20260811,
+        "recognitionOutputTrustedForContainment": true,
+        "recognitionOutputTrustedForOrder": false,
+        "references": [
+          "recog RecogniseClassical API: positive isOmegaContained is a containment conclusion",
+          "Praeger, Primitive prime divisor elements in finite classical groups: one-sided recognition"
+        ],
+        "requestedRandomElements": 256,
+        "sampledRandomElements": 9,
+        "status": "verified"
+      },
+      "equalityMethod": "CM_InOmega containment and conclusive one-sided classical Omega-containment",
+      "evenGeneratorRows": [
+        [
+          [
+            1,
+            0,
+            2,
+            0,
+            9,
+            9,
+            0,
+            9,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            8,
+            0,
+            4,
+            4,
+            0,
+            4,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            7,
+            0,
+            5,
+            4,
+            0,
+            4,
+            0,
+            2
+          ],
+          [
+            9,
+            0,
+            7,
+            0,
+            4,
+            5,
+            0,
+            4,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            4,
+            0,
+            7,
+            7,
+            0,
+            8,
+            0,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            9,
+            0,
+            2,
+            2,
+            0,
+            2,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            3,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            9
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0,
+            9,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            9,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            7
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            9,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            0,
+            10,
+            0,
+            9,
+            9,
+            0,
+            9,
+            0,
+            9
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            9,
+            0,
+            5,
+            5,
+            0,
+            5,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            8,
+            0,
+            6,
+            5,
+            0,
+            5,
+            0,
+            2
+          ],
+          [
+            9,
+            0,
+            8,
+            0,
+            5,
+            6,
+            0,
+            5,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            10,
+            0,
+            4,
+            0,
+            8,
+            8,
+            0,
+            9,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            9,
+            0,
+            1,
+            0,
+            2,
+            2,
+            0,
+            2,
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            3,
+            2,
+            0,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            2,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            3,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            7,
+            8,
+            10,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            9,
+            3,
+            3,
+            5,
+            9,
+            10,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            6,
+            10,
+            4,
+            5,
+            8,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            3,
+            8,
+            1,
+            10,
+            3,
+            7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            9,
+            8,
+            6,
+            3,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            9,
+            2,
+            3,
+            5,
+            9,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            0,
+            6,
+            4,
+            7,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            7,
+            1,
+            5,
+            7,
+            4,
+            7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            4,
+            0,
+            7,
+            4,
+            7,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            0,
+            9,
+            7,
+            5,
+            6,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            4,
+            0,
+            6,
+            4,
+            7,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            5,
+            0,
+            0,
+            10,
+            6,
+            5,
+            5,
+            0,
+            0,
+            6
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0,
+            6,
+            5,
+            5,
+            0,
+            0,
+            5
+          ],
+          [
+            5,
+            0,
+            0,
+            10,
+            7,
+            5,
+            5,
+            0,
+            0,
+            5
+          ],
+          [
+            6,
+            0,
+            0,
+            1,
+            5,
+            7,
+            6,
+            0,
+            0,
+            6
+          ],
+          [
+            10,
+            0,
+            0,
+            9,
+            1,
+            10,
+            0,
+            0,
+            0,
+            10
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            0,
+            10,
+            6,
+            5,
+            5,
+            0,
+            0,
+            5
+          ]
+        ],
+        [
+          [
+            4,
+            4,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            4,
+            5
+          ],
+          [
+            4,
+            5,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            4,
+            4
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            2,
+            3,
+            2,
+            6,
+            2,
+            1,
+            0,
+            2,
+            2
+          ],
+          [
+            4,
+            4,
+            6,
+            2,
+            2,
+            4,
+            2,
+            0,
+            4,
+            4
+          ],
+          [
+            1,
+            1,
+            7,
+            6,
+            3,
+            2,
+            6,
+            0,
+            1,
+            1
+          ],
+          [
+            2,
+            2,
+            3,
+            1,
+            6,
+            2,
+            2,
+            0,
+            2,
+            2
+          ],
+          [
+            6,
+            6,
+            9,
+            3,
+            7,
+            6,
+            3,
+            1,
+            6,
+            6
+          ],
+          [
+            4,
+            4,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            5,
+            4
+          ],
+          [
+            5,
+            4,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            4,
+            4
+          ]
+        ],
+        [
+          [
+            5,
+            9,
+            0,
+            4,
+            0,
+            0,
+            4,
+            0,
+            1,
+            6
+          ],
+          [
+            1,
+            5,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            9,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            5,
+            0,
+            2,
+            0,
+            0,
+            1,
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            5,
+            0,
+            1,
+            0,
+            0,
+            2,
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            9,
+            3,
+            0,
+            5,
+            0,
+            0,
+            5,
+            0,
+            5,
+            9
+          ],
+          [
+            6,
+            9,
+            0,
+            4,
+            0,
+            0,
+            4,
+            0,
+            1,
+            5
+          ]
+        ]
+      ],
+      "exactContainment": {
+        "checkedGeneratorCount": 9,
+        "cmInOmega": true,
+        "determinantOne": true,
+        "status": "verified"
+      },
+      "identifiedAs": "Omega+(10,11)",
+      "order": 36141327829894962495939566122393800592896000000,
+      "standardGeneratorSlps": {
+        "reason": "This proof uses conclusive classical containment instead of constructive words.",
+        "status": "unknown"
+      },
+      "standardOmegaGeneratorRows": [
+        [
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            6,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            10,
+            0,
+            0,
+            0,
+            0,
+            10
+          ],
+          [
+            10,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            10,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ]
+        ]
+      ],
+      "status": "verified"
+    },
+    "preservedSplitForm": {
+      "characteristic": 11,
+      "dimension": 10,
+      "everyGeneratorPreservesForm": true,
+      "nonsingular": true,
+      "orthogonalType": "plus",
+      "rows": [
+        [
+          1,
+          10,
+          5,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          10,
+          1,
+          0,
+          0,
+          0,
+          5,
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          1,
+          0,
+          5,
+          5,
+          0,
+          0,
+          10,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          1,
+          10,
+          0,
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          5,
+          10,
+          1,
+          0,
+          0,
+          5,
+          0,
+          0
+        ],
+        [
+          0,
+          5,
+          5,
+          0,
+          0,
+          1,
+          0,
+          10,
+          0,
+          0
+        ],
+        [
+          0,
+          5,
+          0,
+          5,
+          0,
+          0,
+          1,
+          5,
+          0,
+          10
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          5,
+          10,
+          5,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          5
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          10,
+          0,
+          5,
+          1
+        ]
+      ],
+      "status": "verified",
+      "symmetric": true,
+      "wittIndex": 5
+    },
+    "standardFormConjugacy": {
+      "basisEvidenceSha256": "e2a97bd22559787a52c8be71828c5850fa502095449de40dc172974640eca5b0",
+      "changeOfBasisRows": [
+        [
+          10,
+          8,
+          7,
+          8,
+          8,
+          5,
+          8,
+          2,
+          7,
+          7
+        ],
+        [
+          1,
+          1,
+          10,
+          6,
+          5,
+          2,
+          0,
+          10,
+          1,
+          1
+        ],
+        [
+          3,
+          2,
+          10,
+          7,
+          9,
+          3,
+          7,
+          0,
+          0,
+          3
+        ],
+        [
+          1,
+          1,
+          6,
+          8,
+          8,
+          3,
+          9,
+          6,
+          1,
+          1
+        ],
+        [
+          2,
+          8,
+          0,
+          6,
+          10,
+          1,
+          7,
+          0,
+          7,
+          2
+        ],
+        [
+          1,
+          8,
+          0,
+          0,
+          0,
+          0,
+          10,
+          0,
+          7,
+          1
+        ],
+        [
+          6,
+          0,
+          0,
+          7,
+          0,
+          0,
+          7,
+          0,
+          3,
+          6
+        ],
+        [
+          10,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          10
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          0
+        ],
+        [
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0
+        ]
+      ],
+      "everyTransformedGeneratorPreservesStandardForm": true,
+      "formSimilitudeMultiplier": 1,
+      "method": "column-action variant: inverse(transpose(row-change)) of BaseChangeToCanonical(old)^-1 * BaseChangeToCanonical(standard)",
+      "standardFormRows": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "standardFormSource": "InvariantBilinearForm(Omega(1,10,11))",
+      "status": "verified",
+      "transformedGeneratorRows": [
+        [
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            2,
+            0,
+            9,
+            9,
+            0,
+            9,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            8,
+            0,
+            4,
+            4,
+            0,
+            4,
+            0,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            7,
+            0,
+            5,
+            4,
+            0,
+            4,
+            0,
+            9
+          ],
+          [
+            2,
+            0,
+            7,
+            0,
+            4,
+            5,
+            0,
+            4,
+            0,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            4,
+            0,
+            7,
+            7,
+            0,
+            8,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            9,
+            0,
+            2,
+            2,
+            0,
+            2,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            9,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            3
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0,
+            9,
+            0,
+            7
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            9,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            3,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            9
+          ]
+        ],
+        [
+          [
+            9,
+            0,
+            10,
+            0,
+            9,
+            9,
+            0,
+            9,
+            0,
+            3
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            9,
+            0,
+            5,
+            5,
+            0,
+            5,
+            0,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            8,
+            0,
+            6,
+            5,
+            0,
+            5,
+            0,
+            9
+          ],
+          [
+            2,
+            0,
+            8,
+            0,
+            5,
+            6,
+            0,
+            5,
+            0,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            4,
+            0,
+            8,
+            8,
+            0,
+            9,
+            0,
+            10
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            3,
+            0,
+            1,
+            0,
+            2,
+            2,
+            0,
+            2,
+            0,
+            9
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            3,
+            2,
+            0,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            2,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            3,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            7,
+            8,
+            10,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            9,
+            3,
+            3,
+            5,
+            9,
+            10,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            6,
+            10,
+            4,
+            5,
+            8,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            3,
+            8,
+            1,
+            10,
+            3,
+            7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            9,
+            8,
+            6,
+            3,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            9,
+            2,
+            3,
+            5,
+            9,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            0,
+            6,
+            4,
+            7,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            7,
+            1,
+            5,
+            7,
+            4,
+            7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            4,
+            0,
+            7,
+            4,
+            7,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            0,
+            9,
+            7,
+            5,
+            6,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            4,
+            0,
+            6,
+            4,
+            7,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            6,
+            0,
+            0,
+            10,
+            6,
+            5,
+            5,
+            0,
+            0,
+            5
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0,
+            6,
+            5,
+            5,
+            0,
+            0,
+            5
+          ],
+          [
+            5,
+            0,
+            0,
+            10,
+            7,
+            5,
+            5,
+            0,
+            0,
+            5
+          ],
+          [
+            6,
+            0,
+            0,
+            1,
+            5,
+            7,
+            6,
+            0,
+            0,
+            6
+          ],
+          [
+            10,
+            0,
+            0,
+            9,
+            1,
+            10,
+            0,
+            0,
+            0,
+            10
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            10,
+            6,
+            5,
+            5,
+            0,
+            0,
+            6
+          ]
+        ],
+        [
+          [
+            5,
+            4,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            4,
+            4
+          ],
+          [
+            4,
+            5,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            4,
+            4
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            2,
+            3,
+            2,
+            6,
+            2,
+            1,
+            0,
+            2,
+            2
+          ],
+          [
+            4,
+            4,
+            6,
+            2,
+            2,
+            4,
+            2,
+            0,
+            4,
+            4
+          ],
+          [
+            1,
+            1,
+            7,
+            6,
+            3,
+            2,
+            6,
+            0,
+            1,
+            1
+          ],
+          [
+            2,
+            2,
+            3,
+            1,
+            6,
+            2,
+            2,
+            0,
+            2,
+            2
+          ],
+          [
+            6,
+            6,
+            9,
+            3,
+            7,
+            6,
+            3,
+            1,
+            6,
+            6
+          ],
+          [
+            4,
+            4,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            5,
+            4
+          ],
+          [
+            4,
+            4,
+            6,
+            2,
+            1,
+            4,
+            2,
+            0,
+            4,
+            5
+          ]
+        ],
+        [
+          [
+            6,
+            9,
+            0,
+            4,
+            0,
+            0,
+            4,
+            0,
+            1,
+            5
+          ],
+          [
+            1,
+            5,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            9,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            5,
+            0,
+            2,
+            0,
+            0,
+            1,
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            5,
+            0,
+            1,
+            0,
+            0,
+            2,
+            0,
+            3,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            9,
+            3,
+            0,
+            5,
+            0,
+            0,
+            5,
+            0,
+            5,
+            9
+          ],
+          [
+            5,
+            9,
+            0,
+            4,
+            0,
+            0,
+            4,
+            0,
+            1,
+            6
+          ]
+        ]
+      ]
+    }
+  },
+  "tools": {
+    "classicalMaximals": "1.1",
+    "forms": "1.3.0",
+    "gap": "4.16.0",
+    "genss": "1.6.9",
+    "recog": "1.5.1"
+  }
+}

@@ -11,8 +11,12 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "corepack pnpm dev --host 127.0.0.1",
+    // E2E exercises the same optimized chunks that ship to users. Building here
+    // also keeps `playwright test` self-contained outside the release workflow.
+    command:
+      "corepack pnpm build && corepack pnpm preview --host 127.0.0.1 --port 5173",
     url: "http://127.0.0.1:5173",
+    timeout: 180_000,
     reuseExistingServer: !process.env.CI,
   },
   projects: [

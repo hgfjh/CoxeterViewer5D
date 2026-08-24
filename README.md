@@ -1,94 +1,264 @@
-# Coxeter Viewer 5D
+# CoxeterViewer5D
 
-An offline-capable local web app for inspecting finite Coxeter Cayley balls,
-Davis cells, hyperbolic chamber projections, the one-vertex base complex
-`Y_Gamma`, the defining Coxeter graph `Gamma`, quotient diagnostics, and
-state/cochain game experiments.
+CoxeterViewer5D is an offline-capable viewer for Coxeter groups, finite cover
+complexes, wall systems, and local Morse data. It combines five related views:
 
-The app is an educational and research workflow tool, not a theorem prover. It
-keeps exact data, numerical geometry, and drawing conventions visibly separate.
+- **Davis**: a finite Cayley ball with visible Davis cells;
+- **hat X** (`\hat X`): a finite cover of the standard Coxeter presentation
+  2-complex;
+- **bar X** (`\bar X`): the compression of `\hat X` used by
+  Jankiewicz--Wise;
+- **Gamma** (`\Gamma`): the defining graph of the Coxeter system;
+- **Projection**: chamber barycenters drawn from supplied reflection data.
 
-## License
-
-Unless otherwise noted, CoxeterViewer5D source code, scripts, bundled JSON
-examples, and documentation are released under the Apache License 2.0. Source
-references cited in the data remain the property of their respective
-authors/publishers; this project licenses only its own transcriptions, code,
-and generated artifacts.
+The app is a research and teaching instrument, not a theorem prover. Incidence
+computed from validated finite data can be exact while the 3D placement remains
+a drawing. The interface labels those two claims separately.
 
 ## What Is This App For?
 
-CoxeterViewer5D is for looking at Coxeter-group topology before turning it into
-formulas. It helps you inspect finite Cayley balls, Davis cells, the
-fundamental-domain style complex `Y_Gamma`, the defining graph `Gamma`,
-quotient/game experiments, and projected chamber barycenters in one offline
-viewer.
+The main research path is **Covers + Walls**:
 
-The app is deliberately conservative about claims. It can show certified source
-data, exact incidence records, numerical projections, and readability drawings,
-but it keeps those categories visibly separate.
+1. Choose a Coxeter system.
+2. Ask an exact backend to find a finite-index torsion-free subgroup `H` and
+   its coset action.
+3. Verify torsion-freeness by testing prime-order torsion from the spherical
+   special subgroups.
+4. Build `\hat X` from the lifted presentation cells.
+5. Compress it to `\bar X`.
+6. Find and coorient the walls of `\bar X`.
+7. Extract the induced homomorphism `H -> Z`.
+8. Inspect lawful cells and the ascending and descending links used in the
+   Morse-theoretic argument.
+
+This follows the setup in Kasia Jankiewicz and Daniel T. Wise,
+[_Incoherent Coxeter Groups_](https://arxiv.org/abs/1503.03102). The viewer can
+also search over wall coorientations to retain many lawful cells. That search is
+an application feature, not a theorem from the paper.
+
+Automatic cover discovery is the intended primary backend path. The current
+source already validates finite actions and carries out the cover,
+compression, wall, lawfulness, and finite-link calculations. The controlled
+desktop job now runs a bounded strategy ladder: exact Sage congruence images,
+matrix and table-of-marks screening, reusable partial modules and their
+Everitt-style diagonal products, then a small GAP low-index fallback. An exact
+reduction can certify a large normal torsion-free kernel without pretending
+that its cover has been built. The browser constructs `\hat X` only when a
+manageable generator action is also present and passes an independent check.
+The fibering step then
+writes a deterministic Reidemeister--Schreier presentation, evaluates the wall
+map on every Schreier generator and relator, normalizes its period gcd, and
+checks every stated PL Morse hypothesis. Manual finite-action import stays
+available as the advanced fallback.
+See
+[Automatic torsion-free cover discovery](docs/torsion-free-cover-discovery.md)
+for the algorithm and the exact status language.
 
 ## What Can I Click First?
 
-Start in **Teaching** mode. Use **Start Here** for one of five entry points:
+For a first pass:
 
-- **Explore a Coxeter example**: open a local Davis view around one chamber.
-- **Find a relation cell**: focus one finite relation polygon.
-- **Understand Y_Gamma**: switch to the one-vertex fundamental-domain model.
-- **Study a quotient/game**: open the JNW cube graph legal-system demo, with
-  the I2(5) quotient/cocycle demo nearby in Research Workflow.
-- **Inspect exactness and data status**: move to Research mode for examples,
-  caveats, and backend status.
+1. Load `I2(5)` and open **Davis** to see its decagonal rank-two cell.
+2. Load **Ideal 3-cube, all m=3 (S4 cover)** for the smallest bundled example
+   that connects certified hyperbolic reflection data to a nontrivial
+   torsion-free cover. Open **Gamma** to see its octahedral finite-relation
+   graph, then compare **hat X** and **bar X**.
+3. Open **Gamma** to read the defining generators and finite relations.
+4. In **Covers + Walls**, press **Find torsion-free cover**. The desktop app
+   runs the bounded automatic strategy ladder; the bundled `I2(5)` action
+   remains ready as a quick example.
+5. Compare **hat X** with **bar X** and inspect the compression fibers.
+6. Open **Walls**, select one wall, and then flip its coorientation.
+7. Open **Lawful cells** to see which polygons have one source and one sink.
+8. Press **Run lawful-first certification**; use **Check full Davis quotient**
+   for the all-cell fallback. Inspect or export the resulting certificate.
 
-The top model switch always means the same thing:
+The **Start Here** panel names these paths directly:
 
-- **Davis complex**: Cayley graph plus Davis cells.
-- **Y_Gamma**: one fundamental-domain model.
-- **Defining graph Gamma**: defining graph of the Coxeter system.
-- **Projection drawing**: chamber barycenters drawn in 3D.
-- **Quotient + Games**: imported/generated quotient complex and game
-  diagnostics.
+- **Explore a Coxeter example**
+- **Find a torsion-free cover**
+- **Find walls in bar X**
+- **Coorient walls**
+- **Inspect exactness and data status**
+
+The **Focus Inspector** answers three questions throughout the app:
+
+- What is selected?
+- Why is it here?
+- Is it exact data, a browser check, or a drawing?
+
+## The Five Models
+
+**Davis** shows the Cayley graph and cells associated to spherical special
+subgroups. Its finite-radius boundary may clip cells.
+
+**hat X** shows the lifted Coxeter presentation complex before compression. Its
+directed generator lifts and lifted 2-cells come from a discovered or imported
+finite action. Calling this data a torsion-free cover requires a complete
+prime-order fixed-point certificate or equivalent subgroup evidence; a
+permutation action by itself does not prove torsion-freeness.
+
+**bar X** shows the compressed even-sided 2-complex. The two lifted generator
+bigons based at opposite ends of an `s_i` orbit collapse with their two
+directed boundary edges to one geometric edge. The `2m_ij` relation lifts in
+one finite-dihedral orbit become one `2m_ij`-gon. Walls and lawful cells are
+computed here.
+
+**Gamma** shows the defining Coxeter graph. The app can include `m = 2` edges
+when a full finite-relation graph is useful. Pairs with `m = inf` are omitted
+because they do not define a finite rank-two relation.
+
+**Projection** applies supplied reflection data to chamber barycenters and
+projects the result to three dimensions. A Klein, Poincare, axes, or PCA view
+is still a projection unless the displayed certificate states a narrower
+verified claim.
+
+The one-vertex complex and state/move legal-system reader from earlier releases
+are not part of the current model switch. The wall-coorientation workflow is
+the general object used by the current source tree.
 
 ## What Is Exact?
 
-Bundled compact 5-cube, Makarov `P0` 5-prism, Emery-Kellerhals `P1 = D P0`
-double, and Makarov `P2 = [5,3,3,3,4]` data are certified for source
-transcription, algebraic dotted values, and exact Gram/signature diagnostics.
-`P1` is still described as a double of the prism, not as a simplicial prism.
-Generated Sage and GAP fixtures carry backend metadata and certification
-summaries. Finite quotient exports can be produced by native Sage or GAP
-subgroup/coset exporters when those tools are available; otherwise the scripts
-fall back to clearly labeled in-repo finite checks.
+The app uses four deliberately different status levels:
 
-The **Focus Inspector** reports whether the selected object is certified,
-exact incidence, a visual proxy, a projection, or uncertified.
+- **Certified source data**: a stored artifact and hashes support a stated
+  transcription, Gram, geometry-interval, or external-checker scope.
+- **Exact incidence**: finite combinatorial data pass the in-repo validators.
+  Examples include signed attaching maps, compression fibers, wall classes,
+  and lawful-cell tests.
+- **Browser diagnostic**: a deterministic computation has passed, but it is
+  not an external theorem certificate. Wall pathology checks and a completed
+  small exact coorientation search normally belong here.
+- **Drawing**: coordinates, spacing, clipping, transparency, and camera
+  choices used to make the same incidence data legible.
+
+A result called **maximum** must come from a completed exhaustive or
+branch-and-bound search with matching bounds. A timed or heuristic search is
+reported as **best found**, together with its lower bound and any available
+upper bound.
 
 ## What Is Only A Drawing?
 
-Shell layouts, chamber-centered local layouts, `Y_Gamma` readability
-embeddings, higher Davis proxy hulls, label leader lanes, **Show only...**
-filters, side-by-side drawing comparison, and PCA projections are drawings. They are
-designed to make incidence and local topology legible; they are not claims of
-exact Euclidean or hyperbolic embedding.
+The app never treats a convenient 3D placement as part of the cell complex.
+Node coordinates, force relaxation, parallel-rail offsets, wall arcs through a
+polygon, transparency, clipping, and camera choices are drawings. The objects
+they refer to can still be exact: a wall arc, for example, connects the exact
+pair of opposite boundary occurrences recorded for that relation cell.
 
-Axis-based Klein/Poincare views draw a scaled reference ball. PCA views hide the
-ball because PCA coordinates are not ball-model coordinates.
+Projection mode is also a drawing. Even when interval certificates support the
+reflection data or bound selected coordinates, the final three-dimensional
+axes or PCA view need not preserve hyperbolic distances, angles, or
+intersections.
 
-For the project-wide vocabulary, see
-[docs/exact-vs-drawing.md](docs/exact-vs-drawing.md) and
-[docs/glossary.md](docs/glossary.md).
+## Theorem Boundaries
+
+The wall workflow does not by itself prove incoherence or a fibering theorem.
+The Jankiewicz--Wise argument uses additional hypotheses, including an
+appropriate finite torsion-free cover, globally coorientable two-sided walls,
+an aspherical affine 2-complex, and nonempty connected ascending and descending
+links. Embeddedness and absence of self-osculation support the paper's random
+orientation estimates; they are not extra gates once one concrete
+coorientation and all of its cells and links are checked directly. Their
+incoherence result adds further group-theoretic and Euler-characteristic input.
+
+The intended virtual algebraic-fibering output is nevertheless concrete: a
+finite-index subgroup `H`, an explicit primitive homomorphism `H -> Z`, checked
+cell-boundary sums, and the relevant Morse links. The app should call this a
+verified algebraic fibration only when the finite-index, torsion-free,
+surjectivity, affine/aspherical, and finitely-generated-kernel hypotheses all
+carry matching evidence.
+
+This matters for the compact hyperbolic 5-dimensional examples. Their
+rank-two compression is useful for finding and coorienting walls, but it is not
+the complex on which the final five-dimensional Morse links are checked. The
+full certificate reconstructs every spherical Coxeter cell of
+`K = H\Sigma`, gives those cells one compatible pulling subdivision, builds an
+exact rational height, and checks both directed links at every quotient vertex
+orbit. Until a complete torsion-free action and every later stage pass, the UI
+reports an incomplete calculation rather than a fibering claim.
+
+There are therefore two independently replayed certification tracks:
+
+- [the lawful-subcomplex-first track](docs/two-track-fibering-certification.md),
+  which checks the actual retained polygonal complex and transfers finite
+  generation through `pi_1(Y) -> H`;
+- [the full Davis-quotient track](docs/full-davis-fibering-certification.md),
+  which constructs an explicit PL Morse model on every Coxeter cell of
+  `K = H\Sigma`.
+
+The first track also records an optional generalized lawful subcomplex: remove
+every unlawful 2-cell and all of its higher cofaces. That rule produces a
+genuine maximal subcomplex, but closure alone does not prove its asphericity or
+extend the Morse map across retained higher cells. Those are separate gates.
+
+The full-Davis note defines the complete cell poset, quotient walls,
+Reidemeister--Schreier generators, gcd normalization, pulling triangulation,
+quotient-periodic tie breakers, full ascending and descending links, and the
+optional collapsibility check. It also states exactly why a passing algebraic
+fibration is not automatically a locally trivial topological bundle.
+
+## Current Research Status And Bring Your Own Action
+
+The end-to-end command-line path now accepts a complete transitive right coset
+action for any bundled Coxeter system. The input is the action, not merely a
+list of subgroup generators:
+
+```json
+{
+  "id": "i2-5-regular-action",
+  "index": 10,
+  "generatorImages": [
+    [1, 0, 3, 2, 5, 4, 7, 6, 9, 8],
+    [9, 2, 1, 4, 3, 6, 5, 8, 7, 0]
+  ]
+}
+```
+
+Each generator row must contain exactly `index` zero-based images; the number
+and order of rows must match the bundled Coxeter generators. Run:
+
+```bash
+corepack pnpm cover:fiber:user-action -- \
+  --example I2_5 \
+  --action my-action.json \
+  --output promotion.json
+```
+
+The command distrusts any torsion-free label, rechecks the Coxeter relations
+and every spherical-special-subgroup orbit, constructs the quotient, and runs
+the bounded lawful-first/full-Davis wall-character search. A passing result is
+a replayed **virtual algebraic fibration**. A failed or incomplete result is
+only about the recorded search family and bounds. For an infinite compact
+Coxeter group, subgroup words alone are not yet converted to a finite coset
+action by the generic exporters.
+
+This is not yet a full integral `H^1` or smooth-fibering orchestrator. The
+scalable generic integral `H^1` backend can prepare and certify large action
+matrices, but its emitted kernel witness is not wired into the all-character
+Morse/link search. The materialized path searches wall characters. Smooth
+fibering is not certified: the repository has no source-bound
+manifold/PL/smoothing verifier, and caller-supplied IMM-style booleans are
+ignored.
+
+Current theorem-facing results are:
+
+- the JNW rank-eight control passes virtual algebraic fibering but is a
+  two-dimensional Davis complex, not a compact hyperbolic 5-manifold;
+- the imported compact-cube action has `H^1 = Z^19`, but its recorded Track-B
+  height complex obstructs every nonzero integral character and its bounded
+  rescue found no passing original-vertex link system;
+- the P0/P1 and Tumarkin compact portfolio has certified source plans but no
+  materialized torsion-free action, hence no fibering result.
+
+See [the research portfolio](docs/fibering-research-portfolio.md),
+[the generic external job contract](docs/generic-h1-external-job.md), and
+[the scalable integral-H1 protocol](docs/scalable-generic-integral-h1.md).
 
 ## How Do I Run Web/Desktop?
 
-Use the web app when you want the quickest local run from source. Use the
-desktop app when you want native windows, local session files, menus, and
-packaged release artifacts.
+### Web App From Source
 
-## Run The App From Source
-
-These commands are for someone who has just cloned or downloaded the repository
-from GitHub. They require Node.js with Corepack enabled; the repository pins
-`pnpm@11.3.0` in `package.json`.
+Install Node.js with Corepack enabled, then run:
 
 ```bash
 corepack enable
@@ -96,256 +266,90 @@ corepack pnpm install
 corepack pnpm dev
 ```
 
-If you already have a compatible `pnpm` installed globally, `pnpm dev` is fine.
-The `corepack pnpm ...` form is the safest one for a fresh checkout.
+Vite prints a local address, usually `http://127.0.0.1:5173/`. After the
+dependencies are installed, ordinary use of the viewer is offline. Sage, GAP,
+KBMAG, and CoxIter are optional external research tools, not browser runtime
+dependencies.
 
-Vite prints a local URL, usually `http://127.0.0.1:5173/`. Open that URL in a
-browser. The viewer is offline after dependencies are installed; bundled
-examples and ordinary JSON imports do not need Sage, GAP, KBMAG, or CoxIter.
-
-For a production-style web build:
+For a production-style build:
 
 ```bash
 corepack pnpm build
 corepack pnpm preview
 ```
 
-`build` writes static files to `dist/`. The `preview` command serves that build
-locally so you can check what a web release will look like.
+The static build is written to `dist/`.
 
-## Run The Desktop App From Source
+### Desktop App
 
-The desktop app is a Tauri v2 wrapper around the same web viewer. It is useful
-for native windows, local session files, desktop menus, and packaging tests; it
-does not change the mathematical model.
-
-Desktop development needs the web dependencies above plus Rust and the normal
-Tauri platform prerequisites for your operating system. On Windows, WebView2 is
-also required; most current Windows installations already include it.
+The desktop application is a Tauri v2 wrapper around the same viewer. Desktop
+development also requires Rust and the Tauri prerequisites for your operating
+system.
 
 ```bash
 corepack pnpm desktop:dev
 ```
 
-That starts the Vite dev server and opens the Tauri window.
-
-To make an unsigned local desktop bundle:
+Build an unsigned local bundle with:
 
 ```bash
 corepack pnpm desktop:build
 ```
 
-Tauri writes platform-specific output under `src-tauri/target/release/`; bundled
-installers and app packages live under `src-tauri/target/release/bundle/`.
+Platform packages are written below `src-tauri/target/release/bundle/`.
 
-## One-Click Desktop Download
+The [v0.2.0 research preview](https://github.com/hgfjh/CoxeterViewer5D/releases/tag/v0.2.0)
+contains the previously published web and desktop artifacts. Those binaries
+may predate the cover-compression rewrite described by the current source tree.
+Windows artifacts are unsigned and macOS artifacts are not notarized, so the
+operating system may show a first-launch warning.
 
-Yes. The research-preview releases include desktop artifacts on GitHub:
+## Bundled Data And Certificates
 
-- [CoxeterViewer5D v0.2.0 research preview](https://github.com/hgfjh/CoxeterViewer5D/releases/tag/v0.2.0)
-- Windows x64: installer-style `.exe` and MSI `.msi` artifacts when the release
-  workflow completes.
-- macOS: `.dmg` and `.app.tar.gz` artifacts for Apple Silicon and Intel Macs
-  when the release workflow completes.
-- Linux x64: `.AppImage`, `.deb`, and `.rpm` artifacts when the release
-  workflow completes.
-- `CoxeterViewer5D-v0.2.0-web.zip`: static web build for people who want to
-  host or inspect the built app.
-- A sample `.coxeter-session.json` file for trying the saved-session workflow.
+The repository includes small finite examples, generated Sage/GAP fixtures,
+the certified regular ideal hyperbolic 3-cube, certified compact 5-cube and
+compact 5-prism-family data, and the compact eight-facet catalogue transcribed
+from Tumarkin's classification. Each certificate has a limited scope. A passed
+Gram/signature check, for example, does not certify the browser's 3D placement.
 
-The older [v0.1.0 public alpha](https://github.com/hgfjh/CoxeterViewer5D/releases/tag/v0.1.0)
-remains available as a historical snapshot. The rest of this README describes
-the current source tree and current research-preview behavior.
+The ideal 3-cube is the golden cover example. Its six facet generators are the
+transpositions `t12`, `t13`, `t14`, `t23`, `t24`, and `t34`. Two generators
+have `m = 3` when the transpositions share a letter, so Gamma is an octahedron;
+the three disjoint pairs have `m = inf`. Sending `tij` to `(ij)` gives a
+surjection onto `S4`. The bundled regular action has 24 points, and the app
+checks every spherical `A1` and `I2(3)` restriction before calling its kernel
+torsion-free. The cube is finite-volume and ideal, not compact: each vertex
+link is the Euclidean triangle `(3,3,3)`.
 
-The desktop artifacts are unsigned, and macOS artifacts are not notarized yet.
-Windows and macOS may show a warning the first time you launch them; that is
-expected for this research preview. The app does not need network access after
-installation, and the bundled examples work without Sage, GAP, KBMAG, or
-CoxIter. Those external tools are only needed for regenerating or independently
-checking some research artifacts.
+Open **Choose Example -> Certified eight-facet catalogue** to reach all 16
+eight-facet cases without expanding the first-use interface.
 
-## How To Read The Viewer
+Finite cover construction needs more than a Coxeter matrix, but users should
+not normally have to write the missing action by hand. The primary backend
+enumerates prime-order torsion in spherical special subgroups, constructs exact
+congruence images, and rejects impossible action degrees from matrix-group and
+fixed-point-mark data before it constructs a coset action. Compatible partial
+actions are cached and may be combined on diagonal orbits. Generic GAP
+low-index enumeration remains a bounded fallback. A selected action receives a
+second, independent spherical-action certificate in the app.
 
-The app is organized around a simple routine:
+The status panel separates **torsion-free finite-index kernel**, **exact index
+certified**, and **usable finite cover materialized**. Exact matrices over a
+finite field plus the complete spherical-injectivity checks can establish the
+first before a structural computation determines the image order. The wall and
+fibering pipeline requires the third.
 
-1. Choose an example.
-2. Choose a model: **Davis complex**, **Y_Gamma**, **Defining graph Gamma**,
-   **Projection drawing**, or **Quotient + Games**.
-3. Choose a focus, then read the **Focus Inspector**.
+The browser accepts the generated artifact or a complete manually supplied
+generator action on a finite vertex set. Manual import is an advanced
+compatibility path. When evidence is absent, the app may validate and display
+the incidence, but it does not call the action torsion-free.
 
-The inspector is the safest place to start. It always answers three questions:
+External tools follow the same rule. A missing tool produces a skipped or
+blocked artifact, never a silent downgrade to a stronger in-repo claim.
 
-- **What is selected?**
-- **Why is it here?**
-- **Exact or drawing?**
+## Validation
 
-For the JNW workflow, keep the layers separate:
-**Davis complex Sigma -> JNW commutator cover X_ab -> four-state move-kernel
-cover X_mu -> Y_Gamma**. The app's compact reader shows `X_mu`, a four-sheeted
-cover of the base fundamental-domain model `Y_Gamma`; it does not relabel the
-256-vertex commutator cover from JNW21 as a four-state complex. Ascending and
-descending links are computed at a selected cover vertex from the state subset.
-
-Use **Start Here** in Teaching mode for one-click tours. Use **Research** mode
-when you want imports, backend status, certificates, notebooks, detailed cell
-budgets, quotient builders, and raw topology panels. See
-[docs/walkthroughs.md](docs/walkthroughs.md) for scripts that explain what to
-inspect and what each view does not claim.
-
-## Guided Demo Path
-
-For a first research-preview pass, use these five demos in order:
-
-1. **Find a hexagon**: load `A2`, start **Find a hexagon**, and inspect the
-   filled `m = 3` rank-two Davis cell.
-2. **Inspect A3 rank-three cell**: load `A3`, open the rank-three
-   `Y_Gamma(A3)` focus, and show the square/hexagon incidence as a 3D object.
-3. **Inspect `Y_Gamma` for P2**: load **Compact 5-prism P2 Makarov**, open the
-   3D `Y_Gamma` model, and use one-relation or around-generator focus before
-   showing the full two-skeleton.
-4. **Run `I2(5)` quotient/game**: open the Research Workflow demo, inspect the
-   **Generator-Uniform Cochain** with `s0 = +1, s1 = -1`, and show the zero
-   boundary-sum diagnostic on the decagon.
-5. **Play the JNW cube game**: use **Start Here** -> **Study a quotient/game**
-   or **Load JNW cube game** in Research Workflow. The defining graph is the
-   1-skeleton of a 3-cube, and the preset uses the bipartition move system from
-   Jankiewicz-Norin-Wise.
-
-Presenter scripts live in [docs/walkthroughs.md](docs/walkthroughs.md). Capture
-and caption guidance lives in [docs/demo-media.md](docs/demo-media.md).
-The checked-in stills live in [docs/screenshots](docs/screenshots) and can be
-regenerated with `corepack pnpm demo:screenshots`.
-
-| Demo                          | Reference Capture                                                                                                                                                |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Find a hexagon                | ![A rank-two Davis hexagon for the A2 m=3 relation, shown as a filled six-sided cell with boundary context.](docs/screenshots/hexagon-a2-rank-two-m3.png)        |
-| Inspect an A3 rank-three cell | ![A3 Y_Gamma rank-three focus with square and hexagon face families visible as one 3D incidence object.](docs/screenshots/a3-rank-three-square-hexagon.png)      |
-| Inspect `Y_Gamma` for P2      | ![Y_Gamma for the certified P2 compact 5-prism, focused on an m=5 relation sheet attached to the generator spine.](docs/screenshots/y-gamma-p2-m5-relation.png)  |
-| Run `I2(5)` quotient/game     | ![I2(5) quotient/game workflow with the generator-uniform cochain and decagon boundary-sum diagnostic visible.](docs/screenshots/i2-5-quotient-game-cocycle.png) |
-| Play the JNW cube game        | Use **Study a quotient/game** to open the 3-cube defining graph, the four-state move-kernel cover of `Y_Gamma`, and exact state-link diagnostics.                |
-
-## Certification Status
-
-Bundled compact 5-cube, Makarov `P0` 5-prism, Emery-Kellerhals `P1 = D P0`
-double, and Makarov `P2 = [5,3,3,3,4]` data are certified for source
-transcription, algebraic dotted values, and exact Gram/signature diagnostics.
-`P1` is still described as a double of the prism, not as a simplicial prism.
-Generated Sage and GAP fixtures carry backend metadata and certification
-summaries. Finite quotient exports can now be produced by native
-Sage or GAP subgroup/coset exporters when those tools are available; otherwise
-the scripts fall back to a clearly labeled in-repo finite checker. Quotient
-imports are validated for generator actions, involutions, relation closure, and
-rank-two cells when the relevant data is supplied.
-
-The example gallery also includes a searchable catalogue of all 16 compact 5D
-eight-facet cases in Tumarkin's Table 4.10: 15 in the `G11411` family and the
-unique `G12221` case. The diagrams are transcribed from the arXiv EPS source,
-generated as loadable bundled examples, and certified for source transcription,
-exact algebraic dotted weights, and normal-Gram rank/signature diagnostics. They
-live in the catalogue instead of the main gallery so the first screen stays
-readable.
-
-## How Do I Study `Y_Gamma`?
-
-Click **Y_Gamma** in the top view switch, or use the guided
-`Y_Gamma 2-skeleton` mode. The viewer shows one base vertex, oriented generator
-arrows, and rank-two relation faces. The `Y_Gamma Reader` offers narrated
-presets to read one relation, read one rank-three cell, show square or hexagon
-families, show cells around one generator, and show all relation faces. The 2D nerve/local-link
-schematic is available as a separate topology view; it explains spherical
-subsets but is not `Y_Gamma` itself.
-
-Dense examples are meant to be read with focus tools, not by staring at every
-cell at once. Use **Show only...** for generator families, relation orders, ranks,
-edge stars, or relation stars; use **Extract relation star** to isolate one
-relation with its incident higher cells; use **Separate cells for reading** and
-**Compare shared vs separated drawing** to switch between the coherent
-shared-spine picture and a more expanded readability drawing. Edge labels name
-generators, and short leader ticks point labels back to their semantic edges.
-
-Use the top view switch to move among **Davis complex**, **Y_Gamma**, and
-**Gamma**. Gamma is the defining Coxeter graph. This viewer deliberately draws
-finite rank-two relation edges, including `m = 2` commuting pairs that standard
-Coxeter diagrams usually omit. Pairs with `m = inf` are absent because they do
-not give finite rank-two relation cells, and every drawn edge is labeled by its
-Coxeter matrix entry. The Gamma inspector also lists the connected components
-of each monochromatic subgraph `Gamma_m`, including isolated singleton
-generators, so relation-order partitions can be read without tracing the whole
-diagram by eye.
-
-## How Do I Run A Quotient/Game Experiment?
-
-Use the **Research Workflow** panel. It is a five-step path:
-
-1. **Source System**: start from a Coxeter system. The quotient/cocycle demo
-   uses `I2(5)`. The JNW legal-system demo uses the right-angled Coxeter group
-   whose defining graph is the 1-skeleton of a 3-cube.
-2. **Subgroup/Cosets**: record subgroup generator words. The demo uses the
-   identity subgroup, so all ten cosets of `I2(5)` are visible.
-3. **Quotient Complex**: load or import the quotient artifact with Schreier
-   action, permutation data, and rank-two quotient cells.
-4. **Cocycle/Game**: choose either a **Generator-Uniform Cochain** or a
-   **JNW Legal-System Game**. The I2(5) demo uses the cochain
-   `s0 = +1, s1 = -1`, so the decagon boundary sum is zero while ascending and
-   descending edges are both visible. The JNW cube demo preloads the JNW21 cube
-   bipartition/color-class move system and the paper's displayed initial state
-   `{v000, v010, v110, v111}`, so the diagnostics open on a right-angled legal
-   orbit. The paper's commutator cover `X_ab` has 256 vertices for this
-   eight-generator group. The compact reader instead shows the explicit
-   move-kernel factor `X_mu`, whose four vertices are named `S_1`, ..., `S_4`.
-   The **Choose state** control changes the active `S_i`; **Show four-state
-   cover** opens the cover reader. A generator rail labeled `g` runs from `S_i`
-   to `S_i xor m_g`. The cube demo has four state vertices, sixteen geometric
-   generator rails, and twelve square relation cells. In serialized quotient
-   data each rail has two inverse-paired directed records; the reader draws the
-   underlying geometric rail once. **Exact cover 1-skeleton** shows only the
-   state vertices and rails. **Four-chart cover drawing** subdivides each rail
-   once and each square into four colored sectors so the four lifts of
-   `Y_Gamma` can be followed through their shared gluing data. Use **Outlines
-   only** or **Glass faces** when the 1-skeleton should dominate.
-   **Choose relation** selects one alternating rank-two boundary, **Next
-   relation** advances through the list, and **Focus selected relation** ghosts
-   unrelated quotient edges; these controls do not add a separate central
-   relation face. **Mirror selected state on Gamma** highlights the same subset
-   directly on the defining graph. For non-right-angled systems, the same
-   state/move panel is labeled as an experimental non-JNW generalization.
-5. **Local Topology + Export**: inspect topology lenses and export a
-   reproducible experiment bundle.
-
-The topology lenses make quotient/game mode primary: generator star,
-rank-three spherical cell, cells incident to an edge, **Ascending link at
-selected state**, **Descending link at selected state**, and full local link.
-For the JNW cube state `S`, these are the induced flag subcomplexes `L[S]` and
-`L[V - S]`, where `L = Flag(Gamma)`. The faithful diagonal map has no level
-directions; level links belong to the separate generalized cochain workflow.
-`Y_Gamma` remains the fundamental-domain source object. The workflow readout reports
-the visible vertices, edges, cells, local-link F2 homology, and flag-link status
-so the topology is visible before opening the full inspector. Importing
-quotient JSON still works, and the old raw builder remains available under
-advanced controls, but the intended research path now lives in the workflow
-panel.
-
-The game panel deliberately separates two models. **Generator-Uniform
-Cochain** is a simple integer 1-cochain editor: one integer per generator,
-propagated to every edge with that label. **JNW Legal-System Game** follows the
-Jankiewicz-Norin-Wise state/move convention: a state is a subset of defining
-graph vertices, each move acts by symmetric difference, and an edge direction
-depends on the current state. Only right-angled systems with passing move and
-legal-orbit checks are labeled JNW faithful; non-right-angled examples remain
-exploratory diagnostics.
-
-The bundled **JNW cube graph** example is the clean playground for this second
-model. Its generators are the eight binary vertices of a 3-cube, commuting
-pairs are exactly cube edges, and the **Bipartite/color moves** preset is the
-JNW legal system described in the paper.
-
-The **Notebook/export** lane saves named runs with notes, warnings, scene stats,
-selected objects, topology diagnostics, data hashes, and optional screenshots.
-Bundles can be exported, imported, duplicated, and compared.
-
-## Validation Commands
-
-Use these from the repository root before publishing changes:
+Run the ordinary release checks from the repository root:
 
 ```bash
 corepack pnpm format
@@ -353,75 +357,58 @@ corepack pnpm lint
 corepack pnpm test
 corepack pnpm build
 corepack pnpm exec playwright test
+corepack pnpm bench:timed:check
+corepack pnpm workflow:validate
 corepack pnpm validate:research-grade
 ```
 
-Useful research scripts:
+Useful research checks include:
 
 ```bash
-corepack pnpm exact:sage:i2-5
-corepack pnpm exact:gap:i2-5
 corepack pnpm compare:backends
-corepack pnpm certify:geometry:intervals:compact-5-cube
-corepack pnpm certify:geometry:intervals:compact-5-prism
-corepack pnpm quotient:sage:export
-corepack pnpm quotient:gap:export
-corepack pnpm quotient:sage:export:i2-5-demo
-corepack pnpm quotient:gap:export:i2-5-demo
-corepack pnpm quotient:sage:export:a3-demo
-corepack pnpm quotient:gap:export:a3-demo
 corepack pnpm compare:quotient-backends
-corepack pnpm workflow:validate
+corepack pnpm validate:virtual-fibering
 corepack pnpm registry:validate
 corepack pnpm session:validate
-corepack pnpm bench:timed:machine
-corepack pnpm demo:record
-corepack pnpm release:web
-corepack pnpm release:desktop
-corepack pnpm certify:quotient:torsion-free
-corepack pnpm notebook:validate path/to/bundle.json
+corepack pnpm certify:compact-5-cube
+corepack pnpm certify:compact-5-prism
+corepack pnpm check:independent
 ```
 
-External Sage, GAP/KBMAG, and CoxIter integrations are command-line tooling, not
-browser dependencies. If a tool is unavailable, scripts should emit a clear
-skipped or blocked status rather than making a weaker claim.
+Commands that invoke Sage, GAP, KBMAG, or CoxIter require those tools to be
+installed or available through the documented container/WSL path.
 
-## Native Desktop Status
+## Documentation
 
-The optional Tauri shell wraps the same viewer and validation pipeline as the
-web app. It adds narrow `.coxeter-session.json` file access, not a separate math
-runtime. WASD camera nudging, orbit controls, focus/reset actions, labels,
-rank-two cell toggles, and mode switches should behave the same in browser and
-desktop builds. On desktop-size windows the viewer stays fixed while the side
-rails scroll; light/dark mode and viewer-only mode are available from the top
-strip for presentation and focused inspection.
+- [Mathematical conventions](docs/math.md): `X`, `\hat X`, `\bar X`, walls,
+  lawful cells, links, and theorem boundaries.
+- [Automatic torsion-free cover discovery](docs/torsion-free-cover-discovery.md):
+  spherical torsion witnesses, bounded GAP search, exact Sage congruence
+  kernels, Everitt-style composite actions, and the route from a subgroup to
+  `H -> Z`.
+- [Coordinated compact-cube cover search](docs/coordinated-cover-search.md):
+  the finite-target, composite-module, and geometry-informed search tracks,
+  including the exact reason every cover degree is divisible by `5,760`.
+- [Virtual algebraic fibering certificate](docs/virtual-algebraic-fibering.md):
+  Schreier generators, wall periods, primitivity, lawful cells, and the exact
+  PL Morse checklist.
+- [Data format](docs/data-format.md): import contracts, signed attaching maps,
+  compression certificates, wall results, and export status.
+- [Viewer design](docs/viewer-design.md): model switch, Covers + Walls workflow,
+  drawing rules, performance, and interaction design.
+- [Walkthroughs](docs/walkthroughs.md): short guided readings of Davis cells,
+  cover compression, walls, lawful cells, Gamma, and projections.
+- [References](docs/references.md): sources and the exact claims each source
+  supports.
+- [Tooling](docs/tooling.md): external backends, containers, desktop builds,
+  and release commands.
 
-`corepack pnpm release:desktop` reports bundle readiness, code-signing status, and
-updater-signing status as deterministic JSON. Missing signing or updater
-environment variables are reported as `skipped` and do not fail unsigned local
-builds. Public auto-updating desktop releases still require maintainer-owned
-platform signing credentials, a Tauri updater signing key, and an update
-endpoint.
+## License And Citation
 
-For heavy reproducibility runs, use `.researchcontainer/`. The normal
-`.devcontainer/` stays light for app work; the research container adds
-SageMath, GAP/KBMAG, and a stable CoxIter executable path for artifact checks.
+Unless otherwise noted, CoxeterViewer5D source code, scripts, bundled JSON
+examples, and documentation are released under the Apache License 2.0. Source
+references cited in the data remain the property of their authors and
+publishers; this project licenses only its own transcriptions, code, and
+generated artifacts.
 
-## Documentation Map
-
-- [docs/math.md](docs/math.md): Coxeter, Davis, quotient, game, and projection conventions.
-- [docs/data-format.md](docs/data-format.md): JSON schemas and import/export behavior.
-- [docs/viewer-design.md](docs/viewer-design.md): rendering, interaction, performance, and UI decisions.
-- [docs/performance-audit.md](docs/performance-audit.md): measured bottlenecks, completed optimizations, and thresholds for future renderer work.
-- [docs/ui-controls.md](docs/ui-controls.md): plain-language map of the main controls and what they change.
-- [docs/tooling.md](docs/tooling.md): exact exporter contracts, scripts, runtime checks, and CI policy.
-- [docs/desktop-ux.md](docs/desktop-ux.md): native wrapper UX, workspace layout, diagnostics, signing, and updater status.
-- [docs/walkthroughs.md](docs/walkthroughs.md): guided readings for hexagon, rank-three, Gamma, `Y_Gamma`, and quotient/game views.
-- [docs/jnw-state-quotient.md](docs/jnw-state-quotient.md): the commutator cover, the four-state move-kernel cover, and how both sit over `Y_Gamma`.
-- [docs/ui-map.md](docs/ui-map.md): one annotated map of the main UI regions.
-- [docs/known-limits.md](docs/known-limits.md): density, projection, non-planarity, and external-tool caveats.
-- [docs/exact-vs-drawing.md](docs/exact-vs-drawing.md): how to separate exact incidence, numerical geometry, and readable drawings.
-- [docs/glossary.md](docs/glossary.md): project vocabulary for Coxeter, Davis, geometry, quotient, and game terms.
-- [docs/demo-media.md](docs/demo-media.md): screenshot, caption, sidecar, and demo-media guidance.
-- [docs/releases/](docs/releases/): release-note templates and packaging status notes.
-- [docs/references.md](docs/references.md): citations and what each source supports.
+Academic citation metadata is in [CITATION.cff](CITATION.cff).

@@ -1,0 +1,212 @@
+{
+  "artifactType": "finite-image-residue-module-portfolio",
+  "claims": [
+    "exact persisted finite-image modules",
+    "bounded packed diagonal-orbit search"
+  ],
+  "compositeSearch": {
+    "allBoundedDiagonalOrbits": true,
+    "allBoundedTwoFactorDoubleCosets": true,
+    "returnCode": 2,
+    "solverArtifactSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "solverObject": "objects/sha256/00/0000000000000000000000000000000000000000000000000000000000000000.json",
+    "summary": {
+      "candidate": null,
+      "diagnostics": {
+        "diagonal_orbits_enumerated": 0,
+        "double_coset_decompositions": 0
+      },
+      "problemSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "resultSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "schemaVersion": 2,
+      "searchComplete": false,
+      "solver": {
+        "id": "packed-composite-permutation-module-solver",
+        "version": "2.0.0"
+      },
+      "executionBinding": {
+        "runKey": "0000000000000000000000000000000000000000000000000000000000000000",
+        "phase": "search",
+        "problemArtifactSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "problemPath": "/workspace/solver/problem-0000.json",
+        "resultPath": "/workspace/solver/search-result-0000.json",
+        "materializedActionPath": null,
+        "solver": {
+          "id": "packed-composite-permutation-module-solver",
+          "version": "2.0.0",
+          "sourceSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "bounds": {
+          "maxBytes": 2147483648,
+          "maxMappedBytes": 34359738368,
+          "maxCombinations": 250000,
+          "maxFactors": 8,
+          "maxDegree": 2000000,
+          "maxCartesianPoints": 16000000,
+          "checkpointInterval": 250
+        },
+        "terminalStatus": "incomplete",
+        "searchComplete": false,
+        "hasCandidate": false,
+        "expectedReturnCode": 2
+      },
+      "status": "incomplete"
+    }
+  },
+  "inputSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "fullDavisPromotion": null,
+  "materializedAction": null,
+  "materializationRequest": null,
+  "modulePortfolio": {
+    "cataloguePath": "module-store/catalogue.json",
+    "catalogueSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "complete": false,
+    "componentCatalogueSha256": [],
+    "degreeCompatibilityObstructions": [
+      {
+        "candidateId": "congruence:p3",
+        "characteristic": 3,
+        "claims": [
+          "no useful characteristic-3 transitive factor in the current target range"
+        ],
+        "complete": true,
+        "inputSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "kind": "complete-recognized-index-and-factor-obstruction",
+        "matrixSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "nonClaims": [
+          "no characteristic-3 factor beyond the recorded range",
+          "global nonexistence of a torsion-free cover"
+        ],
+        "obstructionSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "partialModuleDegreeScreen": {
+          "compatibleDegrees": [],
+          "complete": true,
+          "naturalOrbitDegrees": [9801]
+        },
+        "recognitionActionSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "targetRange": {
+          "lowerBoundDivisor": 5760,
+          "maximumDegree": 576000,
+          "targetCount": 100,
+          "targetsSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "toolchainManifestSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "witnessSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "moduleCount": 1,
+    "modules": [
+      {
+        "completeness": {
+          "componentCatalogueComplete": false,
+          "moduleChecksComplete": true,
+          "subgroupSearchComplete": false,
+          "witnessCatalogueComplete": true
+        },
+        "degree": 120,
+        "doubleCosetMetadata": null,
+        "exactChecks": {
+          "coxeterRelations": true,
+          "fixedPointCoverage": true,
+          "transitive": true
+        },
+        "exactWitnessCoverage": {
+          "bitsetHex": "01",
+          "coveredCount": 1,
+          "coveredWitnessIds": ["witness-0"],
+          "encoding": "lsb0-hex",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "witnessCount": 8
+        },
+        "finiteImageId": "congruence:example",
+        "finiteImageSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "generatorPermutationHashes": {
+          "aggregateSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "perGenerator": []
+        },
+        "id": "fimod-example",
+        "moduleSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "origin": {
+          "kind": "exact-coset-action"
+        },
+        "recognitionStatus": "recognized-and-verified",
+        "sourceResidue": {
+          "candidateId": "congruence:example",
+          "rationalPrime": 3,
+          "residueDegree": 2,
+          "residueFieldOrder": 9,
+          "sourceHash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "sourceKind": "prime-ideal-residue",
+          "status": "accepted"
+        },
+        "sphericalChecks": [],
+        "stabilizerMetadata": null,
+        "status": "partial",
+        "subgroupFingerprint": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "reference": {
+      "matrixSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sourceGeneratorCount": 10,
+      "sourceSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "witnessCount": 219,
+      "witnessSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "nonClaims": [
+    "complete subgroup classification outside each component scope",
+    "materialized torsion-free cover",
+    "minimal index",
+    "Davis quotient",
+    "virtual algebraic fibering"
+  ],
+  "orchestratorVersion": "1.3.0",
+  "portfolioSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "promotionGate": {
+    "completeRowsIndependentlyVerified": false,
+    "fiberingPipelineInvoked": false,
+    "materializationInvokedOnlyForWitnessFreeSurvivor": true,
+    "materializationRequestedOnlyForWitnessFreeSurvivor": true,
+    "sphericalFreenessPassed": false,
+    "virtualFiberingCertified": false
+  },
+  "resourcePolicy": {
+    "heavyRecognitionWorkers": 1,
+    "lightWorkers": 4,
+    "maxActionBytesPerWorker": 536870912,
+    "maxObjectBytes": 8589934592,
+    "moduleCacheBytes": 4294967296,
+    "processGroupCancellation": true,
+    "referencedObjectBytes": 0
+  },
+  "runKey": "0000000000000000000000000000000000000000000000000000000000000000",
+  "schemaVersion": 1,
+  "scope": {
+    "primeIdealPolicy": "all eligible prime ideals and extension residue fields emitted by the existing Sage backend",
+    "mod3StructuralCertificate": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "status": "available"
+    },
+    "requiredMod2ModuleSeed": {
+      "characteristic": 2,
+      "degreeLedgerAcceptedAsModuleSeed": false,
+      "generatedByPortfolio": true
+    },
+    "rationalPrimes": [3, 5, 7, 11],
+    "seedArtifactCount": 0
+  },
+  "status": "incomplete-no-survivor",
+  "workerPortfolioCompleteness": {
+    "complete": false,
+    "requiredCharacteristics": [2, 3, 5, 7, 11],
+    "characteristics": [
+      {
+        "characteristic": 2,
+        "complete": false,
+        "artifactCount": 1,
+        "reasons": ["bounded residue search is incomplete"]
+      }
+    ]
+  },
+  "workerArtifacts": []
+}

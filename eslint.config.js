@@ -11,6 +11,8 @@ export default tseslint.config(
       "node_modules",
       "playwright-report",
       "test-results",
+      ".tmp",
+      ".h1-jobs",
       "src-tauri/gen",
       "src-tauri/target",
     ],

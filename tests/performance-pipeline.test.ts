@@ -342,6 +342,36 @@ describe("performance data-pipeline helpers", () => {
       appearanceParts: ["selected:e"],
       labelParts: ["labels:on"],
     });
+    const foldedCellInterior = buildSceneRevisionSet({
+      nodes: [
+        { id: "e", length: 0, position: [0, 0, 0], label: "e" },
+        { id: "s0", length: 1, position: [1, 0, 0], label: "s0" },
+      ],
+      edges: [
+        {
+          id: "e--0--s0",
+          source: "e",
+          target: "s0",
+          generator: 0,
+          compactLabel: "s0",
+        },
+      ],
+      cells: [
+        {
+          id: "c:0-1",
+          generatorPair: [0, 1],
+          boundaryNodeIds: ["e", "s0"],
+          drawingInteriorPoint: [0.5, 0, 1],
+          drawingInteriorRing: [
+            [0.25, 0, 0.75],
+            [0.75, 0, 0.75],
+          ],
+        },
+      ],
+      cellGeometryParts: ["separation:50"],
+      appearanceParts: ["selected:e"],
+      labelParts: ["labels:on"],
+    });
     const activePairChanged = buildSceneRevisionSet({
       nodes: [
         { id: "e", length: 0, position: [0, 0, 0], label: "e" },
@@ -445,6 +475,10 @@ describe("performance data-pipeline helpers", () => {
     expect(relabeled.labelVersion).not.toBe(base.labelVersion);
     expect(separated.topologyVersion).toBe(base.topologyVersion);
     expect(separated.cellGeometryVersion).not.toBe(base.cellGeometryVersion);
+    expect(foldedCellInterior.topologyVersion).toBe(base.topologyVersion);
+    expect(foldedCellInterior.cellGeometryVersion).not.toBe(
+      base.cellGeometryVersion,
+    );
     expect(activePairChanged.cellGeometryVersion).not.toBe(
       base.cellGeometryVersion,
     );

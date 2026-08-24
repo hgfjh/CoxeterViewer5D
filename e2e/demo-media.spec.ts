@@ -4,17 +4,18 @@ import { expect, type Page, test } from "@playwright/test";
 
 const screenshotDir = "docs/screenshots";
 
-async function waitForRenderedScene(page: Page): Promise<void> {
+async function openApp(page: Page): Promise<void> {
+  await page.goto("/");
+  await expect(
+    page.getByTestId("scene-canvas").locator("canvas"),
+  ).toBeVisible();
   await expect
-    .poll(async () =>
+    .poll(() =>
       page.evaluate(
         () =>
           (
             window as Window & {
-              __coxeterSceneStats?: {
-                renderCount: number;
-                renderedNodes: number;
-              };
+              __coxeterSceneStats?: { renderCount: number };
             }
           ).__coxeterSceneStats?.renderCount ?? 0,
       ),
@@ -22,19 +23,12 @@ async function waitForRenderedScene(page: Page): Promise<void> {
     .toBeGreaterThan(0);
 }
 
-async function waitForCells(page: Page): Promise<void> {
-  await expect
-    .poll(async () =>
-      page.evaluate(
-        () =>
-          (
-            window as Window & {
-              __coxeterSceneStats?: { renderedCells: number };
-            }
-          ).__coxeterSceneStats?.renderedCells ?? 0,
-      ),
-    )
-    .toBeGreaterThan(0);
+async function chooseModel(page: Page, name: string): Promise<void> {
+  const button = page
+    .getByRole("group", { name: "Mathematical model" })
+    .getByRole("button", { name, exact: true });
+  await button.click();
+  await expect(button).toHaveAttribute("aria-pressed", "true");
 }
 
 async function capture(page: Page, path: string): Promise<void> {
@@ -42,97 +36,57 @@ async function capture(page: Page, path: string): Promise<void> {
   await page.screenshot({ path, animations: "disabled" });
 }
 
-async function switchToResearchMode(page: Page): Promise<void> {
-  await page
-    .getByRole("group", { name: /interface mode/i })
-    .getByRole("button", { name: /research/i })
-    .click();
-}
-
-async function switchModel(page: Page, model: RegExp): Promise<void> {
-  await page
-    .getByRole("group", { name: /choose mathematical view/i })
-    .first()
-    .getByRole("button", { name: model })
-    .click();
-}
-
-test.describe("public alpha demo screenshots", () => {
+test.describe("cover, compression, and wall workflow media", () => {
   test.use({ viewport: { width: 1440, height: 920 } });
 
-  test("records the A2 hexagon relation demo", async ({ page }) => {
-    await page.goto("/");
-    await switchToResearchMode(page);
-    await page.getByLabel(/example/i).selectOption("A2");
-    await page
-      .getByRole("group", { name: /view presets/i })
-      .getByRole("button", { name: /rank-two cells/i })
-      .click();
-    await page
-      .getByLabel(/coxeter pair matrix/i)
-      .getByRole("button", { name: /s0-s1/i })
-      .click();
-
-    await expect(page.getByText(/pair s0-s1 has m=3/i)).toBeVisible();
-    await waitForRenderedScene(page);
-    await waitForCells(page);
-    await capture(page, `${screenshotDir}/hexagon-a2-rank-two-m3.png`);
+  test("records the finite presentation cover hat X", async ({ page }) => {
+    await openApp(page);
+    await chooseModel(page, "hat X cover");
+    await expect(page.getByText(/10 edges, 1 relation cells/)).toBeVisible();
+    await capture(page, `${screenshotDir}/cover-walls-01-hat-x.png`);
   });
 
-  test("records the A3 rank-three cell demo", async ({ page }) => {
-    await page.goto("/");
-    await switchToResearchMode(page);
-    await page.getByLabel(/example/i).selectOption("A3");
-    await switchModel(page, /^Y_Gamma$/);
-    await page
-      .getByLabel(/Narrated Y_Gamma focus presets/i)
-      .getByRole("button", { name: /one rank-three cell/i })
-      .click();
-
-    await expect(page.getByText(/Y_Gamma\(A3\)/).first()).toBeVisible();
-    await expect(page.getByText(/rank-three/i).first()).toBeVisible();
-    await waitForRenderedScene(page);
-    await waitForCells(page);
-    await capture(page, `${screenshotDir}/a3-rank-three-square-hexagon.png`);
-  });
-
-  test("records the P2 Y_Gamma m=5 relation demo", async ({ page }) => {
-    await page.goto("/");
-    await page
-      .getByLabel(/example/i)
-      .selectOption("compact_5_prism_makarov_p2");
-    await switchModel(page, /^Y_Gamma$/);
-    const relationSelect = page.getByLabel(/focus relation/i);
-    const m5Value = await relationSelect
-      .locator("option", { hasText: /m=5/i })
-      .first()
-      .getAttribute("value");
-
-    expect(m5Value).toBeTruthy();
-    await relationSelect.selectOption(m5Value ?? "");
-    await expect(relationSelect).toHaveValue(m5Value ?? "");
-    await waitForRenderedScene(page);
-    await waitForCells(page);
-    await capture(page, `${screenshotDir}/y-gamma-p2-m5-relation.png`);
-  });
-
-  test("records the I2(5) quotient/game demo", async ({ page }) => {
-    await page.goto("/");
-    await switchToResearchMode(page);
-    const workflow = page.locator("section.panel").filter({
-      has: page.getByRole("heading", { name: /research workflow/i }),
-    });
-
-    await workflow.getByRole("button", { name: /^3Quotient$/ }).click();
-    await workflow.getByRole("button", { name: /load demo quotient/i }).click();
-    await workflow.getByRole("button", { name: /ascending link/i }).click();
-
+  test("records the compressed complex with its five walls", async ({
+    page,
+  }) => {
+    await openApp(page);
+    await expect(page.getByText(/5 opposite-edge classes/)).toBeVisible();
     await expect(
-      page.getByText(/I2\(5\) quotient \(identity subgroup\)/),
+      page.getByLabel("Select a wall").locator("option"),
+    ).toHaveCount(5);
+    await capture(page, `${screenshotDir}/cover-walls-02-bar-x-walls.png`);
+  });
+
+  test("records a selected wall after its coorientation is flipped", async ({
+    page,
+  }) => {
+    await openApp(page);
+    await page.getByLabel("Select a wall").selectOption({ index: 1 });
+    await page.getByRole("button", { name: "Flip selected wall" }).click();
+    await expect(page.getByText(/W2, an abstract wall in bar X/)).toBeVisible();
+    await capture(page, `${screenshotDir}/cover-walls-03-flipped-wall.png`);
+  });
+
+  test("records the proven largest lawful subcomplex", async ({ page }) => {
+    await openApp(page);
+    await page
+      .getByRole("button", { name: "Find largest lawful subcomplex" })
+      .click();
+    await expect(
+      page.getByText(/Proven optimum: 1 lawful cells\./),
+    ).toBeVisible({
+      timeout: 15_000,
+    });
+    await page
+      .getByRole("group", { name: "Interface mode" })
+      .getByRole("button", { name: "Research", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Data + Status" }),
     ).toBeVisible();
-    await expect(page.getByText(/cocycle i2-5-height-cocycle/i)).toBeVisible();
-    await expect(page.getByText(/ascending/i).first()).toBeVisible();
-    await waitForRenderedScene(page);
-    await capture(page, `${screenshotDir}/i2-5-quotient-game-cocycle.png`);
+    await capture(
+      page,
+      `${screenshotDir}/cover-walls-04-largest-lawful-subcomplex.png`,
+    );
   });
 });

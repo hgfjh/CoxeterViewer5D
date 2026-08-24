@@ -1,0 +1,31 @@
+{
+  "affineClassicalTargets": [
+    {
+      "id": "affine-2pow8-Sp4-2",
+      "family": "Sp",
+      "dimension": 4,
+      "fieldOrder": 2,
+      "moduleCopies": 2
+    }
+  ],
+  "classicalTargets": [],
+  "symmetricDegrees": [],
+  "weylTypes": [],
+  "bounds": {
+    "maxAnchorClasses": 65536,
+    "maxAnchorSearchNodes": 100000000,
+    "maxInvolutionClasses": 2000,
+    "maxInvolutions": 100000,
+    "maxPermutationDegree": 512,
+    "maxPrecheckNodesPerType": 1000000,
+    "maxSearchNodes": 500000000,
+    "maxSolutionsPerTarget": 1,
+    "maxSphericalOrder": 100000,
+    "maxSubsets": 65536,
+    "maxTargetOrderForEnumeration": 250000,
+    "maxVerifyImageOrder": 250000,
+    "timeoutSecondsPerAnchor": 43200,
+    "timeoutSecondsPerPrecheck": 300,
+    "timeoutSecondsPerTarget": 43200
+  }
+}

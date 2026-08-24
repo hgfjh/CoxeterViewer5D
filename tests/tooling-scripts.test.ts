@@ -160,6 +160,163 @@ describe("optional exact exporter tooling", () => {
     );
     expect(packageJson.scripts["bench:catalogue:check"]).toContain("--check");
     expect(packageJson.scripts["bench:catalogue:write"]).toContain("--write");
+    expect(packageJson.scripts["cover:discover"]).toContain(
+      "torsion_free_discovery.py",
+    );
+    expect(packageJson.scripts["cover:discover:self-test"]).toContain(
+      "--self-test",
+    );
+    expect(packageJson.scripts["cover:discover:finite-image"]).toContain(
+      "torsion_free_finite_image.py",
+    );
+    expect(
+      packageJson.scripts["cover:discover:finite-image:self-test"],
+    ).toContain("--pure-self-test");
+    expect(packageJson.scripts["cover:discover:packed:self-test"]).toContain(
+      "packed_composite_solver.py --self-test",
+    );
+    expect(packageJson.scripts["cover:discover:runtime:self-test"]).toContain(
+      "scripts.discovery_runtime",
+    );
+    expect(
+      packageJson.scripts["cover:discover:runtime:self-test:wsl"],
+    ).toContain("--wsl");
+    expect(packageJson.scripts["cover:search:coordinated:plan"]).toContain(
+      "coordinated_cover_search.py",
+    );
+    expect(packageJson.scripts["cover:search:finite-target:plan"]).toContain(
+      "finite_target_synthesis.py",
+    );
+    expect(packageJson.scripts["cover:search:everitt:plan"]).toContain(
+      "everitt_composite_portfolio.py",
+    );
+    expect(packageJson.scripts["cover:search:orbifold:plan"]).toContain(
+      "orbifold_cover_search.py",
+    );
+  });
+
+  it("keeps the coordinated cover-search tracks on one artifact contract", () => {
+    const contract = JSON.parse(
+      readWorkspaceFile("scripts/coordinated_cover_search_contract.json"),
+    ) as {
+      $defs: {
+        trackId: { enum: string[] };
+        track: { properties: { status: { enum: string[] } } };
+      };
+    };
+
+    expect(contract.$defs.trackId.enum).toEqual([
+      "finite-target-synthesis",
+      "everitt-composite-modules",
+      "geometric-orbifold-cover",
+    ]);
+    expect(contract.$defs.track.properties.status.enum).toEqual(
+      expect.arrayContaining(["planned", "candidate-found", "exhausted"]),
+    );
+    expect(readWorkspaceFile("scripts/coordinated_cover_search.py")).toContain(
+      "regular orbits for every maximal spherical subgroup",
+    );
+  });
+
+  it("keeps automatic torsion-free discovery bounded and certificate-driven", () => {
+    const contract = JSON.parse(
+      readWorkspaceFile("scripts/torsion_free_discovery_contract.json"),
+    ) as {
+      properties: {
+        status: { enum: string[] };
+        certificate: {
+          properties: {
+            criterion: { enum: string[] };
+          };
+        };
+      };
+    };
+    const launcher = readWorkspaceFile("scripts/torsion_free_discovery.py");
+    const gapProgram = readWorkspaceFile(
+      "scripts/gap_torsion_free_discovery.g",
+    );
+    const finiteImage = readWorkspaceFile(
+      "scripts/torsion_free_finite_image.py",
+    );
+    const packedSolver = readWorkspaceFile(
+      "scripts/packed_composite_solver.py",
+    );
+    const runtimeSession = readWorkspaceFile(
+      "scripts/discovery_runtime/session.py",
+    );
+
+    expect(contract.properties.status.enum).toEqual(
+      expect.arrayContaining([
+        "passed",
+        "failed",
+        "skipped",
+        "exhausted",
+        "timeout",
+        "cancelled",
+      ]),
+    );
+    expect(contract.properties.certificate.properties.criterion.enum).toEqual(
+      expect.arrayContaining([
+        "tits-prime-order-fixed-point",
+        "tits-spherical-image-order",
+        "tits-maximal-spherical-regular-orbits",
+      ]),
+    );
+    expect(launcher).toContain("maximal_spherical_subsets");
+    expect(launcher).toContain("completeTorsionWitnessCatalogue");
+    expect(launcher).toContain("DiscoveryRuntimeSession");
+    expect(launcher).toContain("cancel_file=args.cancel_file");
+    expect(launcher).toContain('parser.add_argument(\n        "--cancel-file"');
+    expect(runtimeSession).toContain("CancelFileMonitor");
+    expect(runtimeSession).toContain("run_backend");
+
+    const managedLadder = launcher.slice(
+      launcher.indexOf("with DiscoveryRuntimeSession("),
+    );
+    const finiteImagePosition = managedLadder.indexOf(
+      "run_finite_image_portfolio(",
+    );
+    const packedCompositePosition = managedLadder.indexOf(
+      "run_finite_image_composite(",
+    );
+    const gapFallbackPosition = managedLadder.indexOf("run_gap_runtime(");
+    expect(finiteImagePosition).toBeGreaterThanOrEqual(0);
+    expect(packedCompositePosition).toBeGreaterThan(finiteImagePosition);
+    expect(gapFallbackPosition).toBeGreaterThan(packedCompositePosition);
+
+    expect(finiteImage).toContain("MatrixGroup");
+    expect(finiteImage).toContain("spherical_orbit_certificate");
+    expect(finiteImage).toContain("persist_frontier_expansion");
+    expect(finiteImage).toContain('"frontierExhausted"');
+    expect(finiteImage).toContain('"packedPermutationRows"');
+    expect(launcher).toContain('module.get("packedPermutationRows")');
+    expect(packedSolver).toContain("enumerate_diagonal_orbits");
+    expect(launcher).toContain("allOrbitsOfAdmittedFactorSetsSearched");
+    expect(launcher).not.toContain('"allDiagonalOrbitsSearched": True');
+    expect(packedSolver).toContain("double-coset-diagonal-orbits");
+    expect(packedSolver).toContain("spool_base_dir");
+    const sageCongruence = readWorkspaceFile(
+      "scripts/sage_congruence_torsion_free.py",
+    );
+    expect(sageCongruence).toContain("build_tits_generators");
+    expect(sageCongruence).toContain("sphericalRestrictionChecks");
+    expect(gapProgram).toContain("LowIndexSubgroupsFpGroupIterator");
+    expect(gapProgram).toContain("ConjugacyClasses");
+    expect(gapProgram).toContain("CoxeterViewerFixedPoints");
+
+    const tauriConfig = JSON.parse(
+      readWorkspaceFile("src-tauri/tauri.conf.json"),
+    ) as { bundle: { resources: string[] } };
+    expect(tauriConfig.bundle.resources).toEqual(
+      expect.arrayContaining([
+        "../scripts/torsion_free_discovery.py",
+        "../scripts/gap_torsion_free_discovery.g",
+        "../scripts/sage_congruence_torsion_free.py",
+        "../scripts/torsion_free_finite_image.py",
+        "../scripts/packed_composite_solver.py",
+        "../scripts/discovery_runtime/**/*",
+      ]),
+    );
   });
 
   it("reports release signing and updater skips without blocking local builds", () => {
@@ -410,6 +567,64 @@ describe("optional exact exporter tooling", () => {
     expect(
       result.certificate.diagnostics.dottedValues.diagonal.minimalPolynomial,
     ).toEqual([16, 0, -20, 0, 3]);
+  });
+
+  it("certifies the ideal 3-cube geometry and S4-kernel map", () => {
+    const python = process.env.PYTHON ?? "python";
+    const stdout = execFileSync(
+      python,
+      [
+        "scripts/certify_ideal_hyperbolic_3_cube.py",
+        "public/examples/ideal_hyperbolic_3_cube_m3.json",
+      ],
+      { cwd: process.cwd(), encoding: "utf8" },
+    );
+    const result = JSON.parse(stdout) as {
+      ok: boolean;
+      certificate: {
+        status: string;
+        scopes: string[];
+        diagnostics: {
+          gram: {
+            rank: number;
+            signature: { positive: number; negative: number; zero: number };
+          };
+          polyhedron: {
+            compact: boolean;
+            finiteVolume: boolean;
+            idealVertexCount: number;
+          };
+          finiteAction: {
+            image: string;
+            kernelIndex: number;
+            kernelTorsionFree: boolean;
+            sphericalRestrictionsFaithful: boolean;
+          };
+        };
+      };
+    };
+
+    expect(result.ok).toBe(true);
+    expect(result.certificate.status).toBe("passed");
+    expect(result.certificate.scopes).toEqual(
+      expect.arrayContaining(["geometry", "quotient-action", "torsion-free"]),
+    );
+    expect(result.certificate.diagnostics.gram).toEqual({
+      rank: 4,
+      signature: { positive: 3, negative: 1, zero: 2 },
+      eigenvalues: { "3": 3, "0": 2, "-3": 1 },
+    });
+    expect(result.certificate.diagnostics.polyhedron).toMatchObject({
+      compact: false,
+      finiteVolume: true,
+      idealVertexCount: 8,
+    });
+    expect(result.certificate.diagnostics.finiteAction).toMatchObject({
+      image: "S4",
+      kernelIndex: 24,
+      kernelTorsionFree: true,
+      sphericalRestrictionsFaithful: true,
+    });
   });
 
   it("blocks compact 5-cube certification when the source table changes", () => {
@@ -928,12 +1143,30 @@ describe("optional exact exporter tooling", () => {
     expect(stored.benchmark).toBe("catalogue-static-v1");
     expect(stored.elapsedMs).toBeUndefined();
     expect(stored.totals).toMatchObject({
-      examples: 26,
+      examples: 27,
       generated: 6,
       generatedNodes: 80,
       generatedEdges: 104,
       generatedTwoCells: 32,
     });
+  });
+
+  it("runs the standalone virtual-fibering certificate validator", () => {
+    const result = spawnSync(
+      process.execPath,
+      ["scripts/validate_virtual_fibering.mjs", "--self-test"],
+      { cwd: process.cwd(), encoding: "utf8" },
+    );
+    const report = JSON.parse(result.stdout) as {
+      valid: boolean;
+      tamperCheck: boolean;
+      checks: Record<string, boolean>;
+    };
+
+    expect(result.status).toBe(0);
+    expect(report.valid).toBe(true);
+    expect(report.tamperCheck).toBe(true);
+    expect(Object.values(report.checks).every(Boolean)).toBe(true);
   });
 });
 
@@ -952,9 +1185,9 @@ describe("release orientation documentation", () => {
     }
     for (const action of [
       "Explore a Coxeter example",
-      "Find a relation cell",
-      "Understand Y_Gamma",
-      "Study a quotient/game",
+      "Find a torsion-free cover",
+      "Find walls in bar X",
+      "Coorient walls",
       "Inspect exactness and data status",
     ]) {
       expect(readme).toContain(action);
@@ -970,28 +1203,28 @@ describe("release orientation documentation", () => {
     for (const term of [
       "Cayley graph",
       "Davis cell",
-      "`Y_Gamma`",
+      "`hat X`",
+      "`bar X`",
+      "Wall Coorientation",
+      "Lawful Cell",
       "Gamma",
-      "Quotient complex",
-      "Cocycle/cochain",
-      "JNW legal system",
-      "Projection",
+      "Geometric Projection",
     ]) {
       expect(glossary).toContain(term);
     }
     for (const walkthrough of [
-      "Find A Hexagon",
-      "Inspect A3",
-      "Defining Graph `Gamma`: Read Compact 5-Cube",
-      "The Base Complex `Y_Gamma`: Inspect P2",
-      "Quotient And Game Demo: Run I2(5)",
-      "JNW Legal-System Demo: Play The Cube Graph",
+      "Find A Rank-Two Cell",
+      "Build hat X From I2(5)",
+      "Compress hat X To bar X",
+      "Find The Walls Of bar X",
+      "Coorient Walls And Read A Lawful Cell",
+      "Inspect Ascending And Descending Links",
     ]) {
       expect(walkthroughs).toContain(walkthrough);
     }
     for (const region of [
       "Model switch",
-      "Focus controls",
+      "Start Here + Focus controls",
       "Inspector",
       "Caveats drawer",
       "Research tools",
@@ -1001,8 +1234,11 @@ describe("release orientation documentation", () => {
     }
     for (const limit of [
       "Dense Complexes",
+      "Finite Cover Input",
+      "Wall And Morse Claims",
       "Projection Caveats",
       "Non-Planar Gamma",
+      "Search Limits",
       "External Tool Constraints",
     ]) {
       expect(limits).toContain(limit);

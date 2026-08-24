@@ -4,6 +4,7 @@ import {
   compactLabelText,
   pickLabelEntries,
   selectSegmentLabelBudget,
+  semanticEdgeLabelText,
 } from "../src/render/labels";
 import { prefilterSpatialPickSpheres } from "../src/render/SceneView";
 
@@ -71,6 +72,22 @@ describe("scene label helpers", () => {
 
     expect(picked).toHaveLength(1);
     expect(picked[0].label).toBe("s3");
+  });
+
+  it("uses Coxeter exponents on Gamma edges and generators on complex edges", () => {
+    expect(
+      semanticEdgeLabelText(
+        {
+          id: "Gamma:e:0-3",
+          compactLabel: "3",
+          semanticLabelKind: "coxeter-order",
+        },
+        "g0",
+      ),
+    ).toBe("3");
+    expect(
+      semanticEdgeLabelText({ id: "barX:e:17", compactLabel: "g0" }, "g0"),
+    ).toBe("g0");
   });
 
   it("prefilters spatial picking spheres only after the candidate threshold", () => {

@@ -21,6 +21,24 @@ export {
   localLinkHomology,
   type DavisIncidenceOptions,
 } from "./incidence";
+export {
+  buildGeneralizedCompressionCertificate,
+  computeGeneralizedCompressionArchiveHash,
+  GeneralizedCompressionError,
+  materializeGeneralizedCompressionFaceCompatibility,
+  materializeGeneralizedCompressionFibers,
+  verifyGeneralizedCompressionCertificate,
+  type GeneralizedCompressionBuildOptions,
+  type GeneralizedCompressionCertificate,
+  type GeneralizedCompressionFaceCompatibility,
+  type GeneralizedCompressionFiberCommitment,
+  type GeneralizedCompressionRankTwoAgreement,
+  type GeneralizedCompressionReplayResult,
+  type MaterializedGeneralizedCompressionFiber,
+  type MaterializedGeneralizedCompressionFaceCompatibility,
+  type MaterializedGeneralizedCompressionFaceIncidence,
+  type MaterializedGeneralizedCompressionRootedFaceRecord,
+} from "./generalizedCompression";
 export type {
   LocalLink,
   LocalLinkSimplex,

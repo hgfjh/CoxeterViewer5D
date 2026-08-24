@@ -1,0 +1,1133 @@
+{
+  "artifactType": "coxeter-torsion-free-discovery",
+  "bounds": {
+    "maxCandidates": 4,
+    "maxCompositeCombinations": 20000,
+    "maxCompositeModules": 4,
+    "maxCongruenceImageOrder": 100000,
+    "maxCongruencePrime": 31,
+    "maxIndex": 24,
+    "maxModuleCandidates": 96,
+    "maxSphericalOrder": 1000,
+    "maxSubsets": 32,
+    "maxWitnesses": 128,
+    "timeoutSeconds": 60
+  },
+  "certificate": {
+    "claims": [
+      "finite-index",
+      "torsion-free"
+    ],
+    "completeSphericalRestrictionChecks": true,
+    "completeTorsionWitnessCatalogue": true,
+    "coxeterRelationChecks": [
+      {
+        "exponent": 2,
+        "generators": [
+          0,
+          0
+        ],
+        "kind": "involution",
+        "passed": true,
+        "phase": "residue-field"
+      },
+      {
+        "exponent": 2,
+        "generators": [
+          1,
+          1
+        ],
+        "kind": "involution",
+        "passed": true,
+        "phase": "residue-field"
+      },
+      {
+        "exponent": 2,
+        "generators": [
+          2,
+          2
+        ],
+        "kind": "involution",
+        "passed": true,
+        "phase": "residue-field"
+      },
+      {
+        "exponent": 3,
+        "generators": [
+          0,
+          1
+        ],
+        "kind": "coxeter",
+        "passed": true,
+        "phase": "residue-field"
+      },
+      {
+        "exponent": 2,
+        "generators": [
+          0,
+          2
+        ],
+        "kind": "coxeter",
+        "passed": true,
+        "phase": "residue-field"
+      },
+      {
+        "exponent": 3,
+        "generators": [
+          1,
+          2
+        ],
+        "kind": "coxeter",
+        "passed": true,
+        "phase": "residue-field"
+      }
+    ],
+    "criterion": "tits-prime-order-fixed-point",
+    "explanation": "Exact reduction is injective on every maximal spherical special subgroup. The kernel therefore contains no nonidentity spherical element; Tits' torsion theorem makes it torsion-free. Prime-order class representatives were also checked in the regular action.",
+    "noFixedPointChecks": [
+      {
+        "fixedVertexIds": [],
+        "passed": true,
+        "primeOrder": 2,
+        "witnessId": "tw0",
+        "word": [
+          0
+        ]
+      },
+      {
+        "fixedVertexIds": [],
+        "passed": true,
+        "primeOrder": 2,
+        "witnessId": "tw1",
+        "word": [
+          0,
+          2
+        ]
+      },
+      {
+        "fixedVertexIds": [],
+        "passed": true,
+        "primeOrder": 3,
+        "witnessId": "tw2",
+        "word": [
+          0,
+          1
+        ]
+      }
+    ],
+    "nonClaims": [
+      "minimal index",
+      "manifold",
+      "virtual algebraic fibering"
+    ],
+    "sphericalRestrictionChecks": [
+      {
+        "expectedOrder": 24,
+        "imageOrder": 24,
+        "injective": true,
+        "subset": [
+          0,
+          1,
+          2
+        ],
+        "type": "A3"
+      }
+    ],
+    "status": "passed",
+    "theoremBasis": [
+      "faithful standard Tits reflection representation",
+      "injective reduction on every maximal spherical special subgroup",
+      "Tits torsion theorem for Coxeter groups",
+      "regular action of the exact finite congruence image"
+    ],
+    "transitive": true
+  },
+  "congruence": {
+    "cyclotomicOrder": 6,
+    "imageOrder": 24,
+    "primeIdeal": "Fractional ideal (5)",
+    "rationalPrime": 5,
+    "residueFieldOrder": 25,
+    "sphericalImageChecks": [
+      {
+        "expectedOrder": 24,
+        "imageOrder": 24,
+        "passed": true,
+        "subset": [
+          0,
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "errors": [],
+  "finiteAction": {
+    "cosetConvention": "Regular right action of the finite congruence image; q0 is the congruence-kernel base coset",
+    "degree": 24,
+    "edges": [
+      {
+        "generator": 0,
+        "id": "qe:q0:g0:q1",
+        "label": "s0",
+        "source": "q0",
+        "target": "q1"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q1:g0:q0",
+        "label": "s0",
+        "source": "q1",
+        "target": "q0"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q2:g0:q6",
+        "label": "s0",
+        "source": "q2",
+        "target": "q6"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q3:g0:q5",
+        "label": "s0",
+        "source": "q3",
+        "target": "q5"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q4:g0:q9",
+        "label": "s0",
+        "source": "q4",
+        "target": "q9"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q5:g0:q3",
+        "label": "s0",
+        "source": "q5",
+        "target": "q3"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q6:g0:q2",
+        "label": "s0",
+        "source": "q6",
+        "target": "q2"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q7:g0:q12",
+        "label": "s0",
+        "source": "q7",
+        "target": "q12"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q8:g0:q14",
+        "label": "s0",
+        "source": "q8",
+        "target": "q14"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q9:g0:q4",
+        "label": "s0",
+        "source": "q9",
+        "target": "q4"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q10:g0:q15",
+        "label": "s0",
+        "source": "q10",
+        "target": "q15"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q11:g0:q17",
+        "label": "s0",
+        "source": "q11",
+        "target": "q17"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q12:g0:q7",
+        "label": "s0",
+        "source": "q12",
+        "target": "q7"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q13:g0:q19",
+        "label": "s0",
+        "source": "q13",
+        "target": "q19"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q14:g0:q8",
+        "label": "s0",
+        "source": "q14",
+        "target": "q8"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q15:g0:q10",
+        "label": "s0",
+        "source": "q15",
+        "target": "q10"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q16:g0:q21",
+        "label": "s0",
+        "source": "q16",
+        "target": "q21"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q17:g0:q11",
+        "label": "s0",
+        "source": "q17",
+        "target": "q11"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q18:g0:q22",
+        "label": "s0",
+        "source": "q18",
+        "target": "q22"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q19:g0:q13",
+        "label": "s0",
+        "source": "q19",
+        "target": "q13"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q20:g0:q23",
+        "label": "s0",
+        "source": "q20",
+        "target": "q23"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q21:g0:q16",
+        "label": "s0",
+        "source": "q21",
+        "target": "q16"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q22:g0:q18",
+        "label": "s0",
+        "source": "q22",
+        "target": "q18"
+      },
+      {
+        "generator": 0,
+        "id": "qe:q23:g0:q20",
+        "label": "s0",
+        "source": "q23",
+        "target": "q20"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q0:g1:q2",
+        "label": "s1",
+        "source": "q0",
+        "target": "q2"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q1:g1:q4",
+        "label": "s1",
+        "source": "q1",
+        "target": "q4"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q2:g1:q0",
+        "label": "s1",
+        "source": "q2",
+        "target": "q0"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q3:g1:q8",
+        "label": "s1",
+        "source": "q3",
+        "target": "q8"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q4:g1:q1",
+        "label": "s1",
+        "source": "q4",
+        "target": "q1"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q5:g1:q11",
+        "label": "s1",
+        "source": "q5",
+        "target": "q11"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q6:g1:q9",
+        "label": "s1",
+        "source": "q6",
+        "target": "q9"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q7:g1:q13",
+        "label": "s1",
+        "source": "q7",
+        "target": "q13"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q8:g1:q3",
+        "label": "s1",
+        "source": "q8",
+        "target": "q3"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q9:g1:q6",
+        "label": "s1",
+        "source": "q9",
+        "target": "q6"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q10:g1:q16",
+        "label": "s1",
+        "source": "q10",
+        "target": "q16"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q11:g1:q5",
+        "label": "s1",
+        "source": "q11",
+        "target": "q5"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q12:g1:q18",
+        "label": "s1",
+        "source": "q12",
+        "target": "q18"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q13:g1:q7",
+        "label": "s1",
+        "source": "q13",
+        "target": "q7"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q14:g1:q17",
+        "label": "s1",
+        "source": "q14",
+        "target": "q17"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q15:g1:q20",
+        "label": "s1",
+        "source": "q15",
+        "target": "q20"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q16:g1:q10",
+        "label": "s1",
+        "source": "q16",
+        "target": "q10"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q17:g1:q14",
+        "label": "s1",
+        "source": "q17",
+        "target": "q14"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q18:g1:q12",
+        "label": "s1",
+        "source": "q18",
+        "target": "q12"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q19:g1:q22",
+        "label": "s1",
+        "source": "q19",
+        "target": "q22"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q20:g1:q15",
+        "label": "s1",
+        "source": "q20",
+        "target": "q15"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q21:g1:q23",
+        "label": "s1",
+        "source": "q21",
+        "target": "q23"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q22:g1:q19",
+        "label": "s1",
+        "source": "q22",
+        "target": "q19"
+      },
+      {
+        "generator": 1,
+        "id": "qe:q23:g1:q21",
+        "label": "s1",
+        "source": "q23",
+        "target": "q21"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q0:g2:q3",
+        "label": "s2",
+        "source": "q0",
+        "target": "q3"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q1:g2:q5",
+        "label": "s2",
+        "source": "q1",
+        "target": "q5"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q2:g2:q7",
+        "label": "s2",
+        "source": "q2",
+        "target": "q7"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q3:g2:q0",
+        "label": "s2",
+        "source": "q3",
+        "target": "q0"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q4:g2:q10",
+        "label": "s2",
+        "source": "q4",
+        "target": "q10"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q5:g2:q1",
+        "label": "s2",
+        "source": "q5",
+        "target": "q1"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q6:g2:q12",
+        "label": "s2",
+        "source": "q6",
+        "target": "q12"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q7:g2:q2",
+        "label": "s2",
+        "source": "q7",
+        "target": "q2"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q8:g2:q13",
+        "label": "s2",
+        "source": "q8",
+        "target": "q13"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q9:g2:q15",
+        "label": "s2",
+        "source": "q9",
+        "target": "q15"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q10:g2:q4",
+        "label": "s2",
+        "source": "q10",
+        "target": "q4"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q11:g2:q16",
+        "label": "s2",
+        "source": "q11",
+        "target": "q16"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q12:g2:q6",
+        "label": "s2",
+        "source": "q12",
+        "target": "q6"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q13:g2:q8",
+        "label": "s2",
+        "source": "q13",
+        "target": "q8"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q14:g2:q19",
+        "label": "s2",
+        "source": "q14",
+        "target": "q19"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q15:g2:q9",
+        "label": "s2",
+        "source": "q15",
+        "target": "q9"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q16:g2:q11",
+        "label": "s2",
+        "source": "q16",
+        "target": "q11"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q17:g2:q21",
+        "label": "s2",
+        "source": "q17",
+        "target": "q21"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q18:g2:q20",
+        "label": "s2",
+        "source": "q18",
+        "target": "q20"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q19:g2:q14",
+        "label": "s2",
+        "source": "q19",
+        "target": "q14"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q20:g2:q18",
+        "label": "s2",
+        "source": "q20",
+        "target": "q18"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q21:g2:q17",
+        "label": "s2",
+        "source": "q21",
+        "target": "q17"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q22:g2:q23",
+        "label": "s2",
+        "source": "q22",
+        "target": "q23"
+      },
+      {
+        "generator": 2,
+        "id": "qe:q23:g2:q22",
+        "label": "s2",
+        "source": "q23",
+        "target": "q22"
+      }
+    ],
+    "generatorActions": [
+      {
+        "generator": 0,
+        "images": [
+          "q1",
+          "q0",
+          "q6",
+          "q5",
+          "q9",
+          "q3",
+          "q2",
+          "q12",
+          "q14",
+          "q4",
+          "q15",
+          "q17",
+          "q7",
+          "q19",
+          "q8",
+          "q10",
+          "q21",
+          "q11",
+          "q22",
+          "q13",
+          "q23",
+          "q16",
+          "q18",
+          "q20"
+        ]
+      },
+      {
+        "generator": 1,
+        "images": [
+          "q2",
+          "q4",
+          "q0",
+          "q8",
+          "q1",
+          "q11",
+          "q9",
+          "q13",
+          "q3",
+          "q6",
+          "q16",
+          "q5",
+          "q18",
+          "q7",
+          "q17",
+          "q20",
+          "q10",
+          "q14",
+          "q12",
+          "q22",
+          "q15",
+          "q23",
+          "q19",
+          "q21"
+        ]
+      },
+      {
+        "generator": 2,
+        "images": [
+          "q3",
+          "q5",
+          "q7",
+          "q0",
+          "q10",
+          "q1",
+          "q12",
+          "q2",
+          "q13",
+          "q15",
+          "q4",
+          "q16",
+          "q6",
+          "q8",
+          "q19",
+          "q9",
+          "q11",
+          "q21",
+          "q20",
+          "q14",
+          "q18",
+          "q17",
+          "q23",
+          "q22"
+        ]
+      }
+    ],
+    "subgroupGenerators": [],
+    "vertices": [
+      {
+        "id": "q0",
+        "representativeWord": []
+      },
+      {
+        "id": "q1",
+        "representativeWord": [
+          0
+        ]
+      },
+      {
+        "id": "q2",
+        "representativeWord": [
+          1
+        ]
+      },
+      {
+        "id": "q3",
+        "representativeWord": [
+          2
+        ]
+      },
+      {
+        "id": "q4",
+        "representativeWord": [
+          0,
+          1
+        ]
+      },
+      {
+        "id": "q5",
+        "representativeWord": [
+          0,
+          2
+        ]
+      },
+      {
+        "id": "q6",
+        "representativeWord": [
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q7",
+        "representativeWord": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "q8",
+        "representativeWord": [
+          2,
+          1
+        ]
+      },
+      {
+        "id": "q9",
+        "representativeWord": [
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q10",
+        "representativeWord": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "id": "q11",
+        "representativeWord": [
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "id": "q12",
+        "representativeWord": [
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "id": "q13",
+        "representativeWord": [
+          1,
+          2,
+          1
+        ]
+      },
+      {
+        "id": "q14",
+        "representativeWord": [
+          2,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q15",
+        "representativeWord": [
+          0,
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "id": "q16",
+        "representativeWord": [
+          0,
+          1,
+          2,
+          1
+        ]
+      },
+      {
+        "id": "q17",
+        "representativeWord": [
+          0,
+          2,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q18",
+        "representativeWord": [
+          1,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "id": "q19",
+        "representativeWord": [
+          1,
+          2,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q20",
+        "representativeWord": [
+          0,
+          1,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "id": "q21",
+        "representativeWord": [
+          0,
+          1,
+          2,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q22",
+        "representativeWord": [
+          1,
+          0,
+          2,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "q23",
+        "representativeWord": [
+          0,
+          1,
+          0,
+          2,
+          1,
+          0
+        ]
+      }
+    ]
+  },
+  "indexLowerBound": {
+    "contributingSubgroupIds": [
+      "T:0,1,2"
+    ],
+    "value": "24"
+  },
+  "inputHash": "e626edfc4c265b08d86e62045cb27a361e18a37e401f2712f37e1ec9b1bbe502",
+  "ok": true,
+  "provenance": {
+    "artifactHash": "70522fdd2b79f9ee3645dde8126a62700ef930a081d7b02fcee92687d0e8ea7d",
+    "backend": "sage-congruence-torsion-free",
+    "backendVersion": "1.0.0",
+    "coefficientField": "Cyclotomic Field of order 6 and degree 2",
+    "command": "wsl sage -c <temporary-path>",
+    "cyclotomicConductor": 6,
+    "inputHash": "e626edfc4c265b08d86e62045cb27a361e18a37e401f2712f37e1ec9b1bbe502",
+    "primeIdeal": "Fractional ideal (5)",
+    "primeIdealNorm": 25,
+    "rationalPrime": 5,
+    "residueFieldOrder": 25,
+    "runtime": "wsl",
+    "runtimeLabel": "wsl sage",
+    "sageVersion": "10.8"
+  },
+  "schemaVersion": 1,
+  "search": {
+    "actionDegreeCap": 100000,
+    "attempts": [
+      {
+        "imageOrder": 24,
+        "primeIdeal": "Fractional ideal (5)",
+        "primeIdealNorm": 25,
+        "rationalPrime": 5,
+        "reason": "faithful-on-maximal-spherical-subgroups",
+        "residueDegree": 2,
+        "residueFieldOrder": 25,
+        "sphericalRestrictionChecks": [
+          {
+            "expectedOrder": 24,
+            "imageOrder": 24,
+            "injective": true,
+            "subset": [
+              0,
+              1,
+              2
+            ],
+            "type": "A3"
+          }
+        ],
+        "status": "accepted"
+      }
+    ],
+    "candidatesChecked": 1,
+    "maxCandidates": 4,
+    "maxRationalPrime": 31,
+    "method": "exact-cyclotomic-tits-congruence",
+    "reason": "faithful-spherical-congruence-kernel-found",
+    "selectedStrategy": "sage-congruence-kernel"
+  },
+  "sourceSystem": {
+    "coxeterMatrix": [
+      [
+        1,
+        3,
+        2
+      ],
+      [
+        3,
+        1,
+        3
+      ],
+      [
+        2,
+        3,
+        1
+      ]
+    ],
+    "generators": [
+      {
+        "id": "s0",
+        "label": "s0"
+      },
+      {
+        "id": "s1",
+        "label": "s1"
+      },
+      {
+        "id": "s2",
+        "label": "s2"
+      }
+    ],
+    "name": "A3",
+    "notes": [
+      "Self-test input for automatic torsion-free subgroup discovery."
+    ],
+    "rank": 3,
+    "schemaVersion": 1
+  },
+  "sphericalCatalogue": {
+    "complete": true,
+    "maximalSubgroups": [
+      {
+        "congruenceImageOrder": 24,
+        "congruenceRestrictionInjective": true,
+        "order": 24,
+        "subset": [
+          0,
+          1,
+          2
+        ],
+        "type": "A3"
+      }
+    ],
+    "method": "complete-finite-coxeter-classification+exact-congruence-restrictions"
+  },
+  "status": "passed",
+  "strategyAttempts": [
+    {
+      "candidateDegree": 24,
+      "elapsedMs": 9453,
+      "message": "faithful-spherical-congruence-kernel-found",
+      "status": "passed",
+      "strategy": "sage-congruence-kernel"
+    }
+  ],
+  "torsionWitnesses": [
+    {
+      "classSize": 6,
+      "id": "tw0",
+      "primeOrder": 2,
+      "sphericalOrder": 24,
+      "sphericalType": "A3",
+      "subset": [
+        0,
+        1,
+        2
+      ],
+      "word": [
+        0
+      ]
+    },
+    {
+      "classSize": 3,
+      "id": "tw1",
+      "primeOrder": 2,
+      "sphericalOrder": 24,
+      "sphericalType": "A3",
+      "subset": [
+        0,
+        1,
+        2
+      ],
+      "word": [
+        0,
+        2
+      ]
+    },
+    {
+      "classSize": 8,
+      "id": "tw2",
+      "primeOrder": 3,
+      "sphericalOrder": 24,
+      "sphericalType": "A3",
+      "subset": [
+        0,
+        1,
+        2
+      ],
+      "word": [
+        0,
+        1
+      ]
+    }
+  ],
+  "warnings": []
+}

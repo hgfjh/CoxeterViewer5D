@@ -1,8 +1,10 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::env;
 use std::ffi::OsString;
 use std::fs::{self, OpenOptions};
 use std::io::{Read, Seek, SeekFrom, Write};
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
 use std::path::{Component, Path, PathBuf};
 use std::process::Command;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -23,10 +25,13 @@ const MAX_SESSION_BYTES: usize = 5 * 1024 * 1024;
 const MAX_EXPORT_BYTES: usize = 50 * 1024 * 1024;
 const MAX_LOG_MESSAGE_BYTES: usize = 16 * 1024;
 const MAX_LOG_READ_BYTES: u64 = 256 * 1024;
+const MAX_JOB_PAYLOAD_BYTES: usize = 2 * 1024 * 1024;
 
 #[derive(Default)]
 struct DesktopState {
     jobs: Mutex<HashMap<String, DesktopJob>>,
+    cancel_files: Mutex<HashMap<String, PathBuf>>,
+    cancelled_jobs: Mutex<HashSet<String>>,
     next_job_id: AtomicU64,
 }
 
@@ -144,6 +149,7 @@ struct DetectedTool {
 struct DesktopJobRequest {
     kind: DesktopJobKind,
     workspace_path: Option<String>,
+    payload: Option<serde_json::Value>,
 }
 
 #[derive(Clone, Deserialize, Serialize, PartialEq, Eq)]
@@ -152,6 +158,7 @@ enum DesktopJobKind {
     DetectTools,
     CollectDiagnostics,
     ValidateWorkspace,
+    DiscoverTorsionFreeCover,
     SageQuotientExport,
     GapQuotientExport,
     CoxiterCompactCheck,
@@ -244,13 +251,11 @@ enum DesktopMenuCommand {
     ToggleLabels,
     ToggleCells,
     Fullscreen,
-    GuideHexagon,
-    GuideRankThree,
-    GuideYGamma,
-    GuideQuotientGame,
-    LensGeneratorStar,
-    LensEdgeStar,
-    LensRankKFamily,
+    GuideRankTwoCell,
+    GuideFiniteCover,
+    GuideFindWalls,
+    GuideCoorientWalls,
+    GuideMorseLinks,
     HelpReadme,
     HelpWalkthroughs,
     HelpAbout,
@@ -278,13 +283,11 @@ impl DesktopMenuCommand {
             "desktop:toggle-labels" => Some(Self::ToggleLabels),
             "desktop:toggle-cells" => Some(Self::ToggleCells),
             "desktop:fullscreen" => Some(Self::Fullscreen),
-            "desktop:guide-hexagon" => Some(Self::GuideHexagon),
-            "desktop:guide-rank-three" => Some(Self::GuideRankThree),
-            "desktop:guide-y-gamma" => Some(Self::GuideYGamma),
-            "desktop:guide-quotient-game" => Some(Self::GuideQuotientGame),
-            "desktop:lens-generator-star" => Some(Self::LensGeneratorStar),
-            "desktop:lens-edge-star" => Some(Self::LensEdgeStar),
-            "desktop:lens-rank-k-family" => Some(Self::LensRankKFamily),
+            "desktop:guide-rank-two-cell" => Some(Self::GuideRankTwoCell),
+            "desktop:guide-finite-cover" => Some(Self::GuideFiniteCover),
+            "desktop:guide-find-walls" => Some(Self::GuideFindWalls),
+            "desktop:guide-coorient-walls" => Some(Self::GuideCoorientWalls),
+            "desktop:guide-morse-links" => Some(Self::GuideMorseLinks),
             "desktop:help-readme" => Some(Self::HelpReadme),
             "desktop:help-walkthroughs" => Some(Self::HelpWalkthroughs),
             "desktop:help-about" => Some(Self::HelpAbout),
@@ -466,6 +469,42 @@ fn workspace_artifact_path(workspace: &Path, job_id: &str) -> PathBuf {
     workspace_internal_dir(workspace)
         .join("artifacts")
         .join(format!("{job_id}.json"))
+}
+
+fn desktop_job_artifact_dir<R: Runtime>(
+    app: &AppHandle<R>,
+    workspace_path: Option<&str>,
+) -> Result<PathBuf, String> {
+    let directory = if let Some(workspace_path) = workspace_path {
+        let workspace = validate_workspace_path(Path::new(workspace_path))?;
+        ensure_workspace_layout(&workspace)?;
+        workspace_internal_dir(&workspace).join("artifacts")
+    } else {
+        app_data_dir(app.package_info().name.as_str())?.join("artifacts")
+    };
+    fs::create_dir_all(&directory)
+        .map_err(|error| format!("could not create desktop job artifact directory: {error}"))?;
+    Ok(directory)
+}
+
+fn locate_bundled_script<R: Runtime>(
+    app: &AppHandle<R>,
+    file_name: &str,
+) -> Result<PathBuf, String> {
+    let mut candidates = Vec::new();
+    if let Ok(current) = env::current_dir() {
+        candidates.push(current.join("scripts").join(file_name));
+        candidates.push(current.join("..").join("scripts").join(file_name));
+    }
+    if let Ok(resources) = app.path().resource_dir() {
+        candidates.push(resources.join("scripts").join(file_name));
+        candidates.push(resources.join(file_name));
+        candidates.push(resources.join("_up_").join("scripts").join(file_name));
+    }
+    candidates
+        .into_iter()
+        .find(|path| path.is_file())
+        .ok_or_else(|| format!("could not locate bundled script {file_name}"))
 }
 
 fn workspace_diagnostics_path(workspace: &Path) -> PathBuf {
@@ -1019,6 +1058,89 @@ fn validate_job_request(request: &DesktopJobRequest) -> Result<(), String> {
     {
         return Err("workspacePath is required for external tool jobs".into());
     }
+    if request.kind == DesktopJobKind::DiscoverTorsionFreeCover {
+        let payload = request
+            .payload
+            .as_ref()
+            .ok_or_else(|| "payload is required for torsion-free cover discovery".to_string())?;
+        let payload_size = serde_json::to_vec(payload)
+            .map_err(|error| format!("could not serialize discovery payload: {error}"))?
+            .len();
+        if payload_size > MAX_JOB_PAYLOAD_BYTES {
+            return Err("torsion-free discovery payload is too large".into());
+        }
+        if payload
+            .get("schemaVersion")
+            .and_then(|value| value.as_u64())
+            != Some(1)
+        {
+            return Err("torsion-free discovery payload must use schemaVersion 1".into());
+        }
+        let system = payload
+            .get("sourceSystem")
+            .or_else(|| payload.get("system"))
+            .and_then(|value| value.as_object())
+            .ok_or_else(|| "torsion-free discovery payload.sourceSystem is required".to_string())?;
+        let rank = system
+            .get("rank")
+            .and_then(|value| value.as_u64())
+            .ok_or_else(|| "torsion-free discovery system.rank must be an integer".to_string())?;
+        if rank == 0 || rank > 32 {
+            return Err("torsion-free discovery rank must be between 1 and 32".into());
+        }
+        let search = payload
+            .get("search")
+            .and_then(|value| value.as_object())
+            .ok_or_else(|| "torsion-free discovery payload.search is required".to_string())?;
+        match search.get("backend").and_then(|value| value.as_str()) {
+            None | Some("auto" | "gap" | "sage") => {}
+            _ => {
+                return Err(
+                    "torsion-free discovery search.backend must be auto, gap, or sage".into(),
+                )
+            }
+        }
+        for (field, maximum) in [
+            ("maxIndex", 100_000_u64),
+            ("maxCandidates", 10_000),
+            ("maxWitnesses", 100_000),
+            ("maxSphericalOrder", 1_000_000_000),
+            ("maxSubsets", 1_048_576),
+            ("timeoutSeconds", 3_600),
+        ] {
+            let value = search
+                .get(field)
+                .and_then(|value| value.as_u64())
+                .ok_or_else(|| format!("torsion-free discovery search.{field} is required"))?;
+            if value == 0 || value > maximum {
+                return Err(format!(
+                    "torsion-free discovery search.{field} must be between 1 and {maximum}"
+                ));
+            }
+        }
+        for (field, maximum) in [
+            ("maxModuleCandidates", 1_000_u64),
+            ("maxCompositeModules", 8),
+            ("maxCompositeCombinations", 1_000_000),
+            ("maxCongruencePrime", 1009),
+            ("maxCongruenceImageOrder", 1_000_000),
+            ("maxLowIndexFallback", 4_096),
+            ("maxMemoryBytes", 20 * 1024 * 1024 * 1024),
+            ("lightWorkers", 12),
+            ("heavyWorkers", 2),
+        ] {
+            if let Some(value) = search.get(field) {
+                let value = value.as_u64().ok_or_else(|| {
+                    format!("torsion-free discovery search.{field} must be an integer")
+                })?;
+                if value == 0 || value > maximum {
+                    return Err(format!(
+                        "torsion-free discovery search.{field} must be between 1 and {maximum}"
+                    ));
+                }
+            }
+        }
+    }
     Ok(())
 }
 
@@ -1053,8 +1175,9 @@ fn enqueue_desktop_job(
 
     let app_for_thread = app.clone();
     let workspace_path = request.workspace_path.clone();
+    let payload = request.payload.clone();
     thread::spawn(move || {
-        let _ = run_job(app_for_thread, id, request.kind, workspace_path);
+        let _ = run_job(app_for_thread, id, request.kind, workspace_path, payload);
     });
 
     Ok(job)
@@ -1074,6 +1197,25 @@ fn cancel_desktop_job(
     state: State<DesktopState>,
     id: String,
 ) -> Result<Option<DesktopJob>, String> {
+    {
+        let mut cancelled = state
+            .cancelled_jobs
+            .lock()
+            .map_err(|_| "cancelled-job lock was poisoned".to_string())?;
+        cancelled.insert(id.clone());
+    }
+    if let Some(path) = state
+        .cancel_files
+        .lock()
+        .map_err(|_| "cancel-file lock was poisoned".to_string())?
+        .get(&id)
+        .cloned()
+    {
+        // The Python runtime polls this token and tears down the complete
+        // native or WSL process group before returning.
+        fs::write(&path, b"cancel\n")
+            .map_err(|error| format!("could not signal desktop job cancellation: {error}"))?;
+    }
     let mut jobs = state
         .jobs
         .lock()
@@ -1092,12 +1234,25 @@ fn cancel_desktop_job(
     Ok(None)
 }
 
+fn desktop_job_cancelled<R: Runtime>(app: &AppHandle<R>, id: &str) -> Result<bool, String> {
+    Ok(app
+        .state::<DesktopState>()
+        .cancelled_jobs
+        .lock()
+        .map_err(|_| "cancelled-job lock was poisoned".to_string())?
+        .contains(id))
+}
+
 fn run_job<R: Runtime>(
     app: AppHandle<R>,
     id: String,
     kind: DesktopJobKind,
     workspace_path: Option<String>,
+    payload: Option<serde_json::Value>,
 ) -> Result<(), String> {
+    if desktop_job_cancelled(&app, &id)? {
+        return Ok(());
+    }
     update_job(&app, &id, DesktopJobStatus::Running, "running", None)?;
     let result = match kind {
         DesktopJobKind::DetectTools => {
@@ -1114,6 +1269,9 @@ fn run_job<R: Runtime>(
                 })
             })
         }
+        DesktopJobKind::DiscoverTorsionFreeCover => {
+            run_torsion_free_discovery(&app, &id, workspace_path, payload)
+        }
         DesktopJobKind::SageQuotientExport
         | DesktopJobKind::GapQuotientExport
         | DesktopJobKind::CoxiterCompactCheck
@@ -1123,6 +1281,9 @@ fn run_job<R: Runtime>(
         }
     };
 
+    if desktop_job_cancelled(&app, &id)? {
+        return update_job(&app, &id, DesktopJobStatus::Cancelled, "cancelled", None);
+    }
     match result {
         Ok(value) => update_job(
             &app,
@@ -1133,6 +1294,88 @@ fn run_job<R: Runtime>(
         ),
         Err(error) => update_job(&app, &id, DesktopJobStatus::Failed, &error, None),
     }
+}
+
+fn run_torsion_free_discovery<R: Runtime>(
+    app: &AppHandle<R>,
+    job_id: &str,
+    workspace_path: Option<String>,
+    payload: Option<serde_json::Value>,
+) -> Result<serde_json::Value, String> {
+    let payload = payload.ok_or_else(|| "discovery payload is required".to_string())?;
+    let artifact_dir = desktop_job_artifact_dir(app, workspace_path.as_deref())?;
+    let request_path = artifact_dir.join(format!("{job_id}-request.json"));
+    let artifact_path = artifact_dir.join(format!("{job_id}.json"));
+    let cancel_path = artifact_dir.join(format!("{job_id}.cancel"));
+    let _ = fs::remove_file(&cancel_path);
+    fs::write(
+        &request_path,
+        serde_json::to_vec_pretty(&payload)
+            .map_err(|error| format!("could not serialize discovery request: {error}"))?,
+    )
+    .map_err(|error| format!("could not write discovery request: {error}"))?;
+
+    let script = locate_bundled_script(app, "torsion_free_discovery.py")?;
+    let python = find_on_path(&["python", "python3", "python.exe"])
+        .ok_or_else(|| "Python is required to run torsion-free cover discovery".to_string())?;
+    let mut command = Command::new(&python);
+    command
+        .arg(&script)
+        .arg("--input")
+        .arg(&request_path)
+        .arg("--output")
+        .arg(&artifact_path)
+        .arg("--cancel-file")
+        .arg(&cancel_path);
+    {
+        let state = app.state::<DesktopState>();
+        state
+            .cancel_files
+            .lock()
+            .map_err(|_| "cancel-file lock was poisoned".to_string())?
+            .insert(job_id.to_string(), cancel_path.clone());
+        if desktop_job_cancelled(app, job_id)? {
+            fs::write(&cancel_path, b"cancel\n")
+                .map_err(|error| format!("could not signal queued job cancellation: {error}"))?;
+        }
+    }
+    #[cfg(target_os = "windows")]
+    command.creation_flags(0x08000000);
+    let completed_result = command.output();
+    app.state::<DesktopState>()
+        .cancel_files
+        .lock()
+        .map_err(|_| "cancel-file lock was poisoned".to_string())?
+        .remove(job_id);
+    let completed = completed_result
+        .map_err(|error| format!("could not start torsion-free discovery: {error}"))?;
+
+    if !artifact_path.is_file() {
+        let stderr = String::from_utf8_lossy(&completed.stderr);
+        let stdout = String::from_utf8_lossy(&completed.stdout);
+        return Err(format!(
+            "torsion-free discovery exited {} without an artifact: {}{}",
+            completed.status,
+            stderr.trim(),
+            if stderr.trim().is_empty() {
+                stdout.trim()
+            } else {
+                ""
+            }
+        ));
+    }
+    let artifact_text = fs::read_to_string(&artifact_path)
+        .map_err(|error| format!("could not read discovery artifact: {error}"))?;
+    let artifact: serde_json::Value = serde_json::from_str(&artifact_text)
+        .map_err(|error| format!("discovery artifact is not valid JSON: {error}"))?;
+    let stderr = String::from_utf8_lossy(&completed.stderr);
+    Ok(serde_json::json!({
+        "artifactPath": path_to_string(&artifact_path),
+        "requestPath": path_to_string(&request_path),
+        "processExitCode": completed.status.code(),
+        "processStderr": stderr.chars().take(4096).collect::<String>(),
+        "artifact": artifact,
+    }))
 }
 
 fn write_controlled_job_artifact(
@@ -1259,25 +1502,21 @@ fn install_app_menu(app: &mut tauri::App) -> tauri::Result<()> {
         .accelerator("F11")
         .build(app)?;
 
-    let guide_hexagon =
-        MenuItemBuilder::with_id("desktop:guide-hexagon", "Find a Hexagon").build(app)?;
-    let guide_rank_three =
-        MenuItemBuilder::with_id("desktop:guide-rank-three", "Understand a Rank-Three Cell")
+    let guide_rank_two =
+        MenuItemBuilder::with_id("desktop:guide-rank-two-cell", "Find a Rank-Two Cell")
             .build(app)?;
-    let guide_y_gamma =
-        MenuItemBuilder::with_id("desktop:guide-y-gamma", "Inspect Y_Gamma").build(app)?;
-    let guide_quotient = MenuItemBuilder::with_id(
-        "desktop:guide-quotient-game",
-        "Run Quotient/Game Experiment",
+    let guide_cover =
+        MenuItemBuilder::with_id("desktop:guide-finite-cover", "Inspect a Finite Cover")
+            .build(app)?;
+    let guide_walls =
+        MenuItemBuilder::with_id("desktop:guide-find-walls", "Find Walls in bar X").build(app)?;
+    let guide_coorientation =
+        MenuItemBuilder::with_id("desktop:guide-coorient-walls", "Coorient Walls").build(app)?;
+    let guide_links = MenuItemBuilder::with_id(
+        "desktop:guide-morse-links",
+        "Inspect Ascending/Descending Links",
     )
     .build(app)?;
-    let lens_generator_star =
-        MenuItemBuilder::with_id("desktop:lens-generator-star", "Generator Star Lens")
-            .build(app)?;
-    let lens_edge_star =
-        MenuItemBuilder::with_id("desktop:lens-edge-star", "Edge Star Lens").build(app)?;
-    let lens_rank_k =
-        MenuItemBuilder::with_id("desktop:lens-rank-k-family", "Rank-k Family Lens").build(app)?;
 
     let export_graph =
         MenuItemBuilder::with_id("desktop:export-graph", "Graph JSON...").build(app)?;
@@ -1325,13 +1564,11 @@ fn install_app_menu(app: &mut tauri::App) -> tauri::Result<()> {
         .build()?;
     let workflow_menu = SubmenuBuilder::new(app, "Workflow")
         .items(&[
-            &guide_hexagon,
-            &guide_rank_three,
-            &guide_y_gamma,
-            &guide_quotient,
-            &lens_generator_star,
-            &lens_edge_star,
-            &lens_rank_k,
+            &guide_rank_two,
+            &guide_cover,
+            &guide_walls,
+            &guide_coorientation,
+            &guide_links,
         ])
         .build()?;
     let export_menu = SubmenuBuilder::new(app, "Export")
@@ -1497,8 +1734,37 @@ mod tests {
         let request = DesktopJobRequest {
             kind: DesktopJobKind::ValidateWorkspace,
             workspace_path: None,
+            payload: None,
         };
         assert!(validate_job_request(&request).is_err());
+    }
+
+    #[test]
+    fn discovery_job_requires_a_bounded_structured_source() {
+        let missing = DesktopJobRequest {
+            kind: DesktopJobKind::DiscoverTorsionFreeCover,
+            workspace_path: None,
+            payload: None,
+        };
+        assert!(validate_job_request(&missing).is_err());
+
+        let valid = DesktopJobRequest {
+            kind: DesktopJobKind::DiscoverTorsionFreeCover,
+            workspace_path: None,
+            payload: Some(serde_json::json!({
+                "schemaVersion": 1,
+                "sourceSystem": { "rank": 2 },
+                "search": {
+                    "maxIndex": 64,
+                    "maxCandidates": 8,
+                    "maxWitnesses": 128,
+                    "maxSphericalOrder": 10000,
+                    "maxSubsets": 1024,
+                    "timeoutSeconds": 30
+                }
+            })),
+        };
+        assert!(validate_job_request(&valid).is_ok());
     }
 
     #[test]

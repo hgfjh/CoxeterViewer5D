@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "kind": "streamed-rank19-adaptive-track-b-archive",
+  "archive": {
+    "path": "scripts/certificates/torsion-free/compact_5_cube_index34560_rank19_adaptive.json.gz",
+    "encoding": "gzip-canonical-json",
+    "byteLength": 83307,
+    "sha256": "1b35e521dd36873265182a3531f9c96bfdb284847c0aedcedcdc17d33f5fcfe4"
+  },
+  "decoded": {
+    "byteLength": 427156,
+    "sha256": "8d6acee21be6c5276e0d82b43de2561a29d9b3d6c403929b869a96ef6e1b41fd",
+    "artifactDigest": "3b74d8950dece76b1f12663900ae6ca30f0dcfd30e7e2e478c28c8bbea87ef8e",
+    "runnerDigest": "cc79951adb9a0f8d798128230e7d5e0f73a93c5247f1350e4b98f028acb94842",
+    "reportDigest": "d525609a94a03df38f8b514ac68630f0ac623e8d1e14179d3706b853b5e2c6f4",
+    "terminalStatus": "invariant-obstruction-cover",
+    "degree": 34560,
+    "rank": 19,
+    "sourceHash": "6ee02bd88fa14c2f458c2716d822372bb98e9d07e33b0a7c42cdb17e33b02422",
+    "oracleStructureHash": "694ba5e095a6c56a4364e3c2e287eefbaf44a90d76c421b9abe083e063027b72",
+    "actionRowsCanonicalSha256": "d8d95caec8566528c0c4377a9002f9f372a957bb4432758581afa7ec50116dd2",
+    "generalizedCompressionArchiveHash": "42ad6f697c734473ceb26bb88c6d5a1e30a44d77d9f190c4147f3304ff1b29fd",
+    "h1CertificateDigest": "8befa3cc4a919d0bec1c8d7ab7c117238d1866c533c3348f97703391cda04bcd",
+    "latticeBasisDigest": "1a8a65a2c01ab263911558864bc51b85dc551c05a7691ffc0088b8c1ca08951e",
+    "cocycleSectionDigest": "ed6176b687e6487a03b01bbcccc4304cce72b3812069d4e2020773cb83914f3d",
+    "heightRuleDigest": "1912a2e8279e9638e10b75d284909e196470d297f2779272f889582de033512c",
+    "searchResultDigest": "300f4b202c93772989641bb3c51324831b1bddb8040919f6750fa2b6337fb5ad",
+    "templateRecordDigest": "c62a6dd339befcf26c79ced1da981a368bef31a65891f8c351a387d415f27a48",
+    "templateBatchDigest": "e09644a7e346093247272a8a92248edceb7b383fee81e8b3ff96b91186277352",
+    "polarityTransportDigest": "14078082c9e23f5aed337e73995a0c3b02aa69e3b304cb9cc10fc8c30f5e287c",
+    "selectedPointCount": 32,
+    "selectedPointDigest": "23b22df6bf551a4e788327db3b3d3d96e1eca49078d2c6bd0049da2d390eca8b",
+    "iterationCount": 1,
+    "templateRecordCount": 32,
+    "templateBatchCount": 1,
+    "terminalObjectDigest": "12bdbdb8c60b3a3a9c72bb2c94db6fcfb1aed9db881e3e5f9020ca30c98cd433"
+  },
+  "structuralReplayChecks": {
+    "artifactEnvelopeValid": true,
+    "storedArtifactDigestValid": true,
+    "reportEnvelopeValid": true,
+    "storedReportDigestValid": true,
+    "terminalStatusValid": true,
+    "terminalObjectShapeValid": true,
+    "summaryFieldsValid": true,
+    "exactSchemaValid": true
+  },
+  "replayBounds": {
+    "maximumArchiveByteLength": 134217728,
+    "maximumDecodedByteLength": 268435456
+  },
+  "compression": {
+    "method": "node-zlib-gzip-level-9-canonical-json-header-v1",
+    "nodeVersion": "24.16.0",
+    "zlibVersion": "1.3.1-e00f703"
+  },
+  "manifestDigest": "b1671dff3be7fdb2447ab1c432b16821f30577253f942b3bea7e9063a3b142e0"
+}

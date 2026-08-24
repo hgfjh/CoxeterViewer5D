@@ -1,0 +1,2208 @@
+{
+  "schemaVersion": 1,
+  "kind": "compact-5-cube-streamed-h1-report",
+  "status": "passed",
+  "source": {
+    "system": {
+      "path": "public/examples/compact_5_cube_gamma1.json",
+      "sha256": "3fce0c748df12dd42d5fd04ef113cad7de484429a19aa14b3388e29053d43d4c"
+    },
+    "parentAction": {
+      "path": "coxeter5cube_index17280/index17280_permutations.json.gz",
+      "sha256": "067c1c0683d7bf9bf14cefcdccb008bd09ffbf9b026cb0a6bce9f23db548a8a8"
+    },
+    "character": [1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+    "characterDigest": "be9ed37c78a3aa56c2a47d08ce4e42e75d914a931f8eee92acdb90ceaa1b652e",
+    "parentActionRowsCanonicalSha256": "8385accb6d28ca4b8933d396cb1f0735acd3af374ebca69c23d05fd65db8eea8",
+    "derivedActionRowsCanonicalSha256": "8b7782b43e64a1dc9da058fb198d029f60895ebfa9ca896986a2046cb4794d24",
+    "oracleStructureHash": "694ba5e095a6c56a4364e3c2e287eefbaf44a90d76c421b9abe083e063027b72"
+  },
+  "externalArtifacts": {
+    "rawCoreMatrix": {
+      "path": "scripts/certificates/torsion-free/compact_5_cube_h1_core_matrix.linbox.gz",
+      "encoding": "gzip",
+      "artifactSha256": "f7142317ad132d5f04ea021418d4b71c9dec0fd6b093198ffce6e04ae9c4aec5",
+      "payloadSha256": "a5bcc0771d5cc35f070fbcbf190d97aae0ce782b85117b869614fd0ad118e450",
+      "artifactByteCount": 1968655,
+      "payloadByteCount": 6414678,
+      "canonicalMatrixDigest": "1437c25d58780bfa0818d2789bdc684932b4c799bfdfd44d307a5ed2aab9e99a"
+    },
+    "integralCoreBasis": {
+      "path": "scripts/certificates/torsion-free/compact_5_cube_h1_integral_core_basis.txt.gz",
+      "encoding": "gzip",
+      "artifactSha256": "1c30dcb941d8e723c4032aadd591fb3efe19e5b20b33d30223075a8b2892f1ad",
+      "payloadSha256": "b81fbf5d0f387ce62ccffe8d3698a7f6fad4f16a36698b7dd0cbc2c883c7f370",
+      "artifactByteCount": 528645,
+      "payloadByteCount": 1713338,
+      "sparseBasisDigest": "d197439b00298fedbb5caebf49a9d0146af32b3f0ffae014121d6ad9b9fac5c4"
+    },
+    "modularRankTranscripts": [
+      {
+        "prime": 30011,
+        "path": "scripts/certificates/torsion-free/compact_5_cube_h1_modular_basis_p30011.txt.gz",
+        "encoding": "gzip",
+        "artifactSha256": "a08e6af7e33ac4353020af8a2a8ab5ada6bc01c3bf7e4a136703f62b650b923d",
+        "payloadSha256": "e1ee69886d250aff960f527c16396ddbb6a6d2cad0397c40bad750913b5f960c",
+        "artifactByteCount": 985789,
+        "payloadByteCount": 3946645,
+        "rawBasisNonzeroCount": 357780,
+        "normalizedComparisonEntryCount": 1319250,
+        "witness": {
+          "schemaVersion": 1,
+          "kind": "streamed-h1-exact-modular-core-rank-witness",
+          "status": "passed",
+          "preparationDigest": "6ca90097bf595a8ddc011e7fdb8b5b64fa9f5017a9b598c78b662b68964a5956",
+          "coreMatrixDigest": "1437c25d58780bfa0818d2789bdc684932b4c799bfdfd44d307a5ed2aab9e99a",
+          "ledgerDigest": "5ec3ec68d6aea009afde18942f7a5147efba9063c1305aa1f654e17c6711c5bc",
+          "modulusPrime": 30011,
+          "rowCount": 266513,
+          "columnCount": 87950,
+          "rank": 87935,
+          "exactFieldArithmetic": true,
+          "backend": "LinBox/Givaro",
+          "backendVersion": "1.7.0-4/4.2.0",
+          "algorithm": "GaussDomain::InPlaceLinearPivoting + GaussDomain::nullspacebasis",
+          "transcriptSha256": "e1ee69886d250aff960f527c16396ddbb6a6d2cad0397c40bad750913b5f960c",
+          "normalizedKernelBasisSha256": "8b4e12794d9bf1c4c21e0bd0f0f0cd00d778de500dbe929ae98f44db95d3d21d",
+          "identityChartColumns": [
+            0, 3, 7, 12, 15, 24, 30, 18947, 18950, 18956, 18959, 62888, 62889,
+            62906, 62907
+          ],
+          "identityChartInvertible": true,
+          "normalizedBasisMatchesIntegralCoreBasis": true
+        }
+      },
+      {
+        "prime": 32749,
+        "path": "scripts/certificates/torsion-free/compact_5_cube_h1_modular_basis_p32749.txt.gz",
+        "encoding": "gzip",
+        "artifactSha256": "326864ee604bccbe131928726d046ddd00cdb5d5201089b11786cdb541853451",
+        "payloadSha256": "aa11a098739ebfa20eb0743d6cfa56ecc52169a3000bfe641fecfd962b7b8006",
+        "artifactByteCount": 985871,
+        "payloadByteCount": 3946645,
+        "rawBasisNonzeroCount": 357780,
+        "normalizedComparisonEntryCount": 1319250,
+        "witness": {
+          "schemaVersion": 1,
+          "kind": "streamed-h1-exact-modular-core-rank-witness",
+          "status": "passed",
+          "preparationDigest": "6ca90097bf595a8ddc011e7fdb8b5b64fa9f5017a9b598c78b662b68964a5956",
+          "coreMatrixDigest": "1437c25d58780bfa0818d2789bdc684932b4c799bfdfd44d307a5ed2aab9e99a",
+          "ledgerDigest": "5ec3ec68d6aea009afde18942f7a5147efba9063c1305aa1f654e17c6711c5bc",
+          "modulusPrime": 32749,
+          "rowCount": 266513,
+          "columnCount": 87950,
+          "rank": 87935,
+          "exactFieldArithmetic": true,
+          "backend": "LinBox/Givaro",
+          "backendVersion": "1.7.0-4/4.2.0",
+          "algorithm": "GaussDomain::InPlaceLinearPivoting + GaussDomain::nullspacebasis",
+          "transcriptSha256": "aa11a098739ebfa20eb0743d6cfa56ecc52169a3000bfe641fecfd962b7b8006",
+          "normalizedKernelBasisSha256": "69202a4d2ab2649c481d8dea0f28f36040e5fe8c9ba32b224e2cfcabf370776d",
+          "identityChartColumns": [
+            0, 3, 7, 12, 15, 24, 30, 18947, 18950, 18956, 18959, 62888, 62889,
+            62906, 62907
+          ],
+          "identityChartInvertible": true,
+          "normalizedBasisMatchesIntegralCoreBasis": true
+        }
+      }
+    ],
+    "nullspaceDriver": {
+      "path": "scripts/streamed_h1_core_nullspace.cpp",
+      "sha256": "35ff7082e4df8e9ce8d421fc6d0f494b8496568a15ba51f50db01cf34c198740",
+      "algorithm": "GaussDomain::InPlaceLinearPivoting + GaussDomain::nullspacebasis"
+    }
+  },
+  "sourceReplays": {
+    "parentAction": "passed",
+    "z2Lift": "accepted",
+    "torsionFreeAction": "passed"
+  },
+  "preparation": {
+    "schemaVersion": 1,
+    "kind": "streamed-h1-lattice-preparation",
+    "status": "prepared",
+    "method": "tree-gauge-wall-saturation-and-unit-peel-core",
+    "oracleStructureHash": "694ba5e095a6c56a4364e3c2e287eefbaf44a90d76c421b9abe083e063027b72",
+    "actionRowsCanonicalSha256": "d8d95caec8566528c0c4377a9002f9f372a957bb4432758581afa7ec50116dd2",
+    "degree": 34560,
+    "wallIds": [
+      "wall:bar:e:g0:q0:q25789",
+      "wall:bar:e:g0:q10000:q10103",
+      "wall:bar:e:g0:q10002:q10165",
+      "wall:bar:e:g0:q1000:q15455",
+      "wall:bar:e:g0:q10014:q10135",
+      "wall:bar:e:g0:q10020:q18901",
+      "wall:bar:e:g0:q10080:q11563",
+      "wall:bar:e:g8:q0:q264",
+      "wall:bar:e:g8:q10000:q9776",
+      "wall:bar:e:g8:q10001:q9777"
+    ],
+    "coordinateIds": ["beta0", "beta1", "beta2", "beta3"],
+    "betaDefinitions": [
+      {
+        "id": "beta0",
+        "numeratorWeights": [0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
+        "divisor": 1,
+        "formula": "-omega5"
+      },
+      {
+        "id": "beta1",
+        "numeratorWeights": [0, 0, 0, -1, -1, 2, 2, 0, 0, 0],
+        "divisor": 1,
+        "formula": "-omega3-omega4+2*omega5+2*omega6"
+      },
+      {
+        "id": "beta2",
+        "numeratorWeights": [0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
+        "divisor": 1,
+        "formula": "-omega4"
+      },
+      {
+        "id": "beta3",
+        "numeratorWeights": [0, 0, 0, 1, 1, -1, -1, 0, 0, 0],
+        "divisor": 2,
+        "formula": "(omega3+omega4-omega5-omega6)/2 after tree gauge"
+      }
+    ],
+    "wallCoordinates": [
+      [-1, -1, 0, 0, 0, -1, 1, 0, 0, 0],
+      [-1, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+      [1, -1, 0, 1, -1, 0, 0, 0, 0, 0],
+      [0, -2, 2, 4, 0, 0, 2, 0, 0, 0]
+    ],
+    "graph": {
+      "vertexCount": 34560,
+      "geometricEdgeCount": 172800,
+      "treeEdgeCount": 34559,
+      "cotreeEdgeCount": 138241,
+      "treeDigest": "1793e13544d7a12d94efc4126845247cc335b01604f959269dc5a3ddf6ea6b72",
+      "cotreeDigest": "4824d29021704fca4d852f5f39113068a5568f2b75e35b176f37964f3a5aae3c"
+    },
+    "periods": {
+      "nonzeroCotreePeriodCount": 70974,
+      "uniqueVectorCount": 330,
+      "histogram": [
+        {
+          "vector": [-5, 3, 0, -4, 0, -1, 1, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g0:q23851:q24576"
+        },
+        {
+          "vector": [-5, 4, 1, -3, 2, 0, 1, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g6:q10945:q26538"
+        },
+        {
+          "vector": [-4, 0, 0, -2, 0, -2, 2, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g3:q25399:q32592"
+        },
+        {
+          "vector": [-4, 0, 0, -2, 2, -2, 2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q14395:q18198"
+        },
+        {
+          "vector": [-4, 1, 1, -1, 0, -1, 2, 0, 0, 0],
+          "count": 69,
+          "firstEdgeId": "bar:e:g6:q3469:q8364"
+        },
+        {
+          "vector": [-4, 2, 0, -3, -1, -1, 1, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g7:q16428:q16495"
+        },
+        {
+          "vector": [-4, 2, 0, -3, 1, -1, 1, 0, 0, 0],
+          "count": 48,
+          "firstEdgeId": "bar:e:g4:q10945:q20124"
+        },
+        {
+          "vector": [-4, 3, 1, -2, -3, 0, 1, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g0:q7297:q7428"
+        },
+        {
+          "vector": [-4, 3, 1, -2, -1, 0, 1, 0, 0, 0],
+          "count": 51,
+          "firstEdgeId": "bar:e:g5:q1692:q1747"
+        },
+        {
+          "vector": [-4, 3, 1, -2, 1, 0, 1, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g4:q3313:q3546"
+        },
+        {
+          "vector": [-4, 4, 0, -4, -2, 0, 0, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g1:q1338:q1609"
+        },
+        {
+          "vector": [-4, 4, 0, -4, 0, 0, 0, 0, 0, 0],
+          "count": 51,
+          "firstEdgeId": "bar:e:g5:q1050:q13483"
+        },
+        {
+          "vector": [-4, 4, 0, -4, 2, 0, 0, 0, 0, 0],
+          "count": 51,
+          "firstEdgeId": "bar:e:g6:q1344:q1417"
+        },
+        {
+          "vector": [-4, 5, 1, -3, 0, 1, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g4:q24607:q29850"
+        },
+        {
+          "vector": [-3, -3, 0, 0, 0, -3, 3, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g5:q32598:q32623"
+        },
+        {
+          "vector": [-3, -1, 0, -1, -1, -2, 2, 0, 0, 0],
+          "count": 15,
+          "firstEdgeId": "bar:e:g3:q13656:q14587"
+        },
+        {
+          "vector": [-3, -1, 0, -1, 1, -2, 2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g3:q1279:q27090"
+        },
+        {
+          "vector": [-3, 0, -1, -3, 0, -2, 1, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g2:q3582:q3607"
+        },
+        {
+          "vector": [-3, 0, 1, 0, -3, -1, 2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g5:q16219:q26754"
+        },
+        {
+          "vector": [-3, 0, 1, 0, -1, -1, 2, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g3:q10069:q21600"
+        },
+        {
+          "vector": [-3, 0, 1, 0, 1, -1, 2, 0, 0, 0],
+          "count": 21,
+          "firstEdgeId": "bar:e:g2:q2802:q31891"
+        },
+        {
+          "vector": [-3, 0, 1, 0, 3, -1, 2, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g7:q7542:q7669"
+        },
+        {
+          "vector": [-3, 1, 0, -2, -4, -1, 1, 0, 0, 0],
+          "count": 64,
+          "firstEdgeId": "bar:e:g7:q11:q20818"
+        },
+        {
+          "vector": [-3, 1, 0, -2, -2, -1, 1, 0, 0, 0],
+          "count": 42,
+          "firstEdgeId": "bar:e:g2:q3355:q3828"
+        },
+        {
+          "vector": [-3, 1, 0, -2, 0, -1, 1, 0, 0, 0],
+          "count": 591,
+          "firstEdgeId": "bar:e:g5:q576:q6571"
+        },
+        {
+          "vector": [-3, 1, 0, -2, 2, -1, 1, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g0:q7338:q8719"
+        },
+        {
+          "vector": [-3, 1, 0, -2, 4, -1, 1, 0, 0, 0],
+          "count": 54,
+          "firstEdgeId": "bar:e:g3:q306:q403"
+        },
+        {
+          "vector": [-3, 1, 2, 1, -3, 0, 2, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g1:q15726:q16957"
+        },
+        {
+          "vector": [-3, 1, 2, 1, 1, 0, 2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g4:q14737:q30024"
+        },
+        {
+          "vector": [-3, 2, -1, -4, -1, -1, 0, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g1:q1188:q1261"
+        },
+        {
+          "vector": [-3, 2, -1, -4, 1, -1, 0, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g2:q1104:q15079"
+        },
+        {
+          "vector": [-3, 2, 1, -1, -4, 0, 1, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g3:q595:q8436"
+        },
+        {
+          "vector": [-3, 2, 1, -1, -2, 0, 1, 0, 0, 0],
+          "count": 51,
+          "firstEdgeId": "bar:e:g5:q1614:q19495"
+        },
+        {
+          "vector": [-3, 2, 1, -1, 0, 0, 1, 0, 0, 0],
+          "count": 615,
+          "firstEdgeId": "bar:e:g2:q895:q918"
+        },
+        {
+          "vector": [-3, 2, 1, -1, 2, 0, 1, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g5:q1849:q30126"
+        },
+        {
+          "vector": [-3, 2, 1, -1, 4, 0, 1, 0, 0, 0],
+          "count": 30,
+          "firstEdgeId": "bar:e:g1:q3901:q6648"
+        },
+        {
+          "vector": [-3, 3, 0, -3, -3, 0, 0, 0, 0, 0],
+          "count": 15,
+          "firstEdgeId": "bar:e:g1:q11388:q11419"
+        },
+        {
+          "vector": [-3, 3, 0, -3, -1, 0, 0, 0, 0, 0],
+          "count": 123,
+          "firstEdgeId": "bar:e:g7:q1164:q3247"
+        },
+        {
+          "vector": [-3, 3, 0, -3, 1, 0, 0, 0, 0, 0],
+          "count": 144,
+          "firstEdgeId": "bar:e:g7:q1159:q3240"
+        },
+        {
+          "vector": [-3, 3, 0, -3, 3, 0, 0, 0, 0, 0],
+          "count": 21,
+          "firstEdgeId": "bar:e:g6:q1849:q3816"
+        },
+        {
+          "vector": [-3, 3, 2, 0, 0, 1, 1, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g5:q1219:q13950"
+        },
+        {
+          "vector": [-3, 4, 1, -2, -1, 1, 0, 0, 0, 0],
+          "count": 4,
+          "firstEdgeId": "bar:e:g2:q342:q3427"
+        },
+        {
+          "vector": [-3, 4, 1, -2, 1, 1, 0, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g0:q1374:q1579"
+        },
+        {
+          "vector": [-2, -2, 0, 0, -4, -2, 2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g7:q11815:q11928"
+        },
+        {
+          "vector": [-2, -2, 0, 0, 0, -2, 2, 0, 0, 0],
+          "count": 240,
+          "firstEdgeId": "bar:e:g1:q325:q7446"
+        },
+        {
+          "vector": [-2, -2, 0, 0, 4, -2, 2, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g4:q8760:q8767"
+        },
+        {
+          "vector": [-2, -1, -1, -2, -1, -2, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g3:q11286:q29419"
+        },
+        {
+          "vector": [-2, -1, -1, -2, 1, -2, 1, 0, 0, 0],
+          "count": 21,
+          "firstEdgeId": "bar:e:g3:q1782:q30271"
+        },
+        {
+          "vector": [-2, -1, 1, 1, -4, -1, 2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g7:q9390:q9475"
+        },
+        {
+          "vector": [-2, -1, 1, 1, 0, -1, 2, 0, 0, 0],
+          "count": 440,
+          "firstEdgeId": "bar:e:g5:q1315:q27276"
+        },
+        {
+          "vector": [-2, -1, 1, 1, 2, -1, 2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g0:q16447:q4272"
+        },
+        {
+          "vector": [-2, -1, 1, 1, 4, -1, 2, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g3:q3529:q4704"
+        },
+        {
+          "vector": [-2, 0, 0, -1, -3, -1, 1, 0, 0, 0],
+          "count": 138,
+          "firstEdgeId": "bar:e:g3:q492:q4975"
+        },
+        {
+          "vector": [-2, 0, 0, -1, -1, -1, 1, 0, 0, 0],
+          "count": 847,
+          "firstEdgeId": "bar:e:g0:q595:q738"
+        },
+        {
+          "vector": [-2, 0, 0, -1, 1, -1, 1, 0, 0, 0],
+          "count": 1032,
+          "firstEdgeId": "bar:e:g1:q180:q4903"
+        },
+        {
+          "vector": [-2, 0, 0, -1, 3, -1, 1, 0, 0, 0],
+          "count": 171,
+          "firstEdgeId": "bar:e:g2:q1644:q32053"
+        },
+        {
+          "vector": [-2, 0, 0, -1, 5, -1, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g7:q16303:q16356"
+        },
+        {
+          "vector": [-2, 0, 2, 2, -4, 0, 2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g1:q17202:q32299"
+        },
+        {
+          "vector": [-2, 0, 2, 2, 0, 0, 2, 0, 0, 0],
+          "count": 126,
+          "firstEdgeId": "bar:e:g0:q1219:q30900"
+        },
+        {
+          "vector": [-2, 1, -1, -3, -4, -1, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g7:q17376:q679"
+        },
+        {
+          "vector": [-2, 1, -1, -3, -2, -1, 0, 0, 0, 0],
+          "count": 31,
+          "firstEdgeId": "bar:e:g5:q1000:q32471"
+        },
+        {
+          "vector": [-2, 1, -1, -3, 0, -1, 0, 0, 0, 0],
+          "count": 684,
+          "firstEdgeId": "bar:e:g2:q630:q673"
+        },
+        {
+          "vector": [-2, 1, -1, -3, 2, -1, 0, 0, 0, 0],
+          "count": 57,
+          "firstEdgeId": "bar:e:g4:q1188:q17887"
+        },
+        {
+          "vector": [-2, 1, -1, -3, 4, -1, 0, 0, 0, 0],
+          "count": 75,
+          "firstEdgeId": "bar:e:g1:q42:q49"
+        },
+        {
+          "vector": [-2, 1, 1, 0, -5, 0, 1, 0, 0, 0],
+          "count": 15,
+          "firstEdgeId": "bar:e:g5:q10009:q29328"
+        },
+        {
+          "vector": [-2, 1, 1, 0, -3, 0, 1, 0, 0, 0],
+          "count": 82,
+          "firstEdgeId": "bar:e:g7:q100:q25049"
+        },
+        {
+          "vector": [-2, 1, 1, 0, -1, 0, 1, 0, 0, 0],
+          "count": 403,
+          "firstEdgeId": "bar:e:g2:q100:q125"
+        },
+        {
+          "vector": [-2, 1, 1, 0, 1, 0, 1, 0, 0, 0],
+          "count": 510,
+          "firstEdgeId": "bar:e:g4:q1272:q29887"
+        },
+        {
+          "vector": [-2, 1, 1, 0, 3, 0, 1, 0, 0, 0],
+          "count": 57,
+          "firstEdgeId": "bar:e:g4:q1159:q4536"
+        },
+        {
+          "vector": [-2, 1, 1, 0, 5, 0, 1, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g5:q20665:q27366"
+        },
+        {
+          "vector": [-2, 2, 0, -2, -4, 0, 0, 0, 0, 0],
+          "count": 165,
+          "firstEdgeId": "bar:e:g3:q1338:q7231"
+        },
+        {
+          "vector": [-2, 2, 0, -2, -2, 0, 0, 0, 0, 0],
+          "count": 270,
+          "firstEdgeId": "bar:e:g7:q1176:q3259"
+        },
+        {
+          "vector": [-2, 2, 0, -2, 0, 0, 0, 0, 0, 0],
+          "count": 1963,
+          "firstEdgeId": "bar:e:g0:q7:q96"
+        },
+        {
+          "vector": [-2, 2, 0, -2, 2, 0, 0, 0, 0, 0],
+          "count": 300,
+          "firstEdgeId": "bar:e:g0:q1116:q17401"
+        },
+        {
+          "vector": [-2, 2, 0, -2, 4, 0, 0, 0, 0, 0],
+          "count": 237,
+          "firstEdgeId": "bar:e:g2:q306:q33055"
+        },
+        {
+          "vector": [-2, 2, 2, 1, 1, 1, 1, 0, 0, 0],
+          "count": 12,
+          "firstEdgeId": "bar:e:g2:q10710:q29491"
+        },
+        {
+          "vector": [-2, 3, -1, -4, -1, 0, -1, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g4:q2233:q2238"
+        },
+        {
+          "vector": [-2, 3, -1, -4, 1, 0, -1, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g1:q894:q967"
+        },
+        {
+          "vector": [-2, 3, 1, -1, -4, 1, 0, 0, 0, 0],
+          "count": 81,
+          "firstEdgeId": "bar:e:g0:q1387:q7548"
+        },
+        {
+          "vector": [-2, 3, 1, -1, -2, 1, 0, 0, 0, 0],
+          "count": 66,
+          "firstEdgeId": "bar:e:g0:q3439:q3546"
+        },
+        {
+          "vector": [-2, 3, 1, -1, 0, 1, 0, 0, 0, 0],
+          "count": 288,
+          "firstEdgeId": "bar:e:g3:q108:q121"
+        },
+        {
+          "vector": [-2, 3, 1, -1, 2, 1, 0, 0, 0, 0],
+          "count": 66,
+          "firstEdgeId": "bar:e:g4:q1410:q1417"
+        },
+        {
+          "vector": [-2, 3, 1, -1, 4, 1, 0, 0, 0, 0],
+          "count": 54,
+          "firstEdgeId": "bar:e:g2:q2179:q54"
+        },
+        {
+          "vector": [-2, 4, 0, -3, -1, 1, -1, 0, 0, 0],
+          "count": 30,
+          "firstEdgeId": "bar:e:g3:q2784:q32911"
+        },
+        {
+          "vector": [-2, 4, 0, -3, 1, 1, -1, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g3:q14041:q14922"
+        },
+        {
+          "vector": [-2, 4, 0, -3, 3, 1, -1, 0, 0, 0],
+          "count": 12,
+          "firstEdgeId": "bar:e:g0:q3337:q3816"
+        },
+        {
+          "vector": [-1, -3, 0, 1, -1, -2, 2, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g4:q1704:q1711"
+        },
+        {
+          "vector": [-1, -3, 0, 1, 1, -2, 2, 0, 0, 0],
+          "count": 30,
+          "firstEdgeId": "bar:e:g6:q2472:q31891"
+        },
+        {
+          "vector": [-1, -2, -1, -1, -2, -2, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q33624:q34273"
+        },
+        {
+          "vector": [-1, -2, -1, -1, 0, -2, 1, 0, 0, 0],
+          "count": 318,
+          "firstEdgeId": "bar:e:g3:q133:q4368"
+        },
+        {
+          "vector": [-1, -2, -1, -1, 2, -2, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g6:q24276:q34273"
+        },
+        {
+          "vector": [-1, -2, 1, 2, -3, -1, 2, 0, 0, 0],
+          "count": 21,
+          "firstEdgeId": "bar:e:g1:q4164:q4171"
+        },
+        {
+          "vector": [-1, -2, 1, 2, -1, -1, 2, 0, 0, 0],
+          "count": 45,
+          "firstEdgeId": "bar:e:g3:q1512:q28261"
+        },
+        {
+          "vector": [-1, -2, 1, 2, 1, -1, 2, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g4:q1015:q3150"
+        },
+        {
+          "vector": [-1, -2, 1, 2, 3, -1, 2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g3:q3949:q9912"
+        },
+        {
+          "vector": [-1, -1, -2, -3, -1, -2, 0, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g6:q3655:q3726"
+        },
+        {
+          "vector": [-1, -1, 0, 0, -4, -1, 1, 0, 0, 0],
+          "count": 295,
+          "firstEdgeId": "bar:e:g5:q12:q2137"
+        },
+        {
+          "vector": [-1, -1, 0, 0, -2, -1, 1, 0, 0, 0],
+          "count": 234,
+          "firstEdgeId": "bar:e:g2:q180:q34351"
+        },
+        {
+          "vector": [-1, -1, 0, 0, 0, -1, 1, 0, 0, 0],
+          "count": 2860,
+          "firstEdgeId": "bar:e:g6:q7:q78"
+        },
+        {
+          "vector": [-1, -1, 0, 0, 2, -1, 1, 0, 0, 0],
+          "count": 360,
+          "firstEdgeId": "bar:e:g6:q570:q7129"
+        },
+        {
+          "vector": [-1, -1, 0, 0, 4, -1, 1, 0, 0, 0],
+          "count": 516,
+          "firstEdgeId": "bar:e:g1:q114:q17419"
+        },
+        {
+          "vector": [-1, -1, 2, 3, -1, 0, 2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q16344:q19471"
+        },
+        {
+          "vector": [-1, 0, -1, -2, -3, -1, 0, 0, 0, 0],
+          "count": 78,
+          "firstEdgeId": "bar:e:g2:q2916:q2935"
+        },
+        {
+          "vector": [-1, 0, -1, -2, -1, -1, 0, 0, 0, 0],
+          "count": 411,
+          "firstEdgeId": "bar:e:g0:q618:q6613"
+        },
+        {
+          "vector": [-1, 0, -1, -2, 1, -1, 0, 0, 0, 0],
+          "count": 420,
+          "firstEdgeId": "bar:e:g0:q283:q372"
+        },
+        {
+          "vector": [-1, 0, -1, -2, 3, -1, 0, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g4:q2401:q31758"
+        },
+        {
+          "vector": [-1, 0, -1, -2, 5, -1, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g1:q16303:q16314"
+        },
+        {
+          "vector": [-1, 0, 1, 1, -4, 0, 1, 0, 0, 0],
+          "count": 309,
+          "firstEdgeId": "bar:e:g6:q199:q20904"
+        },
+        {
+          "vector": [-1, 0, 1, 1, -2, 0, 1, 0, 0, 0],
+          "count": 204,
+          "firstEdgeId": "bar:e:g1:q1368:q7261"
+        },
+        {
+          "vector": [-1, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+          "count": 1757,
+          "firstEdgeId": "bar:e:g0:q211:q66"
+        },
+        {
+          "vector": [-1, 0, 1, 1, 2, 0, 1, 0, 0, 0],
+          "count": 160,
+          "firstEdgeId": "bar:e:g5:q444:q6919"
+        },
+        {
+          "vector": [-1, 0, 1, 1, 4, 0, 1, 0, 0, 0],
+          "count": 138,
+          "firstEdgeId": "bar:e:g3:q1212:q17005"
+        },
+        {
+          "vector": [-1, 1, -2, -4, 0, -1, -1, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g2:q1045:q1062"
+        },
+        {
+          "vector": [-1, 1, 0, -1, -5, 0, 0, 0, 0, 0],
+          "count": 30,
+          "firstEdgeId": "bar:e:g4:q12318:q13423"
+        },
+        {
+          "vector": [-1, 1, 0, -1, -3, 0, 0, 0, 0, 0],
+          "count": 960,
+          "firstEdgeId": "bar:e:g1:q100:q173"
+        },
+        {
+          "vector": [-1, 1, 0, -1, -1, 0, 0, 0, 0, 0],
+          "count": 1992,
+          "firstEdgeId": "bar:e:g5:q19:q30690"
+        },
+        {
+          "vector": [-1, 1, 0, -1, 1, 0, 0, 0, 0, 0],
+          "count": 1886,
+          "firstEdgeId": "bar:e:g2:q19:q6162"
+        },
+        {
+          "vector": [-1, 1, 0, -1, 3, 0, 0, 0, 0, 0],
+          "count": 1130,
+          "firstEdgeId": "bar:e:g0:q258:q7411"
+        },
+        {
+          "vector": [-1, 1, 0, -1, 5, 0, 0, 0, 0, 0],
+          "count": 30,
+          "firstEdgeId": "bar:e:g1:q660:q733"
+        },
+        {
+          "vector": [-1, 1, 2, 2, -4, 1, 1, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g2:q12709:q16290"
+        },
+        {
+          "vector": [-1, 1, 2, 2, 0, 1, 1, 0, 0, 0],
+          "count": 318,
+          "firstEdgeId": "bar:e:g1:q1062:q793"
+        },
+        {
+          "vector": [-1, 1, 2, 2, 2, 1, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g3:q17443:q4272"
+        },
+        {
+          "vector": [-1, 2, -1, -3, -4, 0, -1, 0, 0, 0],
+          "count": 81,
+          "firstEdgeId": "bar:e:g3:q1176:q1189"
+        },
+        {
+          "vector": [-1, 2, -1, -3, -2, 0, -1, 0, 0, 0],
+          "count": 53,
+          "firstEdgeId": "bar:e:g1:q1000:q15383"
+        },
+        {
+          "vector": [-1, 2, -1, -3, 0, 0, -1, 0, 0, 0],
+          "count": 363,
+          "firstEdgeId": "bar:e:g2:q541:q558"
+        },
+        {
+          "vector": [-1, 2, -1, -3, 2, 0, -1, 0, 0, 0],
+          "count": 87,
+          "firstEdgeId": "bar:e:g2:q1195:q14340"
+        },
+        {
+          "vector": [-1, 2, -1, -3, 4, 0, -1, 0, 0, 0],
+          "count": 78,
+          "firstEdgeId": "bar:e:g1:q864:q877"
+        },
+        {
+          "vector": [-1, 2, 1, 0, -3, 1, 0, 0, 0, 0],
+          "count": 54,
+          "firstEdgeId": "bar:e:g3:q12246:q7987"
+        },
+        {
+          "vector": [-1, 2, 1, 0, -1, 1, 0, 0, 0, 0],
+          "count": 369,
+          "firstEdgeId": "bar:e:g7:q331:q396"
+        },
+        {
+          "vector": [-1, 2, 1, 0, 1, 1, 0, 0, 0, 0],
+          "count": 360,
+          "firstEdgeId": "bar:e:g1:q1026:q15355"
+        },
+        {
+          "vector": [-1, 2, 1, 0, 3, 1, 0, 0, 0, 0],
+          "count": 63,
+          "firstEdgeId": "bar:e:g2:q3133:q7578"
+        },
+        {
+          "vector": [-1, 3, 0, -2, -4, 1, -1, 0, 0, 0],
+          "count": 63,
+          "firstEdgeId": "bar:e:g1:q552:q823"
+        },
+        {
+          "vector": [-1, 3, 0, -2, -2, 1, -1, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g1:q108:q32479"
+        },
+        {
+          "vector": [-1, 3, 0, -2, 0, 1, -1, 0, 0, 0],
+          "count": 852,
+          "firstEdgeId": "bar:e:g4:q78:q85"
+        },
+        {
+          "vector": [-1, 3, 0, -2, 2, 1, -1, 0, 0, 0],
+          "count": 78,
+          "firstEdgeId": "bar:e:g1:q115:q17418"
+        },
+        {
+          "vector": [-1, 3, 0, -2, 4, 1, -1, 0, 0, 0],
+          "count": 81,
+          "firstEdgeId": "bar:e:g0:q564:q691"
+        },
+        {
+          "vector": [-1, 4, -1, -4, -1, 1, -2, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g6:q22717:q32454"
+        },
+        {
+          "vector": [-1, 4, -1, -4, 1, 1, -2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g0:q24607:q24666"
+        },
+        {
+          "vector": [-1, 4, 1, -1, 0, 2, -1, 0, 0, 0],
+          "count": 69,
+          "firstEdgeId": "bar:e:g5:q2664:q6589"
+        },
+        {
+          "vector": [-1, 4, 1, -1, 4, 2, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g6:q7704:q8131"
+        },
+        {
+          "vector": [0, -4, 0, 2, 0, -2, 2, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g2:q17250:q17263"
+        },
+        {
+          "vector": [0, -3, -1, 0, -1, -2, 1, 0, 0, 0],
+          "count": 21,
+          "firstEdgeId": "bar:e:g5:q8040:q8095"
+        },
+        {
+          "vector": [0, -3, -1, 0, 1, -2, 1, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g6:q7033:q792"
+        },
+        {
+          "vector": [0, -3, 1, 3, 0, -1, 2, 0, 0, 0],
+          "count": 123,
+          "firstEdgeId": "bar:e:g2:q1039:q26178"
+        },
+        {
+          "vector": [0, -2, -2, -2, 0, -2, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g3:q17826:q31927"
+        },
+        {
+          "vector": [0, -2, 0, 1, -5, -1, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q15589:q23868"
+        },
+        {
+          "vector": [0, -2, 0, 1, -3, -1, 1, 0, 0, 0],
+          "count": 151,
+          "firstEdgeId": "bar:e:g1:q228:q2347"
+        },
+        {
+          "vector": [0, -2, 0, 1, -1, -1, 1, 0, 0, 0],
+          "count": 779,
+          "firstEdgeId": "bar:e:g5:q1:q2124"
+        },
+        {
+          "vector": [0, -2, 0, 1, 1, -1, 1, 0, 0, 0],
+          "count": 740,
+          "firstEdgeId": "bar:e:g0:q180:q20329"
+        },
+        {
+          "vector": [0, -2, 0, 1, 3, -1, 1, 0, 0, 0],
+          "count": 135,
+          "firstEdgeId": "bar:e:g6:q2700:q3703"
+        },
+        {
+          "vector": [0, -1, -1, -1, -4, -1, 0, 0, 0, 0],
+          "count": 195,
+          "firstEdgeId": "bar:e:g3:q1356:q1363"
+        },
+        {
+          "vector": [0, -1, -1, -1, -2, -1, 0, 0, 0, 0],
+          "count": 186,
+          "firstEdgeId": "bar:e:g2:q1734:q17443"
+        },
+        {
+          "vector": [0, -1, -1, -1, 0, -1, 0, 0, 0, 0],
+          "count": 1467,
+          "firstEdgeId": "bar:e:g5:q24:q8449"
+        },
+        {
+          "vector": [0, -1, -1, -1, 2, -1, 0, 0, 0, 0],
+          "count": 171,
+          "firstEdgeId": "bar:e:g7:q2371:q34080"
+        },
+        {
+          "vector": [0, -1, -1, -1, 4, -1, 0, 0, 0, 0],
+          "count": 156,
+          "firstEdgeId": "bar:e:g1:q3031:q3096"
+        },
+        {
+          "vector": [0, -1, 1, 2, -3, 0, 1, 0, 0, 0],
+          "count": 15,
+          "firstEdgeId": "bar:e:g1:q9253:q9732"
+        },
+        {
+          "vector": [0, -1, 1, 2, -1, 0, 1, 0, 0, 0],
+          "count": 435,
+          "firstEdgeId": "bar:e:g3:q217:q27012"
+        },
+        {
+          "vector": [0, -1, 1, 2, 1, 0, 1, 0, 0, 0],
+          "count": 478,
+          "firstEdgeId": "bar:e:g1:q126:q13579"
+        },
+        {
+          "vector": [0, -1, 1, 2, 3, 0, 1, 0, 0, 0],
+          "count": 48,
+          "firstEdgeId": "bar:e:g0:q1002:q859"
+        },
+        {
+          "vector": [0, -1, 1, 2, 5, 0, 1, 0, 0, 0],
+          "count": 12,
+          "firstEdgeId": "bar:e:g7:q4182:q4339"
+        },
+        {
+          "vector": [0, 0, -2, -3, -1, -1, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g4:q29779:q32832"
+        },
+        {
+          "vector": [0, 0, -2, -3, 1, -1, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q28267:q4380"
+        },
+        {
+          "vector": [0, 0, 0, 0, -4, 0, 0, 0, 0, 0],
+          "count": 1308,
+          "firstEdgeId": "bar:e:g5:q151:q26898"
+        },
+        {
+          "vector": [0, 0, 0, 0, -2, 0, 0, 0, 0, 0],
+          "count": 732,
+          "firstEdgeId": "bar:e:g4:q108:q115"
+        },
+        {
+          "vector": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "count": 67267,
+          "firstEdgeId": "bar:e:g0:q1:q25788"
+        },
+        {
+          "vector": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+          "count": 804,
+          "firstEdgeId": "bar:e:g2:q169:q192"
+        },
+        {
+          "vector": [0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
+          "count": 1260,
+          "firstEdgeId": "bar:e:g2:q114:q27991"
+        },
+        {
+          "vector": [0, 0, 2, 3, -1, 1, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g4:q16236:q30241"
+        },
+        {
+          "vector": [0, 0, 2, 3, 1, 1, 1, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g2:q11161:q5934"
+        },
+        {
+          "vector": [0, 1, -1, -2, -5, 0, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q28663:q4182"
+        },
+        {
+          "vector": [0, 1, -1, -2, -3, 0, -1, 0, 0, 0],
+          "count": 48,
+          "firstEdgeId": "bar:e:g2:q618:q637"
+        },
+        {
+          "vector": [0, 1, -1, -2, -1, 0, -1, 0, 0, 0],
+          "count": 554,
+          "firstEdgeId": "bar:e:g7:q667:q750"
+        },
+        {
+          "vector": [0, 1, -1, -2, 1, 0, -1, 0, 0, 0],
+          "count": 441,
+          "firstEdgeId": "bar:e:g0:q132:q20671"
+        },
+        {
+          "vector": [0, 1, -1, -2, 3, 0, -1, 0, 0, 0],
+          "count": 21,
+          "firstEdgeId": "bar:e:g2:q667:q870"
+        },
+        {
+          "vector": [0, 1, 1, 1, -4, 1, 0, 0, 0, 0],
+          "count": 120,
+          "firstEdgeId": "bar:e:g6:q139:q29634"
+        },
+        {
+          "vector": [0, 1, 1, 1, -2, 1, 0, 0, 0, 0],
+          "count": 165,
+          "firstEdgeId": "bar:e:g2:q247:q32220"
+        },
+        {
+          "vector": [0, 1, 1, 1, 0, 1, 0, 0, 0, 0],
+          "count": 1635,
+          "firstEdgeId": "bar:e:g5:q18:q30691"
+        },
+        {
+          "vector": [0, 1, 1, 1, 2, 1, 0, 0, 0, 0],
+          "count": 174,
+          "firstEdgeId": "bar:e:g0:q1020:q33487"
+        },
+        {
+          "vector": [0, 1, 1, 1, 4, 1, 0, 0, 0, 0],
+          "count": 177,
+          "firstEdgeId": "bar:e:g4:q1590:q31939"
+        },
+        {
+          "vector": [0, 2, 0, -1, -3, 1, -1, 0, 0, 0],
+          "count": 165,
+          "firstEdgeId": "bar:e:g0:q3703:q3828"
+        },
+        {
+          "vector": [0, 2, 0, -1, -1, 1, -1, 0, 0, 0],
+          "count": 820,
+          "firstEdgeId": "bar:e:g7:q247:q8700"
+        },
+        {
+          "vector": [0, 2, 0, -1, 1, 1, -1, 0, 0, 0],
+          "count": 775,
+          "firstEdgeId": "bar:e:g5:q1158:q889"
+        },
+        {
+          "vector": [0, 2, 0, -1, 3, 1, -1, 0, 0, 0],
+          "count": 191,
+          "firstEdgeId": "bar:e:g5:q1261:q18222"
+        },
+        {
+          "vector": [0, 2, 0, -1, 5, 1, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q1590:q3151"
+        },
+        {
+          "vector": [0, 2, 2, 2, 0, 2, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g3:q23029:q23040"
+        },
+        {
+          "vector": [0, 3, -1, -3, 0, 1, -2, 0, 0, 0],
+          "count": 129,
+          "firstEdgeId": "bar:e:g4:q1591:q31938"
+        },
+        {
+          "vector": [0, 3, 1, 0, 1, 2, -1, 0, 0, 0],
+          "count": 15,
+          "firstEdgeId": "bar:e:g1:q10171:q9246"
+        },
+        {
+          "vector": [0, 4, 0, -2, 0, 2, -2, 0, 0, 0],
+          "count": 45,
+          "firstEdgeId": "bar:e:g5:q8767:q8832"
+        },
+        {
+          "vector": [0, 4, 0, -2, 4, 2, -2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g6:q26335:q26742"
+        },
+        {
+          "vector": [1, -4, -1, 1, -4, -2, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g2:q34429:q7704"
+        },
+        {
+          "vector": [1, -4, -1, 1, 0, -2, 1, 0, 0, 0],
+          "count": 63,
+          "firstEdgeId": "bar:e:g3:q204:q8287"
+        },
+        {
+          "vector": [1, -4, 1, 4, -1, -1, 2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g3:q16344:q24607"
+        },
+        {
+          "vector": [1, -4, 1, 4, 1, -1, 2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g6:q18330:q22825"
+        },
+        {
+          "vector": [1, -3, 0, 2, -4, -1, 1, 0, 0, 0],
+          "count": 69,
+          "firstEdgeId": "bar:e:g6:q1003:q1842"
+        },
+        {
+          "vector": [1, -3, 0, 2, -2, -1, 1, 0, 0, 0],
+          "count": 60,
+          "firstEdgeId": "bar:e:g0:q1153:q32808"
+        },
+        {
+          "vector": [1, -3, 0, 2, 0, -1, 1, 0, 0, 0],
+          "count": 954,
+          "firstEdgeId": "bar:e:g1:q85:q9738"
+        },
+        {
+          "vector": [1, -3, 0, 2, 2, -1, 1, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g2:q355:q372"
+        },
+        {
+          "vector": [1, -3, 0, 2, 4, -1, 1, 0, 0, 0],
+          "count": 105,
+          "firstEdgeId": "bar:e:g2:q529:q552"
+        },
+        {
+          "vector": [1, -2, -1, 0, -5, -1, 0, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q7459:q7704"
+        },
+        {
+          "vector": [1, -2, -1, 0, -3, -1, 0, 0, 0, 0],
+          "count": 63,
+          "firstEdgeId": "bar:e:g2:q1129:q16494"
+        },
+        {
+          "vector": [1, -2, -1, 0, -1, -1, 0, 0, 0, 0],
+          "count": 348,
+          "firstEdgeId": "bar:e:g1:q54:q8455"
+        },
+        {
+          "vector": [1, -2, -1, 0, 1, -1, 0, 0, 0, 0],
+          "count": 405,
+          "firstEdgeId": "bar:e:g7:q132:q67"
+        },
+        {
+          "vector": [1, -2, -1, 0, 3, -1, 0, 0, 0, 0],
+          "count": 42,
+          "firstEdgeId": "bar:e:g1:q7213:q8598"
+        },
+        {
+          "vector": [1, -2, 1, 3, -4, 0, 1, 0, 0, 0],
+          "count": 48,
+          "firstEdgeId": "bar:e:g7:q1003:q876"
+        },
+        {
+          "vector": [1, -2, 1, 3, -2, 0, 1, 0, 0, 0],
+          "count": 45,
+          "firstEdgeId": "bar:e:g3:q4231:q4242"
+        },
+        {
+          "vector": [1, -2, 1, 3, 0, 0, 1, 0, 0, 0],
+          "count": 315,
+          "firstEdgeId": "bar:e:g1:q534:q805"
+        },
+        {
+          "vector": [1, -2, 1, 3, 2, 0, 1, 0, 0, 0],
+          "count": 97,
+          "firstEdgeId": "bar:e:g3:q1231:q1236"
+        },
+        {
+          "vector": [1, -2, 1, 3, 4, 0, 1, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g7:q666:q751"
+        },
+        {
+          "vector": [1, -1, -2, -2, 0, -1, -1, 0, 0, 0],
+          "count": 216,
+          "firstEdgeId": "bar:e:g2:q1428:q1453"
+        },
+        {
+          "vector": [1, -1, -2, -2, 4, -1, -1, 0, 0, 0],
+          "count": 30,
+          "firstEdgeId": "bar:e:g2:q3637:q4644"
+        },
+        {
+          "vector": [1, -1, 0, 1, -5, 0, 0, 0, 0, 0],
+          "count": 42,
+          "firstEdgeId": "bar:e:g3:q3955:q3960"
+        },
+        {
+          "vector": [1, -1, 0, 1, -3, 0, 0, 0, 0, 0],
+          "count": 862,
+          "firstEdgeId": "bar:e:g1:q12:q9859"
+        },
+        {
+          "vector": [1, -1, 0, 1, -1, 0, 0, 0, 0, 0],
+          "count": 2056,
+          "firstEdgeId": "bar:e:g7:q19:q33120"
+        },
+        {
+          "vector": [1, -1, 0, 1, 1, 0, 0, 0, 0, 0],
+          "count": 1902,
+          "firstEdgeId": "bar:e:g7:q114:q2143"
+        },
+        {
+          "vector": [1, -1, 0, 1, 3, 0, 0, 0, 0, 0],
+          "count": 756,
+          "firstEdgeId": "bar:e:g3:q91:q96"
+        },
+        {
+          "vector": [1, -1, 0, 1, 5, 0, 0, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g4:q1063:q5874"
+        },
+        {
+          "vector": [1, -1, 2, 4, 0, 1, 1, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g7:q1062:q829"
+        },
+        {
+          "vector": [1, 0, -1, -1, -4, 0, -1, 0, 0, 0],
+          "count": 144,
+          "firstEdgeId": "bar:e:g0:q1380:q1651"
+        },
+        {
+          "vector": [1, 0, -1, -1, -2, 0, -1, 0, 0, 0],
+          "count": 176,
+          "firstEdgeId": "bar:e:g0:q181:q20328"
+        },
+        {
+          "vector": [1, 0, -1, -1, 0, 0, -1, 0, 0, 0],
+          "count": 1645,
+          "firstEdgeId": "bar:e:g0:q109:q18"
+        },
+        {
+          "vector": [1, 0, -1, -1, 2, 0, -1, 0, 0, 0],
+          "count": 246,
+          "firstEdgeId": "bar:e:g5:q2809:q2874"
+        },
+        {
+          "vector": [1, 0, -1, -1, 4, 0, -1, 0, 0, 0],
+          "count": 231,
+          "firstEdgeId": "bar:e:g1:q1044:q775"
+        },
+        {
+          "vector": [1, 0, 1, 2, -5, 1, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g1:q3468:q4819"
+        },
+        {
+          "vector": [1, 0, 1, 2, -3, 1, 0, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g0:q1009:q864"
+        },
+        {
+          "vector": [1, 0, 1, 2, -1, 1, 0, 0, 0, 0],
+          "count": 462,
+          "firstEdgeId": "bar:e:g0:q108:q19"
+        },
+        {
+          "vector": [1, 0, 1, 2, 1, 1, 0, 0, 0, 0],
+          "count": 465,
+          "firstEdgeId": "bar:e:g1:q252:q28987"
+        },
+        {
+          "vector": [1, 0, 1, 2, 3, 1, 0, 0, 0, 0],
+          "count": 60,
+          "firstEdgeId": "bar:e:g2:q1621:q7482"
+        },
+        {
+          "vector": [1, 1, -2, -3, 1, 0, -2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g5:q13579:q13620"
+        },
+        {
+          "vector": [1, 1, 0, 0, -4, 1, -1, 0, 0, 0],
+          "count": 516,
+          "firstEdgeId": "bar:e:g4:q222:q25897"
+        },
+        {
+          "vector": [1, 1, 0, 0, -2, 1, -1, 0, 0, 0],
+          "count": 360,
+          "firstEdgeId": "bar:e:g3:q1020:q1027"
+        },
+        {
+          "vector": [1, 1, 0, 0, 0, 1, -1, 0, 0, 0],
+          "count": 2606,
+          "firstEdgeId": "bar:e:g6:q80:q9"
+        },
+        {
+          "vector": [1, 1, 0, 0, 2, 1, -1, 0, 0, 0],
+          "count": 360,
+          "firstEdgeId": "bar:e:g0:q1621:q1704"
+        },
+        {
+          "vector": [1, 1, 0, 0, 4, 1, -1, 0, 0, 0],
+          "count": 329,
+          "firstEdgeId": "bar:e:g6:q114:q5179"
+        },
+        {
+          "vector": [1, 2, -1, -2, -3, 1, -2, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g3:q5880:q7819"
+        },
+        {
+          "vector": [1, 2, -1, -2, -1, 1, -2, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g1:q2731:q2802"
+        },
+        {
+          "vector": [1, 2, -1, -2, 1, 1, -2, 0, 0, 0],
+          "count": 63,
+          "firstEdgeId": "bar:e:g5:q2311:q32454"
+        },
+        {
+          "vector": [1, 2, -1, -2, 3, 1, -2, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g5:q23520:q26449"
+        },
+        {
+          "vector": [1, 2, 1, 1, 0, 2, -1, 0, 0, 0],
+          "count": 240,
+          "firstEdgeId": "bar:e:g4:q1309:q3390"
+        },
+        {
+          "vector": [1, 2, 1, 1, 4, 2, -1, 0, 0, 0],
+          "count": 12,
+          "firstEdgeId": "bar:e:g6:q1861:q756"
+        },
+        {
+          "vector": [1, 3, 0, -1, -1, 2, -2, 0, 0, 0],
+          "count": 54,
+          "firstEdgeId": "bar:e:g6:q11826:q20701"
+        },
+        {
+          "vector": [1, 3, 0, -1, 1, 2, -2, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g1:q1711:q31002"
+        },
+        {
+          "vector": [2, -4, 0, 3, -3, -1, 1, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g2:q14922:q33607"
+        },
+        {
+          "vector": [2, -4, 0, 3, -1, -1, 1, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g5:q192:q30715"
+        },
+        {
+          "vector": [2, -4, 0, 3, 1, -1, 1, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g2:q2214:q2233"
+        },
+        {
+          "vector": [2, -3, -1, 1, -4, -1, 0, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g3:q13219:q14730"
+        },
+        {
+          "vector": [2, -3, -1, 1, -2, -1, 0, 0, 0, 0],
+          "count": 42,
+          "firstEdgeId": "bar:e:g5:q445:q6918"
+        },
+        {
+          "vector": [2, -3, -1, 1, 0, -1, 0, 0, 0, 0],
+          "count": 234,
+          "firstEdgeId": "bar:e:g2:q72:q8329"
+        },
+        {
+          "vector": [2, -3, -1, 1, 2, -1, 0, 0, 0, 0],
+          "count": 72,
+          "firstEdgeId": "bar:e:g4:q1579:q3624"
+        },
+        {
+          "vector": [2, -3, -1, 1, 4, -1, 0, 0, 0, 0],
+          "count": 69,
+          "firstEdgeId": "bar:e:g1:q1063:q792"
+        },
+        {
+          "vector": [2, -3, 1, 4, -1, 0, 1, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g4:q607:q612"
+        },
+        {
+          "vector": [2, -3, 1, 4, 1, 0, 1, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g0:q2142:q2233"
+        },
+        {
+          "vector": [2, -2, 0, 2, -4, 0, 0, 0, 0, 0],
+          "count": 225,
+          "firstEdgeId": "bar:e:g6:q49:q8376"
+        },
+        {
+          "vector": [2, -2, 0, 2, -2, 0, 0, 0, 0, 0],
+          "count": 390,
+          "firstEdgeId": "bar:e:g7:q1129:q1278"
+        },
+        {
+          "vector": [2, -2, 0, 2, 0, 0, 0, 0, 0, 0],
+          "count": 1757,
+          "firstEdgeId": "bar:e:g7:q1:q25878"
+        },
+        {
+          "vector": [2, -2, 0, 2, 2, 0, 0, 0, 0, 0],
+          "count": 240,
+          "firstEdgeId": "bar:e:g3:q1579:q22332"
+        },
+        {
+          "vector": [2, -2, 0, 2, 4, 0, 0, 0, 0, 0],
+          "count": 159,
+          "firstEdgeId": "bar:e:g1:q2137:q2916"
+        },
+        {
+          "vector": [2, -1, -1, 0, -5, 0, -1, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g5:q12318:q14797"
+        },
+        {
+          "vector": [2, -1, -1, 0, -3, 0, -1, 0, 0, 0],
+          "count": 63,
+          "firstEdgeId": "bar:e:g1:q4189:q4200"
+        },
+        {
+          "vector": [2, -1, -1, 0, -1, 0, -1, 0, 0, 0],
+          "count": 444,
+          "firstEdgeId": "bar:e:g4:q253:q27642"
+        },
+        {
+          "vector": [2, -1, -1, 0, 1, 0, -1, 0, 0, 0],
+          "count": 329,
+          "firstEdgeId": "bar:e:g2:q121:q96"
+        },
+        {
+          "vector": [2, -1, -1, 0, 3, 0, -1, 0, 0, 0],
+          "count": 74,
+          "firstEdgeId": "bar:e:g6:q5604:q8971"
+        },
+        {
+          "vector": [2, -1, -1, 0, 5, 0, -1, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g5:q1141:q870"
+        },
+        {
+          "vector": [2, -1, 1, 3, -4, 1, 0, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g3:q1446:q19963"
+        },
+        {
+          "vector": [2, -1, 1, 3, -2, 1, 0, 0, 0, 0],
+          "count": 57,
+          "firstEdgeId": "bar:e:g6:q222:q24127"
+        },
+        {
+          "vector": [2, -1, 1, 3, 0, 1, 0, 0, 0, 0],
+          "count": 564,
+          "firstEdgeId": "bar:e:g5:q49:q6186"
+        },
+        {
+          "vector": [2, -1, 1, 3, 2, 1, 0, 0, 0, 0],
+          "count": 23,
+          "firstEdgeId": "bar:e:g1:q9403:q9474"
+        },
+        {
+          "vector": [2, -1, 1, 3, 4, 1, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g7:q13879:q21036"
+        },
+        {
+          "vector": [2, 0, -2, -2, 0, 0, -2, 0, 0, 0],
+          "count": 54,
+          "firstEdgeId": "bar:e:g3:q4045:q7674"
+        },
+        {
+          "vector": [2, 0, -2, -2, 4, 0, -2, 0, 0, 0],
+          "count": 15,
+          "firstEdgeId": "bar:e:g4:q12366:q21841"
+        },
+        {
+          "vector": [2, 0, 0, 1, -5, 1, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g7:q4704:q4819"
+        },
+        {
+          "vector": [2, 0, 0, 1, -3, 1, -1, 0, 0, 0],
+          "count": 189,
+          "firstEdgeId": "bar:e:g5:q2286:q2347"
+        },
+        {
+          "vector": [2, 0, 0, 1, -1, 1, -1, 0, 0, 0],
+          "count": 924,
+          "firstEdgeId": "bar:e:g0:q247:q8838"
+        },
+        {
+          "vector": [2, 0, 0, 1, 1, 1, -1, 0, 0, 0],
+          "count": 857,
+          "firstEdgeId": "bar:e:g5:q126:q24649"
+        },
+        {
+          "vector": [2, 0, 0, 1, 3, 1, -1, 0, 0, 0],
+          "count": 132,
+          "firstEdgeId": "bar:e:g5:q169:q228"
+        },
+        {
+          "vector": [2, 0, 0, 1, 5, 1, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g7:q29262:q5449"
+        },
+        {
+          "vector": [2, 1, -1, -1, -4, 1, -2, 0, 0, 0],
+          "count": 63,
+          "firstEdgeId": "bar:e:g0:q2316:q4621"
+        },
+        {
+          "vector": [2, 1, -1, -1, 0, 1, -2, 0, 0, 0],
+          "count": 556,
+          "firstEdgeId": "bar:e:g6:q1177:q27066"
+        },
+        {
+          "vector": [2, 1, -1, -1, 4, 1, -2, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g7:q3066:q4033"
+        },
+        {
+          "vector": [2, 1, 1, 2, -1, 2, -1, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g1:q20827:q6408"
+        },
+        {
+          "vector": [2, 1, 1, 2, 1, 2, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g3:q2731:q2736"
+        },
+        {
+          "vector": [2, 2, 0, 0, -4, 2, -2, 0, 0, 0],
+          "count": 54,
+          "firstEdgeId": "bar:e:g4:q2316:q3619"
+        },
+        {
+          "vector": [2, 2, 0, 0, 0, 2, -2, 0, 0, 0],
+          "count": 306,
+          "firstEdgeId": "bar:e:g7:q1249:q2820"
+        },
+        {
+          "vector": [2, 2, 0, 0, 4, 2, -2, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g3:q26335:q3708"
+        },
+        {
+          "vector": [3, -5, 0, 4, 0, -1, 1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g2:q3702:q8569"
+        },
+        {
+          "vector": [3, -4, -1, 2, -1, -1, 0, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g3:q5472:q9685"
+        },
+        {
+          "vector": [3, -4, -1, 2, 1, -1, 0, 0, 0, 0],
+          "count": 38,
+          "firstEdgeId": "bar:e:g7:q205:q78"
+        },
+        {
+          "vector": [3, -3, -2, 0, 0, -1, -1, 0, 0, 0],
+          "count": 57,
+          "firstEdgeId": "bar:e:g3:q3637:q8376"
+        },
+        {
+          "vector": [3, -3, 0, 3, -3, 0, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g6:q17166:q2107"
+        },
+        {
+          "vector": [3, -3, 0, 3, -1, 0, 0, 0, 0, 0],
+          "count": 180,
+          "firstEdgeId": "bar:e:g3:q1351:q2922"
+        },
+        {
+          "vector": [3, -3, 0, 3, 1, 0, 0, 0, 0, 0],
+          "count": 153,
+          "firstEdgeId": "bar:e:g0:q126:q7921"
+        },
+        {
+          "vector": [3, -3, 0, 3, 3, 0, 0, 0, 0, 0],
+          "count": 15,
+          "firstEdgeId": "bar:e:g0:q433:q7416"
+        },
+        {
+          "vector": [3, -2, -1, 1, -4, 0, -1, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g5:q14095:q22110"
+        },
+        {
+          "vector": [3, -2, -1, 1, -2, 0, -1, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g3:q1609:q7476"
+        },
+        {
+          "vector": [3, -2, -1, 1, 0, 0, -1, 0, 0, 0],
+          "count": 561,
+          "firstEdgeId": "bar:e:g2:q517:q8658"
+        },
+        {
+          "vector": [3, -2, -1, 1, 2, 0, -1, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g4:q1146:q1153"
+        },
+        {
+          "vector": [3, -2, -1, 1, 4, 0, -1, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g4:q5197:q8838"
+        },
+        {
+          "vector": [3, -2, 1, 4, -1, 1, 0, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g2:q1794:q1819"
+        },
+        {
+          "vector": [3, -2, 1, 4, 1, 1, 0, 0, 0, 0],
+          "count": 24,
+          "firstEdgeId": "bar:e:g5:q11851:q14916"
+        },
+        {
+          "vector": [3, -1, -2, -1, -1, 0, -2, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g1:q16014:q16069"
+        },
+        {
+          "vector": [3, -1, -2, -1, 3, 0, -2, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g0:q30024:q33571"
+        },
+        {
+          "vector": [3, -1, 0, 2, -4, 1, -1, 0, 0, 0],
+          "count": 66,
+          "firstEdgeId": "bar:e:g3:q139:q42"
+        },
+        {
+          "vector": [3, -1, 0, 2, -2, 1, -1, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g7:q108:q20035"
+        },
+        {
+          "vector": [3, -1, 0, 2, 0, 1, -1, 0, 0, 0],
+          "count": 669,
+          "firstEdgeId": "bar:e:g3:q601:q606"
+        },
+        {
+          "vector": [3, -1, 0, 2, 2, 1, -1, 0, 0, 0],
+          "count": 30,
+          "firstEdgeId": "bar:e:g5:q1075:q804"
+        },
+        {
+          "vector": [3, -1, 0, 2, 4, 1, -1, 0, 0, 0],
+          "count": 80,
+          "firstEdgeId": "bar:e:g3:q3414:q9109"
+        },
+        {
+          "vector": [3, 0, -1, 0, -3, 1, -2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g2:q21510:q32491"
+        },
+        {
+          "vector": [3, 0, -1, 0, -1, 1, -2, 0, 0, 0],
+          "count": 21,
+          "firstEdgeId": "bar:e:g3:q9217:q9924"
+        },
+        {
+          "vector": [3, 0, -1, 0, 1, 1, -2, 0, 0, 0],
+          "count": 48,
+          "firstEdgeId": "bar:e:g0:q2731:q8466"
+        },
+        {
+          "vector": [3, 0, 1, 3, 0, 2, -1, 0, 0, 0],
+          "count": 60,
+          "firstEdgeId": "bar:e:g5:q1201:q3648"
+        },
+        {
+          "vector": [3, 1, 0, 1, -3, 2, -2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g2:q18060:q5359"
+        },
+        {
+          "vector": [3, 1, 0, 1, -1, 2, -2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g6:q3468:q8365"
+        },
+        {
+          "vector": [3, 1, 0, 1, 1, 2, -2, 0, 0, 0],
+          "count": 45,
+          "firstEdgeId": "bar:e:g0:q9180:q9607"
+        },
+        {
+          "vector": [3, 1, 0, 1, 3, 2, -2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g5:q13897:q33654"
+        },
+        {
+          "vector": [3, 3, 0, 0, 0, 3, -3, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g5:q28513:q32538"
+        },
+        {
+          "vector": [4, -5, -1, 3, 0, -1, 0, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g4:q20490:q28681"
+        },
+        {
+          "vector": [4, -4, 0, 4, -2, 0, 0, 0, 0, 0],
+          "count": 57,
+          "firstEdgeId": "bar:e:g5:q1417:q612"
+        },
+        {
+          "vector": [4, -4, 0, 4, 0, 0, 0, 0, 0, 0],
+          "count": 39,
+          "firstEdgeId": "bar:e:g2:q4321:q4344"
+        },
+        {
+          "vector": [4, -4, 0, 4, 2, 0, 0, 0, 0, 0],
+          "count": 45,
+          "firstEdgeId": "bar:e:g2:q1609:q2130"
+        },
+        {
+          "vector": [4, -3, -1, 2, -3, 0, -1, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g7:q5202:q5359"
+        },
+        {
+          "vector": [4, -3, -1, 2, -1, 0, -1, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g1:q3240:q3313"
+        },
+        {
+          "vector": [4, -3, -1, 2, 1, 0, -1, 0, 0, 0],
+          "count": 45,
+          "firstEdgeId": "bar:e:g0:q1609:q1692"
+        },
+        {
+          "vector": [4, -3, -1, 2, 3, 0, -1, 0, 0, 0],
+          "count": 3,
+          "firstEdgeId": "bar:e:g0:q13506:q13609"
+        },
+        {
+          "vector": [4, -2, -2, 0, 0, 0, -2, 0, 0, 0],
+          "count": 6,
+          "firstEdgeId": "bar:e:g1:q4771:q4836"
+        },
+        {
+          "vector": [4, -2, 0, 3, -1, 1, -1, 0, 0, 0],
+          "count": 36,
+          "firstEdgeId": "bar:e:g2:q2701:q8820"
+        },
+        {
+          "vector": [4, -2, 0, 3, 1, 1, -1, 0, 0, 0],
+          "count": 27,
+          "firstEdgeId": "bar:e:g5:q3925:q8820"
+        },
+        {
+          "vector": [4, -1, -1, 1, 0, 1, -2, 0, 0, 0],
+          "count": 33,
+          "firstEdgeId": "bar:e:g6:q246:q31447"
+        },
+        {
+          "vector": [4, 0, 0, 2, -2, 2, -2, 0, 0, 0],
+          "count": 12,
+          "firstEdgeId": "bar:e:g0:q18060:q3769"
+        },
+        {
+          "vector": [4, 0, 0, 2, 0, 2, -2, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g4:q18060:q33835"
+        },
+        {
+          "vector": [5, -4, -1, 3, -2, 0, -1, 0, 0, 0],
+          "count": 18,
+          "firstEdgeId": "bar:e:g2:q5472:q9709"
+        },
+        {
+          "vector": [5, -3, 0, 4, 0, 1, -1, 0, 0, 0],
+          "count": 9,
+          "firstEdgeId": "bar:e:g0:q1146:q1279"
+        }
+      ],
+      "histogramDigest": "c679b9669abfacae70e7eae956d0d1ab6cea6ed32e60c169fc1d9ef7ecbf59dc"
+    },
+    "saturation": {
+      "seedColumns": [
+        {
+          "edgeId": "bar:e:g6:q7:q78",
+          "edgeIndex": 103687,
+          "cotreeColumn": 100020,
+          "rawWallPeriods": [-1, -1, 0, 0, 0, -1, 1, 0, 0, 0],
+          "betaPeriods": [1, 0, 0, 0]
+        },
+        {
+          "edgeId": "bar:e:g7:q19:q33120",
+          "edgeIndex": 120979,
+          "cotreeColumn": 116206,
+          "rawWallPeriods": [1, -1, 0, 1, -1, 0, 0, 0, 0, 0],
+          "betaPeriods": [0, 0, 1, 0]
+        },
+        {
+          "edgeId": "bar:e:g5:q19:q30690",
+          "edgeIndex": 86419,
+          "cotreeColumn": 83567,
+          "rawWallPeriods": [-1, 1, 0, -1, -1, 0, 0, 0, 0, 0],
+          "betaPeriods": [0, 2, 1, -1]
+        },
+        {
+          "edgeId": "bar:e:g0:q211:q66",
+          "edgeIndex": 66,
+          "cotreeColumn": 61,
+          "rawWallPeriods": [-1, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+          "betaPeriods": [0, 1, 0, 0]
+        }
+      ],
+      "seedBetaDeterminant": "-1",
+      "seedDigest": "629d0c0c9494dc60b362f6a24e90ece9504d8a773e4f176ad34f31966fa8acb4",
+      "rawWallRank": 4,
+      "saturationRank": 4,
+      "wallIndexInSaturation": "2",
+      "quotientInvariantFactors": ["2"],
+      "determinantProof": {
+        "matrixShape": [4, 10],
+        "determinantalDivisors": ["1", "1", "1", "2"],
+        "smithInvariantFactors": ["1", "1", "1", "2"],
+        "expectedSmithInvariantFactors": ["1", "1", "1", "2"],
+        "verified": true
+      }
+    },
+    "boundary": {
+      "rowCount": 316800,
+      "columnCount": 138241,
+      "nonzeroCount": 1105928,
+      "duplicateBoundaryEdgeCount": 0,
+      "boundaryDigest": "d75330ddfea8e5b7d0f256adaaf6931cf183f88626f1d92b81e6f4e0c9551902"
+    },
+    "peel": {
+      "seedColumnCount": 4,
+      "pivotCount": 50287,
+      "unresolvedColumnCount": 87950,
+      "nonpivotRowCount": 266513,
+      "coreNonzeroCount": 703600,
+      "ledgerDigest": "5ec3ec68d6aea009afde18942f7a5147efba9063c1305aa1f654e17c6711c5bc",
+      "coreMatrixDigest": "1437c25d58780bfa0818d2789bdc684932b4c799bfdfd44d307a5ed2aab9e99a",
+      "lowerBoundIfCoreHasFullColumnRank": 138237
+    },
+    "latticeBasisDigest": "108cd3a4bfcb6417a707d03bedd2af73bc01c3439a72d49b6d3db70f46900c86",
+    "cocycleSectionDigest": "c1d28da8e1eae77cd124b7b63bfa6650f344c401c34e09cccbd7b364bfbff27b",
+    "checks": {
+      "targetWallCount": true,
+      "quotientGraphConnected": true,
+      "bfsTreeHasExpectedSize": true,
+      "betaCoordinatesIntegral": true,
+      "rawWallCoordinatesVerified": true,
+      "betaCocyclesClosed": true,
+      "seedColumnsFound": true,
+      "seedMinorUnimodular": true,
+      "determinantDivisorsVerified": true,
+      "wallSaturationCertified": true,
+      "boundaryFlattenedExactly": true,
+      "peelUsesUnitPivots": true,
+      "peelPartitionComplete": true,
+      "coreBlockLowerBoundValid": true
+    },
+    "claims": [
+      "Tree gauge identifies integral H^1 with the integer kernel of the displayed cotree boundary matrix.",
+      "The beta cocycles are an integral basis for the saturation of the ten wall classes.",
+      "The ten wall classes have rank four and index two in their saturation.",
+      "The complete calculation must supply the unresolved core's exact rank and saturated integral kernel frame."
+    ],
+    "nonClaims": [
+      "Preparation alone does not certify the rank or integral kernel of the unresolved core.",
+      "The raw core is a lower-bound block-minor device, not a Schur complement or a rank-preserving reduction.",
+      "No Morse-link, fibering, or kernel-finiteness conclusion follows from H^1 alone."
+    ],
+    "preparationDigest": "6ca90097bf595a8ddc011e7fdb8b5b64fa9f5017a9b598c78b662b68964a5956"
+  },
+  "completion": {
+    "schemaVersion": 1,
+    "kind": "streamed-h1-complete-integral-lattice-certificate",
+    "status": "passed",
+    "method": "tree-gauge-split-kernel-plus-integral-core-frame-and-modular-rank",
+    "oracleStructureHash": "694ba5e095a6c56a4364e3c2e287eefbaf44a90d76c421b9abe083e063027b72",
+    "actionRowsCanonicalSha256": "d8d95caec8566528c0c4377a9002f9f372a957bb4432758581afa7ec50116dd2",
+    "preparationDigest": "6ca90097bf595a8ddc011e7fdb8b5b64fa9f5017a9b598c78b662b68964a5956",
+    "coreBasisCertificate": {
+      "schemaVersion": 1,
+      "kind": "streamed-h1-integral-core-basis",
+      "status": "passed",
+      "format": "linbox-sparse-row-integral-basis",
+      "sourceArtifactSha256": "b81fbf5d0f387ce62ccffe8d3698a7f6fad4f16a36698b7dd0cbc2c883c7f370",
+      "coreRowCount": 266513,
+      "coreColumnCount": 87950,
+      "rank": 15,
+      "coordinateIds": [
+        "gamma0",
+        "gamma1",
+        "gamma2",
+        "gamma3",
+        "gamma4",
+        "gamma5",
+        "gamma6",
+        "gamma7",
+        "gamma8",
+        "gamma9",
+        "gamma10",
+        "gamma11",
+        "gamma12",
+        "gamma13",
+        "gamma14"
+      ],
+      "identityCoreColumns": [
+        0, 3, 7, 12, 15, 24, 30, 18947, 18950, 18956, 18959, 62888, 62889,
+        62906, 62907
+      ],
+      "identityRestrictionDeterminant": "1",
+      "vectors": [
+        {
+          "id": "gamma0",
+          "nonzeroCount": 37954,
+          "maximumAbsoluteValue": 3
+        },
+        {
+          "id": "gamma1",
+          "nonzeroCount": 24284,
+          "maximumAbsoluteValue": 3
+        },
+        {
+          "id": "gamma2",
+          "nonzeroCount": 24138,
+          "maximumAbsoluteValue": 3
+        },
+        {
+          "id": "gamma3",
+          "nonzeroCount": 24360,
+          "maximumAbsoluteValue": 2
+        },
+        {
+          "id": "gamma4",
+          "nonzeroCount": 28720,
+          "maximumAbsoluteValue": 2
+        },
+        {
+          "id": "gamma5",
+          "nonzeroCount": 31294,
+          "maximumAbsoluteValue": 4
+        },
+        {
+          "id": "gamma6",
+          "nonzeroCount": 15388,
+          "maximumAbsoluteValue": 2
+        },
+        {
+          "id": "gamma7",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        },
+        {
+          "id": "gamma8",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        },
+        {
+          "id": "gamma9",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        },
+        {
+          "id": "gamma10",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        },
+        {
+          "id": "gamma11",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        },
+        {
+          "id": "gamma12",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        },
+        {
+          "id": "gamma13",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        },
+        {
+          "id": "gamma14",
+          "nonzeroCount": 2304,
+          "maximumAbsoluteValue": 1
+        }
+      ],
+      "maximumAbsoluteValue": 4,
+      "sparseBasisDigest": "d197439b00298fedbb5caebf49a9d0146af32b3f0ffae014121d6ad9b9fac5c4",
+      "checks": {
+        "dimensionsMatch": true,
+        "basisRowsCanonical": true,
+        "entriesStrictlyIncreasing": true,
+        "entriesNonzeroSafeIntegers": true,
+        "identityRestriction": true
+      }
+    },
+    "modularRankWitnesses": [
+      {
+        "schemaVersion": 1,
+        "kind": "streamed-h1-exact-modular-core-rank-witness",
+        "status": "passed",
+        "preparationDigest": "6ca90097bf595a8ddc011e7fdb8b5b64fa9f5017a9b598c78b662b68964a5956",
+        "coreMatrixDigest": "1437c25d58780bfa0818d2789bdc684932b4c799bfdfd44d307a5ed2aab9e99a",
+        "ledgerDigest": "5ec3ec68d6aea009afde18942f7a5147efba9063c1305aa1f654e17c6711c5bc",
+        "modulusPrime": 30011,
+        "rowCount": 266513,
+        "columnCount": 87950,
+        "rank": 87935,
+        "exactFieldArithmetic": true,
+        "backend": "LinBox/Givaro",
+        "backendVersion": "1.7.0-4/4.2.0",
+        "algorithm": "GaussDomain::InPlaceLinearPivoting + GaussDomain::nullspacebasis",
+        "transcriptSha256": "e1ee69886d250aff960f527c16396ddbb6a6d2cad0397c40bad750913b5f960c",
+        "normalizedKernelBasisSha256": "8b4e12794d9bf1c4c21e0bd0f0f0cd00d778de500dbe929ae98f44db95d3d21d",
+        "identityChartColumns": [
+          0, 3, 7, 12, 15, 24, 30, 18947, 18950, 18956, 18959, 62888, 62889,
+          62906, 62907
+        ],
+        "identityChartInvertible": true,
+        "normalizedBasisMatchesIntegralCoreBasis": true
+      },
+      {
+        "schemaVersion": 1,
+        "kind": "streamed-h1-exact-modular-core-rank-witness",
+        "status": "passed",
+        "preparationDigest": "6ca90097bf595a8ddc011e7fdb8b5b64fa9f5017a9b598c78b662b68964a5956",
+        "coreMatrixDigest": "1437c25d58780bfa0818d2789bdc684932b4c799bfdfd44d307a5ed2aab9e99a",
+        "ledgerDigest": "5ec3ec68d6aea009afde18942f7a5147efba9063c1305aa1f654e17c6711c5bc",
+        "modulusPrime": 32749,
+        "rowCount": 266513,
+        "columnCount": 87950,
+        "rank": 87935,
+        "exactFieldArithmetic": true,
+        "backend": "LinBox/Givaro",
+        "backendVersion": "1.7.0-4/4.2.0",
+        "algorithm": "GaussDomain::InPlaceLinearPivoting + GaussDomain::nullspacebasis",
+        "transcriptSha256": "aa11a098739ebfa20eb0743d6cfa56ecc52169a3000bfe641fecfd962b7b8006",
+        "normalizedKernelBasisSha256": "69202a4d2ab2649c481d8dea0f28f36040e5fe8c9ba32b224e2cfcabf370776d",
+        "identityChartColumns": [
+          0, 3, 7, 12, 15, 24, 30, 18947, 18950, 18956, 18959, 62888, 62889,
+          62906, 62907
+        ],
+        "identityChartInvertible": true,
+        "normalizedBasisMatchesIntegralCoreBasis": true
+      }
+    ],
+    "fullLatticeBasisDigest": "1a8a65a2c01ab263911558864bc51b85dc551c05a7691ffc0088b8c1ca08951e",
+    "fullCocycleSectionDigest": "ed6176b687e6487a03b01bbcccc4304cce72b3812069d4e2020773cb83914f3d",
+    "wallCoordinates": [
+      [-1, -1, 0, 0, 0, -1, 1, 0, 0, 0],
+      [-1, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+      [1, -1, 0, 1, -1, 0, 0, 0, 0, 0],
+      [0, -2, 2, 4, 0, 0, 2, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    "checks": {
+      "oracleBindingMatches": true,
+      "coreDimensionsMatch": true,
+      "exactCoreBoundaryReplay": true,
+      "coreIdentityMinor": true,
+      "modularWitnessesPresent": true,
+      "modularWitnessBindingsMatch": true,
+      "modularWitnessPrimes": true,
+      "modularWitnessPrimesDistinct": true,
+      "modularWitnessesExact": true,
+      "modularKernelFramesMatch": true,
+      "modularCoreRankIs87935": true,
+      "rationalBoundaryRankIs138222": true,
+      "fullBasisHasNineteenCoordinates": true,
+      "fullCoordinateMinorUnimodular": true,
+      "directedEdgeReversal": true,
+      "everyRankTwoBoundaryCloses": true
+    },
+    "replay": {
+      "coreBoundaryRowCount": 266513,
+      "coreBoundaryNonzeroResidualCount": 0,
+      "coreBoundaryMaximumAbsoluteResidual": 0,
+      "coreBoundaryReplayDigest": "8a779756819919c7441ca5715ac3d915177cc9c36f5edd487342a6139feade5a",
+      "directedEdgeCount": 345600,
+      "reversalFailureCount": 0,
+      "rankTwoBoundaryCount": 316800,
+      "rankTwoBoundaryNonzeroResidualCount": 0,
+      "rankTwoBoundaryMaximumAbsoluteResidual": 0,
+      "fullBoundaryReplayDigest": "80169d3311727c9a506763046e96765f24927072bcde75dcd4527cd2b49fbdc3"
+    },
+    "result": {
+      "h1Rank": 19,
+      "h1IsomorphicTo": "Z^19",
+      "integralBasisIds": [
+        "beta0",
+        "beta1",
+        "beta2",
+        "beta3",
+        "gamma0",
+        "gamma1",
+        "gamma2",
+        "gamma3",
+        "gamma4",
+        "gamma5",
+        "gamma6",
+        "gamma7",
+        "gamma8",
+        "gamma9",
+        "gamma10",
+        "gamma11",
+        "gamma12",
+        "gamma13",
+        "gamma14"
+      ],
+      "wallSublatticeRank": 4,
+      "wallSublatticeIndexInSaturation": 2,
+      "wallSublatticeIndexInFullH1": "infinite",
+      "wallSaturationRank": 4,
+      "wallSaturationEqualsFullH1": false,
+      "quotientByWallLattice": "Z^15 + Z/2"
+    },
+    "claims": [
+      "H^1(G;Z) is Z^19 with the displayed beta-plus-gamma integral basis.",
+      "The ten wall classes have rank four and index two in their rank-four saturation.",
+      "The wall saturation is a proper primitive direct summand of rank four in H^1.",
+      "H^1/L_wall is isomorphic to Z^15 plus Z/2."
+    ],
+    "nonClaims": [
+      "This certificate does not compute torsion in H_1(G;Z).",
+      "The modular rank records bind reproducible deterministic exact LinBox eliminations; they are not embedded proof-carrying pivot ledgers.",
+      "No Morse-link, fibering, or kernel-finiteness conclusion follows from H^1 alone."
+    ],
+    "errors": [],
+    "certificateDigest": "dbd4b3b901f66d00d9acc0125c9df550c664eded720990f4722da8842f01c38f"
+  },
+  "reportDigest": "b48078fb50d9ee9615fbaeaa46c75c72af9270c909aaaf3567dfb05ec8540cb7"
+}
