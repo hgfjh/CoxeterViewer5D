@@ -112,7 +112,7 @@ jobs:
     name: attach desktop artifacts
     needs: build
     if: ${{ inputs.upload_to_release }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/download-artifact@v4
         with:
