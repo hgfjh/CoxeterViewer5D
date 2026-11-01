@@ -1,5 +1,5 @@
 """
-lawful_subcomplex.py
+lawful_complex.py
 
 Given a 2-complex + its abstract walls (from your wall-finder script),
 this assigns an orientation to each wall, propagates it to a direction
@@ -202,6 +202,17 @@ class TwoComplex:
         up_nodes = defaultdict(set)
         down_nodes = defaultdict(set)
 
+        # Every edge-end at a vertex is a vertex of its link, whether or not some
+        # 2-cell has a corner there.  The lawful subcomplex keeps the whole
+        # 1-skeleton, so an end on no kept cell is an isolated link vertex (and
+        # makes its side of the link disconnected unless it is the only one).
+        for e, (v0, v1) in self.edges.items():
+            for x in (v0, v1):
+                if self._end_ascending(e, x, edge_dir[e]):
+                    up_nodes[x].add((e, x))
+                else:
+                    down_nodes[x].add((e, x))
+
         for cid in cells_to_use:
             word = self.cells[cid]
             n = len(word)
@@ -259,7 +270,9 @@ class TwoComplex:
 def _evaluate(complex_, wall_choice, ref_sign):
     edge_dir = complex_.edge_directions(wall_choice, ref_sign)
     lawful = complex_.lawful_cells(edge_dir)
-    link_ok, failing = complex_.link_condition_holds(edge_dir)
+    # The Bestvina-Brady condition is about the lawful subcomplex Y: the
+    # orientation only extends to a height function over lawful cells.
+    link_ok, failing = complex_.link_condition_holds(edge_dir, lawful_only=True)
     # sort key: prefer link_ok, then more lawful cells, then fewer failing vertices
     score = (link_ok, len(lawful), -len(failing))
     return dict(wall_choice=dict(wall_choice), edge_dir=edge_dir, lawful_cells=lawful,
@@ -357,8 +370,9 @@ def search_orientation(complex_, max_trials=2000, seed=None, exhaustive_limit=20
 
     num_walls = len(complex_.walls)
     if num_walls <= exhaustive_limit:
-        return exhaustive_search(complex_, ref_sign, bad_walls, max_walls=exhaustive_limit,
-                                  stop_early=stop_early)
+        best = exhaustive_search(complex_, ref_sign, bad_walls, max_walls=exhaustive_limit,
+                                 stop_early=stop_early)
+        return _flag_one_sided(best, bad_walls)
 
     if restarts is None:
         restarts = max(1, max_trials // max(1, local_steps))
@@ -378,7 +392,15 @@ def search_orientation(complex_, max_trials=2000, seed=None, exhaustive_limit=20
     best["bad_walls"] = bad_walls
     best["trials_used"] = trials_used
     best["exhaustive"] = False
-    return best
+    return _flag_one_sided(best, bad_walls)
+
+
+def _flag_one_sided(result, bad_walls):
+    """A one-sided wall has no orientation, so no choice of wall signs is a
+    coorientation and the link check certifies nothing: report link_ok=False."""
+    if bad_walls:
+        result["link_ok"] = False
+    return result
 
 
 
@@ -406,7 +428,7 @@ def report(result, complex_):
 
 
 # ------------------------------------------------------------------
-# Full pipeline demo: wall_finder.py -> lawful_subcomplex.py
+# Full pipeline demo: wall_finder.py -> lawful_complex.py
 # Uses wall_finder.py's own example (square + hexagon-ish polygon).
 # ------------------------------------------------------------------
 if __name__ == "__main__":
