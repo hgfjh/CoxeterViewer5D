@@ -256,6 +256,18 @@ See [the research portfolio](docs/fibering-research-portfolio.md),
 
 ## How Do I Run Web/Desktop?
 
+### Hosted Browser App
+
+Open the [GitHub Pages viewer](https://hgfjh.github.io/CoxeterViewer5D/) to try
+the bundled `I2(5)` wall example. A WebGL 2-capable browser is needed for the
+interactive 3D view. The browser can check imported finite actions, build their
+cover and wall data within the viewer's limits, and run the bundled
+lawful-subcomplex search. To run automatic GAP/Sage cover discovery, export a
+search request for the desktop app or CLI and import the resulting artifact.
+
+See [GitHub Pages deployment](docs/github-pages.md) for the build, static
+preview, smoke test, and publishing instructions.
+
 ### Web App From Source
 
 Install Node.js with Corepack enabled, then run:

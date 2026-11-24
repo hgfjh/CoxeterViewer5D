@@ -56,6 +56,7 @@ export interface CoversWallsPanelProps {
   fullDavisFiberingCertificate?: FullDavisVirtualFiberingCertificate;
   importProgress: QuotientImportProgressSnapshot;
   discoveryPlan: AutomaticCoverSearchPlan;
+  nativeCoverDiscovery: boolean;
   discoveryOptions: AutomaticCoverSearchOptions;
   discoveryState: AutomaticCoverSearchState;
   onDiscoveryOptionsChange: (options: AutomaticCoverSearchOptions) => void;
@@ -108,6 +109,7 @@ export function CoversWallsPanel({
   fullDavisFiberingCertificate,
   importProgress,
   discoveryPlan,
+  nativeCoverDiscovery,
   discoveryOptions,
   discoveryState,
   onDiscoveryOptionsChange,
@@ -284,12 +286,20 @@ export function CoversWallsPanel({
             </button>
           ) : null}
         </div>
-        <p className="field-help">
-          Automatic mode builds exact finite congruence images first, searches
-          their coset actions, combines complementary modules when useful, and
-          keeps GAP low-index enumeration as a small-index fallback. Every
-          result is checked again before hat X is built.
-        </p>
+        {nativeCoverDiscovery ? (
+          <p className="field-help">
+            Automatic mode builds exact finite congruence images first, searches
+            their coset actions, combines complementary modules when useful, and
+            keeps GAP low-index enumeration as a small-index fallback. Every
+            result is checked again before hat X is built.
+          </p>
+        ) : (
+          <p className="field-help">
+            Automatic GAP/Sage discovery requires the desktop app or the CLI.
+            Open “Search bounds and fallback import” to export a search request
+            or import an action for the viewer to check.
+          </p>
+        )}
         <div className="compact-grid cover-discovery-summary">
           <StatusDatum
             label="Spherical catalogue"
