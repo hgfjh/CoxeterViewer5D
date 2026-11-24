@@ -1759,6 +1759,7 @@ export function App() {
           lawfulFiberingCertificate={lawfulFiberingSearchResult?.certificate}
           fullDavisFiberingCertificate={fiberingSearchResult?.certificate}
           discoveryPlan={coverDiscoveryPlan}
+          nativeCoverDiscovery={hasNativeDesktopRuntime()}
           discoveryOptions={coverDiscoveryOptions}
           discoveryState={coverDiscovery}
           onDiscoveryOptionsChange={handleCoverDiscoveryOptionsChange}

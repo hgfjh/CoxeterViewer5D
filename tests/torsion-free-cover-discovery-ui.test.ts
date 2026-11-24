@@ -476,6 +476,7 @@ describe("automatic cover discovery UI boundary", () => {
           message: "No import is running.",
         },
         discoveryPlan: plan,
+        nativeCoverDiscovery: false,
         discoveryOptions: plan.request.search,
         discoveryState: {
           status: "exhausted",

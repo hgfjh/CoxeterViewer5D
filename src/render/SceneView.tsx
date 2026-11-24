@@ -386,6 +386,17 @@ function SceneViewComponent({
     }
 
     const runtime = createRuntime(mount);
+    if (!runtime) {
+      // Three owns the canvas inside this mount. Leave the rest of the app
+      // available when the browser cannot provide the renderer's WebGL context.
+      const message = document.createElement("p");
+      message.className = "warning-inline";
+      message.setAttribute("role", "alert");
+      message.textContent =
+        "The 3D view needs WebGL 2. Enable hardware acceleration or open the viewer in a browser with WebGL 2 support.";
+      mount.appendChild(message);
+      return () => message.remove();
+    }
     rendererStateRef.current = runtime;
 
     return () => {
@@ -602,11 +613,6 @@ class SceneRuntime {
   private readonly gpuPickingScene = new Scene();
   private readonly gpuNodePickingScene = new Scene();
   private readonly camera = new PerspectiveCamera(55, 1, 0.1, 10_000);
-  private readonly renderer = new WebGLRenderer({
-    antialias: true,
-    alpha: true,
-    preserveDrawingBuffer: false,
-  });
   private readonly controls: OrbitControls;
   private readonly raycaster = new Raycaster();
   private readonly gpuIdPicker = new GpuIdPicker();
@@ -677,7 +683,10 @@ class SceneRuntime {
   private readonly sdfAtlasCache = new Map<string, SdfGlyphAtlas>();
   private sdfAtlasCacheBytes = 0;
 
-  constructor(private readonly mount: HTMLDivElement) {
+  constructor(
+    private readonly mount: HTMLDivElement,
+    private readonly renderer: WebGLRenderer,
+  ) {
     this.stats.labelRendererFallbackReason = this.sdfTextFallbackReason;
     this.setColorScheme("light");
     this.camera.position.set(0, -9, 6);
@@ -4187,7 +4196,23 @@ function arrowHeadMatrix(
 }
 
 function createRuntime(mount: HTMLDivElement) {
-  return new SceneRuntime(mount);
+  const canvas = document.createElement("canvas");
+  const attributes = {
+    antialias: true,
+    alpha: true,
+    preserveDrawingBuffer: false,
+  };
+  // Ask for the actual rendering context once. A failed context request is
+  // a browser capability result, and the successful context is reused below.
+  const context = canvas.getContext(
+    "webgl2",
+    attributes,
+  ) as WebGL2RenderingContext | null;
+  if (!context) return;
+  return new SceneRuntime(
+    mount,
+    new WebGLRenderer({ canvas, context, ...attributes }),
+  );
 }
 
 function clearGroup(group: Group | Scene) {
