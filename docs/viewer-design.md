@@ -7,8 +7,8 @@ effects. A user should always be able to answer:
 2. Which parts are exact incidence?
 3. Which parts are drawing aids?
 
-The current product replaces the earlier one-vertex and state/move readers with
-the cover-compression-wall pipeline from Jankiewicz--Wise.
+The current product replaces the earlier one-vertex and legal-system game
+readers with the cover-compression-wall pipeline from Jankiewicz--Wise.
 
 ## Architecture Boundaries
 
@@ -31,15 +31,16 @@ They display results returned by the domain modules.
 
 ## Model Switch
 
-The main switch has five stable entries.
+The main switch in the **View** panel has five stable entries, labelled as
+below.
 
-### Davis
+### Davis complex
 
 Shows a finite Cayley ball, rank-two Davis polygons, and available higher
 spherical incidence. The radius boundary is visible and clipped cells are
 labeled as omitted or partial.
 
-### hat X
+### hat X cover
 
 Shows the finite lifted presentation complex before compression:
 
@@ -51,7 +52,7 @@ Shows the finite lifted presentation complex before compression:
 The scene should make inverse-paired directed lifts and relation-cell fibers
 inspectable without pretending their 3D separation is part of the cover.
 
-### bar X
+### bar X compression
 
 Shows the compressed even-sided 2-complex:
 
@@ -59,17 +60,17 @@ Shows the compressed even-sided 2-complex:
 - one geometric edge per pair of generator bigons over an involution orbit;
 - one relation polygon per common compressed boundary.
 
-Walls, coorientations, lawful cells, and Morse links are overlays on this
+Walls, coorientations, lawful cells, and directed links are overlays on this
 model. They do not create a sixth complex.
 
-### Gamma
+### Defining graph Gamma
 
 Shows the defining finite-relation graph. `m = 2` edges can be included for a
 full graph; `m = inf` pairs are omitted. Relation labels are always visible in
 the planar diagram, with placement chosen to avoid unrelated edges and
 crossings where possible.
 
-### Projection
+### Projection drawing
 
 Shows chamber barycenters obtained from supplied reflection data. The subtitle
 names the projection and whether interval-certified model data are available.
@@ -77,8 +78,11 @@ The mesh remains a drawing.
 
 ## Covers + Walls Workflow
 
-Research mode presents one ordered workflow rather than several independent
-game panels.
+The **Covers + Walls** panel, present in both Teaching and Research modes,
+presents one ordered workflow rather than several independent game panels. Its
+numbered status list currently has seven steps (**1. Certify a torsion-free
+subgroup** through **7. Certify a primitive map to ℤ**); the stages below are
+the design order behind that list.
 
 ### 1. Source
 
@@ -112,11 +116,13 @@ For an automatically generated or manually imported action, show:
 - subgroup/backend provenance;
 - torsion-free evidence as a separate field.
 
-Manual import belongs under Advanced and remains available for published or
-externally generated actions. The **Build hat X** action is disabled when the
-finite action is incomplete.
-It is not disabled merely because external torsion-free evidence is absent;
-instead the resulting claim status stays visibly limited.
+Manual import belongs under **Search bounds and fallback import** and remains
+available for published or externally generated actions. There is no separate
+build button: `\hat X` is built once a complete finite action is loaded. When
+only an existence certificate for a congruence kernel is available, the panel
+shows **Build quotient and walls** and **Run fibering pipeline** disabled, with
+the reason. Construction is not blocked merely because external torsion-free
+evidence is absent; instead the resulting claim status stays visibly limited.
 
 ### 4. Cover
 
@@ -143,7 +149,9 @@ become faint context.
 
 ### 7. Coorientation and `H -> Z`
 
-Flip individual two-sided walls or run a search. Edge arrows update from the
+A coorientation is what Jankiewicz--Wise call an orientation of a two-sided
+wall; the two words name the same thing. Flip individual two-sided walls or
+run a search. Edge arrows update from the
 wall parity data. One-sided walls stay marked as obstructions and cannot receive
 a fake local orientation.
 
@@ -153,21 +161,26 @@ the primitivity check passes.
 
 Search output uses only these labels:
 
-- **Maximum proven**: exact search completed and bounds meet;
-- **Best found**: the run stopped or used a heuristic;
-- **No feasible assignment**: no orientation met the selected constraints;
-- **Invalid wall system**: a required wall condition failed.
+- **Proven optimum**: exact search completed and bounds meet;
+- **Best found**: the run stopped at its budget; the remaining gap is shown.
+
+The search button is disabled while any wall is one-sided. A search that fails
+reports its error message instead of a result.
 
 ### 8. Lawful subcomplex and links
 
-The lawful view keeps the full `\bar X` 1-skeleton. Retained cells have crisp
-outlines and source/sink markers; discarded cells are hidden or ghosted.
-Ascending and descending links are inspected at a selected vertex. Their
-nonempty/connected status is reported independently of theorem claims.
+The lawful view keeps the full `\bar X` 1-skeleton. Retained cells are drawn
+normally; discarded cells are hidden or, with **Show non-lawful cells faintly**,
+ghosted. The source and sink of a selected lawful cell are listed in the
+inspector; the scene does not yet draw source/sink markers. The directed links
+(ascending and descending) are inspected at a selected vertex under **Inspect
+induced orientation**. Their nonempty/connected status is reported
+independently of theorem claims.
 
 When the subgroup, epimorphism, and applicable Morse hypotheses all pass, the
-workflow can summarize the resulting virtual algebraic fibration and point to
-its evidence. It must not derive finite generation of the kernel from the
+two-track certificate (**Track A (lawful complex)**, then **Track B (full Davis
+quotient)**) can summarize the resulting virtual algebraic fibration and point
+to its evidence. It must not derive finite generation of the kernel from the
 picture alone.
 
 ### 9. Export
@@ -188,38 +201,48 @@ artifact enters through the same validation boundary as a manual import, and
 the desktop bridge exposes it as a controlled job. Manageable complete actions
 can reach a replayed wall-character virtual-algebraic-fibering certificate.
 
-The scalable full-integral-`H^1` backend remains separate from those Morse/link
-stages, and no source-bound smooth-manifold/PL/smoothing verifier is
-implemented. Thus this is not yet an all-character or smooth-fibering
-pipeline.
+The external `cover:fiber:scalable-h1` CLI connects the proof-carrying
+full-integral-`H^1` backend to generalized compression and intrinsic Track B.
+This is deliberately not an in-browser calculation: large sparse rank and
+integral-kernel evidence remain external artifacts. The exact in-process
+all-character arrangement currently supports `b1` one through four. No
+source-bound smooth-manifold/PL/smoothing verifier is implemented, so the
+viewer and CLI do not certify smooth fibering.
+
+The low-barycentric (IMM) scorer and orientation search
+(low-barycentric-morse.md) are command-line tools
+only (`pnpm lowbary:score`, `pnpm lowbary:search`). The viewer does not run
+them, and they do not yet emit a replayable certificate.
 
 ## Teaching Mode
 
-Teaching mode keeps the viewer dominant. Its first layer contains:
+Teaching mode keeps the viewer dominant. The left rail contains, top to
+bottom:
 
-- **Choose example**;
-- **View**;
-- **Focus**;
-- **Labels**;
-- **Caveats**.
+- **Choose Example**, with **Start Here** directly below the example picker;
+- **View** (the model switch);
+- **Covers + Walls**;
+- **Labels**.
 
-For Covers + Walls, a compact construction strip reads:
+The right rail holds the **Focus Inspector**, **Caveats**, and the
+**Interface** mode switch.
 
-```text
-Source -> hat X -> bar X -> Walls -> Coorientation -> Lawful cells -> Links
-```
-
-Each step has one sentence and one primary action. Raw permutation tables,
-hashes, search budgets, and diagnostic witnesses stay behind **Details**.
+In Covers + Walls the numbered workflow list gives one line of status per step.
+Search ledgers, wall-diagnostic grids, and the Track A/Track B check grids
+(**Search summary**, **Wall diagnostics**, **Track A checks**, **Track B
+checks**) start collapsed in Teaching mode; raw permutation tables, hashes, and
+search budgets stay behind further disclosures.
 
 ## Research Mode
 
-Research controls are grouped into four lanes:
-
-- **Workflow**: Covers + Walls and guided inspections;
-- **Data/files**: examples, imports, sessions, workspace, finite actions;
-- **Notebook/export**: notes, comparisons, camera bookmarks, figure bundles;
-- **Status/tools**: certificates, external backends, diagnostics, caveats.
+Research mode drops **Start Here**, titles the first panel **Source**, adds
+**Compact H5 campaign status** under the example picker, and expands the
+collapsed grids. The right rail gains **Data + Status** (source data, cover
+action, torsion-free evidence, automatic search, index divisor, compression,
+wall system, render calls) and **Notebook + Export** (**Export experiment**,
+**Export figure**). Notes, comparisons, and camera bookmarks are not part of
+the current UI; sessions and workspace actions are reached through the desktop
+menu.
 
 The earlier legal-system game and generator-uniform cochain are not parallel
 top-level workflows. Legacy data may be shown in a migration report, but the
@@ -233,7 +256,11 @@ The inspector always begins with three short answers:
 - **Why is it here?**
 - **Exact or drawing?**
 
-Selection details depend on the object.
+Selection details depend on the object. The current inspector implements
+vertex, relation-cell, wall (chosen with **Select a wall**), and directed-link
+(chosen under **Inspect induced orientation**) summaries; edges cannot yet be
+selected, so the cover-edge and compressed-edge entries below are design
+targets.
 
 ### Cover edge
 
@@ -316,23 +343,27 @@ by labels and patterns for accessibility.
 The wall display offers:
 
 - **All walls** for an overview;
-- **Selected wall** for one complete immersed graph;
-- **Pathology witness** for one embeddedness, parity, or self-osculation
-  failure;
-- **Dual edges only** when arcs obscure the 1-skeleton.
+- **Selected wall** for one complete immersed graph.
+
+Turning off **Show wall arcs** leaves only the dual edges when arcs obscure the
+1-skeleton. A dedicated pathology-witness view is not implemented; failures are
+summarized under **Wall diagnostics**.
 
 ## Lawful-Cell Reading
 
-Clicking a relation cell in lawful mode shows its cyclic sign word. A lawful
-cell displays two positive paths from its source to its sink. A discarded cell
-shows every sign transition and explains why there are not exactly two.
+Clicking a relation cell of `\bar X` shows its cyclic sign word (**Boundary
+signs**) and whether it is lawful. A lawful cell has two positive paths from
+its source to its sink, and the inspector lists both vertices. A discarded
+cell's sign word shows every transition, so the reader can see why there are
+not exactly two.
 
 This mode never deletes cells from `\bar X` data. It changes only the active
 subcomplex/view and records retained and discarded IDs.
 
 ## Comparison Views
 
-Two linked comparisons are especially useful:
+Linked split views are not implemented in the current UI, which shows one
+model at a time. Two linked comparisons remain design targets:
 
 ### hat X versus bar X
 
@@ -360,6 +391,30 @@ There is exactly one generator label per geometric edge in `\bar X`. Dense
 labels use shared text atlases and collision placement. Selected and hovered
 labels have priority. Leader ticks point to the owned edge when proximity alone
 would be ambiguous.
+
+Scenes with more than 60 visible vertices use a dense label rule
+(`src/render/labels.ts`): at the framed view at most 25 ordinary vertex labels
+and 12 edge labels are drawn, and the cap doubles with each 2x zoom step (up to
+three steps). The selected vertex and its neighbours are always labelled.
+Smaller scenes, such as an `I2(m)` or `A3` ball, keep every label.
+
+## Layout, Framing, And Onboarding
+
+- Above 1180 px the layout has three columns (controls, viewer, inspector);
+  from 761 to 1180 px the two rails stack in the left column beside the viewer;
+  at 760 px and below there is one column with the viewer first.
+- **Viewer only** (top-bar button or `U`) hides both rails; a floating **Show
+  controls (U)** button restores them.
+- With no stored choice, the theme follows the operating-system colour
+  preference; the theme button overrides it. The current theme is written to
+  browser storage on load, so later OS changes are not followed.
+- The global camera preset fits the scene's bounding sphere. A nearly flat
+  scene, such as a single Davis `2m`-gon or the planar Gamma drawing, is viewed
+  face-on with a small tilt instead of edge-on. Node positions are not moved.
+- The question-mark button starts a guided tour (`src/app/onboarding/`) on the
+  regular ideal hyperbolic 3-cube (`ideal_hyperbolic_3_cube_m3`). It opens by
+  itself once per browser (key `coxeterViewer.tour.v1`), never under
+  `navigator.webdriver`; `?tour=1` forces it and `?tour=0` suppresses it.
 
 ## Exactness Language
 

@@ -3,10 +3,13 @@
 This note records the conventions used by the Covers + Walls workflow. The
 primary reference is Jankiewicz and Wise, _Incoherent Coxeter Groups_.
 
-The intended entry point is a Coxeter system. An exact backend should discover
-a finite-index torsion-free subgroup and export its coset action. Supplying a
-finite action by hand remains an advanced fallback while that discovery backend
-is being implemented.
+The entry point is a Coxeter system plus a finite-index torsion-free subgroup,
+given by its coset action. The action either comes from automatic discovery
+([torsion-free-cover-discovery.md](torsion-free-cover-discovery.md)) or is
+supplied by the user, small or as a packed `generator-permutation-files`
+manifest (compact-action-import.md). Background
+and proofs are in [math.md](math.md); this note covers the workflow and the
+viewer.
 
 ## The Base Presentation Complex
 
@@ -70,23 +73,10 @@ lifts that acquire the same signed boundary are identified. Under the free
 finite-pair action assumed in the paper, a finite pair contributes
 `d/(2m_ij)` compressed polygons.
 
-### Why relation fibers have `2m_ij` cells
-
-Let `W_ij = <s_i,s_j>`, a dihedral group of order `2m_ij`, act on the `d`
-cover vertices. At a coset `Hg`, its stabilizer is
-
-```text
-Stab_Wij(Hg) = W_ij intersect g^{-1} H g.
-```
-
-When `H` is torsion-free this intersection is trivial: `W_ij` is finite, so
-every nonidentity element in the intersection would be torsion in the
-torsion-free group `g^{-1}Hg`. Orbit-stabilizer therefore gives orbit size
-`|W_ij| = 2m_ij`. The `d` base vertices split into `d/(2m_ij)` such orbits.
-There is one lifted relation cell based at each vertex, so each orbit supplies
-exactly `2m_ij` cells. After the generator bigons are collapsed, those cells
-have the same geometric boundary up to cyclic shift and reversal and become
-one cell of `bar X`.
+Each compressed polygon has a fiber of exactly `2m_ij` lifted cells because
+`W_ij = <s_i,s_j>` acts freely on the cover vertices when `H` is torsion-free;
+the orbit-stabilizer argument is in
+[math.md](math.md#the-finite-dihedral-orbit-calculation).
 
 The compression certificate checks counts, closure, two directed edges and two
 bigons over every compressed edge, `2m_ij` relation cells over every compressed
@@ -145,8 +135,11 @@ edge directions are exact finite combinatorics for the loaded compression.
 
 ## Coorientations And Lawful Cells
 
-A two-sided wall admits a consistent choice of transverse direction. Choosing
-one sign per wall directs all edges of `bar X`. Read those directions along the
+A two-sided wall admits a consistent choice of transverse direction, which
+Jankiewicz--Wise call an orientation of the wall and the UI calls a
+coorientation. A one-sided wall admits none, so any route that starts from a
+wall orientation must first replace a cover with one-sided walls by a further
+finite cover; the repo has no generic step for that. Choosing one sign per wall directs all edges of `bar X`. Read those directions along the
 boundary of a relation polygon. It is lawful exactly when the cyclic sign word
 has two transitions. Equivalently, the boundary consists of two positive paths
 from one source to one sink.
@@ -159,15 +152,22 @@ The coorientation also defines a cellular map to `S^1` and a homomorphism
 `H -> Z`. A reproducible virtual algebraic-fibering record includes its values
 on Schreier generators, all boundary sums, a primitivity check, and the
 ascending and descending links. The map is not called an algebraic fibration
-unless the finite-kernel hypotheses carry evidence.
+unless the hypotheses for finite generation of its kernel carry evidence.
+
+The lawful subcomplex is the Track A route. The same wall orientation can
+instead be scored on the full Davis quotient (Track B) or on its
+low-barycentric subdivision; see [math.md](math.md#three-analysis-routes).
 
 ## Theorem Boundary
 
 The finite algorithms do not prove all hypotheses of the paper. Applying its
-Morse or incoherence conclusions also requires the relevant cover and subgroup
-evidence, a globally consistent coorientation of two-sided walls, the required
-affine/aspherical 2-dimensional setting, and the stated link and
-group-theoretic conditions. Embeddedness and absence of self-osculation are
+incoherence conclusion requires the relevant cover and subgroup evidence, the
+paper's dimension/asphericity and Euler-characteristic hypotheses, and its
+group-theoretic conditions. For Track A finite generation, the direct
+Bestvina--Brady bounded-band argument instead requires a globally consistent
+coorientation, a finite compatible PL Morse model, a discrete cyclic-cover
+height, and nonempty connected directed links; asphericity is optional stronger
+evidence. Embeddedness and absence of self-osculation are
 reported separately because they support the paper's probabilistic existence
 argument; direct certification of a supplied orientation uses its actual cell
 sums and links. Selberg's lemma guarantees virtual torsion-freeness; it does

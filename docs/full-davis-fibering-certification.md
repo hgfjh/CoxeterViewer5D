@@ -1,5 +1,12 @@
 # Full Davis-Quotient Fibering Certification
 
+**Status (as of 2026-10-04).** This is the canonical description of Track B.
+It is implemented, with a direct fixed-character branch
+(`pnpm cover:fiber:user-action`) and a scalable full-`H^1` branch
+(`pnpm cover:fiber:scalable-h1`). How it relates to Track A and to the
+low-barycentric (IMM) route is in the route map,
+[two-track-fibering-certification.md](two-track-fibering-certification.md).
+
 This note specifies the full-dimensional certificate for a virtual algebraic
 fibration of a Coxeter group. It is the profile intended for the compact
 5-cube. It is different from the two-dimensional lawful-compression argument
@@ -503,6 +510,13 @@ with the other PL Morse hypotheses above. In the finite cocompact
 Bestvina--Brady setting, these conditions imply that `ker(phi)` is finitely
 generated.
 
+Stronger link conditions give stronger finiteness in the same setting, since
+`Sigma` is contractible and `H` acts freely and cocompactly: by
+Bestvina--Brady Theorem 4.1, simply connected links give a finitely presented
+kernel, and contractible links (for instance links with replayed collapse
+certificates) give a kernel of type `F`. The current certificate does not
+promote either conclusion.
+
 Collapsibility is a stronger, separately reported condition. Italiano,
 Martelli, and Migliorini use collapsible ascending and descending links in a
 specific affine cellulation and subdivision of a compact smooth manifold of
@@ -518,6 +532,12 @@ is ignored by certificate construction, and is rejected by replay if embedded
 in an artifact. Consequently `imm23TopologicalFibrationCertified` is always
 `false`. Smooth fibering can be exposed only after those referenced objects are
 loaded, source-bound, and independently replayed.
+
+The collapsibility checks here are made in the pulling triangulation of `K`.
+The separate low-barycentric route
+(low-barycentric-morse.md) scores the second gate
+in the IMM low-barycentric subdivision instead. It is not part of a Track B
+certificate.
 
 ## 11. The Exact Conclusion
 
@@ -629,6 +649,43 @@ non-fibering theorem. See [`scripts/README.md`](../scripts/README.md) for the
 reproduction command and
 [`scripts/certificates/README.md`](../scripts/certificates/README.md) for the
 content hashes.
+
+### Scalable full-H1 Track B adapter
+
+[`src/fibering/scalableFullH1TrackBPipeline.ts`](../src/fibering/scalableFullH1TrackBPipeline.ts)
+connects the proof-carrying sparse integral-`H^1` completion to the same
+all-cells machinery without converting it to a wall character. Consequently,
+a one-sided quotient wall is not an error on this intrinsic path. The adapter
+replays the modular rank certificate and saturated integral-kernel witness,
+packs the certified cocycle section, rebuilds the generalized compression,
+streams every quotient-point link template, and forms the exact
+height-difference arrangement.
+
+The cheap basis-vector sample is optional and diagnostic. It is not a logical
+gate: the exact stage independently represents every realizable nonzero
+height-sign face, including lower-dimensional faces, and evaluates both tie
+polarities. A positive artifact binds one primitive integral representative
+and polarity to exhaustive full-quotient links. Promotion then certifies a
+primitive epimorphism with finitely generated kernel. It does not certify that
+the Davis quotient is a manifold or that the resulting circle map is a
+topological or smooth bundle.
+
+The present in-process exact cone engine supports `1 <= b1 <= 4`; higher rank
+and declared resource stops are reported as `incomplete`. A completed negative
+artifact concerns only the recorded cocycle section, canonical point-order
+pulling subdivision, zero periodic potential, and tie rule. It does not rule
+out another finitely generated-kernel character from a different model.
+
+Build or replay the joined artifact with:
+
+```bash
+corepack pnpm cover:fiber:scalable-h1 -- \
+  --system SYSTEM.json \
+  --action ACTION.json \
+  --rank-certificate RANK.json \
+  --kernel-witness WITNESS.json \
+  --output RESULT.json
+```
 
 ## Sources And Scope
 

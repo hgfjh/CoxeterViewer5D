@@ -1,5 +1,10 @@
 # Automatic Torsion-Free Cover Discovery
 
+**Status (as of 2026-10-04).** The discovery ladder has not found a manageable
+compact 5-cube cover; that cube action was imported. If you already have a
+subgroup or an action, go to
+[Already Have A Subgroup Or An Action?](#already-have-a-subgroup-or-an-action).
+
 The cover workflow starts with a Coxeter system, not a hand-written
 permutation action:
 
@@ -15,8 +20,56 @@ Coxeter system W
 
 The discovery backend searches for the middle two lines. It is not a theorem
 prover and it does not assume that the first subgroup it finds has minimum
-index. Manual finite-action import remains useful for reproducing published
-examples, but it is no longer the primary path.
+index.
+
+## Already Have A Subgroup Or An Action?
+
+Skip discovery. Bring your own finite-index subgroup as one of the formats in
+compact-action-import.md:
+
+- a complete coset action as JSON rows (`{ "id", "index", "generatorImages" }`
+  or the `generator-permutations` envelope);
+- a `generator-permutation-files` packed manifest for large actions (flat
+  `uint32le` row files pinned by SHA-256);
+- subgroup generators as words (`subgroup-generators`, bounded GAP coset
+  enumeration); or
+- a finite quotient plus a subgroup (`finite-quotient-subgroup`).
+
+Then run, depending on size:
+
+```bash
+corepack pnpm cover:fiber:user-action -- --example I2_5 --action my-action.json --output promotion.json
+corepack pnpm cover:import:compact-action -- --example compact_5_prism_makarov \
+  --input IMPORT.json --action-output ACTION.json --h1-job-dir H1-JOB --receipt RECEIPT.json
+pnpm bench:pipeline --system SYSTEM.json --manifest action.manifest.json --workers 8 --stages load,torsion,oracle,h1
+pnpm lowbary:score --system SYSTEM.json --manifest action.manifest.json --orientation orientation.json
+pnpm lowbary:search --system SYSTEM.json --manifest action.manifest.json --start orientation.json
+```
+
+Every path recertifies torsion-freeness by the spherical-orbit test below; a
+`torsionFree: true` label is never trusted. The H5-P7-22 cover
+(index 39,628,800, a Sylow-7 pullback from a congruence image) came in this
+way, as a packed manifest; see
+[fibering-research-portfolio.md](fibering-research-portfolio.md#h5-p7-22).
+
+## Running Discovery
+
+The main entry points are:
+
+```bash
+# discovery ladder, with the bounds used for the compact 5-cube
+corepack pnpm cover:discover:compact-5-cube
+# the same script on your own system
+corepack pnpm cover:discover -- --input SYSTEM.json --output RESULT.json --max-index N
+# two-stage finite-image portfolio (dry plan, then run)
+corepack pnpm cover:discover:portfolio:plan
+corepack pnpm cover:discover:portfolio -- --input SYSTEM.json --output-dir OUT
+```
+
+Runtime setup, self-tests, and the remaining `cover:*` scripts are in
+[Tooling](tooling.md).
+The compact 5-cube search tracks are in
+[coordinated-cover-search.md](coordinated-cover-search.md).
 
 ## What Existence Does Not Compute
 
@@ -657,8 +710,10 @@ assignment was searched.
 
 The current repository supplies the symbolic data model and synthetic
 promotion tests. It does not yet contain a positive compact-5-cube symbolic
-fibering artifact satisfying this entire chain, so no compact-cube fibering
-claim is made here.
+fibering artifact satisfying this entire chain, so no symbolic compact-cube
+fibering claim is made here. The materialized 34,560-chamber cube cover is a
+separate, non-symbolic case: its low-barycentric first gate is recorded in
+cube-manifold-gate1.md.
 
 ## Scale Benchmark Before Candidate Materialization
 
@@ -746,6 +801,21 @@ subdivision and height function, and verifies ascending and descending links.
 Those are separate claims. A torsion-free action does not itself prove virtual
 algebraic fibering, finite generation of `ker(phi)`, a manifold statement, or a
 topological bundle.
+
+There are three post-cover routes: Track A
+([virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)), Track B
+([full-davis-fibering-certification.md](full-davis-fibering-certification.md)),
+and the low-barycentric objective
+(low-barycentric-morse.md). Track A and the
+low-barycentric wall-orientation search start from a wall orientation, so they
+need every wall to be two-sided. (The low-barycentric scorer also accepts IMM
+status assignments, for which walls play no role; see
+low-barycentric-morse.md.)
+A cover can certify torsion-free and still have
+one-sided walls: the H5-P7-22 cover of index 39,628,800 has 10 one-sided
+walls among 20. The repository has no generic, scalable step that passes from
+such a cover to a further cover where every wall is two-sided; for H5-P7-22
+this was a one-off Python script (`scripts/h5_p7_22/build_action.py --linear`).
 
 ## Current Scope
 
