@@ -62,15 +62,51 @@ export interface CompressedComplexScene {
   warnings: string[];
 }
 
+/**
+ * How relation cells are filled in a crowded cover scene.
+ *
+ * "focus": above CROWDED_CELL_THRESHOLD drawn cells, only the cells of
+ * interest (the selected cell, the cells through the selected vertex, the
+ * active relation family) get a translucent fill; every other cell keeps its
+ * exact boundary as a faint outline. Stacked translucent fills of many
+ * overlapping disks otherwise blend into one unreadable tint.
+ * "all": fill every cell, as before.
+ */
+export type CellEmphasis = "focus" | "all";
+
+/** Scenes with at most this many exact edges keep every edge label. */
+export const SMALL_SCENE_EDGE_LIMIT = 12;
+/** Above this many drawn relation cells, "focus" emphasis stops filling context cells. */
+export const CROWDED_CELL_THRESHOLD = 24;
+
 export interface HatXSceneOptions {
   selectedVertexId?: string;
   selectedCellId?: string;
   showRelationCells?: boolean;
+  /**
+   * Draw each generator bigon (the lifted edges x -> x s and x s -> x) as one
+   * rail. The scene still carries both edge ids; only their drawing lane
+   * changes. Default true. The pair is split into two rails at the selected
+   * vertex, so the doubled edge is visible where the reader is looking.
+   */
+  mergeBigons?: boolean;
+  /** Default "focus"; see CellEmphasis. */
+  cellEmphasis?: CellEmphasis;
 }
 
 export interface BarXSceneOptions {
   selectedVertexId?: string;
+  /**
+   * Vertex whose edges are labelled and whose cells are filled. Omitted:
+   * selectedVertexId. null: none, e.g. when selectedVertexId is only the
+   * default link-lens vertex and the reader has not chosen a vertex.
+   */
+  emphasisVertexId?: string | null;
   selectedCellId?: string;
+  /** Default "focus"; see CellEmphasis. */
+  cellEmphasis?: CellEmphasis;
+  /** Extra exact edges whose generator labels are shown (e.g. selected-wall duals). */
+  labelEdgeIds?: ReadonlySet<string>;
   /** One exact finite pair to emphasize; omitted means all relation cells. */
   relationFamily?: [number, number];
   /** Spread the existing quotient cells in 3D without duplicating incidence. */
@@ -105,36 +141,57 @@ const REFLECTION_LAYOUT_MAX_RANK = 8;
 const REFLECTION_LAYOUT_MAX_ORDER = 12;
 const REFLECTION_LAYOUT_MAX_FREE_SIGNS = 14;
 const CHAMBER_POINT_CANDIDATES = 400;
+/** Above this orbit size the vertex-spacing tie-break is skipped (O(n^2)). */
+const ORBIT_SPACING_VERTEX_LIMIT = 400;
 /** Chord bend height as a fraction of chord length. */
 const CHORD_LIFT = 0.35;
 
 /**
  * Adapts the finite presentation cover hat X to the generic Three.js scene.
  *
- * Each directed lift remains a separate scene edge. The two bigon lifts based
- * at opposite endpoints share the same exact two-edge boundary. We show that
- * boundary as paired rails rather than inventing a triangular third edge.
- * Relation lifts retain their exact attaching cycles.
+ * Each directed lift remains a separate scene edge. The two lifts x -> x s
+ * and x s -> x bound the two generator bigons over one bar-X edge; by default
+ * they share one drawn rail (see HatXSceneOptions.mergeBigons) and the
+ * degenerate bigon disks are not filled. Relation lifts retain their exact
+ * attaching cycles; lifts whose cycles run through the same vertices are
+ * drawn once (see `coincidentWithCellId`).
  */
 export function buildHatXScene(
   hatX: HatXCoverComplex,
   options: HatXSceneOptions = {},
 ): CompressedComplexScene {
-  const positions = layoutComplexGraph(
-    hatX.vertices.map((vertex) => vertex.id),
-    hatX.directedLiftEdges.map((edge) => ({
+  const vertexIds = hatX.vertices.map((vertex) => vertex.id);
+  const orbit = cachedReflectionOrbit(hatX, () => ({
+    rank: hatX.sourceSystem.generators.length,
+    vertexIds,
+    edges: hatX.directedLiftEdges.map((edge) => ({
       source: edge.sourceVertexId,
       target: edge.targetVertexId,
+      generator: edge.generator,
     })),
-  );
-  emphasizeRelationBoundaryLayout(
-    positions,
-    (
-      hatX.liftedRelationCells.find(
-        (cell) => cell.id === options.selectedCellId,
-      ) ?? hatX.liftedRelationCells[0]
-    )?.boundaryOccurrences.map((occurrence) => occurrence.sourceVertexId),
-  );
+    cycles: hatX.liftedRelationCells.map((cell) =>
+      cell.boundaryOccurrences.map((occurrence) => occurrence.sourceVertexId),
+    ),
+  }));
+  const positions = orbit
+    ? new Map(orbit.positions)
+    : layoutComplexGraph(
+        vertexIds,
+        hatX.directedLiftEdges.map((edge) => ({
+          source: edge.sourceVertexId,
+          target: edge.targetVertexId,
+        })),
+      );
+  if (!orbit) {
+    emphasizeRelationBoundaryLayout(
+      positions,
+      (
+        hatX.liftedRelationCells.find(
+          (cell) => cell.id === options.selectedCellId,
+        ) ?? hatX.liftedRelationCells[0]
+      )?.boundaryOccurrences.map((occurrence) => occurrence.sourceVertexId),
+    );
+  }
   const offsets = parallelEdgeOffsets(
     hatX.directedLiftEdges.map((edge) => ({
       id: edge.id,
@@ -143,41 +200,118 @@ export function buildHatXScene(
       generator: edge.generator,
     })),
   );
+  const mergeBigons = options.mergeBigons ?? true;
+  const selectedVertexId = options.selectedVertexId;
+  const selectedCell = hatX.liftedRelationCells.find(
+    (cell) => cell.id === options.selectedCellId,
+  );
+  const selectedCellEdgeIds = new Set(
+    selectedCell?.boundaryOccurrences.map((occurrence) => occurrence.edgeId),
+  );
+  // Merged bigons draw two lifted edges as one rail, so count rails.
+  const smallScene =
+    hatX.directedLiftEdges.length / (mergeBigons ? 2 : 1) <=
+    SMALL_SCENE_EDGE_LIMIT;
+  // The inverse lift of x -> x s is x s -> x with the same generator.
+  const liftByEndpoints = new Map(
+    hatX.directedLiftEdges.map((edge) => [
+      `${edge.sourceVertexId}|${edge.targetVertexId}|${edge.generator}`,
+      edge.id,
+    ]),
+  );
   const nodes: SceneNode[] = hatX.vertices.map((vertex, index) => ({
     id: vertex.id,
     label: vertex.label ?? `v${index}`,
     compactLabel: vertex.label ?? `v${index}`,
     length: vertex.representativeWord?.length ?? 0,
     position: positions.get(vertex.id),
-    alwaysLabel: vertex.id === options.selectedVertexId,
-    labelPriority:
-      vertex.id === options.selectedVertexId ? 100_000 : 100 - index,
-    nodeScale: vertex.id === options.selectedVertexId ? 1.45 : 1,
+    alwaysLabel: vertex.id === selectedVertexId,
+    labelPriority: vertex.id === selectedVertexId ? 100_000 : 100 - index,
+    nodeScale: vertex.id === selectedVertexId ? 1.45 : 1,
   }));
-  const edges: SceneEdge[] = hatX.directedLiftEdges.map((edge, index) => ({
-    id: edge.id,
-    source: edge.sourceVertexId,
-    target: edge.targetVertexId,
-    generator: edge.generator,
-    compactLabel: hatX.sourceSystem.generators[edge.generator]?.label,
-    directed: true,
-    visualOffset: offsets.get(edge.id) ?? 0,
-    alwaysLabel: true,
-    labelPriority: 50_000 - index,
-  }));
+  const edges: StyledSceneEdge[] = hatX.directedLiftEdges.map((edge, index) => {
+    const atSelectedVertex =
+      selectedVertexId !== undefined &&
+      (edge.sourceVertexId === selectedVertexId ||
+        edge.targetVertexId === selectedVertexId);
+    // Generator colours are explained by the legend, so only edges that
+    // explain the current selection carry a text label.
+    const labelled =
+      smallScene || atSelectedVertex || selectedCellEdgeIds.has(edge.id);
+    const merged = mergeBigons && !atSelectedVertex;
+    return {
+      id: edge.id,
+      source: edge.sourceVertexId,
+      target: edge.targetVertexId,
+      generator: edge.generator,
+      compactLabel: hatX.sourceSystem.generators[edge.generator]?.label,
+      directed: true,
+      visualOffset: merged ? 0 : (offsets.get(edge.id) ?? 0),
+      // A merged rail carries both directions, so one arrowhead would be
+      // wrong; arrows return where the pair is split into two rails.
+      hideArrow: merged ? true : undefined,
+      alwaysLabel: labelled,
+      suppressSemanticLabel: !labelled,
+      labelPriority: labelled ? 50_000 - index : undefined,
+      bigonPartnerEdgeId: liftByEndpoints.get(
+        `${edge.targetVertexId}|${edge.sourceVertexId}|${edge.generator}`,
+      ),
+    };
+  });
+
+  // Lifts of one bar-X cell based at different boundary vertices run through
+  // the same vertices in the same cyclic order, so their drawn disks coincide.
+  // One representative per vertex set is drawn; the selected lift is chosen as
+  // representative so the selection overlay always has geometry.
+  const representativeBySupport = new Map<string, string>();
+  const supportKey = (cell: HatXCoverComplex["liftedRelationCells"][number]) =>
+    `${cell.generatorPair.join(":")}|${[
+      ...new Set(
+        cell.boundaryOccurrences.map((occurrence) => occurrence.sourceVertexId),
+      ),
+    ]
+      .sort()
+      .join(",")}`;
+  for (const cell of hatX.liftedRelationCells) {
+    const key = supportKey(cell);
+    if (!representativeBySupport.has(key) || cell.id === selectedCell?.id) {
+      representativeBySupport.set(key, cell.id);
+    }
+  }
+  const crowded =
+    (options.cellEmphasis ?? "focus") === "focus" &&
+    representativeBySupport.size > CROWDED_CELL_THRESHOLD;
   const cells: SceneCell[] =
     (options.showRelationCells ?? true)
-      ? hatX.liftedRelationCells.map((cell) => ({
-          id: cell.id,
-          generatorPair: cell.generatorPair,
-          boundaryNodeIds: cell.boundaryOccurrences.map(
+      ? hatX.liftedRelationCells.map((cell) => {
+          const boundaryNodeIds = cell.boundaryOccurrences.map(
             (occurrence) => occurrence.sourceVertexId,
-          ),
-          sourceCellId: cell.id,
-          readabilityRole:
-            cell.id === options.selectedCellId ? "focus" : "context",
-        }))
+          );
+          const representative = representativeBySupport.get(supportKey(cell));
+          const selected = cell.id === options.selectedCellId;
+          const interesting =
+            selected ||
+            (selectedVertexId !== undefined &&
+              boundaryNodeIds.includes(selectedVertexId));
+          return {
+            id: cell.id,
+            generatorPair: cell.generatorPair,
+            boundaryNodeIds,
+            sourceCellId: cell.id,
+            readabilityRole: selected
+              ? "focus"
+              : interesting && crowded
+                ? "incident"
+                : "context",
+            outlineOnly: crowded && !interesting ? true : undefined,
+            coincidentWithCellId:
+              representative !== cell.id ? representative : undefined,
+          };
+        })
       : [];
+  const coincidentCount = cells.filter(
+    (cell) => cell.coincidentWithCellId,
+  ).length;
 
   return {
     nodes,
@@ -194,8 +328,22 @@ export function buildHatXScene(
     },
     warnings: [
       ...hatX.warnings,
-      "Each paired rail boundary is shared by two lifted generator bigons; no triangular proxy is drawn.",
-      "Vertex positions and rail offsets are drawing conventions.",
+      mergeBigons
+        ? "Each generator bigon (lifted edges x -> x s and x s -> x) is drawn as one rail; both lifted edges remain in the scene, and the rails split at the selected vertex. The degenerate bigon disks are not filled."
+        : "Each paired rail boundary is shared by two lifted generator bigons; no triangular proxy is drawn.",
+      ...(coincidentCount > 0
+        ? [
+            `${coincidentCount} relation lifts run through the same vertices as another lift and would be drawn on top of it; each such group is drawn once. Every lift is still a separate 2-cell of hat X.`,
+          ]
+        : []),
+      ...(crowded
+        ? [
+            "Crowded scene: only the selected cell and the cells through the selected vertex are filled; the other cells are drawn as outlines of their exact attaching cycles.",
+          ]
+        : []),
+      orbit
+        ? "Vertices are placed as one chamber orbit of a reflection realization of the finite action; positions and rail offsets are drawing conventions."
+        : "Vertex positions and rail offsets are drawing conventions.",
     ],
   };
 }
@@ -220,10 +368,11 @@ export function buildBarXScene(
     source: edge.sourceVertexId,
     target: edge.targetVertexId,
   }));
-  const basePositions = layoutComplexGraph(
-    barX.vertices.map((vertex) => vertex.id),
-    layoutEdges,
-  );
+  const vertexIds = barX.vertices.map((vertex) => vertex.id);
+  const orbit = options.relationFamily
+    ? undefined
+    : cachedReflectionOrbit(barX, () => barXOrbitInput(barX));
+  const basePositions = layoutComplexGraph(vertexIds, layoutEdges);
   const familyLayout =
     options.spreadRelationCells && options.relationFamily
       ? layoutFocusedRelationFamily(basePositions, visibleRelationCells)
@@ -231,16 +380,21 @@ export function buildBarXScene(
   const polygonLayout =
     options.spreadRelationCells && !options.relationFamily
       ? layoutAllRelationCells(
-          barX,
-          barX.vertices.map((vertex) => vertex.id),
+          orbit,
+          vertexIds,
           layoutEdges,
           visibleRelationCells,
           basePositions,
         )
       : undefined;
+  // Compact gluing reuses the chamber orbit when it exists: the same flat
+  // attaching cycles as the all-families view, without bent chords.
+  const compactOrbit = !options.spreadRelationCells ? orbit : undefined;
   const positions =
-    familyLayout?.positions ?? polygonLayout?.positions ?? basePositions;
-  if (!options.spreadRelationCells) {
+    familyLayout?.positions ??
+    polygonLayout?.positions ??
+    (compactOrbit ? new Map(compactOrbit.positions) : basePositions);
+  if (!options.spreadRelationCells && !compactOrbit) {
     emphasizeRelationBoundaryLayout(
       positions,
       (
@@ -270,6 +424,16 @@ export function buildBarXScene(
       vertex.id === options.selectedVertexId ? 100_000 : 100 - index,
     nodeScale: vertex.id === options.selectedVertexId ? 1.5 : 1,
   }));
+  const selectedVertexId =
+    options.emphasisVertexId === undefined
+      ? options.selectedVertexId
+      : (options.emphasisVertexId ?? undefined);
+  const selectedCellEdgeIds = new Set(
+    barX.relationCells
+      .find((cell) => cell.id === options.selectedCellId)
+      ?.boundaryOccurrences.map((occurrence) => occurrence.edgeId),
+  );
+  const smallScene = barX.geometricEdges.length <= SMALL_SCENE_EDGE_LIMIT;
   const edges: StyledSceneEdge[] = barX.geometricEdges.map((edge, index) => {
     const direction = options.edgeDirections?.get(edge.id) ?? 0;
     const reversed = direction === -1;
@@ -282,6 +446,19 @@ export function buildBarXScene(
       options.relationFamily !== undefined &&
       focusedBoundaryEdgeIds.has(edge.id);
     const wallDual = options.wallDualEdgeIds?.has(edge.id) === true;
+    // Label policy: the generator legend gives colours, so a text label is
+    // kept only where it explains something — a small scene, the boundary of
+    // the focused relation family, the selected cell, the selected vertex,
+    // or an edge the caller names (selected-wall duals).
+    const labelled =
+      !ghostedByRelationFocus &&
+      (smallScene ||
+        relationBoundaryEmphasis ||
+        selectedCellEdgeIds.has(edge.id) ||
+        (selectedVertexId !== undefined &&
+          (edge.sourceVertexId === selectedVertexId ||
+            edge.targetVertexId === selectedVertexId)) ||
+        options.labelEdgeIds?.has(edge.id) === true);
     return {
       id: edge.id,
       source: reversed ? edge.targetVertexId : edge.sourceVertexId,
@@ -291,9 +468,9 @@ export function buildBarXScene(
       directed: direction !== 0,
       coorientationArrow: direction !== 0,
       colorHint: ghostedByRelationFocus ? "#94a3b8" : undefined,
-      alwaysLabel: !ghostedByRelationFocus,
-      labelPriority: ghostedByRelationFocus ? undefined : 50_000 - index,
-      suppressSemanticLabel: ghostedByRelationFocus,
+      alwaysLabel: labelled,
+      labelPriority: labelled ? 50_000 - index : undefined,
+      suppressSemanticLabel: !labelled,
       ghost: options.ghostEdgeIds?.has(edge.id) || ghostedByRelationFocus,
       // Relation boundaries and the selected wall's dual edges are different
       // statements, so they carry different emphasis roles. Only relation
@@ -314,24 +491,40 @@ export function buildBarXScene(
       readabilityOverlay: options.spreadRelationCells === true,
     };
   });
+  // A selected relation family is itself the cells of interest, so every
+  // visible cell of a family view stays filled.
+  const crowded =
+    (options.cellEmphasis ?? "focus") === "focus" &&
+    options.relationFamily === undefined &&
+    visibleRelationCells.length > CROWDED_CELL_THRESHOLD;
   const cells: SceneCell[] = showCells
-    ? visibleRelationCells.map((cell) => ({
-        id: cell.id,
-        generatorPair: cell.generatorPair,
-        boundaryNodeIds: cell.boundaryOccurrences.map(
+    ? visibleRelationCells.map((cell) => {
+        const boundaryNodeIds = cell.boundaryOccurrences.map(
           (occurrence) => occurrence.sourceVertexId,
-        ),
-        sourceCellId: cell.id,
-        readabilityRole:
-          options.cellRoles?.get(cell.id) ??
-          (cell.id === options.selectedCellId
-            ? "focus"
-            : options.ghostCellIds?.has(cell.id)
-              ? "context"
-              : options.spreadRelationCells && !options.relationFamily
+        );
+        const interesting =
+          cell.id === options.selectedCellId ||
+          (selectedVertexId !== undefined &&
+            boundaryNodeIds.includes(selectedVertexId));
+        return {
+          id: cell.id,
+          generatorPair: cell.generatorPair,
+          boundaryNodeIds,
+          sourceCellId: cell.id,
+          readabilityRole:
+            options.cellRoles?.get(cell.id) ??
+            (cell.id === options.selectedCellId
+              ? "focus"
+              : options.ghostCellIds?.has(cell.id)
                 ? "context"
-                : "incident"),
-      }))
+                : options.spreadRelationCells && !options.relationFamily
+                  ? interesting && crowded
+                    ? "incident"
+                    : "context"
+                  : "incident"),
+          outlineOnly: crowded && !interesting ? true : undefined,
+        };
+      })
     : [];
 
   return {
@@ -347,6 +540,16 @@ export function buildBarXScene(
     warnings: [
       ...barX.warnings,
       "The compression, attaching cycles, and edge directions are combinatorial data; their 3D placement is a drawing.",
+      ...(compactOrbit
+        ? [
+            `Vertices are placed as one chamber orbit of a reflection realization of the finite action, so every attaching cycle is flat; ${compactOrbit.convexCycles} of ${barX.relationCells.length} are convex polygons. Cycles of different generator pairs through the same vertices necessarily overlap.`,
+          ]
+        : []),
+      ...(crowded
+        ? [
+            "Crowded scene: only the selected cell and the cells through the selected vertex are filled; the other cells are drawn as outlines of their exact attaching cycles.",
+          ]
+        : []),
       ...(familyLayout
         ? [
             `${visibleRelationCells.length} exact relation cells are laid out side by side using their original quotient vertices and edges. The remaining generator edges stay as faint gluing context.`,
@@ -492,20 +695,63 @@ interface RelationPolygonLayout {
  * realization of bar X.
  */
 function layoutAllRelationCells(
-  barX: BarXCompressedComplex,
+  orbit: ReflectionOrbit | undefined,
   vertexIds: readonly string[],
   edges: readonly LayoutEdge[],
   cells: ReadonlyArray<BarXCompressedComplex["relationCells"][number]>,
   seed: ReadonlyMap<string, Vec3>,
 ): RelationPolygonLayout {
-  const orbit = reflectionOrbitLayout(barX);
   return orbit
     ? {
-        positions: orbit.positions,
+        positions: new Map(orbit.positions),
         method: "reflection-orbit",
         convexCycles: orbit.convexCycles,
       }
     : layoutRelationPolygons(vertexIds, edges, cells, seed);
+}
+
+interface ReflectionOrbit {
+  positions: ReadonlyMap<string, Vec3>;
+  convexCycles: number;
+}
+
+/** Generator-labelled graph and attaching cycles fed to the orbit search. */
+interface OrbitLayoutInput {
+  rank: number;
+  vertexIds: readonly string[];
+  edges: ReadonlyArray<{ source: string; target: string; generator: number }>;
+  cycles: ReadonlyArray<readonly string[]>;
+}
+
+function barXOrbitInput(barX: BarXCompressedComplex): OrbitLayoutInput {
+  return {
+    rank: barX.sourceSystem.generators.length,
+    vertexIds: barX.vertices.map((vertex) => vertex.id),
+    edges: barX.geometricEdges.map((edge) => ({
+      source: edge.sourceVertexId,
+      target: edge.targetVertexId,
+      generator: edge.generator,
+    })),
+    cycles: barX.relationCells.map((cell) =>
+      cell.boundaryOccurrences.map((occurrence) => occurrence.sourceVertexId),
+    ),
+  };
+}
+
+// The orbit search depends only on the complex, not on the selection, so it
+// is cached per complex object; selection changes then keep the same layout.
+const reflectionOrbitCache = new WeakMap<object, ReflectionOrbit | null>();
+
+function cachedReflectionOrbit(
+  complex: object,
+  input: () => OrbitLayoutInput,
+): ReflectionOrbit | undefined {
+  let cached = reflectionOrbitCache.get(complex);
+  if (cached === undefined) {
+    cached = reflectionOrbitLayout(input()) ?? null;
+    reflectionOrbitCache.set(complex, cached);
+  }
+  return cached ?? undefined;
 }
 
 function layoutRelationPolygons(
@@ -672,26 +918,30 @@ function layoutRelationPolygons(
  * the caller falls back to the relaxation.
  *
  * Example: the ideal-cube S4 cover, whose six generators act as the six
- * transpositions, i.e. as the reflections of the A3 root system.
+ * transpositions, i.e. as the reflections of the A3 root system. There the
+ * orbit is a permutohedron-like set of 24 points, and the three hexagons of
+ * the pairs inside one S3 coset run through the same six vertices in
+ * different cyclic orders, so at most one of the three can be convex.
+ *
+ * hat X has the same vertex set and generator action as bar X, so the same
+ * search places both and the compression keeps every vertex where it was.
  */
 function reflectionOrbitLayout(
-  barX: BarXCompressedComplex,
-): { positions: Map<string, Vec3>; convexCycles: number } | undefined {
-  const rank = barX.sourceSystem.generators.length;
-  const vertexCount = barX.vertices.length;
+  input: OrbitLayoutInput,
+): ReflectionOrbit | undefined {
+  const rank = input.rank;
+  const vertexCount = input.vertexIds.length;
   if (rank < 2 || rank > REFLECTION_LAYOUT_MAX_RANK || vertexCount < 2) {
     return undefined;
   }
-  const vertexIndex = new Map(
-    barX.vertices.map((vertex, index) => [vertex.id, index]),
-  );
+  const vertexIndex = new Map(input.vertexIds.map((id, index) => [id, index]));
   // neighbour[i][x] is the vertex reached from x along generator i.
   const neighbour = Array.from({ length: rank }, () =>
     new Array<number>(vertexCount).fill(-1),
   );
-  for (const edge of barX.geometricEdges) {
-    const source = vertexIndex.get(edge.sourceVertexId);
-    const target = vertexIndex.get(edge.targetVertexId);
+  for (const edge of input.edges) {
+    const source = vertexIndex.get(edge.source);
+    const target = vertexIndex.get(edge.target);
     if (source === undefined || target === undefined) return undefined;
     neighbour[edge.generator][source] = target;
     neighbour[edge.generator][target] = source;
@@ -760,14 +1010,14 @@ function reflectionOrbitLayout(
     });
     const roots = rootsFromGram(gram);
     if (!roots) continue;
-    const orbit = bestChamberOrbit(barX, roots, neighbour, vertexIndex);
+    const orbit = bestChamberOrbit(input, roots, neighbour, vertexIndex);
     if (!orbit) continue;
     const positions = orbit.positions;
-    const edgeLengths = barX.geometricEdges.map((edge) =>
+    const edgeLengths = input.edges.map((edge) =>
       Math.hypot(
         ...subtract(
-          positions[vertexIndex.get(edge.sourceVertexId)!],
-          positions[vertexIndex.get(edge.targetVertexId)!],
+          positions[vertexIndex.get(edge.source)!],
+          positions[vertexIndex.get(edge.target)!],
         ),
       ),
     );
@@ -776,8 +1026,8 @@ function reflectionOrbitLayout(
     const factor = POLYGON_SIDE_LENGTH / Math.max(meanLength, 1e-9);
     return {
       positions: new Map(
-        barX.vertices.map((vertex, index) => [
-          vertex.id,
+        input.vertexIds.map((id, index) => [
+          id,
           scale(positions[index], factor),
         ]),
       ),
@@ -797,32 +1047,74 @@ function reflectionOrbitLayout(
  * deterministic.
  */
 function bestChamberOrbit(
-  barX: BarXCompressedComplex,
+  input: OrbitLayoutInput,
   roots: readonly Vec3[],
   neighbour: readonly number[][],
   vertexIndex: ReadonlyMap<string, number>,
 ): { positions: Vec3[]; score: number } | undefined {
-  const cycles = barX.relationCells.map((cell) =>
-    cell.boundaryOccurrences.map(
-      (occurrence) => vertexIndex.get(occurrence.sourceVertexId)!,
-    ),
-  );
-  let best: { positions: Vec3[]; score: number } | undefined;
+  const cycles = input.cycles
+    .map((cycle) => cycle.map((id) => vertexIndex.get(id)))
+    .filter((cycle): cycle is number[] =>
+      cycle.every((index) => index !== undefined),
+    );
+  let best: { positions: Vec3[]; score: number; spacing: number } | undefined;
   for (const direction of fibonacciSphere(CHAMBER_POINT_CANDIDATES)) {
     const positions = chamberOrbit(
       roots,
       neighbour,
-      barX.vertices.length,
+      input.vertexIds.length,
       direction,
     );
     if (!positions) continue;
     const score = cycles.filter((cycle) =>
       isSimpleConvexCycle(cycle.map((index) => positions[index])),
     ).length;
-    if (!best || score > best.score) best = { positions, score };
-    if (score === cycles.length) break;
+    // Many chamber points reach the same convex count; among them prefer the
+    // one whose vertices stay furthest apart (relative to the edge length).
+    // A point near a mirror puts the two chambers across it almost on top of
+    // each other, which reads as one vertex with a doubled label.
+    const spacing =
+      score >= (best?.score ?? -1) ? orbitSpacing(positions, neighbour) : 0;
+    if (
+      !best ||
+      score > best.score ||
+      (score === best.score && spacing > best.spacing + 1e-9)
+    ) {
+      best = { positions, score, spacing };
+    }
   }
   return best;
+}
+
+/**
+ * Smallest vertex-to-vertex distance divided by the mean edge length; 0 when
+ * the orbit is too large for the quadratic scan.
+ */
+function orbitSpacing(
+  positions: readonly Vec3[],
+  neighbour: readonly number[][],
+): number {
+  if (positions.length > ORBIT_SPACING_VERTEX_LIMIT) return 0;
+  let edgeTotal = 0;
+  let edgeCount = 0;
+  for (const row of neighbour) {
+    row.forEach((target, source) => {
+      edgeTotal += Math.hypot(
+        ...subtract(positions[source], positions[target]),
+      );
+      edgeCount += 1;
+    });
+  }
+  let minimum = Number.POSITIVE_INFINITY;
+  for (let left = 0; left < positions.length; left += 1) {
+    for (let right = left + 1; right < positions.length; right += 1) {
+      minimum = Math.min(
+        minimum,
+        Math.hypot(...subtract(positions[left], positions[right])),
+      );
+    }
+  }
+  return edgeCount > 0 && edgeTotal > 0 ? minimum / (edgeTotal / edgeCount) : 0;
 }
 
 /** True when a closed cycle turns the same way at every corner, once around. */

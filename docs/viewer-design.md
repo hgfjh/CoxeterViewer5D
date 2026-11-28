@@ -40,6 +40,20 @@ Shows a finite Cayley ball, rank-two Davis polygons, and available higher
 spherical incidence. The radius boundary is visible and clipped cells are
 labeled as omitted or partial.
 
+With a finite cover loaded, the **Unit cell** view (`src/davis/unitCell.ts`,
+`src/app/unitCellScene.ts`) draws a Dirichlet-type fundamental domain `D` of
+`H` instead of a ball: one chamber per coset, grown outward from `e` by a
+best-first search that adds the nearest adjacent chamber of a new coset, so
+`D` is connected and its accepting edges are a spanning tree of the coset
+graph. Edges leaving `D` become pairs of tagged stubs (`a`, `a′`) that `H`
+glues; chambers just outside are ghosts labelled by the coset they are
+`H`-equivalent to; each bar X relation cell is lifted once; neighbouring
+copies `h·D` are optional faint context. Combinatorics and gluings come from
+the exact finite action. Positions reuse the reflection-orbit layout, and the
+only floating-point decision, whether two words name the same chamber, is a
+named Tits-matrix comparison that affects drawing coincidence only. The
+default camera is an oblique view along the domain's principal axes.
+
 ### hat X cover
 
 Shows the finite lifted presentation complex before compression:
