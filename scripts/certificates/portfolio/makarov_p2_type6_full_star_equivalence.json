@@ -1,0 +1,877 @@
+{
+  "actionAndCharacterAudit": {
+    "cocycleSignChecks": 3584,
+    "exactConsequences": [
+      "tau commutes with every factored generator action because every sheet update is XOR by a mask independent of t",
+      "chi(t xor 1)=-chi(t)",
+      "a6(tau(x),i)=-a6(x,i) for every generator i"
+    ],
+    "fourierSignChecks": 512,
+    "generator6SheetMask": 3,
+    "sheetCount": 512,
+    "sheetTranslation": "tau(t,q)=(t xor 1,q)",
+    "sheetTranslationMask": 1,
+    "xorCommutationChecks": 262144
+  },
+  "artifactSha256": "95d83a53c83009ac148af9b7b878baa2a46316d74f0d1742401ab46caafe3107",
+  "candidateEquivalence": {
+    "classes": [
+      {
+        "members": [
+          19,
+          44,
+          83,
+          108
+        ],
+        "representative": 19,
+        "transformByMember": [
+          {
+            "candidateIndex": 19,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              1,
+              2,
+              -4,
+              -8,
+              16,
+              -32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 44,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              -1,
+              -2,
+              4,
+              8,
+              -16,
+              32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 83,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              1,
+              2,
+              -4,
+              -8,
+              16,
+              -32,
+              64
+            ]
+          },
+          {
+            "candidateIndex": 108,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              -1,
+              -2,
+              4,
+              8,
+              -16,
+              32,
+              64
+            ]
+          }
+        ]
+      },
+      {
+        "members": [
+          21,
+          42,
+          85,
+          106
+        ],
+        "representative": 21,
+        "transformByMember": [
+          {
+            "candidateIndex": 21,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              1,
+              -2,
+              4,
+              -8,
+              16,
+              -32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 42,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              -1,
+              2,
+              -4,
+              8,
+              -16,
+              32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 85,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              1,
+              -2,
+              4,
+              -8,
+              16,
+              -32,
+              64
+            ]
+          },
+          {
+            "candidateIndex": 106,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              -1,
+              2,
+              -4,
+              8,
+              -16,
+              32,
+              64
+            ]
+          }
+        ]
+      },
+      {
+        "members": [
+          22,
+          41,
+          86,
+          105
+        ],
+        "representative": 22,
+        "transformByMember": [
+          {
+            "candidateIndex": 22,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              -1,
+              2,
+              4,
+              -8,
+              16,
+              -32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 41,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              1,
+              -2,
+              -4,
+              8,
+              -16,
+              32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 86,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              -1,
+              2,
+              4,
+              -8,
+              16,
+              -32,
+              64
+            ]
+          },
+          {
+            "candidateIndex": 105,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              1,
+              -2,
+              -4,
+              8,
+              -16,
+              32,
+              64
+            ]
+          }
+        ]
+      },
+      {
+        "members": [
+          25,
+          38,
+          89,
+          102
+        ],
+        "representative": 25,
+        "transformByMember": [
+          {
+            "candidateIndex": 25,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              1,
+              -2,
+              -4,
+              8,
+              16,
+              -32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 38,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              -1,
+              2,
+              4,
+              -8,
+              -16,
+              32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 89,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              1,
+              -2,
+              -4,
+              8,
+              16,
+              -32,
+              64
+            ]
+          },
+          {
+            "candidateIndex": 102,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              -1,
+              2,
+              4,
+              -8,
+              -16,
+              32,
+              64
+            ]
+          }
+        ]
+      },
+      {
+        "members": [
+          26,
+          37,
+          90,
+          101
+        ],
+        "representative": 26,
+        "transformByMember": [
+          {
+            "candidateIndex": 26,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              -1,
+              2,
+              -4,
+              8,
+              16,
+              -32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 37,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              1,
+              -2,
+              4,
+              -8,
+              -16,
+              32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 90,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              -1,
+              2,
+              -4,
+              8,
+              16,
+              -32,
+              64
+            ]
+          },
+          {
+            "candidateIndex": 101,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              1,
+              -2,
+              4,
+              -8,
+              -16,
+              32,
+              64
+            ]
+          }
+        ]
+      },
+      {
+        "members": [
+          28,
+          35,
+          92,
+          99
+        ],
+        "representative": 28,
+        "transformByMember": [
+          {
+            "candidateIndex": 28,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              -1,
+              -2,
+              4,
+              8,
+              16,
+              -32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 35,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": false,
+            "weightsByGenerator": [
+              1,
+              2,
+              -4,
+              -8,
+              -16,
+              32,
+              -64
+            ]
+          },
+          {
+            "candidateIndex": 92,
+            "directionMap": "ascending-and-descending-unchanged",
+            "rootMap": "identity",
+            "transform": "same-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              -1,
+              -2,
+              4,
+              8,
+              16,
+              -32,
+              64
+            ]
+          },
+          {
+            "candidateIndex": 99,
+            "directionMap": "ascending-and-descending-swapped",
+            "rootMap": "tau(t,q)=(t xor 1,q)",
+            "transform": "negated-restricted-potential",
+            "w6Changed": true,
+            "weightsByGenerator": [
+              1,
+              2,
+              -4,
+              -8,
+              -16,
+              32,
+              64
+            ]
+          }
+        ]
+      }
+    ],
+    "equivalenceClassCount": 6,
+    "representatives": [
+      19,
+      21,
+      22,
+      25,
+      26,
+      28
+    ],
+    "sourceSurvivorCount": 24,
+    "sourceSurvivorIndices": [
+      19,
+      21,
+      22,
+      25,
+      26,
+      28,
+      35,
+      37,
+      38,
+      41,
+      42,
+      44,
+      83,
+      85,
+      86,
+      89,
+      90,
+      92,
+      99,
+      101,
+      102,
+      105,
+      106,
+      108
+    ]
+  },
+  "conclusion": "The 24 maximal-type-5 survivors reduce exactly to six representatives for a complete full-star scan over every unresolved central type omitting generator 6.  The reduction is global over the cell-orbit set; negated members are not asserted equivalent at the same individual root.",
+  "heightComparisonProof": {
+    "graphConsequence": "tau identifies the complete comparability links; selected ascending and descending induced subgraphs are exchanged, preserving their vertex counts, component counts, emptiness, and connectivity.",
+    "height": "lexicographic (B(C), U(C), p_w(type(C)))",
+    "negatedRestrictedPotential": "tau is a full-star automorphism and negates both raw-height differences and Fourier-average differences.  If both vanish, the comparable types omit 6 and negating w0,...,w5 negates the nonzero signed-power tie.  Thus every comparison direction reverses.",
+    "sameRestrictedPotential": "At a central type omitting 6, every comparable type omitting 6 uses only w0,...,w5.  A coface containing 6 has nonzero raw difference, so changing w6 cannot alter its direction."
+  },
+  "kind": "makarov-p2-type6-full-star-candidate-equivalence",
+  "nonClaims": [
+    "No directed link at an unresolved cell is evaluated by this certificate.",
+    "No equivalence is asserted for a central type containing generator 6.",
+    "The sheet flip reverses the primitive character and is not part of the fixed-character symmetry quotient.",
+    "This certificate does not by itself prove Track B or fibering."
+  ],
+  "producer": "scripts/makarov_p2_type6_full_star_equivalence.py",
+  "scannerContract": {
+    "allowedCentralTypes": "all 56 unresolved spherical types omitting generator 6",
+    "classSurvivalRule": "A representative passes globally iff all four members pass globally.",
+    "negatedRestrictedFailureTransfer": "sheet-flipped rooted cell tau(C); ascending and descending statistics swapped",
+    "representativeOnlyGlobalScanIsExact": true,
+    "requiredWitnessField": "A negated-member witness must record or canonically resolve tau(C); copying it to the unflipped root is not certified.",
+    "sameRestrictedFailureTransfer": "same rooted cell; same directed-link statistics"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "compiledMaximalType5Frontier": {
+      "artifactSha256": "d3a45ffaca348ac8285387a71f15cbb4f2616516e12a03975c8a83c4e8388886",
+      "bytesSha256": "a86f92cce2dde32f5c3db42c069ec73533491080e6ae0ef32b4d1d056dedf531",
+      "locator": "scripts/certificates/portfolio/makarov_p2_type6_zero_fourier_compiled.json"
+    },
+    "p2CoxeterSystem": {
+      "bytesSha256": "3207516ab4323c28d00123b2391f45499d2eb3f1d75b44fca19577f71a27af6c",
+      "locator": "public/examples/compact_5_prism_makarov_p2.json"
+    },
+    "primitiveType6Character": {
+      "artifactSha256": "501125fa7150a4d0c208cd4b40cd6a5132f7e04424820e71fd5f3219b165a16d",
+      "bytesSha256": "864f8b39407b45a6d101e139e9a8f8e5511fadbba1b26dcb5f42c741b28a227b",
+      "locator": "scripts/certificates/portfolio/makarov_p2_type6_wall_track_b.json"
+    }
+  },
+  "sphericalTypeAudit": {
+    "allSphericalTypeCount": 93,
+    "alreadyCompletedCentralTypes": [
+      [],
+      [
+        0,
+        1,
+        2,
+        3,
+        5
+      ],
+      [
+        0,
+        1,
+        2,
+        4,
+        5
+      ],
+      [
+        0,
+        1,
+        3,
+        4,
+        5
+      ],
+      [
+        0,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    ],
+    "centralTypeCountAvoiding6": 62,
+    "nonzeroSignedPowerTieChecks": 118528,
+    "properFaceTypeIncidences": 416,
+    "strictCofaceTypeIncidences": 690,
+    "type6CofaceGate": {
+      "generator5Generator6Label": "inf",
+      "generator6CommutesWith": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "product": "W_(U union {6}) = W_U x <s6>",
+      "rawAverageDifference": "the central cell lies in one endpoint and the coface average is shifted by exactly +/-1/2, so w6 is never consulted"
+    },
+    "type6CofaceTypeIncidences": 180,
+    "unresolvedCentralTypeCount": 56,
+    "unresolvedCentralTypes": [
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        3
+      ],
+      [
+        0,
+        1,
+        4
+      ],
+      [
+        0,
+        1,
+        5
+      ],
+      [
+        0,
+        2,
+        3
+      ],
+      [
+        0,
+        2,
+        4
+      ],
+      [
+        0,
+        2,
+        5
+      ],
+      [
+        0,
+        3,
+        4
+      ],
+      [
+        0,
+        3,
+        5
+      ],
+      [
+        0,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        4
+      ],
+      [
+        1,
+        2,
+        5
+      ],
+      [
+        1,
+        3,
+        4
+      ],
+      [
+        1,
+        3,
+        5
+      ],
+      [
+        1,
+        4,
+        5
+      ],
+      [
+        2,
+        3,
+        4
+      ],
+      [
+        2,
+        3,
+        5
+      ],
+      [
+        2,
+        4,
+        5
+      ],
+      [
+        3,
+        4,
+        5
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        4
+      ],
+      [
+        0,
+        1,
+        2,
+        5
+      ],
+      [
+        0,
+        1,
+        3,
+        4
+      ],
+      [
+        0,
+        1,
+        3,
+        5
+      ],
+      [
+        0,
+        1,
+        4,
+        5
+      ],
+      [
+        0,
+        2,
+        3,
+        4
+      ],
+      [
+        0,
+        2,
+        3,
+        5
+      ],
+      [
+        0,
+        2,
+        4,
+        5
+      ],
+      [
+        0,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        5
+      ],
+      [
+        1,
+        2,
+        4,
+        5
+      ],
+      [
+        1,
+        3,
+        4,
+        5
+      ],
+      [
+        2,
+        3,
+        4,
+        5
+      ]
+    ]
+  },
+  "status": "exact-global-equivalence-for-central-types-avoiding-generator6"
+}

@@ -1,0 +1,1372 @@
+{
+  "artifactSha256": "ae1421401348e90b977f96760bb268c48d92fda22eb96fa80bcdc7d1bedfd252",
+  "conclusion": "Every barycentric cell-center link of a type containing generator 6 is nonempty and connected in both directions.  The exact unresolved full-star workload is 1,589,860 cell orbits in 56 types.",
+  "coneApexLemma": {
+    "ascendingEndpointHub": {
+      "cell": "C_plus=P_U x {1}",
+      "rawHeight": "B(C_plus)=2k+2=B(C)+1"
+    },
+    "cellTypeCount": 31,
+    "connectedReason": "every directed-link vertex has a same-direction path of length at most two to the corresponding endpoint hub",
+    "descendingEndpointHub": {
+      "cell": "C_minus=P_U x {0}",
+      "rawHeight": "B(C_minus)=2k=B(C)-1"
+    },
+    "faceCosetNormalForm": "because W_T=W_U x <s6>, a face wW_R without 6 has a unique endpoint sign; a face with 6 is F0 x I and has both endpoints",
+    "finiteProofSchema": {
+      "lowerSubtypeSchemasWithout6": 211,
+      "properLowerSubtypeSchemasWith6": 180,
+      "records": [
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            6
+          ],
+          "endpointFacetType": [],
+          "lowerSubtypeSchemasWithout6": 1,
+          "properLowerSubtypeSchemasWith6": 0,
+          "sideType": [],
+          "upperCofaceTypeSchemas": 30
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            6
+          ],
+          "endpointFacetType": [
+            0
+          ],
+          "lowerSubtypeSchemasWithout6": 2,
+          "properLowerSubtypeSchemasWith6": 1,
+          "sideType": [
+            0
+          ],
+          "upperCofaceTypeSchemas": 14
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            6
+          ],
+          "endpointFacetType": [
+            1
+          ],
+          "lowerSubtypeSchemasWithout6": 2,
+          "properLowerSubtypeSchemasWith6": 1,
+          "sideType": [
+            1
+          ],
+          "upperCofaceTypeSchemas": 14
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            2,
+            6
+          ],
+          "endpointFacetType": [
+            2
+          ],
+          "lowerSubtypeSchemasWithout6": 2,
+          "properLowerSubtypeSchemasWith6": 1,
+          "sideType": [
+            2
+          ],
+          "upperCofaceTypeSchemas": 14
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 2,
+          "properLowerSubtypeSchemasWith6": 1,
+          "sideType": [
+            3
+          ],
+          "upperCofaceTypeSchemas": 14
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 2,
+          "properLowerSubtypeSchemasWith6": 1,
+          "sideType": [
+            4
+          ],
+          "upperCofaceTypeSchemas": 14
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            1,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            1
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            0,
+            1
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            2,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            2
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            0,
+            2
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            0,
+            3
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            0,
+            4
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            2,
+            6
+          ],
+          "endpointFacetType": [
+            1,
+            2
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            1,
+            2
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            1,
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            1,
+            3
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            1,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            1,
+            4
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            2,
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            2,
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            2,
+            3
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            2,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            2,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            2,
+            4
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            3,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            3,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 4,
+          "properLowerSubtypeSchemasWith6": 3,
+          "sideType": [
+            3,
+            4
+          ],
+          "upperCofaceTypeSchemas": 6
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            1,
+            2,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            1,
+            2
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            0,
+            1,
+            2
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            1,
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            1,
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            0,
+            1,
+            3
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            1,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            1,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            0,
+            1,
+            4
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            2,
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            2,
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            0,
+            2,
+            3
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            2,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            0,
+            2,
+            4
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            3,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            3,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            0,
+            3,
+            4
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            1,
+            2,
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            1,
+            2,
+            3
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            2,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            1,
+            2,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            1,
+            2,
+            4
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            3,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            1,
+            3,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            1,
+            3,
+            4
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            2,
+            3,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            2,
+            3,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 8,
+          "properLowerSubtypeSchemasWith6": 7,
+          "sideType": [
+            2,
+            3,
+            4
+          ],
+          "upperCofaceTypeSchemas": 2
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            1,
+            2,
+            3,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "lowerSubtypeSchemasWithout6": 16,
+          "properLowerSubtypeSchemasWith6": 15,
+          "sideType": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "upperCofaceTypeSchemas": 0
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            1,
+            2,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            1,
+            2,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 16,
+          "properLowerSubtypeSchemasWith6": 15,
+          "sideType": [
+            0,
+            1,
+            2,
+            4
+          ],
+          "upperCofaceTypeSchemas": 0
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            1,
+            3,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            1,
+            3,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 16,
+          "properLowerSubtypeSchemasWith6": 15,
+          "sideType": [
+            0,
+            1,
+            3,
+            4
+          ],
+          "upperCofaceTypeSchemas": 0
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            0,
+            2,
+            3,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            0,
+            2,
+            3,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 16,
+          "properLowerSubtypeSchemasWith6": 15,
+          "sideType": [
+            0,
+            2,
+            3,
+            4
+          ],
+          "upperCofaceTypeSchemas": 0
+        },
+        {
+          "automaticAscendingAndDescendingLinks": true,
+          "cellType": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "endpointFacetType": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "lowerSubtypeSchemasWithout6": 16,
+          "properLowerSubtypeSchemasWith6": 15,
+          "sideType": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "upperCofaceTypeSchemas": 0
+        }
+      ],
+      "upperCofaceTypeSchemas": 180
+    },
+    "linkModel": "the barycentric link is the order complex of strict lower faces joined with strict cofaces; comparability gives its edges",
+    "nonemptyReason": "C_minus is descending and C_plus is ascending",
+    "rawHeightAtCenter": "B(C)=2k+1",
+    "scope": "all cell-center links whose spherical type contains 6, for all 128 signed-power potentials and hence every current survivor",
+    "status": "proved-for-every-cell-orbit",
+    "terminologyNote": "the historical artifact name says cone-apex, but the endpoint facets are connectivity hubs rather than literal cone vertices",
+    "universalLocalVertexCases": [
+      {
+        "case": "lower face not containing 6",
+        "maximumPathLengthToHub": 1,
+        "path": "it lies in exactly one endpoint facet and is comparable to that same-direction hub"
+      },
+      {
+        "case": "proper lower face containing 6",
+        "maximumPathLengthToHub": 2,
+        "path": "its endpoint in the selected direction is a same-direction face below it and below the corresponding hub"
+      },
+      {
+        "case": "strict coface",
+        "maximumPathLengthToHub": 1,
+        "path": "every lower endpoint facet is comparable to every coface through C, so a selected coface is adjacent to its hub"
+      }
+    ]
+  },
+  "diagramProductAudit": {
+    "commutingRelationsChecked": 5,
+    "coxeterCellFormula": "P_(U union {6}) = P_U x I",
+    "excludedBaseGenerator": 5,
+    "intervalGenerator": 6,
+    "nonsphericalBasePair": [
+      5,
+      6
+    ],
+    "productFormula": "W_(U union {6}) = W_U x <s6>",
+    "productOrderChecks": 31,
+    "sideGenerators": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "type6ContainingSphericalTypeCount": 31,
+    "type6TogglesFirstFourierBit": true
+  },
+  "heightAudit": {
+    "comparableTypePairsPerCandidate": 962,
+    "comparison": "lexicographic (B(C), U(C), p(T))",
+    "minimumAbsoluteTypeTieDifference": 1,
+    "rawDominance": "B is compared first",
+    "signedPowerMagnitudes": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "strictTypeTieChecks": 123136,
+    "type6CellFourierAverage": 0,
+    "type6FourierReason": "right multiplication by s6 pairs every chamber with one having the opposite first sheet character",
+    "typePotentialFamilySize": 128
+  },
+  "kind": "makarov-p2-type6-cone-apex-and-workload-certificate",
+  "nonClaims": [
+    "No unresolved side-only or nonmaximal type-5 link is passed here.",
+    "The current Track-B height family has not passed globally.",
+    "No finite-height-band or fibering promotion is made here."
+  ],
+  "producer": {
+    "script": "scripts/makarov_p2_type6_cone_apex_lemma.py",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "barycentricReduction": {
+      "artifactSha256": "2aecf892261082a4ade2db0b23f2a66a50be5c6fa27296e3138c02f41400d6ac",
+      "bytesSha256": "0ae39c0aada47faccf7de49326ff6006687624245bc05cce7f8fee014acb6c15",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_barycentric_reduction.json"
+    },
+    "compiledMaximalType5Frontier": {
+      "artifactSha256": "d3a45ffaca348ac8285387a71f15cbb4f2616516e12a03975c8a83c4e8388886",
+      "bytesSha256": "a86f92cce2dde32f5c3db42c069ec73533491080e6ae0ef32b4d1d056dedf531",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_zero_fourier_compiled.json"
+    },
+    "lqSchreierTable": {
+      "artifactSha256": "40fe34044f718a50908318098309590697d4acdef10a4e47bdcc1c804fb81d97",
+      "bytesSha256": "5f9056b711d3be7fff2d5a71fb43d8ac725f88ec50a33ae81054ac7943e2908f",
+      "path": "scripts/certificates/portfolio/makarov_p2_lq_schreier_table.json"
+    },
+    "p2Example": {
+      "bytesSha256": "3207516ab4323c28d00123b2391f45499d2eb3f1d75b44fca19577f71a27af6c",
+      "path": "public/examples/compact_5_prism_makarov_p2.json"
+    }
+  },
+  "status": "exact-type6-links-automatic-56-types-remain",
+  "workload": {
+    "alreadyCheckedChamberOrbitCount": 149760,
+    "automaticType6": {
+      "cellOrbitCount": 471770,
+      "sphericalTypeCount": 31
+    },
+    "completedMaximalType5": {
+      "cellOrbitCount": 5078,
+      "sphericalTypeCount": 5
+    },
+    "derivation": "for a side W_U-component: side-only cells give two sheet orbits; adding 6 joins them; adding 5 joins them iff the component meets a first-Fourier flagged frame",
+    "exactReducedCellOrbitCount": 2216468,
+    "firstRankFourSideOnlyBatch": {
+      "cellOrbitCount": 7540,
+      "everyCellHasExactlyTwoUpperCofaceTypes": true,
+      "sphericalTypeCount": 5,
+      "types": [
+        {
+          "cellOrbitCount": 52,
+          "cellType": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "cellOrbitCount": 624,
+          "cellType": [
+            0,
+            1,
+            2,
+            4
+          ]
+        },
+        {
+          "cellOrbitCount": 2496,
+          "cellType": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "cellOrbitCount": 3120,
+          "cellType": [
+            0,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "cellOrbitCount": 1248,
+          "cellType": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "upperCofaces": "U union {5} and U union {6}"
+    },
+    "partitionIdentity": "2,216,468 = 149,760 checked chambers + 471,770 automatic type-6 cells + 5,078 checked maximal type-5 cells + 1,589,860 unresolved cells",
+    "sideParabolicRows": [
+      {
+        "flaggedComponentCount": 17280,
+        "sideFrameComponentCount": 74880,
+        "sideFrameComponentSizeCensus": {
+          "1": 74880
+        },
+        "sideOnlyCellOrbitCount": 149760,
+        "sideRank": 0,
+        "sideSphericalOrder": 1,
+        "sideType": [],
+        "type5CellOrbitCount": 132480,
+        "type6CellOrbitCount": 74880,
+        "unflaggedComponentCount": 57600
+      },
+      {
+        "flaggedComponentCount": 8640,
+        "sideFrameComponentCount": 37440,
+        "sideFrameComponentSizeCensus": {
+          "2": 37440
+        },
+        "sideOnlyCellOrbitCount": 74880,
+        "sideRank": 1,
+        "sideSphericalOrder": 2,
+        "sideType": [
+          0
+        ],
+        "type5CellOrbitCount": 66240,
+        "type6CellOrbitCount": 37440,
+        "unflaggedComponentCount": 28800
+      },
+      {
+        "flaggedComponentCount": 8640,
+        "sideFrameComponentCount": 37440,
+        "sideFrameComponentSizeCensus": {
+          "2": 37440
+        },
+        "sideOnlyCellOrbitCount": 74880,
+        "sideRank": 1,
+        "sideSphericalOrder": 2,
+        "sideType": [
+          1
+        ],
+        "type5CellOrbitCount": 66240,
+        "type6CellOrbitCount": 37440,
+        "unflaggedComponentCount": 28800
+      },
+      {
+        "flaggedComponentCount": 8640,
+        "sideFrameComponentCount": 37440,
+        "sideFrameComponentSizeCensus": {
+          "2": 37440
+        },
+        "sideOnlyCellOrbitCount": 74880,
+        "sideRank": 1,
+        "sideSphericalOrder": 2,
+        "sideType": [
+          2
+        ],
+        "type5CellOrbitCount": 66240,
+        "type6CellOrbitCount": 37440,
+        "unflaggedComponentCount": 28800
+      },
+      {
+        "flaggedComponentCount": 8640,
+        "sideFrameComponentCount": 37440,
+        "sideFrameComponentSizeCensus": {
+          "2": 37440
+        },
+        "sideOnlyCellOrbitCount": 74880,
+        "sideRank": 1,
+        "sideSphericalOrder": 2,
+        "sideType": [
+          3
+        ],
+        "type5CellOrbitCount": 66240,
+        "type6CellOrbitCount": 37440,
+        "unflaggedComponentCount": 28800
+      },
+      {
+        "flaggedComponentCount": 15840,
+        "sideFrameComponentCount": 37440,
+        "sideFrameComponentSizeCensus": {
+          "2": 37440
+        },
+        "sideOnlyCellOrbitCount": 74880,
+        "sideRank": 1,
+        "sideSphericalOrder": 2,
+        "sideType": [
+          4
+        ],
+        "type5CellOrbitCount": 59040,
+        "type6CellOrbitCount": 37440,
+        "unflaggedComponentCount": 21600
+      },
+      {
+        "flaggedComponentCount": 1728,
+        "sideFrameComponentCount": 7488,
+        "sideFrameComponentSizeCensus": {
+          "10": 7488
+        },
+        "sideOnlyCellOrbitCount": 14976,
+        "sideRank": 2,
+        "sideSphericalOrder": 10,
+        "sideType": [
+          0,
+          1
+        ],
+        "type5CellOrbitCount": 13248,
+        "type6CellOrbitCount": 7488,
+        "unflaggedComponentCount": 5760
+      },
+      {
+        "flaggedComponentCount": 4320,
+        "sideFrameComponentCount": 18720,
+        "sideFrameComponentSizeCensus": {
+          "4": 18720
+        },
+        "sideOnlyCellOrbitCount": 37440,
+        "sideRank": 2,
+        "sideSphericalOrder": 4,
+        "sideType": [
+          0,
+          2
+        ],
+        "type5CellOrbitCount": 33120,
+        "type6CellOrbitCount": 18720,
+        "unflaggedComponentCount": 14400
+      },
+      {
+        "flaggedComponentCount": 4320,
+        "sideFrameComponentCount": 18720,
+        "sideFrameComponentSizeCensus": {
+          "4": 18720
+        },
+        "sideOnlyCellOrbitCount": 37440,
+        "sideRank": 2,
+        "sideSphericalOrder": 4,
+        "sideType": [
+          0,
+          3
+        ],
+        "type5CellOrbitCount": 33120,
+        "type6CellOrbitCount": 18720,
+        "unflaggedComponentCount": 14400
+      },
+      {
+        "flaggedComponentCount": 7920,
+        "sideFrameComponentCount": 18720,
+        "sideFrameComponentSizeCensus": {
+          "4": 18720
+        },
+        "sideOnlyCellOrbitCount": 37440,
+        "sideRank": 2,
+        "sideSphericalOrder": 4,
+        "sideType": [
+          0,
+          4
+        ],
+        "type5CellOrbitCount": 29520,
+        "type6CellOrbitCount": 18720,
+        "unflaggedComponentCount": 10800
+      },
+      {
+        "flaggedComponentCount": 2880,
+        "sideFrameComponentCount": 12480,
+        "sideFrameComponentSizeCensus": {
+          "6": 12480
+        },
+        "sideOnlyCellOrbitCount": 24960,
+        "sideRank": 2,
+        "sideSphericalOrder": 6,
+        "sideType": [
+          1,
+          2
+        ],
+        "type5CellOrbitCount": 22080,
+        "type6CellOrbitCount": 12480,
+        "unflaggedComponentCount": 9600
+      },
+      {
+        "flaggedComponentCount": 4320,
+        "sideFrameComponentCount": 18720,
+        "sideFrameComponentSizeCensus": {
+          "4": 18720
+        },
+        "sideOnlyCellOrbitCount": 37440,
+        "sideRank": 2,
+        "sideSphericalOrder": 4,
+        "sideType": [
+          1,
+          3
+        ],
+        "type5CellOrbitCount": 33120,
+        "type6CellOrbitCount": 18720,
+        "unflaggedComponentCount": 14400
+      },
+      {
+        "flaggedComponentCount": 7920,
+        "sideFrameComponentCount": 18720,
+        "sideFrameComponentSizeCensus": {
+          "4": 18720
+        },
+        "sideOnlyCellOrbitCount": 37440,
+        "sideRank": 2,
+        "sideSphericalOrder": 4,
+        "sideType": [
+          1,
+          4
+        ],
+        "type5CellOrbitCount": 29520,
+        "type6CellOrbitCount": 18720,
+        "unflaggedComponentCount": 10800
+      },
+      {
+        "flaggedComponentCount": 2880,
+        "sideFrameComponentCount": 12480,
+        "sideFrameComponentSizeCensus": {
+          "6": 12480
+        },
+        "sideOnlyCellOrbitCount": 24960,
+        "sideRank": 2,
+        "sideSphericalOrder": 6,
+        "sideType": [
+          2,
+          3
+        ],
+        "type5CellOrbitCount": 22080,
+        "type6CellOrbitCount": 12480,
+        "unflaggedComponentCount": 9600
+      },
+      {
+        "flaggedComponentCount": 7920,
+        "sideFrameComponentCount": 18720,
+        "sideFrameComponentSizeCensus": {
+          "4": 18720
+        },
+        "sideOnlyCellOrbitCount": 37440,
+        "sideRank": 2,
+        "sideSphericalOrder": 4,
+        "sideType": [
+          2,
+          4
+        ],
+        "type5CellOrbitCount": 29520,
+        "type6CellOrbitCount": 18720,
+        "unflaggedComponentCount": 10800
+      },
+      {
+        "flaggedComponentCount": 7240,
+        "sideFrameComponentCount": 12480,
+        "sideFrameComponentSizeCensus": {
+          "6": 12480
+        },
+        "sideOnlyCellOrbitCount": 24960,
+        "sideRank": 2,
+        "sideSphericalOrder": 6,
+        "sideType": [
+          3,
+          4
+        ],
+        "type5CellOrbitCount": 17720,
+        "type6CellOrbitCount": 12480,
+        "unflaggedComponentCount": 5240
+      },
+      {
+        "flaggedComponentCount": 144,
+        "sideFrameComponentCount": 624,
+        "sideFrameComponentSizeCensus": {
+          "120": 624
+        },
+        "sideOnlyCellOrbitCount": 1248,
+        "sideRank": 3,
+        "sideSphericalOrder": 120,
+        "sideType": [
+          0,
+          1,
+          2
+        ],
+        "type5CellOrbitCount": 1104,
+        "type6CellOrbitCount": 624,
+        "unflaggedComponentCount": 480
+      },
+      {
+        "flaggedComponentCount": 864,
+        "sideFrameComponentCount": 3744,
+        "sideFrameComponentSizeCensus": {
+          "20": 3744
+        },
+        "sideOnlyCellOrbitCount": 7488,
+        "sideRank": 3,
+        "sideSphericalOrder": 20,
+        "sideType": [
+          0,
+          1,
+          3
+        ],
+        "type5CellOrbitCount": 6624,
+        "type6CellOrbitCount": 3744,
+        "unflaggedComponentCount": 2880
+      },
+      {
+        "flaggedComponentCount": 1584,
+        "sideFrameComponentCount": 3744,
+        "sideFrameComponentSizeCensus": {
+          "20": 3744
+        },
+        "sideOnlyCellOrbitCount": 7488,
+        "sideRank": 3,
+        "sideSphericalOrder": 20,
+        "sideType": [
+          0,
+          1,
+          4
+        ],
+        "type5CellOrbitCount": 5904,
+        "type6CellOrbitCount": 3744,
+        "unflaggedComponentCount": 2160
+      },
+      {
+        "flaggedComponentCount": 1440,
+        "sideFrameComponentCount": 6240,
+        "sideFrameComponentSizeCensus": {
+          "12": 6240
+        },
+        "sideOnlyCellOrbitCount": 12480,
+        "sideRank": 3,
+        "sideSphericalOrder": 12,
+        "sideType": [
+          0,
+          2,
+          3
+        ],
+        "type5CellOrbitCount": 11040,
+        "type6CellOrbitCount": 6240,
+        "unflaggedComponentCount": 4800
+      },
+      {
+        "flaggedComponentCount": 3960,
+        "sideFrameComponentCount": 9360,
+        "sideFrameComponentSizeCensus": {
+          "8": 9360
+        },
+        "sideOnlyCellOrbitCount": 18720,
+        "sideRank": 3,
+        "sideSphericalOrder": 8,
+        "sideType": [
+          0,
+          2,
+          4
+        ],
+        "type5CellOrbitCount": 14760,
+        "type6CellOrbitCount": 9360,
+        "unflaggedComponentCount": 5400
+      },
+      {
+        "flaggedComponentCount": 3620,
+        "sideFrameComponentCount": 6240,
+        "sideFrameComponentSizeCensus": {
+          "12": 6240
+        },
+        "sideOnlyCellOrbitCount": 12480,
+        "sideRank": 3,
+        "sideSphericalOrder": 12,
+        "sideType": [
+          0,
+          3,
+          4
+        ],
+        "type5CellOrbitCount": 8860,
+        "type6CellOrbitCount": 6240,
+        "unflaggedComponentCount": 2620
+      },
+      {
+        "flaggedComponentCount": 720,
+        "sideFrameComponentCount": 3120,
+        "sideFrameComponentSizeCensus": {
+          "24": 3120
+        },
+        "sideOnlyCellOrbitCount": 6240,
+        "sideRank": 3,
+        "sideSphericalOrder": 24,
+        "sideType": [
+          1,
+          2,
+          3
+        ],
+        "type5CellOrbitCount": 5520,
+        "type6CellOrbitCount": 3120,
+        "unflaggedComponentCount": 2400
+      },
+      {
+        "flaggedComponentCount": 2640,
+        "sideFrameComponentCount": 6240,
+        "sideFrameComponentSizeCensus": {
+          "12": 6240
+        },
+        "sideOnlyCellOrbitCount": 12480,
+        "sideRank": 3,
+        "sideSphericalOrder": 12,
+        "sideType": [
+          1,
+          2,
+          4
+        ],
+        "type5CellOrbitCount": 9840,
+        "type6CellOrbitCount": 6240,
+        "unflaggedComponentCount": 3600
+      },
+      {
+        "flaggedComponentCount": 3620,
+        "sideFrameComponentCount": 6240,
+        "sideFrameComponentSizeCensus": {
+          "12": 6240
+        },
+        "sideOnlyCellOrbitCount": 12480,
+        "sideRank": 3,
+        "sideSphericalOrder": 12,
+        "sideType": [
+          1,
+          3,
+          4
+        ],
+        "type5CellOrbitCount": 8860,
+        "type6CellOrbitCount": 6240,
+        "unflaggedComponentCount": 2620
+      },
+      {
+        "flaggedComponentCount": 2200,
+        "sideFrameComponentCount": 3120,
+        "sideFrameComponentSizeCensus": {
+          "24": 3120
+        },
+        "sideOnlyCellOrbitCount": 6240,
+        "sideRank": 3,
+        "sideSphericalOrder": 24,
+        "sideType": [
+          2,
+          3,
+          4
+        ],
+        "type5CellOrbitCount": 4040,
+        "type6CellOrbitCount": 3120,
+        "unflaggedComponentCount": 920
+      },
+      {
+        "flaggedComponentCount": 6,
+        "sideFrameComponentCount": 26,
+        "sideFrameComponentSizeCensus": {
+          "2880": 26
+        },
+        "sideOnlyCellOrbitCount": 52,
+        "sideRank": 4,
+        "sideSphericalOrder": 14400,
+        "sideType": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type5CellOrbitCount": 46,
+        "type6CellOrbitCount": 26,
+        "unflaggedComponentCount": 20
+      },
+      {
+        "flaggedComponentCount": 132,
+        "sideFrameComponentCount": 312,
+        "sideFrameComponentSizeCensus": {
+          "240": 312
+        },
+        "sideOnlyCellOrbitCount": 624,
+        "sideRank": 4,
+        "sideSphericalOrder": 240,
+        "sideType": [
+          0,
+          1,
+          2,
+          4
+        ],
+        "type5CellOrbitCount": 492,
+        "type6CellOrbitCount": 312,
+        "unflaggedComponentCount": 180
+      },
+      {
+        "flaggedComponentCount": 724,
+        "sideFrameComponentCount": 1248,
+        "sideFrameComponentSizeCensus": {
+          "60": 1248
+        },
+        "sideOnlyCellOrbitCount": 2496,
+        "sideRank": 4,
+        "sideSphericalOrder": 60,
+        "sideType": [
+          0,
+          1,
+          3,
+          4
+        ],
+        "type5CellOrbitCount": 1772,
+        "type6CellOrbitCount": 1248,
+        "unflaggedComponentCount": 524
+      },
+      {
+        "flaggedComponentCount": 1100,
+        "sideFrameComponentCount": 1560,
+        "sideFrameComponentSizeCensus": {
+          "48": 1560
+        },
+        "sideOnlyCellOrbitCount": 3120,
+        "sideRank": 4,
+        "sideSphericalOrder": 48,
+        "sideType": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "type5CellOrbitCount": 2020,
+        "type6CellOrbitCount": 1560,
+        "unflaggedComponentCount": 460
+      },
+      {
+        "flaggedComponentCount": 500,
+        "sideFrameComponentCount": 624,
+        "sideFrameComponentSizeCensus": {
+          "120": 624
+        },
+        "sideOnlyCellOrbitCount": 1248,
+        "sideRank": 4,
+        "sideSphericalOrder": 120,
+        "sideType": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type5CellOrbitCount": 748,
+        "type6CellOrbitCount": 624,
+        "unflaggedComponentCount": 124
+      }
+    ],
+    "unresolved": {
+      "cellOrbitCount": 1589860,
+      "nonmaximalType5": {
+        "cellOrbitCount": 796080,
+        "sphericalTypeCount": 26
+      },
+      "rankCensus": {
+        "1": 506880,
+        "2": 638496,
+        "3": 360392,
+        "4": 84092
+      },
+      "sideOnly": {
+        "cellOrbitCount": 793780,
+        "sphericalTypeCount": 30
+      },
+      "sphericalTypeCount": 56
+    }
+  }
+}

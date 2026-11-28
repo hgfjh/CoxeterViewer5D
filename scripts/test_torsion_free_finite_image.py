@@ -735,5 +735,157 @@ class FiniteImageBackendTests(unittest.TestCase):
             self.assertTrue(backend.read_json_object(output)["ok"])
 
 
+@unittest.skipUnless(backend.SAGE_AVAILABLE, "requires Sage/libGAP")
+class SageFiniteFieldTransportTests(unittest.TestCase):
+    P0_MATRIX = [
+        [1, 5, 2, 2, 2, 2, 2],
+        [5, 1, 3, 2, 2, 2, 2],
+        [2, 3, 1, 3, 2, 2, 2],
+        [2, 2, 3, 1, 3, 2, 2],
+        [2, 2, 2, 3, 1, 3, 2],
+        [2, 2, 2, 2, 3, 1, 0],
+        [2, 2, 2, 2, 2, 0, 1],
+    ]
+
+    def materialize_first_p0_residue(self, prime: int):
+        candidate = next(iter(backend.residue_candidates(self.P0_MATRIX, [prime])))
+        relation_checks = backend.check_matrix_relations(
+            candidate.generators, self.P0_MATRIX, f"p0-prime-{prime}-regression"
+        )
+        matrix_group = backend.MatrixGroup(candidate.generators)
+        finite_image = backend.FiniteImage(
+            candidate=candidate,
+            matrix_group=matrix_group,
+            permutation_group=None,
+            q_gap=None,
+            q_generators=[],
+            order=int(matrix_group.order()),
+            permutation_degree=None,
+            relation_checks=relation_checks,
+            permutation_relation_checks=[],
+            spherical_checks=[],
+        )
+        mapping_checks = backend.materialize_permutation_image(
+            finite_image, backend.Deadline(180), seed=1
+        )
+        return finite_image, mapping_checks
+
+    def test_non_conway_extension_field_is_transported_exactly_for_gap(self) -> None:
+        from sage.all import GF, MatrixGroup, PolynomialRing, identity_matrix, matrix
+
+        polynomial_ring = PolynomialRing(GF(3), "x")
+        x = polynomial_ring.gen()
+        source = GF(9, "a", modulus=x**2 + 1)
+        a = source.gen()
+        self.assertFalse(source.is_conway())
+
+        # This involution has genuinely extension-field entries.  Constructing
+        # its MatrixGroup over `source` raises Sage's non-Conway conversion
+        # error; the exact field transport must make the same matrix usable.
+        generator = matrix(source, [[0, a], [a**-1, 0]])
+        target, transported, certificate = (
+            backend.transport_matrices_to_gap_compatible_field(source, [generator])
+        )
+
+        self.assertTrue(target.is_conway())
+        self.assertEqual(certificate["status"], "transported")
+        self.assertTrue(certificate["exact"])
+        self.assertEqual(
+            transported[0] ** 2,
+            identity_matrix(target, 2),
+        )
+        group = MatrixGroup(transported)
+        self.assertEqual(group.order(), 2)
+        self.assertEqual(int(backend.libgap.Size(group.gap())), 2)
+
+    def test_p0_prime_3_and_11_residues_reach_gap_as_conway_fields(self) -> None:
+        candidates = list(backend.residue_candidates(self.P0_MATRIX, [3, 11]))
+
+        self.assertEqual(
+            [candidate.candidate_id for candidate in candidates],
+            [
+                "p3-ideal0-q81",
+                "p11-ideal0-q121",
+                "p11-ideal1-q121",
+                "p11-ideal2-q121",
+                "p11-ideal3-q121",
+            ],
+        )
+        for candidate in candidates:
+            self.assertTrue(candidate.field.is_conway())
+            self.assertEqual(
+                candidate.metadata["gapFiniteFieldTransport"]["status"],
+                "transported",
+            )
+            self.assertTrue(
+                all(
+                    check["passed"]
+                    for check in backend.check_matrix_relations(
+                        candidate.generators, self.P0_MATRIX, candidate.candidate_id
+                    )
+                )
+            )
+            # MatrixGroup construction itself crossed the Sage/libGAP boundary
+            # that previously raised before a residue-attempt record existed.
+            self.assertTrue(backend.MatrixGroup(candidate.generators).gap())
+
+    def test_p0_prime_2_probe_preserves_the_ordered_collapsed_generator(self) -> None:
+        finite_image, mapping_checks = self.materialize_first_p0_residue(2)
+
+        self.assertEqual(finite_image.candidate.candidate_id, "p2-ideal0-q16")
+        self.assertEqual(len(mapping_checks), len(self.P0_MATRIX))
+        self.assertEqual(
+            [check["sourceGenerator"] for check in mapping_checks],
+            list(range(len(self.P0_MATRIX))),
+        )
+        self.assertTrue(all(check["passed"] for check in mapping_checks))
+        # At p=2 the last Tits generator is exactly the identity because its
+        # only nonzero off-diagonal coefficient is 2.  A faithful transport
+        # must preserve that order-one image; spherical injectivity rejects the
+        # residue later, while permutation materialization itself remains exact.
+        collapsed = mapping_checks[6]
+        self.assertEqual(collapsed["sourceOrder"], 1)
+        self.assertEqual(collapsed["firstMappedOrder"], 1)
+        self.assertEqual(collapsed["mappedOrder"], 1)
+        self.assertFalse(collapsed["sourceGeneratorNontrivialInResidueImage"])
+        self.assertTrue(
+            all(check["passed"] for check in finite_image.permutation_relation_checks)
+        )
+        self.assertEqual(
+            len(finite_image.permutation_relation_checks),
+            len(finite_image.relation_checks),
+        )
+
+    def test_p0_prime_5_probe_uses_one_authoritative_permutation_chain(self) -> None:
+        finite_image, mapping_checks = self.materialize_first_p0_residue(5)
+
+        self.assertEqual(finite_image.candidate.candidate_id, "p5-ideal0-q25")
+        self.assertEqual(len(mapping_checks), len(self.P0_MATRIX))
+        self.assertTrue(all(check["passed"] for check in mapping_checks))
+        self.assertTrue(all(check["orderPreserved"] for check in mapping_checks))
+        self.assertEqual(
+            int(finite_image.permutation_group.order()), finite_image.order
+        )
+        self.assertEqual(
+            len(finite_image.q_generators),
+            len(finite_image.candidate.generators),
+        )
+        for check, mapped in zip(
+            mapping_checks, finite_image.q_generators, strict=True
+        ):
+            row = [
+                int(value)
+                for value in backend.libgap.ListPerm(
+                    mapped, finite_image.permutation_degree
+                )
+            ]
+            self.assertEqual(
+                check["mappedPermutationRowSha256"], backend.digest_json(row)
+            )
+        self.assertTrue(
+            all(check["passed"] for check in finite_image.permutation_relation_checks)
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

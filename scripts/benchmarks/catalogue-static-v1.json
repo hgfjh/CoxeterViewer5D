@@ -28,6 +28,14 @@
       "infinitePairs": 0
     },
     {
+      "file": "compact_3_tetrahedron_c44_2233.json",
+      "name": "Compact tetrahedron C(4,4;2,2;3,3)",
+      "dataStatus": "verified-source",
+      "rank": 4,
+      "finitePairs": 6,
+      "infinitePairs": 0
+    },
+    {
       "file": "compact_5_cube_gamma1.json",
       "name": "Compact hyperbolic Coxeter 5-cube (Jacquemet-Tschantz Gamma1)",
       "dataStatus": "certified",
@@ -38,6 +46,14 @@
     {
       "file": "compact_5_polytope_p1_double_makarov.json",
       "name": "Compact hyperbolic Coxeter 5-polytope P1 (double of P0)",
+      "dataStatus": "certified",
+      "rank": 7,
+      "finitePairs": 20,
+      "infinitePairs": 1
+    },
+    {
+      "file": "compact_5_prism_h5_p7_22.json",
+      "name": "H5-P7-22 compact simplicial 5-prism",
       "dataStatus": "certified",
       "rank": 7,
       "finitePairs": 20,
@@ -82,6 +98,430 @@
       "rank": 8,
       "finitePairs": 12,
       "infinitePairs": 16
+    },
+    {
+      "file": "mazheng_5d_9facet_p284.json",
+      "name": "Ma-Zheng 5D nine-facet P284",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 33,
+      "infinitePairs": 3
+    },
+    {
+      "file": "mazheng_5d_9facet_p302_01.json",
+      "name": "Ma-Zheng 5D nine-facet P302,1",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 31,
+      "infinitePairs": 5
+    },
+    {
+      "file": "mazheng_5d_9facet_p302_02.json",
+      "name": "Ma-Zheng 5D nine-facet P302,2",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 31,
+      "infinitePairs": 5
+    },
+    {
+      "file": "mazheng_5d_9facet_p302_03.json",
+      "name": "Ma-Zheng 5D nine-facet P302,3",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 31,
+      "infinitePairs": 5
+    },
+    {
+      "file": "mazheng_5d_9facet_p302_04.json",
+      "name": "Ma-Zheng 5D nine-facet P302,4",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 31,
+      "infinitePairs": 5
+    },
+    {
+      "file": "mazheng_5d_9facet_p302_05.json",
+      "name": "Ma-Zheng 5D nine-facet P302,5",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 31,
+      "infinitePairs": 5
+    },
+    {
+      "file": "mazheng_5d_9facet_p302_06.json",
+      "name": "Ma-Zheng 5D nine-facet P302,6",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 31,
+      "infinitePairs": 5
+    },
+    {
+      "file": "mazheng_5d_9facet_p312_01.json",
+      "name": "Ma-Zheng 5D nine-facet P312,1",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p313_01.json",
+      "name": "Ma-Zheng 5D nine-facet P313,1",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 32,
+      "infinitePairs": 4
+    },
+    {
+      "file": "mazheng_5d_9facet_p313_02.json",
+      "name": "Ma-Zheng 5D nine-facet P313,2",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 32,
+      "infinitePairs": 4
+    },
+    {
+      "file": "mazheng_5d_9facet_p313_03.json",
+      "name": "Ma-Zheng 5D nine-facet P313,3",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 32,
+      "infinitePairs": 4
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_01.json",
+      "name": "Ma-Zheng 5D nine-facet P319,1",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_02.json",
+      "name": "Ma-Zheng 5D nine-facet P319,2",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_03.json",
+      "name": "Ma-Zheng 5D nine-facet P319,3",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_04.json",
+      "name": "Ma-Zheng 5D nine-facet P319,4",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_05.json",
+      "name": "Ma-Zheng 5D nine-facet P319,5",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_06.json",
+      "name": "Ma-Zheng 5D nine-facet P319,6",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_07.json",
+      "name": "Ma-Zheng 5D nine-facet P319,7",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_08.json",
+      "name": "Ma-Zheng 5D nine-facet P319,8",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_09.json",
+      "name": "Ma-Zheng 5D nine-facet P319,9",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_10.json",
+      "name": "Ma-Zheng 5D nine-facet P319,10",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_11.json",
+      "name": "Ma-Zheng 5D nine-facet P319,11",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_12.json",
+      "name": "Ma-Zheng 5D nine-facet P319,12",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_13.json",
+      "name": "Ma-Zheng 5D nine-facet P319,13",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_14.json",
+      "name": "Ma-Zheng 5D nine-facet P319,14",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_15.json",
+      "name": "Ma-Zheng 5D nine-facet P319,15",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_16.json",
+      "name": "Ma-Zheng 5D nine-facet P319,16",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_17.json",
+      "name": "Ma-Zheng 5D nine-facet P319,17",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_18.json",
+      "name": "Ma-Zheng 5D nine-facet P319,18",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_19.json",
+      "name": "Ma-Zheng 5D nine-facet P319,19",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_20.json",
+      "name": "Ma-Zheng 5D nine-facet P319,20",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_21.json",
+      "name": "Ma-Zheng 5D nine-facet P319,21",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p319_22.json",
+      "name": "Ma-Zheng 5D nine-facet P319,22",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_01.json",
+      "name": "Ma-Zheng 5D nine-facet P322,1",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_02.json",
+      "name": "Ma-Zheng 5D nine-facet P322,2",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_03.json",
+      "name": "Ma-Zheng 5D nine-facet P322,3",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_04.json",
+      "name": "Ma-Zheng 5D nine-facet P322,4",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_05.json",
+      "name": "Ma-Zheng 5D nine-facet P322,5",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_06.json",
+      "name": "Ma-Zheng 5D nine-facet P322,6",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_07.json",
+      "name": "Ma-Zheng 5D nine-facet P322,7",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_08.json",
+      "name": "Ma-Zheng 5D nine-facet P322,8",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_09.json",
+      "name": "Ma-Zheng 5D nine-facet P322,9",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_10.json",
+      "name": "Ma-Zheng 5D nine-facet P322,10",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_11.json",
+      "name": "Ma-Zheng 5D nine-facet P322,11",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_12.json",
+      "name": "Ma-Zheng 5D nine-facet P322,12",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_13.json",
+      "name": "Ma-Zheng 5D nine-facet P322,13",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_14.json",
+      "name": "Ma-Zheng 5D nine-facet P322,14",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_15.json",
+      "name": "Ma-Zheng 5D nine-facet P322,15",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_16.json",
+      "name": "Ma-Zheng 5D nine-facet P322,16",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_17.json",
+      "name": "Ma-Zheng 5D nine-facet P322,17",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "mazheng_5d_9facet_p322_18.json",
+      "name": "Ma-Zheng 5D nine-facet P322,18",
+      "dataStatus": "certified",
+      "rank": 9,
+      "finitePairs": 30,
+      "infinitePairs": 6
+    },
+    {
+      "file": "q35_g12221_h3_unfolding.json",
+      "name": "Q35: H3 unfolding of Tumarkin's G12221",
+      "dataStatus": "verified-source",
+      "rank": 35,
+      "finitePairs": 199,
+      "infinitePairs": 396
+    },
+    {
+      "file": "q55_icosahedral_truncation.json",
+      "name": "Q55: compact icosahedral polar-truncation Coxeter 5-polytope",
+      "dataStatus": "verified-source",
+      "rank": 55,
+      "finitePairs": 329,
+      "infinitePairs": 1156
     },
     {
       "file": "tumarkin_5d_8facet_g11411_01.json",
@@ -289,7 +729,7 @@
     }
   ],
   "totals": {
-    "examples": 27,
+    "examples": 82,
     "generated": 6,
     "generatedNodes": 80,
     "generatedEdges": 104,

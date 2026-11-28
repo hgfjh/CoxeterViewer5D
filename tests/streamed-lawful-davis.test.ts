@@ -2,12 +2,17 @@ import { describe, expect, it } from "vitest";
 
 import {
   buildStreamedLawfulDavisOracle,
+  buildStreamedLawfulDavisOracleParallel,
+  computeStreamedActionRowsCanonicalSha256,
   StreamedLawfulDavisError,
   type StreamedDavisCell,
   type StreamedOrientationSign,
   type StreamedWallSignCandidate,
 } from "../src/fibering/streamedLawfulDavis";
+import type { KernelPool } from "../src/parallel/kernelPool";
+import { runKernel } from "../src/parallel/kernels";
 import type { CoxeterSystemInput } from "../src/types";
+import { canonicalSha256 } from "../src/utils/canonicalSha256";
 
 function dihedralSystem(m: number): CoxeterSystemInput {
   return {
@@ -140,6 +145,9 @@ describe("streamed lawful Davis oracle", () => {
     });
     expect(cells).toEqual([{ vertexCount: 6, boundaryLength: 6 }]);
     expect(oracle.actionRowsCanonicalSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(oracle.actionRowsCanonicalSha256).toBe(
+      computeStreamedActionRowsCanonicalSha256(dihedralRows(3)),
+    );
     expect(oracle.structureHash).toMatch(/^[0-9a-f]{64}$/);
   });
 
@@ -454,5 +462,223 @@ describe("streamed lawful Davis oracle", () => {
         (summary) => summary.lawfulRankTwoCellCount,
       ),
     ).toEqual([0, 1, 1, 1, 1, 1, 1, 0]);
+  });
+});
+
+describe("streamed oracle ordinal index modes", () => {
+  // Regular action of S5 = W(A4): 120 points.  The top cell has order 120,
+  // so lazy lookups exercise both the linear-scan and stamp-array orbit walks.
+  const A4_SYSTEM: CoxeterSystemInput = {
+    schemaVersion: 1,
+    name: "A4 ordinal-mode fixture",
+    rank: 4,
+    generators: [0, 1, 2, 3].map((generator) => ({
+      id: `s${generator}`,
+      label: `s${generator}`,
+    })),
+    coxeterMatrix: [
+      [1, 3, 2, 2],
+      [3, 1, 3, 2],
+      [2, 3, 1, 3],
+      [2, 2, 3, 1],
+    ],
+  };
+  function a4Rows(): number[][] {
+    const points = permutations([0, 1, 2, 3, 4]);
+    const indexOf = new Map(
+      points.map((permutation, index) => [permutation.join(","), index]),
+    );
+    return [0, 1, 2, 3].map((generator) =>
+      points.map((permutation) => {
+        const image = [...permutation];
+        [image[generator], image[generator + 1]] = [
+          image[generator + 1],
+          image[generator],
+        ];
+        return indexOf.get(image.join(","))!;
+      }),
+    );
+  }
+
+  // Rank 3 with m(0,1) = 2 and m(0,2) = m(1,2) = infinity, acting freely on
+  // points (a, b, c) in Z/2 x Z/2 x Z/2n: s0, s1 flip a, b, and s2 pairs c
+  // with c+1, starting the pairing at even or odd c according to a.  Maximal
+  // spherical types {0,1} (hosting {0} and {1}) and {2}, with many cells each.
+  const FREE_RANK3_SYSTEM: CoxeterSystemInput = {
+    schemaVersion: 1,
+    name: "rank-3 multi-cell ordinal fixture",
+    rank: 3,
+    generators: [0, 1, 2].map((generator) => ({
+      id: `s${generator}`,
+      label: `s${generator}`,
+    })),
+    coxeterMatrix: [
+      [1, 2, "inf"],
+      [2, 1, "inf"],
+      ["inf", "inf", 1],
+    ],
+  };
+  function freeRank3Rows(cycle: number): number[][] {
+    const index = (a: number, b: number, c: number) => (a * 2 + b) * cycle + c;
+    const rows: number[][] = [[], [], []];
+    for (let a = 0; a < 2; a += 1) {
+      for (let b = 0; b < 2; b += 1) {
+        for (let c = 0; c < cycle; c += 1) {
+          const point = index(a, b, c);
+          rows[0][point] = index(1 - a, b, c);
+          rows[1][point] = index(a, 1 - b, c);
+          const up = (c - a + cycle) % 2 === 0;
+          rows[2][point] = index(a, b, (c + (up ? 1 : -1) + cycle) % cycle);
+        }
+      }
+    }
+    return rows;
+  }
+
+  // Runs kernels on this thread but passes results through structured
+  // clone, as a worker hop does, so the precomputed path is exercised.
+  const clonePool: KernelPool = {
+    size: 4,
+    kind: "node-workers",
+    run: async (name, args) => structuredClone(runKernel(name, args)),
+    close: async () => {},
+  };
+
+  async function expectSameOracles(
+    system: CoxeterSystemInput,
+    rows: number[][],
+  ) {
+    const eager = buildStreamedLawfulDavisOracle({
+      system,
+      generatorImages: rows,
+      ordinalIndex: "eager",
+    });
+    const sequentialLazy = buildStreamedLawfulDavisOracle({
+      system,
+      generatorImages: rows.map((row) => Uint32Array.from(row)),
+      ordinalIndex: "lazy",
+      cache: false,
+    });
+    const parallelLazy = await buildStreamedLawfulDavisOracleParallel(
+      {
+        system,
+        generatorImages: rows.map((row) => Uint32Array.from(row)),
+        ordinalIndex: "lazy",
+        cache: false,
+      },
+      clonePool,
+    );
+    for (const lazy of [sequentialLazy, parallelLazy])
+      expectSameOracle(eager, lazy);
+  }
+
+  function expectSameOracle(
+    eager: ReturnType<typeof buildStreamedLawfulDavisOracle>,
+    lazy: ReturnType<typeof buildStreamedLawfulDavisOracle>,
+  ) {
+    expect(lazy.structureHash).toBe(eager.structureHash);
+    expect(lazy.actionRowsCanonicalSha256).toBe(
+      eager.actionRowsCanonicalSha256,
+    );
+    expect(lazy.walls).toEqual(eager.walls);
+    const ids = (
+      oracle: typeof eager,
+      visit: (cb: (cell: StreamedDavisCell) => void) => void,
+    ) => {
+      const out: string[] = [];
+      visit((cell) => out.push(oracle.cellId(cell)));
+      return out;
+    };
+    for (const type of eager.sphericalTypes) {
+      const eagerCells = ids(eager, (cb) =>
+        eager.forEachCell(type.typeIndex, cb),
+      );
+      expect(ids(lazy, (cb) => lazy.forEachCell(type.typeIndex, cb))).toEqual(
+        eagerCells,
+      );
+      for (let point = 0; point < eager.degree; point += 1) {
+        const left = eager.cellContaining(type.typeIndex, point);
+        const right = lazy.cellContaining(type.typeIndex, point);
+        expect(right).toEqual(left);
+        expect(ids(lazy, (cb) => lazy.forEachFacet(right, cb))).toEqual(
+          ids(eager, (cb) => eager.forEachFacet(left, cb)),
+        );
+        expect(ids(lazy, (cb) => lazy.forEachCofacet(right, cb))).toEqual(
+          ids(eager, (cb) => eager.forEachCofacet(left, cb)),
+        );
+      }
+    }
+    // Eight deterministic sign patterns (2^walls is too many to enumerate).
+    const candidates: StreamedWallSignCandidate[] = Array.from(
+      { length: 8 },
+      (_unused, k) => ({
+        id: `pattern-${k}`,
+        wallSigns: Object.fromEntries(
+          eager.walls.walls.map((wall, w) => [
+            wall.id,
+            (((w * 7 + k * 3) >> 1) & 1 ? -1 : 1) as StreamedOrientationSign,
+          ]),
+        ),
+      }),
+    );
+    expect(lazy.bindCoorientations(candidates).closure).toEqual(
+      eager.bindCoorientations(candidates).closure,
+    );
+  }
+
+  it("numbers cells identically in eager, lazy and parallel lazy modes (one maximal cell)", async () => {
+    await expectSameOracles(A4_SYSTEM, a4Rows());
+  });
+
+  it("numbers cells identically in eager, lazy and parallel lazy modes (several maximal types)", async () => {
+    await expectSameOracles(FREE_RANK3_SYSTEM, freeRank3Rows(12));
+  });
+});
+
+describe("streamed action row digest", () => {
+  // Original definition: every chunk hashed through the generic canonicalizer.
+  function referenceDigest(rows: readonly ArrayLike<number>[]): string {
+    const chunkSize = 4_096;
+    const degree = rows[0]?.length ?? 0;
+    const rowChunkHashes = rows.map((row, generator) => {
+      const chunks: string[] = [];
+      for (let start = 0; start < row.length; start += chunkSize) {
+        const images = Array.from(row).slice(
+          start,
+          Math.min(row.length, start + chunkSize),
+        );
+        chunks.push(canonicalSha256({ generator, start, images }));
+      }
+      return canonicalSha256({ generator, degree, chunkSize, chunks });
+    });
+    return canonicalSha256({
+      schemaVersion: 1,
+      method: "fixed-row-chunk-sha256-tree",
+      degree,
+      generatorCount: rows.length,
+      chunkSize,
+      rowChunkHashes,
+    });
+  }
+
+  it("matches the generic canonical definition, including partial chunks", () => {
+    const degree = 9_000; // two full chunks and a partial one
+    const rows = [0, 1].map((generator) =>
+      Array.from(
+        { length: degree },
+        (_unused, point) => (point * (generator + 7) + 3) % degree,
+      ),
+    );
+    const expected = referenceDigest(rows);
+    expect(computeStreamedActionRowsCanonicalSha256(rows)).toBe(expected);
+    expect(
+      computeStreamedActionRowsCanonicalSha256(
+        rows.map((row) => Uint32Array.from(row)),
+      ),
+    ).toBe(expected);
+    const odd = [[0.5, 1, 2]];
+    expect(computeStreamedActionRowsCanonicalSha256(odd)).toBe(
+      referenceDigest(odd),
+    );
   });
 });

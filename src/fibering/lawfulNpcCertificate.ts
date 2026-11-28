@@ -2,7 +2,7 @@ import type {
   BarXCompressedComplex,
   BoundaryOccurrence,
 } from "../compression/types";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import { canonicalJsonSha256, canonicalSha256 } from "../utils/canonicalSha256";
 import {
   compareIds,
   normalizeBoundary,
@@ -235,7 +235,7 @@ export function certifyLawfulNpcAsphericity(
       aspherical,
     },
     hashes: {
-      sourceComplexSha256: canonicalSha256(jsonData(barX)),
+      sourceComplexSha256: canonicalJsonSha256(barX),
       retainedCellSetSha256: canonicalSha256(retainedCellIds),
     },
     errors: uniqueSorted(errors),
@@ -487,8 +487,4 @@ function uniqueSorted(values: readonly string[]): string[] {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
-}
-
-function jsonData<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T;
 }

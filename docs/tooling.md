@@ -3,6 +3,12 @@
 The viewer is a local web app first. Normal app use, bundled examples, and JSON
 imports should not require runtime network access or external algebra systems.
 
+This page explains the commands people run most often. `package.json` defines
+more than 300 scripts, most of them replays of individual research
+certificates. The complete list, grouped by script file, is the
+[package script index](../scripts/README.md#package-script-index) in
+`scripts/README.md`.
+
 ## App Commands
 
 Use Corepack so the pinned `pnpm` version in `package.json` is respected:
@@ -147,6 +153,21 @@ Jacobi routine so CI does not depend on NumPy. These scripts certify the source
 transcription and normal-Gram diagnostics; rendered coordinates remain
 numerical visualization data.
 
+The H5-P7-22 prism and Ma-Zheng's 51 compact 5D nine-facet polytopes are
+written and checked by a second certifier with the same rank/inertia standard:
+
+```bash
+python scripts/certify_compact_5d_catalogue.py --write-examples
+corepack pnpm certify:compact-5d-catalogue
+```
+
+With no arguments it validates every stored `compact_5_prism_h5_p7_22.json`
+and `mazheng_5d_9facet_*.json` example against a fresh build from its
+SHA-256-pinned source (`h5-p7-22_index39628800/coxeter_system.json` and
+`scripts/data/mazheng_9facet_verified.jsonl`). It certifies source
+transcription and Gram signature only; see
+[references](references.md) for provenance.
+
 External tool jobs should be treated as finite, inspectable jobs, not as hidden
 desktop services. A job is ready for release only when it has a stable launcher
 under `scripts/`, validates its input, emits JSON or a certificate artifact, and
@@ -210,6 +231,21 @@ records long tasks, heap use, renderer work, label renderer (`sprite` or
 run, and semantic object floors. It fails if any interaction scenario fails. See
 [performance-audit.md](performance-audit.md) for the current measurements and
 the remaining architecture thresholds.
+
+Two larger benchmarks cover what the I2(5) gate cannot:
+
+```bash
+pnpm bench:scale        # compact 5D examples at radius 8, projection clicks
+pnpm bench:pipeline --system <system.json> --manifest <action.manifest.json> \
+  --stages load,torsion,oracle,h1 --workers 8
+```
+
+`bench:pipeline` prints one JSON line per stage and per internal phase (time,
+RSS, typed-array bytes) for a packed action. It goes through
+`scripts/run_with_heap.mjs`, which passes a 16 GiB heap limit to tsx's child
+process through `NODE_OPTIONS`. A plain `--max-old-space-size` flag stops at
+the tsx parent. `--workers 1` runs everything inline; hashes are the same for
+every worker count.
 
 `bench:timed:machine` turns the stored timed benchmark into machine-class
 budgets for `ci-linux-standard`, `local-dev-laptop`, and
@@ -902,15 +938,16 @@ produces a deterministic incomplete artifact; it never fabricates a subgroup
 from Selberg's lemma and never turns a bounded failure into a nonexistence
 claim.
 
-Once a complete quotient action is available, the browser's **Search full
+Once a complete quotient action is available, the browser's **Check full
 Davis quotient** action runs the wall-sign search and full link checks in a
-persistent worker. The focused regression gate is:
+persistent worker. The regression gate is:
 
 ```bash
 corepack pnpm validate:full-davis-fibering
 ```
 
-It checks the complete cell-poset constructor, SHA-256 evidence chain,
+It runs the whole Vitest suite (`vitest run`). The full-Davis tests in it check
+the complete cell-poset constructor, SHA-256 evidence chain,
 compatible pulling triangulation, rational height perturbation, full directed
 links, collapse-certificate replay, action/quotient mismatch rejection, and
 tamper detection. The full mathematical construction is documented in
@@ -954,6 +991,22 @@ runner computes its own action hash and independently rechecks spherical
 freeness. It can certify virtual algebraic fibering in the searched wall
 family; it does not run the scalable full-`H^1` path or certify smooth
 fibering.
+
+For a proof-carrying modular rank certificate and integral-kernel witness, use
+the separate intrinsic full-`H^1` path:
+
+```bash
+corepack pnpm cover:fiber:scalable-h1 -- \
+  --example compact_5_cube_gamma1 \
+  --action ACTION.json \
+  --rank-certificate RANK.json \
+  --kernel-witness WITNESS.json \
+  --output RESULT.json
+```
+
+This command replays the full lattice and Track B for the fixed canonical
+pulling/zero-potential model. The in-process exhaustive arrangement currently
+supports `b1 <= 4`; larger ranks stop as `incomplete`.
 
 To validate a certificate exported from **Covers + Walls**:
 

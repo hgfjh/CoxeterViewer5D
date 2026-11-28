@@ -8,7 +8,7 @@ import {
   type TorsionFreeCandidateResult,
 } from "../torsionFree";
 import type { CoxeterSystemInput } from "../types";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import { canonicalJsonSha256, canonicalSha256 } from "../utils/canonicalSha256";
 import {
   createWallCoorientation,
   findWallSystem,
@@ -47,6 +47,9 @@ export interface LawfulCoorientationSearchOptions {
 export interface LawfulCoorientationScore {
   certificationComplex: "rank-two-lawful" | "coface-closed-full";
   primitiveEpimorphism: boolean;
+  /** The theorem-facing finite-height-band pi_1-surjection criterion. */
+  finiteHeightBandPi1Surjection: boolean;
+  /** Optional stronger geometric evidence; never a promotion gate. */
   npcAsphericity: boolean;
   morseDataPassed: boolean;
   connectedDirectedLinks: number;
@@ -58,7 +61,7 @@ export interface LawfulCoorientationScore {
 }
 
 export interface LawfulSubcomplexActionCertificate {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "action-rooted-lawful-subcomplex-fibering-certificate";
   method: "certified-action-lawful-first-reconstruction";
   status: "passed" | "failed" | "incomplete";
@@ -86,7 +89,7 @@ export interface LawfulSubcomplexActionCertificate {
 }
 
 export interface LawfulSubcomplexCertificateVerification {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "lawful-subcomplex-certificate-replay";
   valid: boolean;
   mandatoryChecksPassed: boolean;
@@ -98,7 +101,7 @@ export interface LawfulSubcomplexCertificateVerification {
 }
 
 export interface LawfulCoorientationSearchResult {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "lawful-subcomplex-coorientation-search";
   status: "found" | "not-found" | "incomplete" | "invalid";
   method: "exhaustive-sign-search" | "deterministic-local-sign-search";
@@ -178,12 +181,15 @@ export function verifyLawfulSubcomplexActionCertificate(
   const reconstructedHashes: Record<string, string> = {};
   try {
     if (
-      certificate.schemaVersion !== 1 ||
+      certificate.schemaVersion !== 2 ||
       certificate.kind !==
         "action-rooted-lawful-subcomplex-fibering-certificate" ||
       certificate.method !== "certified-action-lawful-first-reconstruction"
     ) {
       errors.push("The lawful action-certificate header is unsupported.");
+    }
+    if (certificate.lawful?.schemaVersion !== 2) {
+      errors.push("The embedded lawful certificate header is unsupported.");
     }
     const sourceSystemSha256 = canonicalSha256(
       jsonData(certificate.source.coxeterSystem),
@@ -210,8 +216,8 @@ export function verifyLawfulSubcomplexActionCertificate(
       );
     }
     if (
-      canonicalSha256(jsonData(recertified)) !==
-      canonicalSha256(jsonData(certificate.subgroupAction.certificate))
+      canonicalJsonSha256(recertified) !==
+      canonicalJsonSha256(certificate.subgroupAction.certificate)
     ) {
       errors.push("The embedded torsion-free action certificate is stale.");
     }
@@ -297,8 +303,8 @@ export function verifyLawfulSubcomplexActionCertificate(
       expectHash(label, stored, replayed, errors, checkedHashes);
     }
     if (
-      canonicalSha256(jsonData(certificate.lawful)) !==
-      canonicalSha256(jsonData(rebuilt.lawful))
+      canonicalJsonSha256(certificate.lawful) !==
+      canonicalJsonSha256(rebuilt.lawful)
     ) {
       errors.push(
         "The lawful certificate does not match its action-rooted reconstruction.",
@@ -325,10 +331,11 @@ export function verifyLawfulSubcomplexActionCertificate(
   }
   const mandatoryChecksPassed =
     certificate.status === "passed" &&
-    certificate.lawful.status === "passed" &&
+    certificate.lawful?.status === "passed" &&
+    certificate.lawful?.finiteHeightBand?.status === "passed" &&
     errors.length === 0;
   const payload = {
-    schemaVersion: 1 as const,
+    schemaVersion: 2 as const,
     kind: "lawful-subcomplex-certificate-replay" as const,
     valid: errors.length === 0,
     mandatoryChecksPassed,
@@ -420,23 +427,28 @@ export function searchLawfulSubcomplexCoorientations(input: {
         fullCellPoset,
         certificationComplex: options.certificationComplex ?? "rank-two-lawful",
       });
-      if (
-        core.certificationComplex === "coface-closed-full" &&
-        core.generalized.status !== "passed"
-      ) {
-        inconclusiveGeneralizedEvidenceSeen = true;
-      }
       const rankTwoDirectedLinks = core.morse.links.flatMap((entry) => [
         entry.ascending,
         entry.descending,
       ]);
       const usingGeneralized =
         core.certificationComplex === "coface-closed-full";
-      const generalizedEvidenceValid =
+      // A replayed exhaustive calculation is complete evidence even when it
+      // exhibits a disconnected link or a nonprimitive character. Those are
+      // definitive candidate failures, not missing generalized artifacts.
+      const generalizedEvidenceComplete =
         !usingGeneralized ||
-        (core.generalized.status === "passed" &&
-          core.generalized.checks.actionRootedReplayPassed);
-      const generalizedSummaries = generalizedEvidenceValid
+        (core.generalized.scopeMatches &&
+          core.generalized.checks.actionRootedReplayPassed &&
+          core.generalized.checks.calculationCompleted &&
+          core.generalized.checks.retentionPassed &&
+          core.generalized.checks.subdivisionPassed &&
+          core.generalized.checks.affineHeightPassed &&
+          core.generalizedCertificate?.directedLinks.status === "passed");
+      if (usingGeneralized && !generalizedEvidenceComplete) {
+        inconclusiveGeneralizedEvidenceSeen = true;
+      }
+      const generalizedSummaries = generalizedEvidenceComplete
         ? (core.generalizedCertificate?.directedLinks.vertexSummaries ?? [])
         : [];
       const connectedDirectedLinks = usingGeneralized
@@ -457,10 +469,13 @@ export function searchLawfulSubcomplexCoorientations(input: {
         ? generalizedSummaries.length * 2
         : rankTwoDirectedLinks.length;
       const selectedAsphericityPassed = usingGeneralized
-        ? generalizedEvidenceValid && core.generalized.checks.asphericityPassed
+        ? generalizedEvidenceComplete &&
+          core.generalized.checks.asphericityPassed
         : core.npcAsphericity.status === "passed";
+      const finiteHeightBandPi1Surjection =
+        core.finiteHeightBand.status === "passed";
       const selectedMorsePassed = usingGeneralized
-        ? generalizedEvidenceValid &&
+        ? generalizedEvidenceComplete &&
           core.generalized.checks.actualDirectedLinksPassed
         : core.morse.status === "passed";
       const score: LawfulCoorientationScore = {
@@ -468,6 +483,7 @@ export function searchLawfulSubcomplexCoorientations(input: {
         primitiveEpimorphism:
           core.primitiveHomomorphism.status === "passed" &&
           core.primitiveHomomorphism.primitiveImage,
+        finiteHeightBandPi1Surjection,
         npcAsphericity: selectedAsphericityPassed,
         morseDataPassed: selectedMorsePassed,
         connectedDirectedLinks,
@@ -475,19 +491,20 @@ export function searchLawfulSubcomplexCoorientations(input: {
         retainedTwoCells: core.retainedCellIds.length,
         generalizedCertificatePassed: core.generalized.status === "passed",
         passed: core.status === "passed",
-        scalar: generalizedEvidenceValid
+        scalar: generalizedEvidenceComplete
           ? (core.status === "passed" ? 1_000_000_000_000 : 0) +
             (core.primitiveHomomorphism.primitiveImage ? 10_000_000_000 : 0) +
-            (selectedAsphericityPassed ? 1_000_000_000 : 0) +
+            (finiteHeightBandPi1Surjection ? 1_000_000_000 : 0) +
             (selectedMorsePassed ? 100_000_000 : 0) +
             connectedDirectedLinks * 10_000 +
-            core.retainedCellIds.length
+            core.retainedCellIds.length +
+            (selectedAsphericityPassed ? 1 : 0)
           : 0,
       };
       const evaluated = {
         signs: { ...signs },
         score,
-        eligibleForRanking: generalizedEvidenceValid,
+        eligibleForRanking: generalizedEvidenceComplete,
       };
       cache.set(key, evaluated);
       return evaluated;
@@ -608,7 +625,7 @@ export function searchLawfulSubcomplexCoorientations(input: {
       );
     }
     return {
-      schemaVersion: 1,
+      schemaVersion: 2,
       kind: "lawful-subcomplex-coorientation-search",
       status,
       method: exact
@@ -631,7 +648,7 @@ export function searchLawfulSubcomplexCoorientations(input: {
   } catch (error) {
     const invalid = error instanceof LawfulSearchInputError;
     return {
-      schemaVersion: 1,
+      schemaVersion: 2,
       kind: "lawful-subcomplex-coorientation-search",
       status: invalid ? "invalid" : "incomplete",
       method: "deterministic-local-sign-search",
@@ -702,7 +719,7 @@ function buildActionCertificate(input: {
   };
   const errors = lawful.status === "failed" ? [...lawful.errors] : [];
   const withoutArtifactHash = {
-    schemaVersion: 1 as const,
+    schemaVersion: 2 as const,
     kind: "action-rooted-lawful-subcomplex-fibering-certificate" as const,
     method: "certified-action-lawful-first-reconstruction" as const,
     status: lawful.status,
@@ -716,12 +733,12 @@ function buildActionCertificate(input: {
     requestedWallSigns: { ...coorientation.wallSigns },
     lawful,
     hashes: {
-      sourceSystemSha256: canonicalSha256(jsonData(prepared.system)),
+      sourceSystemSha256: canonicalJsonSha256(prepared.system),
       actionSha256,
-      coverCompressionSha256: canonicalSha256(jsonData(cover)),
-      wallSystemSha256: canonicalSha256(jsonData(wallSystem)),
-      coorientationSha256: canonicalSha256(jsonData(coorientation)),
-      lawfulCertificateSha256: canonicalSha256(jsonData(lawful)),
+      coverCompressionSha256: canonicalJsonSha256(cover),
+      wallSystemSha256: canonicalJsonSha256(wallSystem),
+      coorientationSha256: canonicalJsonSha256(coorientation),
+      lawfulCertificateSha256: canonicalJsonSha256(lawful),
     },
     errors: uniqueSorted(errors),
     warnings: uniqueSorted(lawful.warnings),
@@ -735,7 +752,7 @@ function buildActionCertificate(input: {
     ...withoutArtifactHash,
     hashes: {
       ...withoutArtifactHash.hashes,
-      artifactSha256: canonicalSha256(jsonData(withoutArtifactHash)),
+      artifactSha256: canonicalJsonSha256(withoutArtifactHash),
     },
   };
 }

@@ -252,7 +252,7 @@ function normalizeFiniteAction(
       );
     }
     return new Map(
-      row.map((target, point) => {
+      Array.from(row, (target, point): [string, string] => {
         if (
           !Number.isInteger(target) ||
           target < 0 ||
@@ -298,20 +298,23 @@ function rootSuggestedByQuotient(
   return [...quotient.vertices.map((vertex) => vertex.id)].sort(compareIds)[0];
 }
 
-function matchingQuotientEdges(
+/**
+ * Least-id quotient edge for each (source, generator, target) step.  One
+ * pass over the edges replaces a scan of every edge per step, which was
+ * quadratic in the quotient size.
+ */
+function leastEdgeByStep(
   edges: readonly QuotientEdge[],
-  sourcePointId: string,
-  targetPointId: string,
-  generator: number,
-): QuotientEdge[] {
-  return edges
-    .filter(
-      (edge) =>
-        edge.source === sourcePointId &&
-        edge.target === targetPointId &&
-        edge.generator === generator,
-    )
-    .sort((left, right) => compareIds(left.id, right.id));
+): Map<string, QuotientEdge> {
+  const least = new Map<string, QuotientEdge>();
+  for (const edge of edges) {
+    const key = JSON.stringify([edge.source, edge.generator, edge.target]);
+    const current = least.get(key);
+    if (current === undefined || compareIds(edge.id, current.id) < 0) {
+      least.set(key, edge);
+    }
+  }
+  return least;
 }
 
 function normalizeQuotientAction(
@@ -359,21 +362,18 @@ function normalizeQuotientAction(
   });
 
   const edgeByStep = new Map<string, ActionEdgeReference>();
+  const leastEdge = leastEdgeByStep(quotient.edges);
   for (let generator = 0; generator < system.rank; generator += 1) {
     for (const sourcePointId of pointIds) {
       const targetPointId = images[generator].get(sourcePointId)!;
-      const matches = matchingQuotientEdges(
-        quotient.edges,
-        sourcePointId,
-        targetPointId,
-        generator,
+      const edge = leastEdge.get(
+        JSON.stringify([sourcePointId, generator, targetPointId]),
       );
-      if (matches.length === 0) {
+      if (edge === undefined) {
         throw new Error(
           `No quotient edge records ${sourcePointId} --s${generator}--> ${targetPointId}.`,
         );
       }
-      const edge = matches[0];
       edgeByStep.set(stepKey(sourcePointId, generator), {
         id: edge.id,
         inverseId: edge.inverseEdgeId,

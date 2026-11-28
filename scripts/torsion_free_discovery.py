@@ -51,6 +51,7 @@ GAP_SCRIPT = SCRIPT_DIR / "gap_torsion_free_discovery.g"
 SAGE_SCRIPT = SCRIPT_DIR / "sage_congruence_torsion_free.py"
 FINITE_IMAGE_SCRIPT = SCRIPT_DIR / "torsion_free_finite_image.py"
 FINITE_IMAGE_RECOGNITION_SCRIPT = SCRIPT_DIR / "finite_image_recognition.py"
+ODD_PRIME_STRUCTURAL_SCRIPT = SCRIPT_DIR / "odd_prime_structural_certificate.py"
 GAP_FINITE_IMAGE_RECOGNITION_SCRIPT = SCRIPT_DIR / "gap_finite_image_recognition.g"
 MOD3_STRUCTURAL_SCRIPT = SCRIPT_DIR / "mod3_structural_certificate.py"
 MOD3_STRUCTURAL_GAP_SCRIPT = SCRIPT_DIR / "gap_mod3_structural_certificate.g"
@@ -66,6 +67,22 @@ DEFAULT_MOD3_STRUCTURAL_SOURCE = (
 )
 PACKED_SOLVER_SCRIPT = SCRIPT_DIR / "packed_composite_solver.py"
 MODULE_CATALOGUE_SCRIPT = SCRIPT_DIR / "finite_image_module_catalogue.py"
+
+# Keep the worker's local imports in the same explicit staging manifest as the
+# entry points.  Finite-image jobs execute from an isolated scratch directory,
+# so a module being importable from the repository does not make it available
+# to the staged process.
+DISCOVERY_BACKEND_SOURCES = (
+    Path(__file__).resolve(),
+    FINITE_IMAGE_SCRIPT,
+    FINITE_IMAGE_RECOGNITION_SCRIPT,
+    MOD3_STRUCTURAL_SCRIPT,
+    ODD_PRIME_STRUCTURAL_SCRIPT,
+    MODULE_CATALOGUE_SCRIPT,
+    GAP_FINITE_IMAGE_RECOGNITION_SCRIPT,
+    PACKED_SOLVER_SCRIPT,
+    GAP_SCRIPT,
+)
 FIXTURE_DIR = SCRIPT_DIR.parent / "tests" / "fixtures" / "torsion-free-discovery"
 BACKEND_ID = "automatic-torsion-free-cover"
 BACKEND_VERSION = "3.4.1"
@@ -2557,20 +2574,17 @@ def stage_discovery_backend(
     """Stage executable backend sources into the selected scratch filesystem."""
 
     staged: dict[str, Any] = {}
-    for source in (
-        Path(__file__).resolve(),
-        FINITE_IMAGE_SCRIPT,
-        FINITE_IMAGE_RECOGNITION_SCRIPT,
-        MODULE_CATALOGUE_SCRIPT,
-        GAP_FINITE_IMAGE_RECOGNITION_SCRIPT,
-        PACKED_SOLVER_SCRIPT,
-        GAP_SCRIPT,
-    ):
+    for source in DISCOVERY_BACKEND_SOURCES:
         staged[source.name] = runtime.stage_file(
             source, relative_path=f"backend/{source.name}"
-        )
+    )
     if mod3_inputs is not None:
         for key, source in mod3_inputs.items():
+            if source.resolve() == MOD3_STRUCTURAL_SCRIPT.resolve():
+                # The structural orchestrator is an unconditional worker import
+                # and is therefore already present in the base backend bundle.
+                staged[f"mod3:{key}"] = staged[MOD3_STRUCTURAL_SCRIPT.name]
+                continue
             relative_path = (
                 f"backend/{source.name}"
                 if key in {"orchestrator", "gapScript", "replayGapScript"}

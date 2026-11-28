@@ -1,5 +1,10 @@
 # Scalable generic integral H1
 
+This is the cohomology input of the scalable full-`H^1` branch of Track B
+([full-davis-fibering-certification.md](full-davis-fibering-certification.md);
+route map in
+[two-track-fibering-certification.md](two-track-fibering-certification.md)).
+
 The generic large-action path separates four claims that should not be
 conflated:
 
@@ -214,7 +219,7 @@ digest and six-source-binding contract across the TypeScript/Python boundary.
 The bridge never overwrites its response. `execute` also refuses existing
 transcript, integral-basis, or lift-certificate targets.
 
-## Remaining boundary
+## Composition into Track B
 
 The bridge certifies the integral kernel of the streamed tree-gauge boundary.
 It does not independently rebuild the finite action or oracle; that remains the
@@ -224,13 +229,88 @@ The bridge also does not compute wall coordinates or Smith data. Those are
 consumed by the scalable generic completion after the full integral kernel has
 been certified.
 
-That completion is currently a TypeScript library boundary, not a CLI. No
-orchestrator yet constructs the final bridge request automatically, imports the
-emitted witness, or feeds the resulting full integral `H^1` into exact
-height-chamber, generalized-compression, and all-cell link certification.
-Accordingly this protocol certifies cohomology input; it does not by itself
-certify finite generation of a character kernel or any algebraic or smooth
-fibering result.
+The bridge protocol still certifies cohomology input only. Once
+`emit-rank-certificate` and `emit-witness` have produced their proof artifacts,
+Track B can consume them through either a legacy in-process provider object or
+a callback-free JSON input. Both routes run the same mathematical pipeline;
+the difference is replay provenance.
+
+The callback-free profile is
+`scalable-full-h1-track-b-json-input`. It contains the parsed Coxeter system,
+raw permutation action, modular-rank certificate, integral-kernel witness,
+cheap-screen choice, and explicit serializable budgets. It contains no oracle,
+row-stream, or preparation callbacks. The adapter independently:
+
+1. validates every nested digest and exact JSON value;
+2. recertifies the finite action against all spherical subgroups;
+3. reconstructs the streamed Davis oracle and generic \(H^1\) preparation;
+4. runs the scalable integral completion and full-\(K\) Track B;
+5. stores the sealed JSON input beside the resulting pipeline certificate.
+
+The build does not replay the pipeline it has just built (schema 2; see
+`docs/data-format.md`). `replayScalableFullH1TrackBJsonCertificate` is the
+independent replay: it rebuilds from the stored JSON input and requires an
+identical certificate.
+
+`buildCompactActionProofBranch` accepts this form as
+`{ branch: "scalable-full-h1", jsonInput }`. Its certificate carries a
+`scalableFullH1.jsonAdapter` that
+`replayScalableFullH1TrackBJsonCertificate` can rebuild without caller
+callbacks. The older `{ branch: "scalable-full-h1", options }` form remains
+available for trusted in-process orchestration, but its callbacks are not
+serializable proof inputs.
+
+The existing command constructs the runtime form from the same source files:
+
+```bash
+corepack pnpm cover:fiber:scalable-h1 -- \
+  --example I2_5 \
+  --action ACTION.json \
+  --rank-certificate RANK.json \
+  --kernel-witness WITNESS.json \
+  --output RESULT.json
+```
+
+Use `--system SYSTEM.json` instead of `--example ID` for an unbundled Coxeter
+system. The command independently recertifies the finite action, reconstructs
+the streamed preparation, replays the scalable integral completion, and then
+runs the generalized compression and intrinsic all-cell Track B calculation.
+Its sampled cheap screen is diagnostic; a failed sample does not suppress the
+exact all-character run. The current in-process exact arrangement supports
+full `H^1` ranks one through four.
+
+Command-line replay requires the same source proof files:
+
+```bash
+corepack pnpm cover:fiber:scalable-h1 -- \
+  --example I2_5 \
+  --action ACTION.json \
+  --rank-certificate RANK.json \
+  --kernel-witness WITNESS.json \
+  --verify-artifact RESULT.json \
+  --output RESULT.replay.json
+```
+
+`RESULT.json` has kind
+`scalable-full-h1-track-b-pipeline-certificate`. A `passed` result binds one
+primitive face and tie polarity whose ascending and descending links are
+nonempty and connected at every quotient vertex. `not-found` is either
+`b1=0` or an exhaustive obstruction for the fixed canonical pulling/zero
+potential model. Rank and resource limits are `incomplete`; malformed or
+nonreplaying evidence is `failed`. None of these artifacts certifies finite
+presentation, a topological bundle, or smooth fibering.
+
+A callback-free build instead has outer kind
+`scalable-full-h1-track-b-json-certificate`; its embedded pipeline retains the
+kind above. JSON replay verifies the input digest, modular-rank and
+integral-witness digests, independent torsion-free certificate, reconstructed
+oracle and preparation bindings, and an exact rebuild of the pipeline. It does
+not trust serialized callback code because none is present.
+
+In the schema-v2 compact research portfolio, this scalable branch is
+independent of the direct fixed-character branch. A scalable resource stop
+does not block a direct character, and a direct fixed-model obstruction does
+not block the full integral \(H^1\) calculation.
 
 The LinBox worker's dense `columns × nullity` nullspace is the remaining main
 memory constraint. This path is intended for the target regime where the

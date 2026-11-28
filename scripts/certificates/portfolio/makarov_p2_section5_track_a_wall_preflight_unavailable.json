@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "kind": "track-a-wall-preflight-unavailable",
+  "method": "bound-source-evidence-gate",
+  "status": "hard-stop-one-sided",
+  "source": {
+    "name": "Makarov P2 section-5 factored action",
+    "artifactPath": "scripts/certificates/portfolio/makarov_p2_section5_wall_coorientation_obstruction.json",
+    "artifactCanonicalSha256": "25f29fd984cc9112ee6f0d678ed27c8d91e048c27287c08cafb587c97ff899a0",
+    "storedDigest": "1adb8e9449e0b2cba37aa4d502877f07b7961092e8cec51e6b6369d20f1f5bfe"
+  },
+  "gate": {
+    "twoSidedness": "failed-by-bound-source-certificate",
+    "rankTwoComplexMaterialized": false,
+    "evidence": {
+      "everyType5WallComponentOneSided": true,
+      "fullWallCoorientationFound": false,
+      "generatorType": 5,
+      "labelsChecked": 650
+    }
+  },
+  "conclusion": "The strict wall-origin Track A preflight is not runnable on the current P2 cover: its bound exact source already proves the full wall system one-sided, and no materialized rank-two wall complex is supplied here.",
+  "nonClaims": [
+    "No abstract rank-two complex is invented from the coarse P2 incidence data.",
+    "This does not obstruct direct-cocycle Track A or Track B.",
+    "This does not obstruct a further orientation cover or independently sheet-resolved wall system."
+  ],
+  "artifactDigest": "ae316c83bb59df9f247d83d5853908f70bf7aab4178e3ae0b5e9c86cea5182a9"
+}

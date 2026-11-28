@@ -1,0 +1,80 @@
+{
+  "artifactSha256": "adc2ec577553cf28b2ff47f63519bce92c901c8103c713689d8785b213ccc651",
+  "attempts": [
+    {
+      "backend": "GAP matrix-group RightCosets(Q,L)",
+      "certifiedFrameRows": 0,
+      "completeTranscript": false,
+      "outerWallCapSeconds": 1200,
+      "partialTranscriptRetained": false,
+      "representation": "5-by-5 matrices over GF(5)",
+      "termination": "manually-stopped-before-cap-after-approximately-15-minutes"
+    },
+    {
+      "backend": "GAP permutation-group RightCosets(Q,L)",
+      "certifiedFrameRows": 0,
+      "completeTranscript": false,
+      "exitCode": 124,
+      "memoryKiBCap": 1048576,
+      "outerWallCapSeconds": 300,
+      "partialTranscriptRetained": false,
+      "representation": "certified action on 650 projective vertices",
+      "termination": "worker-timeout",
+      "workerWallCapSeconds": 290
+    }
+  ],
+  "certifiedResult": {
+    "candidateEliminations": 0,
+    "candidateSurvivors": 0,
+    "certifiedCandidateCount": 0,
+    "certifiedFrameCount": 0,
+    "certifiedReducedOriginalVertexCount": 0,
+    "completeFrameTranscriptAvailable": false,
+    "higherCellTemplatesChecked": 0,
+    "mathematicalDisposition": "none"
+  },
+  "declaredScreen": {
+    "candidateCount": 128,
+    "character": "primitive type-6 cocycle a6(t,q)=(-1)^t0",
+    "colorSymmetry": "Chen order-125 subgroup L",
+    "fourierCharacter": "chi(t)=(-1)^t0",
+    "hierarchy": "lexicographic raw2, exact cell-average chi, signed type tie",
+    "higherBarycentricCellOrbitLowerBound": 1806033,
+    "originalVerticesOnlyAtFirstStage": true,
+    "plannedFrameCount": 74880,
+    "plannedReducedOriginalVertexCount": 149760,
+    "plannedSheetSignsPerFrame": 2,
+    "type5FourierPairingLemma": "one flagged conjugate gives a fixed-point-free chi-reversing involution of the full cell fiber; no flagged conjugate leaves chi constant",
+    "typeTieFamily": "all 128 sign choices on generator magnitudes 1,2,4,8,16,32,64"
+  },
+  "futureBackendNote": "the opt-in backend now uses the faithful 650-point permutation action and a buffered GAP output stream, but it has not been rerun",
+  "kind": "makarov-p2-type6-fourier-frame-bounded-timeout-receipt",
+  "nonClaims": [
+    "This receipt does not eliminate or exhibit any height candidate.",
+    "Zero certified survivors means no candidates were certified, not that none survive.",
+    "No original-vertex or higher barycentric-cell link was certified.",
+    "The exact scanner remains opt-in and is not invoked by receipt verification."
+  ],
+  "producer": {
+    "script": "scripts/makarov_p2_type6_fourier_frame_screen.py",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "gapBackend": {
+      "bytesSha256": "b1d104ec02462905cd676a366c2ab179a46fd3d5a36487b40f3a9781eec06409",
+      "path": "scripts/gap_makarov_p2_fourier_frames.g"
+    },
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "screenDriver": {
+      "bytesSha256": "fd930514eebaba258ee39594722ef21e11f46270a0783b2d8887f40628fe9cf1",
+      "path": "scripts/makarov_p2_type6_fourier_frame_screen.py"
+    },
+    "type6CharacterCertificate": {
+      "artifactSha256": "501125fa7150a4d0c208cd4b40cd6a5132f7e04424820e71fd5f3219b165a16d",
+      "bytesSha256": "864f8b39407b45a6d101e139e9a8f8e5511fadbba1b26dcb5f42c741b28a227b",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_wall_track_b.json"
+    }
+  },
+  "status": "incomplete-backend-timeout-no-mathematical-result"
+}

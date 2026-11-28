@@ -1,0 +1,382 @@
+{
+  "artifactSha256": "5b0c98e68841c9676c2d4011ac8f22b3672b719d81653c2b3f3d8d0886b4a205",
+  "baseType5Type6ComponentAudit": {
+    "type5BaseFibre": {
+      "all650LabelFibresConnected": true,
+      "connected": true,
+      "label": 0,
+      "neighborLabelsRealizedBy45Octagons": 120,
+      "qLabelFibreOrderByOrbitStabilizer": 14400,
+      "sideH4SubgroupOrder": 14400,
+      "stabilizerTranscriptSha256": "3422cdc9d2b6e9792238e0d4314e84cfff3f788f087e67eb2d4de548e48d42b5",
+      "transferReason": "Q is transitive on its 650-point orbit"
+    },
+    "type6BaseFibre": {
+      "connected": true,
+      "qFrameCount": 9360000,
+      "reason": "the five side reflection matrices generate Q by definition"
+    }
+  },
+  "baseWallComponentAudit": {
+    "baseOppositeEdgeGraph": "undirected side edges joined when opposite in a finite side-side polygon",
+    "componentEdgeTranscriptSha256": "490b038c8cda386bd731ea7f8d813eef711c055c0b5a245cbca3329c5b781ae2",
+    "entireProjectiveRootFibreEdgeCount": 78000,
+    "fixedLabelCountRealized": 130,
+    "generatorTypeCensus": {
+      "0": 15600,
+      "1": 15600,
+      "2": 15600,
+      "3": 15600,
+      "4": 15600
+    },
+    "matchingPairCountRealized": 130,
+    "projectiveRootFibreConnectedForAllRoots": true,
+    "projectiveRootOrbitSize": 300,
+    "replayedComponentEdgeCount": 78000,
+    "replayedProjectiveRoot": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "signedRootOrbitSize": 600,
+    "transferReason": "left Q-translation commutes with the right Cayley action and is transitive on signed side roots, so the replayed full fibre transfers to all 300 roots"
+  },
+  "boundedFrontier": {
+    "componentVariableOrderSha256": "b497fa90c9a38b6d14786c160eb98d3e3115242823c592d087379ffaaa1e5178",
+    "qBallCenterSideWordFromIdentity": [
+      4
+    ],
+    "qBallRadius": 2,
+    "qFrameCount": 20,
+    "qFrameDepthCensus": {
+      "0": 1,
+      "1": 5,
+      "2": 14
+    },
+    "qFrameTranscriptSha256": "e73bb398dfe20358c78ed520dbec60da0cc7ee22c3693e7ed99d77fabfdacae1",
+    "rankTwoCellTranscriptSha256": "9ff7b49566ef48aadcc69e619e387f9268fdf28de321c455631985cab90f4d07",
+    "rankTwoExponentCensus": {
+      "2": 25728,
+      "3": 3840,
+      "4": 1920,
+      "5": 1280
+    },
+    "sampledRankTwoCellCount": 32768,
+    "sampledVertexCount": 2560,
+    "sheetSectionBasisHex": [
+      "40000000000000000000",
+      "2000000000000000000000000000000000000000",
+      "10000",
+      "2000000000000",
+      "4000",
+      "4",
+      "1"
+    ],
+    "sheetSectionDimension": 7,
+    "sheetSectionSha256": "7b08f3a9b99eed34c4e800132c99b4402bbcbf9e7986e66e7b97a50fb902ed8a",
+    "sheetSectionSize": 128,
+    "wallComponentVariableCount": 2736,
+    "wallComponentVariableFamilyCensus": {
+      "side": 2096,
+      "type5": 512,
+      "type6": 128
+    }
+  },
+  "boundedSolverReceipt": {
+    "main": {
+      "branches": 69076,
+      "compactRule": null,
+      "compactRuleParameterVariables": 0,
+      "componentVariables": 2736,
+      "configuredTimeLimitSeconds": 600.0,
+      "conflicts": 7,
+      "connectivityAuxiliaryVariables": 747520,
+      "deterministicTime": 74.89120559909938,
+      "lawfulCellVariables": 32768,
+      "mathematicalRole": "a SAT assignment is replayed exactly below; UNKNOWN would carry no mathematical inference",
+      "partitionCutsPerDirectionPerVertex": 63,
+      "randomSeed": 0,
+      "solver": "OR-Tools CP-SAT",
+      "solverVersion": "9.15.6755",
+      "status": "OPTIMAL",
+      "wallTimeSeconds": 218.36,
+      "workers": 8
+    },
+    "pilotAtQDepth0": null
+  },
+  "conclusion": {
+    "boundedFrontierStatus": "bounded-sheet-resolved-survivor-frontier",
+    "globalTrackAResult": false,
+    "preciseRemainingBoundary": "all Q frames outside the stated side-frame ball, all sheet cosets outside the 128-element sign section, compatibility of one assignment across successive CEGAR expansions, and the retained higher-cell subdivision/new-vertex links",
+    "prior951VariableObstructionExtendedGlobally": false,
+    "reason": "sheet-resolved wall components have independent coset-indexed flips; the prior translation-equivariant full-rank argument does not identify those variables"
+  },
+  "kind": "makarov-p2-sheet-resolved-wall-component-flip-cegar",
+  "liftedWallComponentAudit": {
+    "componentKeyRules": {
+      "type5": "(a, t mod S_5(a))",
+      "type6": "t mod <b>",
+      "types0Through4": "([r], t mod S_r)"
+    },
+    "liftedWallComponentCounts": {
+      "totalDecimal": "4171849679533027504677776769862409329914696871167584986595310889624639034146888005054239866880",
+      "type5Decimal": "2856081289600939747545284187559488219326571727231135703367680",
+      "type6Decimal": "4171849679533027504677776769862406473833407270227837441302815640277772901915313574263597826048",
+      "types0Through4Decimal": "8307689858646805659847199654938673152"
+    },
+    "sheetTranslationGroup": "F2^312",
+    "sideStabilizerRankCensus": {
+      "192": 4,
+      "193": 3,
+      "194": 3,
+      "211": 2,
+      "212": 3,
+      "213": 1,
+      "214": 5,
+      "215": 13,
+      "216": 15,
+      "217": 12,
+      "218": 3,
+      "219": 1,
+      "242": 4,
+      "243": 36,
+      "244": 62,
+      "245": 7,
+      "246": 22,
+      "247": 13,
+      "248": 91
+    },
+    "sideSubspaceBasisSha256": "95d12679b5e2acc0c05267a5879d3d82399fdeaac75b627001d6c484387ed9a5",
+    "stabilizerGenerators": {
+      "side": "S_r=span(b, lambda_a for <a,r>=0, lambda_a+lambda_b for the 130 X-matching pairs of r)",
+      "type5": "S_5(a)=span(lambda_a and lambda_b for all 120 neighbors b of a)",
+      "type6": "S_6=span(b), b=e_color0+e_color1"
+    },
+    "type5StabilizerRankCensus": {
+      "120": 260,
+      "121": 390
+    },
+    "type5SubspaceBasisSha256": "62ad1497a87ad828c81fde30aa9912f5dd781bd1ef7065be031276ad774ebacd",
+    "type6StabilizerRank": 1,
+    "type6SubspaceBasisSha256": "4d3bced5aa0ed3578fe841ff11c516e3a2bf1a4559f1273e792e4ab17b6f6050"
+  },
+  "nonClaims": [
+    "A survivor is only a replayable finite-frontier witness, not a global coorientation with legal links.",
+    "Solver-reported INFEASIBLE is not independently proof-replayed by this artifact.",
+    "With a compact-rule restriction, infeasibility would concern only that structured rule family; without it, proof-checked finite-frontier UNSAT would obstruct every global assignment because restriction to the frontier is necessary.",
+    "The wall-component counts do not make the exponentially many component variables enumerable.",
+    "No arbitrary edge may be flipped: every variable is shared exactly on one voltage-graph wall component.",
+    "No higher lawful-cell closure, subdivision vertex, finite-height-band gate, or global directed-link calculation is claimed."
+  ],
+  "oneStepWiderCompactRuleReplay": null,
+  "producer": {
+    "script": "scripts/makarov_p2_sheet_resolved_wall_flip_cegar.py",
+    "version": "1.0.0"
+  },
+  "rank312StateSpaceAudit": {
+    "allSheetStatesReachableAtEveryQFrame": true,
+    "closedLoopVoltageRank": 312,
+    "fullWallCoorientation": true,
+    "reason": "closed-loop voltages span F2^312, and every edge voltage is independent of the current sheet, so sheet translations commute with the action",
+    "sheetRank": 312,
+    "torsionFree": true
+  },
+  "schemaVersion": 1,
+  "searchScope": {
+    "arbitraryEdgeFlipsAllowed": false,
+    "cofaceClosureUse": "an unlawful rank-two cell and every higher coface containing it are absent; higher lawful cells cannot add a link edge missing from the rank-two graph",
+    "compactRuleMeaning": "when non-null, the flip is k_(family,index) plus one family-wide linear functional of the canonical residual representative; this is a structured subfamily of independent wall-component flips",
+    "compactRuleRestriction": null,
+    "constraints": [
+      "rank-two lawfulness is reified exactly by transition count two",
+      "ascending and descending generator links are both nonempty",
+      "each directed rank-two link graph is connected by all 63 nontrivial seven-vertex cut tests"
+    ],
+    "globalCoverEnumerated": false,
+    "translationEquivarianceAssumed": false,
+    "variables": "one Boolean flip for every actual wall component encountered in the finite frontier, identified by the certified voltage-graph coset key"
+  },
+  "sourceBindings": {
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "rank312OrientationCover": {
+      "artifactSha256": "8ef7d0c905483500cfcf3c79c2519bc7cccb2a90c1b21d09c9c0e102379e2899",
+      "bytesSha256": "f12283df3d177c655e131042997751c5146bf99c7cdcfba1fe91a70457cf36bb",
+      "path": "scripts/certificates/portfolio/makarov_p2_facet_binary_orientation_cover.json"
+    },
+    "section5Coloring": {
+      "artifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+      "bytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+      "path": "scripts/data/makarov_p2_section5_coloring.json"
+    },
+    "section5Import": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    }
+  },
+  "status": "bounded-sheet-resolved-survivor-frontier",
+  "survivorAssignment": {
+    "bitLength": 2736,
+    "bitsetBase64": "AQjwAAAAVfUKCgAAAABV9QoKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wAAAAD/////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAD////////////1//////////7/////////////X////wAAAAAAAAAAAAAAAAAAAAD///////////////////+vAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmZmZmZmZmZmZmZmZmZmZmqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqr6////9fVfX/////9fX19f",
+    "decodedBytesSha256": "9b3f87062313c555a8d91025fef1b1684848bb78e21bde5cca2a52657f1130ee",
+    "encoding": "base64 little-endian bitset in componentVariableOrderSha256 order",
+    "exactReplay": {
+      "allSampledAscendingLinksNonemptyConnected": true,
+      "allSampledDescendingLinksNonemptyConnected": true,
+      "ascendingLawfulEdgeCountCensus": {
+        "0": 108,
+        "1": 640,
+        "12": 6,
+        "2": 316,
+        "3": 774,
+        "4": 56,
+        "5": 329,
+        "6": 216,
+        "7": 20,
+        "8": 43,
+        "9": 52
+      },
+      "ascendingVertexCountCensus": {
+        "1": 108,
+        "2": 640,
+        "3": 1090,
+        "4": 601,
+        "5": 115,
+        "6": 6
+      },
+      "descendingLawfulEdgeCountCensus": {
+        "0": 6,
+        "1": 115,
+        "10": 172,
+        "12": 20,
+        "13": 64,
+        "14": 24,
+        "2": 66,
+        "3": 535,
+        "4": 8,
+        "5": 350,
+        "6": 732,
+        "7": 4,
+        "8": 112,
+        "9": 352
+      },
+      "descendingVertexCountCensus": {
+        "1": 6,
+        "2": 115,
+        "3": 601,
+        "4": 1090,
+        "5": 640,
+        "6": 108
+      },
+      "directedSignWordCensus": {
+        "+++++-+": 2,
+        "++++--+": 2,
+        "+++-++-": 11,
+        "+++-+-+": 18,
+        "+++--+-": 4,
+        "+++---+": 18,
+        "++-++++": 2,
+        "++-+++-": 14,
+        "++-++-+": 12,
+        "++-++--": 8,
+        "++-+-+-": 24,
+        "++-+--+": 36,
+        "++--+++": 2,
+        "++--++-": 54,
+        "++--+-+": 42,
+        "++--+--": 24,
+        "++---+-": 58,
+        "++----+": 78,
+        "+-+++++": 2,
+        "+-++++-": 20,
+        "+-+++-+": 10,
+        "+-+++--": 12,
+        "+-++-++": 2,
+        "+-++-+-": 82,
+        "+-++--+": 46,
+        "+-++---": 16,
+        "+-+-+++": 2,
+        "+-+-++-": 62,
+        "+-+-+-+": 26,
+        "+-+-+--": 20,
+        "+-+--++": 4,
+        "+-+--+-": 88,
+        "+-+---+": 38,
+        "+-+----": 24,
+        "+--++++": 6,
+        "+--+++-": 58,
+        "+--++-+": 14,
+        "+--++--": 28,
+        "+--+-+-": 80,
+        "+--+--+": 28,
+        "+--+---": 24,
+        "+---++-": 80,
+        "+---+-+": 38,
+        "+---+--": 12,
+        "+----++": 4,
+        "+----+-": 76,
+        "+-----+": 28,
+        "+------": 24,
+        "-+++++-": 8,
+        "-++++-+": 2,
+        "-++++--": 4,
+        "-+++-+-": 8,
+        "-+++--+": 6,
+        "-++-+++": 2,
+        "-++-++-": 43,
+        "-++-+-+": 18,
+        "-++-+--": 20,
+        "-++--+-": 52,
+        "-++---+": 30,
+        "-++----": 8,
+        "-+-++++": 4,
+        "-+-+++-": 18,
+        "-+-++-+": 8,
+        "-+-++--": 12,
+        "-+-+-+-": 80,
+        "-+-+--+": 52,
+        "-+-+---": 16,
+        "-+--++-": 80,
+        "-+--+-+": 50,
+        "-+--+--": 20,
+        "-+---++": 8,
+        "-+---+-": 134,
+        "-+----+": 82,
+        "-+-----": 40,
+        "--++++-": 2,
+        "--+++-+": 2,
+        "--++-+-": 4,
+        "--++--+": 26,
+        "--+-+++": 2,
+        "--+-++-": 22,
+        "--+-+-+": 34,
+        "--+-+--": 8,
+        "--+--+-": 28,
+        "--+---+": 58,
+        "---+++-": 10,
+        "---++-+": 30,
+        "---+-+-": 24,
+        "---+--+": 52,
+        "----++-": 8,
+        "----+-+": 38,
+        "-----+-": 8,
+        "------+": 36
+      },
+      "flipTrueCount": 779,
+      "lawfulRankTwoCellCensus": {
+        "lawful": 30754,
+        "unlawful": 2014
+      }
+    },
+    "globallyEvaluableRule": null
+  },
+  "wallTransportAudit": {
+    "arbitraryEdgeFlipModelUsed": false,
+    "edgeReversalPreservesComponentAndNegatesSign": true,
+    "finiteOppositeEdgesShareComponentAndNegateSign": true,
+    "orientedBoundaryEdgesChecked": 96,
+    "rootedFiniteRankTwoCellsChecked": 20
+  }
+}

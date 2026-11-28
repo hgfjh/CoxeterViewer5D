@@ -32,7 +32,7 @@ interface CoxeterSystemInput {
     colorHint?: string;
   }>;
   coxeterMatrix: CoxeterMatrixEntry[][];
-  geometry?: GeometricModelInput;
+  geometry?: CoxeterGeometryInput;
   certificate?: CertificateSummary;
   notes?: string[];
 }
@@ -61,8 +61,19 @@ type GeometricEntry =
   | { kind: "numericGram"; value: number };
 ```
 
-The geometry block may include normal coordinates, a basepoint, a normal Gram
-matrix, interval certificates, and a preferred projection. Decimal caches do
+Each entry may also carry `sourceRefId` and an `exact` algebraic record. The
+Gram value of `coxeter` is `-cos(pi/m)` (`0` for `m = 2`), of `right` is `0`,
+of `dotted` is `-coshDistance` (validated `>= 1`), and of `numericGram` is
+`value`.
+
+The geometry block (`CoxeterGeometryInput`) has `model: "hyperboloid"`, a
+`dimension` `d`, and optionally `normalGram`, `normalCoordinates`, `basepoint`,
+`projection` (`klein-pca`, `poincare-pca`, `klein-axes`, `poincare-axes`),
+`source`, `diagnostics`, and an interval `certifiedModel`.
+`normalCoordinates` has one row per generator; each row is a normal in
+`R^{d,1}` with `d + 1` Lorentz coordinates, time coordinate first. The chamber
+convention is `<x,n_i>_J <= 0` (outward normals); see
+[math.md](math.md#hyperbolic-reflection-data). Decimal caches do
 not replace exact algebraic records or intervals. The validator rejects stale
 source hashes and malformed intervals.
 
@@ -101,9 +112,12 @@ Rounded matrix deduplication is explicitly approximate.
 ## Finite Action Input
 
 The cover pipeline consumes a complete finite action of every Coxeter generator
-on a finite vertex set. The preferred producer is the automatic GAP
-torsion-free-cover backend; manual quotient/coset import remains an advanced
-fallback. Both routes meet the same validation boundary:
+on a finite vertex set. It comes from automatic torsion-free-cover discovery
+([torsion-free-cover-discovery.md](torsion-free-cover-discovery.md)) or is
+supplied by the user, either inline or, at scale, as a packed
+`generator-permutation-files` manifest
+(compact-action-import.md). All routes meet the
+same validation boundary:
 
 - a stable finite vertex ID set;
 - one generator action at every vertex;
@@ -218,10 +232,10 @@ This representation does not contain a vertex array. Symmetry-restricted wall
 variables may be attached to it, but the schema forbids promoting such a
 restricted search to an unrestricted wall, link, or fibering certificate.
 
-`exhausted-through-index-N` certifies only a finite search range.
-`inconclusive-resource-limit` carries no nonexistence claim. Congruence and
-composite searches are bounded too; their `exhausted` statuses have the same
-limited meaning.
+A discovery artifact with status `exhausted` certifies only the finite search
+range recorded in its `bounds`. `timeout` and `cancelled` carry no
+nonexistence claim. Congruence and composite searches are bounded too; their
+`exhausted` statuses have the same limited meaning.
 
 ## Signed Boundary Occurrences
 
@@ -376,6 +390,9 @@ coordinates or iteration order.
 
 ## Coorientations
 
+A coorientation is what Jankiewicz--Wise call an orientation of a wall; the
+two words mean the same thing.
+
 ```ts
 interface WallCoorientation {
   wallSigns: Record<string, 1 | -1>;
@@ -435,6 +452,11 @@ Interpretation is strict:
 Cell weights and Morse-link constraints are search options and must be included
 in the export hash.
 
+Action-rooted lawful search scores expose
+`finiteHeightBandPi1Surjection` as the theorem-facing finite-generation field.
+They retain `npcAsphericity` only as an optional geometric diagnostic and
+last-order ranking preference; it is never part of `passed`.
+
 ## Ascending And Descending Links
 
 `MorseLinksResult` stores an ascending and descending link for every vertex.
@@ -443,8 +465,10 @@ components, and nonempty/connected flags. Aggregate fields state whether all
 vertices pass each requested condition.
 
 These are exact diagnostics for the supplied coorientation and retained finite
-cell structure. They do not certify asphericity, affine metrics, or the
-hypotheses of a group-theoretic theorem.
+cell structure. They do not by themselves certify the PL height,
+finite-height-band argument, or kernel transfer. They also do not certify
+asphericity, although asphericity is not required for Track A finite
+generation.
 
 ## Virtual Algebraic Fibering Certificate
 
@@ -455,7 +479,7 @@ compression schemas:
 
 ```ts
 interface VirtualAlgebraicFiberingCertificate {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "virtual-algebraic-fibering-certificate";
   status: "passed" | "failed" | "incomplete";
   source: {
@@ -474,6 +498,10 @@ interface VirtualAlgebraicFiberingCertificate {
 }
 ```
 
+Schema version 2 records the corrected finite-height-band theorem semantics.
+Version 1 treated asphericity as a Track A promotion gate and is rejected
+rather than silently upgraded.
+
 `primitiveHomomorphism.presentation` contains the Schreier transversal,
 generators as words in the Coxeter generators, and rewritten relators. Each
 `generatorValues` record stores both the raw wall period `chi(x)` and the
@@ -488,11 +516,13 @@ records the positive period gcd and a Bezout identity. A status of `passed`
 requires a verified normalized gcd of one; it never follows merely from seeing
 a nonzero arrow in the viewer.
 
-`plMorse.checks` lists the cover, torsion-free evidence, compression,
-dimension/asphericity condition, affine cell model, wall coorientability,
-coorientation, cocycle, lawful full 1-skeleton, directed links, nonzero map,
-and primitive image separately. The final fibering statement is present only
-when every required check passes. See
+`plMorse.checks` lists the cover, torsion-free evidence, compression, affine
+cell model, wall coorientability, coorientation, cocycle, lawful full
+1-skeleton, directed links, nonzero map, primitive image, finite cyclic-cover
+height-band argument, and kernel transfer separately. Legacy
+dimension/asphericity fields are retained as diagnostics; they are not Track A
+promotion gates. The final fibering statement is present only when every
+required check passes. See
 [Certifying a virtual algebraic fibration](virtual-algebraic-fibering.md).
 
 `plMorse.auxiliaryDiagnostics` records wall embeddedness and
@@ -505,8 +535,8 @@ witness for each ascending and descending link: exact link-vertex ids,
 retained-cell corner ids, components, and deterministic spanning-tree corner
 ids. `plMorse.checks` also separates the cellular map to `S^1`, compatible
 regular affine cells, the nonconstant Morse extension, integral discrete
-lifted heights, asphericity evidence, and the full-1-skeleton surjection back
-to `H`.
+lifted heights, the bounded-band `pi_1` surjection, optional asphericity
+evidence, and the full-1-skeleton surjection back to `H`.
 
 An exported artifact can be checked without opening the viewer:
 
@@ -521,7 +551,7 @@ finite permutation action rather than trusting stored compressed incidence:
 
 ```ts
 interface LawfulSubcomplexActionCertificate {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "action-rooted-lawful-subcomplex-fibering-certificate";
   status: "passed" | "failed" | "incomplete";
   subgroupAction: CertifiedFiniteActionEvidence;
@@ -539,14 +569,72 @@ interface LawfulSubcomplexActionCertificate {
 }
 ```
 
+The action-rooted wrapper, its replay record, and the standalone search result
+are schema version 2. Their nested `lawful` payload is also the
+schema-version-2 `LawfulSubcomplexFiberingCertificate`. Version-1 outer or
+nested theorem artifacts are rejected rather than reinterpreted.
+
 The verifier recertifies spherical freeness and reconstructs the quotient,
-compression, walls, signs, cellular presentations, metric links, directed
-links, primitive character, and kernel-transfer argument from the embedded
-action. The default `rank-two-lawful` model retains the full 1-skeleton and
-exactly the lawful polygons. The optional `coface-closed-full` model also
+compression, walls, signs, cellular presentations, PL height, directed links,
+finite-height-band argument, primitive character, and kernel-transfer argument
+from the embedded action. Metric links and CAT(0)/asphericity are retained as
+optional diagnostics. The default `rank-two-lawful` model retains the full
+1-skeleton and exactly the lawful polygons. The optional
+`coface-closed-full` model also
 retains each higher Davis cell whose every 2-face is lawful. Its closure record
-is proof of a subcomplex only; higher-cell affine, asphericity, and full-link
-evidence remain mandatory before promotion.
+is proof of a subcomplex only; higher-cell PL-affine and full-link evidence
+remain mandatory before promotion. Asphericity does not.
+
+The theorem-facing Track A payload has schema version 2 and includes:
+
+```ts
+interface LawfulFiniteHeightBandCertificate {
+  status: "passed" | "failed" | "not-established";
+  method: "bestvina-brady-finite-height-band-pi1-surjection";
+  certificationComplex: "rank-two-lawful" | "coface-closed-full";
+  checks: {
+    finiteConnectedQuotientComplex: boolean;
+    primitiveIntegralCharacter: boolean;
+    equivariantDiscretePlMorseFunction: boolean;
+    everyAscendingLinkNonemptyAndConnected: boolean;
+    everyDescendingLinkNonemptyAndConnected: boolean;
+    boundedBandFinite: boolean;
+    bandInclusionSurjectsOnCyclicCoverPi1: boolean;
+    cyclicCoverPi1IdentifiesCharacterKernel: boolean;
+    lawfulCharacterKernelFinitelyGenerated: boolean;
+  };
+  proof: string[];
+  statement: string;
+  errors: string[];
+}
+
+interface LawfulSubcomplexFiberingCertificate {
+  schemaVersion: 2;
+  // existing source, cell, character, Morse, and replay fields omitted
+  finiteHeightBand: LawfulFiniteHeightBandCertificate;
+  npcAsphericity: LawfulNpcAsphericityCertificate; // optional diagnostic
+}
+```
+
+`finiteHeightBand`, not `npcAsphericity`, is the finite-generation gate. For
+the generalized model, the scope-matched gate checks expose
+`finiteHeightBandPi1SurjectionPassed`; `asphericityPassed` remains a diagnostic
+that may be false in an otherwise promotable Track A artifact.
+The certificate rechecks finite quotient, PL-height, and directed-link data
+and then records the Corollary 2.6(3) implication. It does not serialize the
+infinite cyclic cover or an explicit cut-cell model of the band.
+
+Kernel transfer records the raw and normalized squares separately. On common
+presentation generators it checks `hat(psi) = hat(chi) o i_*`, verifies the
+positive divisor relation `hat(chi) = d phi`, and only then records
+`psi = hat(psi)/d = phi o i_*`. The raw and normalized lawful characters have
+the same kernel; the code never divides the original `+/-1` edge arrows.
+
+A supplied, action-replayed generalized calculation with a disconnected link
+or nonprimitive character is complete negative evidence for that candidate,
+not a missing artifact. Search reports `missing-generalized-certificates` only
+when at least one required candidate calculation is absent or cannot be
+replayed.
 
 ### Bring-your-own finite action
 
@@ -587,7 +675,10 @@ systems, subgroup-generator words alone are not presently converted to a
 finite action by the finite-only Sage/GAP quotient exporters.
 
 The outer materialized-action envelope has schema version 2 and kind
-`materialized-action-two-track-promotion`. Its six stages are
+`materialized-action-two-track-promotion`. Its theorem-semantics profile is
+`materialized-action-two-track-promotion-v4`; older profiles are rejected
+rather than silently reinterpreted under the corrected Track A rule. Its six
+stages are
 `materialized-action`, `spherical-plan`, `spherical-freeness`,
 `quotient-2-skeleton`, `lawful-subcomplex`, and `full-davis-fallback`.
 `selectedTrack` is either `lawful-subcomplex`, `full-davis`, or `null`. A
@@ -667,6 +758,311 @@ IMM-style manifold/PL/smoothing verifier; legacy caller-supplied hypothesis
 booleans are ignored and `imm23TopologicalFibrationCertified` remains false,
 even when every directed link is collapsible.
 See [Full Davis-quotient fibering certification](full-davis-fibering-certification.md).
+
+### Proof-carrying scalable full-H1 Track B profile
+
+The external sparse-`H^1` path is joined to the intrinsic all-cells Track B
+search by a separate replay envelope:
+
+```ts
+interface ScalableFullH1TrackBPipelineCertificate {
+  schemaVersion: 1;
+  kind: "scalable-full-h1-track-b-pipeline-certificate";
+  status: "passed" | "not-found" | "incomplete" | "failed";
+  outcome:
+    | "virtual-algebraic-fibering-certified"
+    | "fixed-track-b-model-obstructed"
+    | "zero-first-betti-number"
+    | "resource-bound-incomplete"
+    | "failed";
+  h1: {
+    certificate: ScalableGenericActionH1Certificate;
+    replay: ScalableGenericActionH1Replay;
+  };
+  cheapScreen?: {
+    logicalRole: "diagnostic-only-not-a-track-b-gate";
+    report: ExactCompactActionCheapScreenReport;
+  };
+  trackB?: {
+    certificate: GenericCompactExpensiveStageCertificate;
+    replay: GenericCompactExpensiveStageReplay;
+  };
+  promotion: ScalableFullH1TrackBPromotion;
+  certificateDigest: string;
+}
+```
+
+The source chain includes the recertified finite action, modular-rank
+certificate, saturated integral-kernel witness, full cocycle section,
+generalized compression, exact height arrangement, and the selected primitive
+face and tie polarity. The optional cheap screen is only a diagnostic; the
+exact stage searches every realizable nonzero face directly. A passing
+promotion additionally requires every quotient-point template and every
+ascending and descending link to pass in the complete Davis quotient.
+
+The in-process exact arrangement currently accepts `1 <= b1 <= 4`. Larger
+rank, memory, and census stops have status `incomplete`. `not-found` for a
+positive-rank action is only an obstruction for the recorded cocycle section,
+canonical pulling order, zero periodic potential, and tie rule. This schema
+does not certify a manifold, bundle, or smooth fibration.
+
+### Callback-free scalable-H1 input
+
+The callback-free adapter replaces runtime oracle and row-provider functions
+with a complete JSON source envelope:
+
+```ts
+interface ScalableFullH1TrackBJsonInput {
+  schemaVersion: 1;
+  kind: "scalable-full-h1-track-b-json-input";
+  system: CoxeterSystemInput;
+  actionCandidate: TorsionFreeActionCandidate;
+  modularRankCertificate: GenericSparseModularRankCertificate;
+  integralKernelWitness: ScalableGenericActionH1IntegralKernelWitness;
+  runCheapScreen: boolean;
+  options: {
+    rankReplayBudgets?: GenericSparseModularRankBudgets;
+    torsionFreeReplayBudgets?: ScalableGenericActionH1TorsionFreeReplayBudgets;
+    completionBudgets?: ScalableIntegralH1CompletionBudgets;
+    generalizedCompressionOptions?: SerializableGeneralizedCompressionOptions;
+    expensiveStageBounds?: GenericCompactExpensiveStageBounds;
+  };
+  inputDigest: string;
+}
+```
+
+Unknown keys, functions, `undefined`, non-finite numbers, non-plain objects,
+and cycles are rejected. Replay independently certifies the raw action and
+reconstructs the oracle and generic streamed preparation. The resulting
+`scalable-full-h1-track-b-json-certificate` stores the input, its replay, the
+reconstructed torsion-free/preparation certificates, the ordinary scalable
+pipeline certificate, and its replay. This is the portable proof-branch form;
+the older in-memory options object can still be used by callers that retain
+the original runtime providers.
+
+### Makarov P0/P1 action acquisition
+
+The P0-first bounded discovery runner writes a separate acquisition artifact,
+not a compact proof-job manifest:
+
+```ts
+interface MakarovP0P1ActionCampaignArtifact {
+  schemaVersion: 1;
+  kind: "makarov-p0-p1-action-acquisition-certificate";
+  status: "passed" | "not-found" | "incomplete" | "failed";
+  outcome:
+    | "p0-and-restricted-p1-actions-certified"
+    | "bounded-search-no-action-materialized"
+    | "bounded-search-incomplete"
+    | "bounded-search-failed";
+  sources: {
+    p0: MakarovP0P1SourceBinding;
+    p1: MakarovP0P1SourceBinding;
+    pairBindingDigest: string;
+  };
+  configuration: MakarovP0P1CampaignConfiguration;
+  execution: {
+    mode: "accepted-existing-artifact" | "executed-bounded-discovery";
+    discoveryArtifactPath: string;
+    checkpointDirectory: string;
+    processExitCode: number | null;
+    campaignWallClockTimeoutTriggered: boolean;
+    hardTerminationRequested: boolean;
+    terminationDeadlineExceeded: boolean;
+  };
+  discovery: {
+    rawStatus: string;
+    rawArtifact: unknown;
+    rawArtifactDigest: string;
+    producerPortableArtifactHash: string | null;
+    producerCertificateDigest: string | null;
+    candidateReports: MakarovP0P1DiscoveryCandidateReport[];
+    selectedCandidateDegree: number | null;
+  };
+  acceptedActionPayloads: MakarovP0P1AcceptedActionPayload[];
+  checks: {
+    selectedP0TierAllowed: true;
+    discoverySourceBound: true;
+    discoveryBoundsExact: true;
+    rawArtifactIntegrityVerified: true;
+    materializedP0DegreeAllowed: true | null;
+    p0TorsionFreeReplayPassed: true | null;
+    everyRestrictedP1DegreeAllowed: true | null;
+    everyRestrictedP1OrbitTorsionFreeReplayPassed: true | null;
+  };
+  claims: string[];
+  nonClaims: string[];
+  artifactDigest: string;
+}
+```
+
+The configuration records an active P0 degree tier, all search/resource
+bounds, command digest, and resumable-checkpoint policy. A passing payload
+contains the bundled system, exact permutation candidate, independently
+rebuilt torsion-free certificate, and their digests. The first payload is P0;
+all remaining payloads are its one or two exact P1 restriction orbits, each
+recertified separately. Nonpassing receipts contain no accepted payloads and
+make explicit that bounded failure is not subgroup nonexistence. No wall sign,
+integral-kernel witness, direct/scalable proof job, or fibering conclusion is
+inferred by this schema.
+
+The default `maxCongruenceImageOrder` is 5,000,000. This intentionally excludes
+subgroup search in the certified P0 characteristic-5 image of order
+457,002,000,000,000; a receipt must not be read as saying that such a search was
+attempted.
+
+Normal congruence-kernel evidence is certified and replayed by the separate
+`makarov-p0-prime31-congruence-kernel-certificate` artifact documented in
+the Makarov P0/P1 record. The
+campaign retains the raw discovery receipt and digest but does not reinterpret
+embedded kernel fields or add them to `acceptedActionPayloads`; kernel
+existence is not action materialization.
+
+### Compact action proof branches
+
+One action can carry either or both branch certificates:
+
+```ts
+interface CompactActionProofBranchCertificate {
+  schemaVersion: 2;
+  kind: "compact-action-proof-branch-certificate";
+  branch: "direct-rank-one" | "scalable-full-h1";
+  status: "passed" | "not-found" | "incomplete" | "failed";
+  source: {
+    systemCanonicalSha256: string;
+    candidateId: string;
+    degree: number;
+    generatorCount: number;
+    actionRowsCanonicalSha256: string;
+    torsionFreeCertificateDigest: string;
+  };
+  direct?: CompactDirectRankOneProof;
+  scalableFullH1?: {
+    pipeline: ScalableFullH1TrackBPipelineCertificate;
+    jsonAdapter?: ScalableFullH1TrackBJsonCertificate;
+  };
+  certificateDigest: string;
+}
+```
+
+#### Build artifacts versus replays (schema 2, October 2026)
+
+A build records what it built and checked. It does not replay its own
+output. The independent replay is the matching verify function, which
+rebuilds from the same inputs and requires a byte-identical artifact:
+
+| Artifact (schema 2)                             | Independent replay                          |
+| ----------------------------------------------- | ------------------------------------------- |
+| `compact-action-proof-branch-certificate`       | `replayCompactActionProofBranch`            |
+| `scalable-full-h1-track-b-json-certificate`     | `replayScalableFullH1TrackBJsonCertificate` |
+| `scalable-full-h1-track-b-pipeline-certificate` | `replayScalableFullH1TrackBPipeline`        |
+| `generic-compact-action-expensive-stage`        | `replayGenericCompactExpensiveStage`        |
+
+Schema 1 nested these replays inside the builds. A pipeline build replayed
+its H1 result and its expensive stage, and the expensive stage replayed the
+H1 result again. The stage also re-verified the generalized compression it
+had just built and replayed its own arrangement cover. The proof branch and
+JSON adapter replayed the whole pipeline. One run therefore computed H1
+four times and the expensive stage twice. Schema 2 drops these:
+
+- The pipeline stores `h1: { certificate }` and `trackB: { certificate }`.
+  Its promotion gates `scalableH1Passed`, `generalizedCompressionBuilt` and
+  `exactAllCharacterArrangementBuilt` replace the schema-1 `*Replayed` names,
+  and `fullK.everyFaceMapChecked` replaces `everyFaceMapReplayed`.
+- The expensive stage records `upstream.h1Verification`. Its value is
+  `"replay-passed"` or `"replay-failed"` when the H1 input came from
+  elsewhere, and `"built-in-same-run"` when the pipeline built it from the
+  same inputs. In the latter case the action, oracle and H1-basis bindings
+  are still checked. The stage also stores
+  `generalizedCompression: { certificate }` and checks `h1CertificateVerified`,
+  `generalizedCompressionBuilt` and `exactArrangementBuilt`, and the
+  arrangement has no `coverReplay`.
+- The proof branch drops `pipelineReplayPassed`. Its direct rank-one proof
+  stores `generalizedCompression: { certificate }` and one `{ certificate }`
+  per Track-B polarity, without the compression verify or Track-B replay
+  that schema 1 ran right after each build. The supplied torsion-free
+  certificate is still re-certified, because it is an input. The branch
+  replay record (schema 2) reports `nestedProofChecked`. For the direct
+  branch that check is the stored Track-B digest's consistency; the exact
+  rebuild is the replay. The JSON adapter drops
+  `pipelineReplay` and `checks.existingPipelineReplayed`, and its method is
+  `callback-free-json-action-reconstruction-and-pipeline-build`.
+- The compact-action portfolio's compression and arrangement evidence carry
+  `checksPassed` instead of `replayPassed`.
+
+Checks that verify inputs stay, because those inputs can come from files:
+the JSON input replay, the H1 build's torsion-free and preparation replays,
+Track B's oracle-rooted compression replay, and the cheap-screen replay.
+
+The direct proof stores the exact cocycle section, the finite wall and
+primitive Schreier certificates, the generalized compression certificate,
+and the Track-B certificates for offset polarities `-1` and `1`. Each is
+built once; the branch replay rebuilds them. Outcome
+`direct-rank-one-finite-generation-certified` means one polarity passed all
+full quotient links. Outcome
+`direct-rank-one-fixed-canonical-model-obstructed` requires exhaustive failure
+of both polarities and is scoped to that action, character, canonical pulling
+order, and zero periodic potential.
+
+### Compact research portfolio schema v2
+
+The broad target manifest is separate from the replay-compatible historical
+four-target schema-v1 compact-action artifact:
+
+```ts
+interface CompactResearchPortfolioArtifact {
+  schemaVersion: 2;
+  kind: "compact-h5-research-portfolio";
+  status: "research-manifest-recorded";
+  registry: {
+    campaigns: CompactResearchCampaign[];
+    registryDigest: string;
+  };
+  policy: {
+    proofBranchesRunIndependently: true;
+    directRankOneGatesScalableFullH1: false;
+    scalableFullH1GatesDirectRankOne: false;
+    p2UsesSeparateCoarsePlan: true;
+  };
+  targets: Array<{
+    definition: CompactResearchTarget;
+    actions: CompactResearchActionEvidence[];
+    targetRecordDigest: string;
+  }>;
+  p2Plan: P2CoarseExperimentPlan;
+  replayLimitations: string[];
+  artifactDigest: string;
+}
+```
+
+Every build records all seven targets, even when no action evidence exists.
+Each action has one canonical binding and separate `directRankOne` and
+`scalableFullH1` run arrays; neither array determines whether the other may
+run. A build accepts action evidence only for an active target, at one of its
+explicit `executionPolicy.allowedDegreeTiers`, and with the target's canonical
+system hash. `registeredDegreeTier` is therefore true on every accepted action
+record; off-tier evidence is rejected. Replay checks the current registry
+snapshot, target execution policy and system hash, P2 plan, action binding,
+branch and nested certificate digests, and every
+run/action/target/portfolio digest.
+
+The outer manifest intentionally does not serialize arbitrary callback proof
+inputs. A nested callback-free scalable JSON certificate can perform an exact
+mathematical rebuild from its embedded input. A legacy runtime-provider branch
+receives only digest-and-binding replay at the manifest layer and needs its
+original inputs for full proof replay. P2 plan replay checks declared source
+hashes but does not read the external source bytes. For the bundled source
+set, `fixedCharacterEvidence` additionally binds the primitive-cocycle
+certificate, both scoped Track B certificates, the fixed-character wall-span
+audit, and the current-cover wall-coorientability obstruction. The latter
+records one-sided generator-5 walls; it marks strict wall-lawful closure and
+directed links as undefined rather than failed. It also binds the rejected
+color-class-only extension family and the conditional factored global workload
+which would apply after a genuine direction oracle exists. A separate type-6
+Track B block records a primitive cocycle and one passing identity polarity,
+plus the explicit fact that the global root scan is unrun. The outer research artifact
+copies the canonical seals and scoped outcomes; the package-level Python
+verification command performs the exact mathematical rebuild.
 
 ## View And Experiment Exports
 
@@ -779,8 +1175,10 @@ counts and boundaries. The regular ideal 3-cube adds exact Lorentzian source
 data and a bundled index-24 regular `S4` action. Its checker verifies the Gram
 signature, eight ideal vertices, the transposition map, and every spherical
 restriction used in the torsion-free certificate. The compact 5-cube, compact
-prism family, and Tumarkin eight-facet catalogue carry source and Gram-related
-certificates with scopes described in [references.md](references.md).
+prism family, H5-P7-22 prism, Tumarkin eight-facet catalogue, and Ma–Zheng
+nine-facet catalogue carry source and Gram-related certificates with scopes
+described in [references.md](references.md). The H5-P7-22 and nine-facet
+certificates use the backend `compact5dCatalogueExactChecker`.
 
 The earlier cube-graph legal-system fixture remains useful as historical test
 data for the right-angled special case. It is not the guiding product workflow

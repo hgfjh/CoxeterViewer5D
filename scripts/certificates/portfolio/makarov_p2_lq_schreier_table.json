@@ -1,0 +1,193 @@
+{
+  "artifactSha256": "40fe34044f718a50908318098309590697d4acdef10a4e47bdcc1c804fb81d97",
+  "backend": {
+    "backend": "deterministic C++ orbit of the 650-byte merged coloring",
+    "compiler": "g++.EXE",
+    "elapsedSeconds": 3.734,
+    "memoryDesignBoundMiB": 256,
+    "memoryDesignBoundReason": "at most two stored 650-byte copies per frame plus hash-table, representative, and transition overhead",
+    "stdout": "frames=74880 transitions=374400 seconds=1.00381",
+    "wallSecondsCap": 1200
+  },
+  "colorSubgroup": {
+    "closureOrder": 125,
+    "completeColorPreservationChecks": 81250,
+    "containedInColoringStabilizer": true,
+    "generatorCount": 2
+  },
+  "coloringOrbitReplay": {
+    "allTransitionsInRange": true,
+    "baseMergedColorCensus": {
+      "0": 5760,
+      "1": 5760,
+      "10": 5760,
+      "11": 5760,
+      "12": 5760,
+      "2": 5760,
+      "3": 5760,
+      "4": 5760,
+      "5": 5760,
+      "6": 5760,
+      "7": 5760,
+      "8": 5760,
+      "9": 5760
+    },
+    "everyGeneratorInvolutive": true,
+    "everyGeneratorPermutation": true,
+    "fullColoringKeysPairwiseDistinct": true,
+    "fullColoringOrbitSha256": "448852ba1a7423dfe5ef96083f8089b010f42f49d43a214b578e2cc2179e4297",
+    "generatorCount": 5,
+    "representativeSpanningTreeExact": true,
+    "schreierGraphTransitive": true,
+    "stateCount": 74880,
+    "transitionCount": 374400
+  },
+  "consumerContract": {
+    "baseMergedColorMeaning": "color of v0*q^-1, v0=(0,0,0,0,1)",
+    "fixedCharacterOriginalChamberOrbitCount": 149760,
+    "fixedSheetQuotient": "K={a in F2^9:a0=0} is transitive on the other eight sheet coordinates; after quotienting by K, t0=0 and t0=1 are exactly the two remaining chamber signs",
+    "fourierFlagRule": "colorColumns[baseMergedColor][0]",
+    "maximalType5Ready": true,
+    "representativeConvention": "first deterministic BFS word reaching the coloring key",
+    "representativeLoader": "iter_representative_matrices yields (frameId,qFlat), where qFlat has 25 row-major F5 entries accepted by FactoredP2Action",
+    "rightActionConvention": "state Lq maps by generator i to L(q*s_i)"
+  },
+  "kind": "makarov-p2-lq-exact-schreier-table",
+  "nonClaims": [
+    "This table alone is not a Track-B link or fibering certificate.",
+    "A height candidate must still pass every actual barycentric cell link with multiplicities.",
+    "The 74,880 states count original colored Q-frames, not all cell-barycenter orbits."
+  ],
+  "producer": {
+    "script": "scripts/makarov_p2_lq_schreier_table.py",
+    "version": "1.0.0"
+  },
+  "qOrderProof": {
+    "boundsMeet": true,
+    "exactOrder": 9360000,
+    "lowerBound": 9360000,
+    "lowerBoundReason": "the 74880 pairwise-distinct coloring translates are right L-cosets and |L|=125",
+    "upperBoundAudit": {
+      "allGeneratorSpinorNormsTrivial": true,
+      "ambientGroup": "O(5,5) for diag(1,1,1,1,3)",
+      "ambientOrder": 18720000,
+      "ambientOrderFormula": "2*q^4*(q^2-1)*(q^4-1), q=5",
+      "generatorReflectionAudit": [
+        {
+          "determinant": 4,
+          "generator": 0,
+          "normal": [
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "normalNorm": 4,
+          "normalNormSquareClass": "square"
+        },
+        {
+          "determinant": 4,
+          "generator": 1,
+          "normal": [
+            2,
+            2,
+            4,
+            0,
+            0
+          ],
+          "normalNorm": 4,
+          "normalNormSquareClass": "square"
+        },
+        {
+          "determinant": 4,
+          "generator": 2,
+          "normal": [
+            0,
+            0,
+            2,
+            0,
+            0
+          ],
+          "normalNorm": 4,
+          "normalNormSquareClass": "square"
+        },
+        {
+          "determinant": 4,
+          "generator": 3,
+          "normal": [
+            0,
+            2,
+            4,
+            2,
+            0
+          ],
+          "normalNorm": 4,
+          "normalNormSquareClass": "square"
+        },
+        {
+          "determinant": 4,
+          "generator": 4,
+          "normal": [
+            0,
+            0,
+            0,
+            3,
+            3
+          ],
+          "normalNorm": 1,
+          "normalNormSquareClass": "square"
+        }
+      ],
+      "qOrderUpperBound": 9360000,
+      "spinorKernelOrder": 9360000,
+      "spinorNormSurjectiveWitness": {
+        "normal": [
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "normalNorm": 3,
+        "squareClass": "nonsquare"
+      }
+    }
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "backendSource": {
+      "bytesSha256": "d8bfff7fa6d1a4673956dcc43e9b9aa7e951752594d6daa02e90f35743a47f65",
+      "path": "scripts/makarov_p2_lq_schreier_backend.cpp"
+    },
+    "section5Coloring": {
+      "artifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+      "bytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+      "path": "scripts/data/makarov_p2_section5_coloring.json"
+    },
+    "section5Import": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    }
+  },
+  "stabilizerConclusion": {
+    "LIsExactlyTheCompleteColoringStabilizer": true,
+    "coloringOrbitSize": 74880,
+    "coloringStabilizerOrder": 125,
+    "declaredSubgroupOrder": 125,
+    "thereforeOrbitIsLBackslashQ": true
+  },
+  "status": "exact-74880-state-table-certified",
+  "table": {
+    "baseMergedColorsSha256": "af4117871d7c618e92539a0dc00dcfa78561767ca7515ac2eaf0ae4212e353ed",
+    "binaryLayout": "header; 74880 base merged-color bytes; 74880 base-5-packed Q representatives; 74880x5 little-endian uint32 transitions",
+    "bytesSha256": "c9b8b5c83bd99b043c0a04cbe1d0993c1a5d422c11d8642bda41115b456e0f1f",
+    "compressedBytes": 1209649,
+    "compression": "fixed custom header followed by zlib level 9",
+    "path": "scripts/data/makarov_p2_lq_schreier_table.zlib",
+    "rawTableSha256": "31902a547ff2f60f8726f7a4c26fb5c66e74f1dbe7f8e958e490b3cdb76876cc",
+    "representativeCodesSha256": "3724fa92041414cd31f27daee28f13c947af5e49e98ca985c224308e0b6c485d",
+    "transitionRowsSha256": "f1ca09dd98adc6f1d8b721e5ddedf83ddced40eefd1a54fabab34dba409385f8"
+  }
+}

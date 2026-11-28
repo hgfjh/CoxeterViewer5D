@@ -1,5 +1,13 @@
 # Coordinated Search For A Manageable Torsion-Free Cover
 
+**Status (as of 2026-10-04).** None of the three tracks below has found a
+manageable compact 5-cube cover. The cube action used downstream is an
+imported index-17,280 action and its degree-34,560 character double cover; its
+fibering status is in
+[fibering-research-portfolio.md](fibering-research-portfolio.md#compact-5-cube).
+To bring your own action instead of searching, see
+compact-action-import.md.
+
 The compact 5-cube group already has a certified torsion-free congruence
 kernel. Its index is too large to materialize the corresponding Davis
 quotient. The practical problem is therefore narrower:
@@ -319,7 +327,7 @@ adjacent residue had to be generated. This is a useful exact obstruction for
 the recorded seed family, not an exhaustion of the unsearched full-frame
 prefixes or the full second gluing.
 
-Run the two strata with:
+Run the block-amalgam strata with:
 
 ```bash
 corepack pnpm cover:search:block-amalgam:r1:5760
@@ -378,7 +386,10 @@ coset, so the complete image is the index-two extension.
 The resulting exact kernel index is
 `27,230,655,539,587,500,000,000,000,000,000`. The complete dimension-ten
 `ClassicalMaximals` catalogue has 31 root maximal classes; its smallest index
-is `488,906`, which is not divisible by `5,760`. The hash-bound ledger rejects
+is `488,906`. A subgroup of index `d` meets the derived subgroup in a subgroup
+of index `d` or `d/2` there, so some root maximal index must divide `d` or
+`d/2`; for `d <= 576,000` that forces `d = 488,906`, which is not a multiple of
+`5,760`. The hash-bound ledger rejects
 all 100 admissible degrees through `576,000`. This closes that bounded search
 inside the characteristic-five image while retaining its enormous normal
 kernel as a valid exact-index torsion-free existence certificate.

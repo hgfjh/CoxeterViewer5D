@@ -73,11 +73,15 @@ transitively on a finite set `Omega` and `H` is a point stabilizer, then `H` is
 torsion-free exactly when every prime-order torsion conjugacy class acts without
 a fixed point on `Omega`.
 
-The automatic GAP backend enumerates a complete, possibly redundant, list
-of prime-order representatives from the maximal spherical special subgroups.
-GAP then searches for a bounded-index subgroup containing no conjugate of any
-representative. Every returned action is checked again by the fixed-point test.
-See [Automatic torsion-free cover discovery](torsion-free-cover-discovery.md).
+The automatic discovery backend enumerates a complete, possibly redundant,
+list of prime-order representatives from the maximal spherical special
+subgroups. It then searches finite congruence images (Sage, with GAP for
+recognition and coset actions), and uses GAP low-index enumeration only as a
+small-index fallback, for a bounded-index subgroup containing no conjugate of
+any representative. Every returned action is checked again by the fixed-point
+test. See [Automatic torsion-free cover discovery](torsion-free-cover-discovery.md).
+A finite action can also be supplied directly; see
+compact-action-import.md.
 
 A failed bounded search is not a contradiction to Selberg's lemma. Exhausting
 indices through `N` rules out only that bounded range; stopping on a resource
@@ -182,7 +186,7 @@ explicit fibers:
 
 Fix a finite pair `{i,j}` and write `W_ij = <s_i,s_j>`. This is the dihedral
 special subgroup of order `2m_ij`. Let the degree-`d` cover be represented by
-left cosets `H\W`, with `W_ij` acting on the right. For a cover vertex `Hg`,
+the cosets `Hg` in `H\W`, with `W_ij` acting on the right. For a cover vertex `Hg`,
 
 ```text
 Hg w = Hg
@@ -256,10 +260,15 @@ ascending and descending links have been computed and verified directly.
 
 ## Coorienting Walls
 
-The paper calls this an orientation of a wall. In the UI we use
-**coorientation** to stress what is oriented: every 1-cell dual to the wall.
+Jankiewicz--Wise (§§2.2--2.5) call this an **orientation** of a wall. The repo
+also says **coorientation**, to stress what is oriented: every 1-cell dual to
+the wall. The two words mean the same thing here.
 
-A two-sided wall has two possible coorientations. They assign directions to all
+A two-sided wall has two possible coorientations. A one-sided wall has none,
+so a cover with a one-sided wall must be replaced by a further finite cover
+before any orientation exists. The repo has no generic, scalable step that
+finds such a cover; for H5-P7-22 it was handled by one-off research scripts
+that are not part of this repository. Such scripts assign directions to all
 dual geometric edges so that opposite edges in each relation polygon have
 opposite directions when read around that polygon.
 
@@ -322,7 +331,8 @@ The app also asks a separate finite optimization question:
 > specified weight, of lawful relation cells?
 
 This is not a definition or theorem from the paper. It is a search over one
-binary choice per two-sided wall.
+binary choice per two-sided wall. The lawful-cell count is not by itself a
+fibering criterion; the directed-link conditions below decide that.
 
 Different coorientations can produce incomparable sets of lawful cells. Thus
 "largest" needs an explicit objective such as retained-cell count or total
@@ -342,14 +352,41 @@ this symmetry, provided it records that normalization.
 
 ## Ascending And Descending Links
 
-The app has two link calculations, and their scopes must not be confused.
+Following Jankiewicz--Wise, a vertex of `link(x)` is **ascending** when its
+1-cell is oriented away from `x`, and **descending** when it is oriented toward
+`x`. The ascending link `link_up(x)` and descending link `link_down(x)` are the
+subcomplexes spanned by these vertices in the complex being tested. Which
+complex that is (the lawful subcomplex or the pulled full Davis quotient)
+changes the links, so every link result names its
+complex.
+
+### The two gates
+
+- **First gate**: every ascending and descending link is nonempty and
+  connected. For an equivariant PL Morse function on a finite complex, this is
+  the Bestvina--Brady sufficient condition for a finitely generated kernel,
+  i.e. for a virtual algebraic fibration.
+- **Second gate**: every ascending and descending link is collapsible. This is
+  the hypothesis of IMM Theorem 8 (Italiano--Martelli--Migliorini), used to
+  conclude, on a compact smooth manifold of dimension at most 5 with a
+  compatible affine cell structure, that the circle-valued map is homotopic to
+  a smooth fibration over `S^1`.
+
+A cone is collapsible, but a collapsible link need not be a cone; a cone check
+is only a sufficient test for the second gate.
+
+A **virtual algebraic fibration** is a finite-index subgroup `H` with an
+epimorphism `H -> Z` whose kernel is finitely generated. It is a group-level
+statement. **Fibering over `S^1`** is a topological statement about a manifold
+and needs the second gate together with IMM's manifold hypotheses (compact
+smooth manifold, dimension at most 5, compatible affine structure). The repo
+argues those hypotheses in the docs; it does not machine-check them.
 
 ### Compression diagnostic
 
 Let `x` be a vertex of a cooriented `\bar X` or of its lawful subcomplex.
 
-- A link vertex is ascending when its geometric edge points away from `x`, and
-  descending when the edge points toward `x`.
+- A link vertex is ascending or descending as defined above.
 - A link edge comes from a corner of a retained relation cell. Its ascending or
   descending status is determined by the wall directions through that cell,
   as in the paper's local definition.
@@ -361,7 +398,8 @@ available link is represented simplicially.
 Together, a certified finite-index torsion-free `H`, a primitive `phi`, and the
 required nonempty connected links are the visible ingredients of a virtual
 algebraic fibration. Finite generation of `ker(phi)` still depends on the
-affine/aspherical Morse hypotheses; it is not inferred from the scene.
+finite PL Morse model, the cyclic-cover height, the bounded-height-band
+`pi_1`-surjection, and the kernel transfer; it is not inferred from the scene.
 
 The link tests do not prove primitivity. They see only local up/down directions
 and are unchanged when every closed-loop period is multiplied by the same
@@ -370,19 +408,33 @@ Schreier generator values. See
 [Certifying a virtual algebraic fibration](virtual-algebraic-fibering.md) for
 the complete dependency chain and the subgroup-presentation definitions.
 
-### Two certification tracks
+### Two analysis routes
+
+On a finite torsion-free action there are two routes after the cover:
+
+- **Track A**: the lawful subcomplex of `\bar X` for a wall orientation
+  (below and [virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)).
+- **Track B**: the full Davis quotient `K = H\Sigma` with a pulling
+  triangulation (below and
+  [full-davis-fibering-certification.md](full-davis-fibering-certification.md)).
+
+Tracks A and B produce replayable virtual-algebraic-fibration certificates.
+
+### Track A and its generalized model
 
 The app tries the lawful rank-two subcomplex first. It retains the full
 1-skeleton and the polygons with one source and one sink, certifies that actual
-polygonal complex by exact metric-link arithmetic, checks its directed links,
-and verifies the presentation-level surjection onto `H`. Finite generation of
-the lawful kernel then descends to the kernel in `H`.
+polygonal PL Morse complex, checks its directed links, certifies the finite
+height-band surjection in the cyclic cover, and verifies the
+presentation-level surjection onto `H`. Finite generation of the lawful kernel
+then descends to the kernel in `H`. Exact metric-link arithmetic remains an
+optional CAT(0)/asphericity diagnostic.
 
 An optional generalized model retains a higher Coxeter cell precisely when
 all of its 2-faces are lawful. Equivalently, it removes every unlawful 2-cell
 and its full coface upset. This is a valid downward-closed subcomplex, but the
-app requires separate higher-cell affine, asphericity, and full-link evidence
-before using it in a fibering claim. The executable implementation streams
+app requires separate higher-cell PL-affine and full-link evidence before
+using it in a fibering claim. The executable implementation streams
 spherical cell orbits, applies one global quotient-vertex pulling order, and
 uses the height `h_0(q) + q/(4N)`, where `h_0` integrates the raw integral wall
 cocycle on each retained cell. Pulling introduces no vertices. Ascending and
@@ -394,7 +446,8 @@ There is also a direct, unsubdivided calculation. A retained spherical
 link at `q` exactly when every `T`-edge germ at `q` has positive cocycle value;
 the descending condition uses negative values. This is the polyhedral Morse
 definition itself, so no diagonal edges or tie-breaking heights are added.
-Before treating those sign links as Morse links, the direct certificate checks
+Before treating those sign links as the ascending and descending links of a
+Morse function, the direct certificate checks
 whether the unit wall cocycle is affine on compatible convex cell charts. The
 implemented sufficient model uses positive inverse zone scales on the
 simply-laced/right-angled Coxeter root zonotopes. Zone variables are the
@@ -405,11 +458,11 @@ root-transition equations and the generalized-compression face fibers bind the
 charts across retained faces. Infeasibility in this model is deliberately
 narrower than infeasibility for all possible affine realizations.
 
-For asphericity, the generalized certificate checks the inherited
-Davis--Moussong metric. Exact metric-flag links certify local CAT(0), hence a
-CAT(0) contractible universal cover. Failure has the deliberately weaker
-meaning “not established by this metric”; it is not a decision procedure for
-asphericity.
+For optional stronger geometric evidence, the generalized certificate checks
+the inherited Davis--Moussong metric. Exact metric-flag links certify local
+CAT(0), hence a CAT(0) contractible universal cover. Failure has the
+deliberately weaker meaning “not established by this metric”; it is not a
+decision procedure for asphericity and is not a Track A promotion failure.
 
 See [Two-track fibering certification](two-track-fibering-certification.md)
 for the exact gates and the kernel-surjection argument.
@@ -433,18 +486,28 @@ At every quotient vertex orbit, the ascending and descending links are the
 full subcomplexes of the subdivided simplicial link spanned by higher and lower
 vertices. Nonemptiness and connectedness of every such link are the local
 conditions used for finite generation of `ker(phi)`. Collapsibility is checked
-separately by replaying elementary collapses; it is stronger than connectedness
-and is not needed for the algebraic-fibration conclusion.
+separately by replaying elementary collapses. That is the second gate: it is
+stronger than connectedness and is not needed for the algebraic-fibration
+conclusion.
 
 See [Full Davis-quotient fibering certification](full-davis-fibering-certification.md)
 for the exact construction and its claim boundary.
 
 ## What The Browser Does Not Prove
 
-The Bestvina--Brady criterion used in the paper requires a finite aspherical
-affine cell complex, a circle-valued map whose lift is Morse, and nonempty
-connected ascending and descending links. Under those hypotheses the kernel of
-the induced map to `Z` is finitely generated.
+For Track A, let `Y_psi` be the infinite cyclic cover determined by the lawful
+wall character. A finite PL-affine `Y`, a discrete lifted Morse height, and
+nonempty connected ascending and descending links give a finite height band
+whose fundamental group surjects onto
+
+```text
+pi_1(Y_psi) = ker(pi_1(Y) -> Z).
+```
+
+This is the Bestvina--Brady Corollary 2.6(3) bounded-band argument. It proves
+finite generation without requiring `Y` to be aspherical. The browser scene
+alone does not certify the finite PL model, cyclic-cover height, band
+surjection, or the subsequent kernel quotient onto `ker(phi)`.
 
 The Jankiewicz--Wise incoherence argument needs more: their cover and wall
 hypotheses, dimension/asphericity conditions, and group-theoretic Euler
@@ -465,11 +528,13 @@ Therefore:
 
 - a wall decomposition is not an incoherence proof;
 - a lawful-cell optimum is not a fibering proof;
-- passing local-link checks do not certify the cover or asphericity;
+- passing local-link checks do not certify the cover, PL height, finite-band
+  argument, or kernel transfer;
 - compact 5-dimensional examples remain experiments unless all required
   hypotheses are supplied separately.
 
-The older right-angled state/move legal-system construction can be interpreted
+The older right-angled state/move legal-system construction of
+Jankiewicz--Norin--Wise can be interpreted
 as a special way of organizing coorientations in a cubical setting. It is not
 the current general workflow and should not be applied unchanged to arbitrary
 finite Coxeter exponents.
@@ -494,6 +559,39 @@ For a spacelike unit normal `n`, reflection is
 R_n(x) = x - 2 <x,n>_J n.
 ```
 
+The chamber is `{x : <x,n_i>_J <= 0 for every facet i}`, so the normals point
+outward. Gram data fix the mutual inner products of the normals but not this
+global orientation; if the supplied normals fail it at every candidate
+basepoint, the validator negates all of them at once and records a warning. It
+never flips an individual normal.
+
+### Basepoint
+
+Orbit drawings need the basepoint `x_0` strictly inside the chamber. On the
+mirror of `s_i` we would have `s_i x_0 = x_0`, so `w` and `w s_i` would be
+drawn at one point and every `<s_i, s_j>` cell would collapse. For a unit
+normal and a point of `H^d`, `-<x,n_i>_J = sinh(dist(x, H_i))`, so the facet
+margin `min_i -<x,n_i>_J` measures the distance to the nearest mirror.
+
+The validator computes an approximate hyperbolic incentre: it maximises the
+facet margin over `H^d` by gradient ascent on a softmin
+(`-tau log sum exp(-m_i/tau)`, `tau` shrinking to `1e-4`), started from
+several seeds. This is a numerical approximation, not a certified incentre;
+for an infinite-volume chamber, where the margin is unbounded, the search is
+confined to a ball of radius 3 around the best seed. A supplied
+`geometry.basepoint` is kept when its margin is at least `0.25 * min(incentre
+margin, 1)`; otherwise it is replaced by the incentre and a warning states both
+margins. When no basepoint is supplied the incentre is used, with a warning
+giving its margin. The edge `w -- w s_i` then has hyperbolic length
+`2 asinh(margin_i)`, so thin chambers (for example Makarov's prisms) still give
+some short edges.
+
+Normal Gram entries are `-cos(pi/m)` for a finite exponent (`0` for `m = 2`),
+`-cosh(d)` for a dotted (ultraparallel) pair at distance `d`, or an explicit
+`numericGram` value. Without geometric data, the approximate Tits backend used
+for Cayley-ball enumeration puts `B_ij = -1` at `m_ij = inf`; this is a named
+numerical choice, not a measured distance.
+
 The app checks normal norms, chamber inequalities, involutions, and Lorentz
 residuals when the relevant numerical or interval data are present.
 
@@ -509,7 +607,44 @@ poincare(x) = spatial(x) / (x_0 + 1).
 If `d > 3`, selected axes or PCA reduce these coordinates to three dimensions.
 PCA is deterministic for a fixed ordered input, but it is a readability
 projection. It does not preserve all distances, angles, intersections, or the
-unit-ball boundary.
+unit-ball boundary. The Projection model therefore draws the reference sphere
+only for coordinate axes; for `d <= 3` a PCA request is replaced by the exact
+axes (PCA of a 3D cloud is only a rotation and recentring). Klein is the
+default model. Without valid geometry data the Projection model is
+unavailable and says why.
+
+### Davis-view placement
+
+The Davis view places the Cayley ball by a reflection orbit, with the same
+right-multiplication convention as the Cayley edges (`rho(w s_i) =
+rho(w) rho(s_i)`):
+
+- **Hyperbolic geometry present.** Vertex `w` is `rho(w) x_0` in `H^d`. A
+  Lorentz boost moves `x_0` to `(1, 0, ..., 0)` (an isometry, so this only
+  recentres on the identity chamber). Points are then drawn by the perspective
+  map `(1 + c) spatial(x) / (x_0 + c)` with `c = 3`. `c = 0` is Klein, `c = 1`
+  Poincare and `c -> inf` the orthographic (Gans) model. For `d > 3` a linear
+  map to `R^3` follows: PCA as a start, then turned to keep vertices at graph
+  distance 1 and 2 apart (a drawing heuristic, deterministic).
+- **Finite group, no geometry.** Vertex `w` is `rho(w) x_0` in the Tits
+  representation, with `x_0 = sum_i omega_i` (so `B(x_0, alpha_i) = 1`). These
+  are the vertices of the Coxeter permutohedron, written in Euclidean
+  coordinates via a Cholesky factor of the positive definite Tits form. Rank 2
+  gives the regular `2m`-gon in a plane, `A_3` the permutohedron, and rank > 3
+  is projected as above.
+- **Infinite group, no geometry** (affine or universal toys). The Tits cone
+  orbit has no bounded normalisation, so the word-length shell drawing is kept
+  and the view warns.
+
+Why the 2m-gons stay flat: the orbit of `x_0` under `<s_i, s_j>` is
+`{g a + b}`, where `a` lies in the plane spanned by `n_i, n_j` and `b` is
+orthogonal to it. It is a conic in an affine 2-plane: an ellipse in the
+spacelike case, and in `H^d` a hyperbolic circle. Linear maps send it to a
+planar convex polygon, and so does central projection from `(-c, 0, ..., 0)`
+for `c >= 0`, since that point lies outside the future cone. So every drawn
+rank-two cell is planar and convex, or after a projection `R^d -> R^3` at worst
+flattened to a segment. Other cells can still overlap after projection. The
+incidence is exact; the coordinates are a drawing.
 
 Certified interval coordinates and projection bounds support only the claims
 listed in their certificate scopes. They do not turn the browser mesh into an

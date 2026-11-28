@@ -1,0 +1,173 @@
+/* Guided tour overlay. Rendered in a portal on <body>, so theme selectors key
+   off :root[data-theme], which the app sets alongside .app-shell. */
+
+:root {
+  --tour-card-bg: #ffffff;
+  --tour-card-fg: #172033;
+  --tour-card-muted: #4a5568;
+  --tour-card-border: #d5dce6;
+  --tour-accent: #2457c5;
+  --tour-accent-fg: #ffffff;
+  --tour-dim: rgb(10 16 30 / 46%);
+  --tour-ring: #f2b705;
+}
+
+:root[data-theme="dark"] {
+  --tour-card-bg: #111827;
+  --tour-card-fg: #e5edf7;
+  --tour-card-muted: #b4c0d3;
+  --tour-card-border: #34435c;
+  --tour-accent: #6d9cff;
+  --tour-accent-fg: #0b1020;
+  --tour-dim: rgb(0 0 0 / 58%);
+  --tour-ring: #ffd257;
+}
+
+.tour-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  /* The dimming never blocks the app: readers can try each control. */
+  pointer-events: none;
+}
+
+.tour-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--tour-dim);
+}
+
+.tour-spotlight {
+  position: absolute;
+  border: 2px solid var(--tour-ring);
+  border-radius: 10px;
+  box-shadow: 0 0 0 9999px var(--tour-dim);
+  transition:
+    top 180ms ease,
+    left 180ms ease,
+    width 180ms ease,
+    height 180ms ease;
+}
+
+.tour-card {
+  position: absolute;
+  width: min(380px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  padding: 16px 18px 14px;
+  border: 1px solid var(--tour-card-border);
+  border-radius: 12px;
+  background: var(--tour-card-bg);
+  color: var(--tour-card-fg);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 28%);
+  pointer-events: auto;
+  outline: none;
+}
+
+.tour-card:focus-visible {
+  box-shadow:
+    0 0 0 3px var(--tour-accent),
+    0 18px 48px rgb(0 0 0 / 28%);
+}
+
+.tour-card-docked {
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  width: auto;
+  max-height: 55dvh;
+}
+
+.tour-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.tour-progress {
+  color: var(--tour-card-muted);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tour-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.08rem;
+  line-height: 1.3;
+}
+
+.tour-body p {
+  margin: 0 0 8px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.tour-body .tour-hint {
+  color: var(--tour-card-muted);
+  font-size: 0.84rem;
+}
+
+.tour-progress-bar {
+  height: 3px;
+  margin: 10px 0 12px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--tour-card-border);
+}
+
+.tour-progress-bar span {
+  display: block;
+  height: 100%;
+  background: var(--tour-accent);
+  transition: width 180ms ease;
+}
+
+.tour-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.tour-card button {
+  min-height: 34px;
+  padding: 6px 14px;
+  border: 1px solid var(--tour-card-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--tour-card-fg);
+  cursor: pointer;
+}
+
+.tour-card button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.tour-card button:focus-visible {
+  outline: 2px solid var(--tour-accent);
+  outline-offset: 2px;
+}
+
+.tour-card .tour-next {
+  border-color: var(--tour-accent);
+  background: var(--tour-accent);
+  color: var(--tour-accent-fg);
+  font-weight: 600;
+}
+
+.tour-card .tour-skip {
+  min-height: 28px;
+  padding: 2px 8px;
+  border-color: transparent;
+  color: var(--tour-card-muted);
+  font-size: 0.84rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-spotlight,
+  .tour-progress-bar span {
+    transition: none;
+  }
+}

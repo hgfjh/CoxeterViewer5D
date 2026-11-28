@@ -136,7 +136,11 @@ export interface CompactCompressionEvidence {
   certificateDigest: string;
   /** One raw artifact owns both compression and arrangement summaries. */
   stageCertificate: GenericCompactExpensiveStageCertificate;
-  replayPassed: boolean;
+  /**
+   * The compression was built and passed its checks inside the stage.  Its
+   * independent replay is the stage replay run by replayCompactPostActionEvidence.
+   */
+  checksPassed: boolean;
   note?: string;
 }
 
@@ -144,7 +148,8 @@ export interface CompactArrangementEvidence {
   status: "passed" | "failed" | "incomplete";
   compressionCertificateDigest: string;
   certificateDigest: string;
-  replayPassed: boolean;
+  /** Built and checked inside the stage (see CompactCompressionEvidence). */
+  checksPassed: boolean;
   survivorCount?: number;
   note?: string;
 }
@@ -655,6 +660,7 @@ export const COMPACT_GENERIC_EXPENSIVE_STAGE_BOUNDS: Readonly<GenericCompactExpe
     maxCompressedCells: 2_000_000,
     maxFaceTypeRelations: 65_536,
     maxRootedFaceRecords: 120_000_000,
+    maxCocycleSectionEntries: 50_000_000,
     maxTemplates: 115_200,
     maxTemplateGerms: 20_000_000,
     maxTemplateAdjacencyEntries: 250_000_000,
@@ -1127,21 +1133,21 @@ function compactExpensiveStageEvidence(input: {
   certificate: GenericCompactExpensiveStageCertificate;
 }): Pick<CompactTargetEvidence, "generalizedCompression" | "exactArrangement"> {
   const { certificate } = input;
-  const compressionReplayed =
-    certificate.generalizedCompression?.replay.valid === true;
+  const compressionBuilt =
+    certificate.generalizedCompression !== undefined &&
+    certificate.checks.generalizedCompressionBuilt;
   const compressionStatus: CompactCompressionEvidence["status"] =
-    compressionReplayed
+    compressionBuilt
       ? "passed"
       : certificate.status === "failed"
         ? "failed"
         : "incomplete";
-  const arrangementReplayed =
+  const arrangementBuilt =
     certificate.outcome === "exact-arrangement-complete" &&
     certificate.status === "completed" &&
-    certificate.checks.exactArrangementReplayed &&
-    certificate.arrangement?.coverReplay.status === "passed";
+    certificate.checks.exactArrangementBuilt;
   const arrangementStatus: CompactArrangementEvidence["status"] =
-    arrangementReplayed
+    arrangementBuilt
       ? "passed"
       : certificate.status === "failed"
         ? "failed"
@@ -1158,19 +1164,19 @@ function compactExpensiveStageEvidence(input: {
     survivorTrialId: input.survivorTrialId,
     certificateDigest: certificate.certificateDigest,
     stageCertificate: certificate,
-    replayPassed: compressionReplayed,
-    note: compressionReplayed
-      ? "The full action-rooted generalized compression is embedded in the expensive-stage certificate and passed its internal exact replay."
-      : `The expensive stage ended ${certificate.status} before a replayed generalized compression was available: ${certificate.stop?.detail ?? certificate.errors.join(" ")}`,
+    checksPassed: compressionBuilt,
+    note: compressionBuilt
+      ? "The full action-rooted generalized compression is embedded in the expensive-stage certificate and passed its checks."
+      : `The expensive stage ended ${certificate.status} before a generalized compression was available: ${certificate.stop?.detail ?? certificate.errors.join(" ")}`,
   };
   const exactArrangement: CompactArrangementEvidence = {
     status: arrangementStatus,
     compressionCertificateDigest: certificate.certificateDigest,
     certificateDigest: certificate.certificateDigest,
-    replayPassed: arrangementReplayed,
+    checksPassed: arrangementBuilt,
     ...(survivorCount === undefined ? {} : { survivorCount }),
-    note: arrangementReplayed
-      ? `The exhaustive full-H1 arrangement replayed with ${survivorCount ?? 0} passing face/polarity pair(s).`
+    note: arrangementBuilt
+      ? `The exhaustive full-H1 arrangement was built with ${survivorCount ?? 0} passing face/polarity pair(s).`
       : certificate.outcome === "compression-sidecar-only"
         ? `The generalized compression is preserved, but arrangement promotion is incomplete: ${certificate.nonpromotableGap?.detail ?? certificate.stop?.detail ?? "the exact arrangement was not run"}`
         : `The exact arrangement ended ${certificate.status}: ${certificate.stop?.detail ?? certificate.errors.join(" ")}`,
@@ -1860,8 +1866,10 @@ function evaluateStages(
       nonClaims,
     };
   }
-  if (!compression.replayPassed) {
-    throw new Error("Passed generalized-compression evidence failed replay.");
+  if (!compression.checksPassed) {
+    throw new Error(
+      "Passed generalized-compression evidence failed its checks.",
+    );
   }
   stages.push(
     stage(
@@ -1910,7 +1918,7 @@ function evaluateStages(
     };
   }
   if (
-    !arrangement.replayPassed ||
+    !arrangement.checksPassed ||
     !Number.isSafeInteger(arrangement.survivorCount) ||
     (arrangement.survivorCount ?? -1) < 0
   ) {
@@ -2270,7 +2278,13 @@ export function restrictP0ActionToP1(
   );
   const orbits: number[][] = [];
   while (unseen.size > 0) {
-    const seed = Math.min(...unseen);
+    // Set insertion order is ascending and deletion preserves that order. Do
+    // not spread a six-figure action into Math.min's argument list.
+    const nextSeed = unseen.values().next();
+    if (nextSeed.done) {
+      throw new Error("P1 restriction lost its next orbit seed.");
+    }
+    const seed = nextSeed.value;
     const orbit: number[] = [];
     const queue = [seed];
     unseen.delete(seed);
@@ -2606,11 +2620,12 @@ export function actionFromCompactDiscoveryArtifact(
   if (!Number.isSafeInteger(degree) || (degree as number) <= 0) {
     throw new Error("finiteAction.degree must be a positive safe integer.");
   }
+  const finiteDegree = degree as number;
   const vertices = finiteAction.vertices;
   const rawRows = finiteAction.generatorActions;
   if (
     !Array.isArray(vertices) ||
-    vertices.length !== degree ||
+    vertices.length !== finiteDegree ||
     !Array.isArray(rawRows)
   ) {
     throw new Error("finiteAction vertices or generator rows are incomplete.");
@@ -2622,22 +2637,37 @@ export function actionFromCompactDiscoveryArtifact(
     return vertex.id;
   });
   const labelToPoint = new Map(labels.map((label, point) => [label, point]));
-  if (labelToPoint.size !== degree)
+  if (labelToPoint.size !== finiteDegree)
     throw new Error("finiteAction vertex ids are not unique.");
   const indexedRows = rawRows.map((value, index) => {
     const row = objectRecord(value, `finiteAction.generatorActions[${index}]`);
     if (
       !Number.isSafeInteger(row.generator) ||
       !Array.isArray(row.images) ||
-      row.images.length !== degree
+      row.images.length !== finiteDegree
     ) {
       throw new Error(`Generator action row ${index} is malformed.`);
     }
     const images = row.images.map((image, point) => {
-      if (typeof image !== "string")
+      // Current discovery producers serialize permutation images as point
+      // indices. Older exact artifacts use the corresponding vertex ids.
+      if (typeof image === "number") {
+        if (
+          !Number.isSafeInteger(image) ||
+          image < 0 ||
+          image >= finiteDegree
+        ) {
+          throw new Error(
+            `Generator row ${index}, point ${point} has an out-of-range point-index image.`,
+          );
+        }
+        return image;
+      }
+      if (typeof image !== "string") {
         throw new Error(
-          `Generator row ${index}, point ${point} has no vertex-id image.`,
+          `Generator row ${index}, point ${point} has neither a point-index nor vertex-id image.`,
         );
+      }
       const target = labelToPoint.get(image);
       if (target === undefined)
         throw new Error(
@@ -2645,6 +2675,9 @@ export function actionFromCompactDiscoveryArtifact(
         );
       return target;
     });
+    if (new Set(images).size !== finiteDegree) {
+      throw new Error(`Generator action row ${index} is not a permutation.`);
+    }
     return { generator: row.generator as number, images };
   });
   indexedRows.sort((left, right) => left.generator - right.generator);
@@ -2660,7 +2693,7 @@ export function actionFromCompactDiscoveryArtifact(
   return {
     id,
     name: `Materialized compact action ${id}`,
-    index: degree as number,
+    index: finiteDegree,
     generatorImages: indexedRows.map((row) => row.images),
     pointLabels: labels,
     representativeWords: vertices.map((value) => {

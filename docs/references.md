@@ -55,8 +55,9 @@ formulas are documented in
     by the compression certificate.
   - Section 2.2 defines parallel 1-cells, abstract walls, wall graphs,
     embeddedness, two-sidedness, and self-osculation.
-  - Section 2.3 defines the two orientations of a two-sided wall. The app calls
-    these coorientations to emphasize the induced direction on dual 1-cells.
+  - Section 2.3 defines the two orientations of a two-sided wall. The app also
+    calls an orientation a coorientation, to emphasize the induced direction on
+    dual 1-cells; the two words name the same thing.
   - Sections 2.4--2.5 define ascending and descending links, the induced map to
     `S^1`, and the lawful subcomplex.
   - Theorem 3.1 states the virtual algebraic-fibering conclusion for the
@@ -71,6 +72,8 @@ formulas are documented in
   - The paper supports the mathematical model. It does not support the app's
     extra optimization objective of maximizing retained lawful cells over all
     coorientations.
+  - Repo use: the definitions and the lawful-subcomplex argument behind
+    Track A ([virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)).
   - arXiv abstract: https://arxiv.org/abs/1503.03102
   - PDF: https://arxiv.org/pdf/1503.03102
 
@@ -104,13 +107,23 @@ formulas are documented in
   groups**, _Inventiones Mathematicae_ 129 (1997), 445--470.
   - Supports the affine-cellular Morse framework and finiteness criterion used
     by Jankiewicz--Wise.
-  - Theorem 4.1 gives separate sufficient link conditions: connected
-    ascending and descending links support finite generation, while simply
-    connected ascending and descending links support finite presentation in
-    the direct equivariant Morse setup.
-  - The viewer reports local link diagnostics; it does not infer the required
-    asphericity, affine structure, or global group conclusion.
+  - Corollary 2.6(3) is the source for the Track A bounded-height-band step:
+    connected ascending and descending links make the fundamental group of a
+    bounded band surject onto the fundamental group of the cyclic cover. The
+    band is a compact finite polyhedron (after subdividing where its boundary
+    cuts cells), so the character kernel is finitely generated. This local
+    argument does not require the lawful quotient to be aspherical.
+  - Theorem 4.1 gives stronger group-action criteria, including the
+    simply-connected-link route to finite presentation, under its stated
+    hypotheses.
+  - The viewer reports local link diagnostics, but promotion additionally
+    requires the finite PL height, cyclic-cover/band evidence, character, and
+    kernel-transfer records.
+  - Repo use: the first gate. Nonempty, connected ascending and descending
+    links at every vertex give a finitely generated kernel, that is, a virtual
+    algebraic fibration. Track A and Track B both test this gate.
   - DOI: https://doi.org/10.1007/s002220050168
+  - Author-hosted scan: https://people.math.osu.edu/davis.12/courses/8800-20/Bestvina-Brady.pdf
 
 - Mladen Bestvina, **PL Morse theory**, _Mathematical Communications_ 13
   (2008), 149--162.
@@ -124,15 +137,19 @@ formulas are documented in
   - PDF: https://www.math.utah.edu/~bestvina/eprints/minicourse.pdf
 
 - Giovanni Italiano, Bruno Martelli, and Matteo Migliorini, **Hyperbolic
-  5-manifolds that fiber over the circle**, _Inventiones Mathematicae_ 231
-  (2023), 1--38; arXiv:2105.14795.
+  5-manifolds that fiber over `S^1`**, _Inventiones Mathematicae_ 231
+  (2023), 1--38; arXiv:2105.14795. Cited in the repo as IMM.
+  - Theorem 8: on a compact smooth manifold of dimension at most five,
+    decomposed as an affine cell complex with compatible PL structure, a
+    circle-valued Morse function whose ascending and descending links are all
+    collapsible is homotopic to a smooth fibration.
   - Sections 1.11--1.12 prove collapsibility of ascending and descending links
     for their explicit cellulation and subdivision, including the new vertex
-    types introduced by the subdivision.
-  - Their fibration conclusion uses additional hypotheses: a compact smooth
-    manifold, dimension at most five, a compatible affine/PL structure, and a
-    genuine circle-valued map. The app records collapsibility as a stronger
-    diagnostic but does not transfer that fibration conclusion to an
+    types introduced by the subdivision. They call the I/O label of a facet
+    its status.
+  - Repo use: the second gate (both directed links collapsible). The
+    manifold hypotheses of Theorem 8 are not machine-checked. The app records collapsibility as
+    a stronger diagnostic and does not transfer the fibration conclusion to an
     arbitrary Davis quotient.
   - arXiv abstract: https://arxiv.org/abs/2105.14795
   - PDF: https://arxiv.org/pdf/2105.14795
@@ -148,21 +165,130 @@ formulas are documented in
 
 - Kasia Jankiewicz, Sergey Norin, and Daniel T. Wise, **Virtually Fibering
   Right-Angled Coxeter Groups**, arXiv:1711.11505.
-  - Supports the state/move legal-system construction for right-angled Coxeter
-    groups and its state-dependent ascending/descending links.
-  - This is retained as comparison and historical context. The current product
-    uses wall coorientations in `\bar X`, which apply to general even Coxeter
-    relation polygons. It does not present the right-angled legal-system game
-    as the general model.
+  - Supports the legal-system construction for right-angled Coxeter groups
+    (Section 2, "Systems of moves and legal states"; Theorem 4.3). A state of
+    the defining graph is a subset `S` of its vertex set, legal when `S` and its
+    complement both induce nonempty connected subgraphs. In the proof of
+    Theorem 4.3 the state at a 0-cube is the set of outgoing (ascending)
+    1-cubes there, so a legal orbit gives nonempty connected directed links.
+    The repo uses "state" only in JNW-specific code and docs, and elsewhere
+    keeps to Jankiewicz--Wise link terminology.
+  - Repo use: the JNW cube-graph positive control
+    (`pnpm cover:positive-control:jnw`, `src/fibering/jnwCubePositiveControl.ts`,
+    `src/game/`), and comparison with the general model. The main pipelines use
+    wall orientations in `\bar X`, which apply to general even Coxeter relation
+    polygons, and do not present the right-angled legal-system game as the
+    general model.
   - arXiv abstract: https://arxiv.org/abs/1711.11505
 
+- Giovanni Italiano, Bruno Martelli, and Matteo Migliorini, **Hyperbolic
+  manifolds that fiber algebraically up to dimension 8**, arXiv:2010.10200.
+  - Constructs cusped finite-volume hyperbolic `n`-manifolds, `5 <= n <= 8`,
+    with finitely generated kernel, using colourings and JNW states on
+    right-angled polytopes.
+  - Repo use: literature framing only. It is a right-angled, cusped
+    application of the JNW/Bestvina--Brady method, not a closed example.
+  - arXiv abstract: https://arxiv.org/abs/2010.10200
+
+## Abstract Virtual Fibering Results
+
+These results are cited for literature framing: they give the abstract
+existence of a finite-index algebraic fibration for the compact hyperbolic
+Coxeter groups of dimension at least 3 studied here (virtually RFRS, with
+vanishing first L²-Betti number), so an explicit finitely generated kernel
+produced by the repo is explicit rather than new. They do not apply to the
+two-dimensional toy examples, whose first L²-Betti number is nonzero. None of
+them supplies an explicit character or cover. Agol's theorem that every closed
+hyperbolic 3-manifold virtually fibers (I. Agol, _The virtual Haken
+conjecture_, Doc. Math. 18 (2013), 1045–1087, arXiv:1204.2810) is the
+3-dimensional context for the bundled C(4,4;2,2;3,3) example.
+
+- Dawid Kielak, **Residually finite rationally solvable groups and virtual
+  fibring**, _Journal of the American Mathematical Society_ 33 (2020),
+  451--486; arXiv:1809.09386.
+  - A finitely generated RFRS group virtually algebraically fibres (finitely
+    generated kernel) if and only if its first `L^2`-Betti number vanishes.
+  - arXiv abstract: https://arxiv.org/abs/1809.09386
+  - DOI: https://doi.org/10.1090/jams/936
+
+- Sam P. Fisher, **Improved algebraic fibrings**, _Compositio Mathematica_ 160
+  (2024), 2203--2227; arXiv:2112.00397.
+  - A virtually RFRS group of type `FP_n(Q)` virtually algebraically fibres
+    with kernel of type `FP_n(Q)` if and only if `b_p^(2)` vanishes for
+    `p <= n`.
+  - arXiv abstract: https://arxiv.org/abs/2112.00397
+  - DOI: https://doi.org/10.1112/S0010437X24007309
+
+- Sam P. Fisher, **Algebraic fibrings of a hyperbolic 7-manifold**,
+  arXiv:2203.01125 (accepted in the _Bulletin of the London Mathematical
+  Society_ according to the arXiv comments).
+  - A finite cover of the IMM cusped 7-manifold algebraically fibres with
+    finitely presented kernel of type `FP(Q)`. Repo use: literature framing
+    (cusped, right-angled origin).
+  - arXiv abstract: https://arxiv.org/abs/2203.01125
+
+- Frederic Haglund and Daniel T. Wise, **Coxeter groups are virtually
+  special**, _Advances in Mathematics_ 224 (2010), 1890--1903.
+  - Coxeter groups are virtually special, hence virtually RFRS; this is the
+    input that lets the Kielak and Fisher criteria apply to the Coxeter groups
+    in this repository.
+  - DOI: https://doi.org/10.1016/j.aim.2010.01.011
+
+- Noel Brady, **Branched coverings of cubical complexes and subgroups of
+  hyperbolic groups**, _Journal of the London Mathematical Society_ (2) 60
+  (1999), 461--480.
+  - Question 7.2 (as cited by IMM, arXiv:2105.14795; the text of the question
+    was not checked here) asks for a hyperbolic group with a non-hyperbolic
+    subgroup of finite type. IMM answer it in Corollary 2 with a group obtained
+    by Dehn filling a cusped 5-manifold. Repo use: literature framing only.
+
+- Claudio Llosa Isenrich and Pierre Py, **Subgroups of hyperbolic groups,
+  finiteness properties and complex hyperbolic lattices**, arXiv:2204.05788.
+  - Answers Brady's question (their Question 4) on hyperbolic groups with
+    subgroups of type `F_n` but not `F_{n+1}`, for all `n`, using complex
+    hyperbolic lattices. Repo use: literature framing only.
+  - arXiv abstract: https://arxiv.org/abs/2204.05788
+
 ## Coxeter And Davis Background
+
+- Jonathan A. Barmak and Elias Gabriel Minian, **Strong homotopy types, nerves
+  and collapses**, _Discrete & Computational Geometry_ 47 (2012).
+  - Removing a beat point of a finite poset is a strong collapse of its order
+    complex, a cheap reduction before testing collapsibility.
 
 - Michael W. Davis, _The Geometry and Topology of Coxeter Groups_, London
   Mathematical Society Monographs 32, Princeton University Press, 2008.
   - Supports Coxeter systems, spherical special subgroups, Davis cells, links,
     and the Davis complex viewpoint.
+  - The nerve is the simplicial complex of nonempty spherical subsets. A
+    PL-\(S^4\) nerve gives a contractible five-manifold Davis complex; the
+    discussion of Moussong's criterion supplies the abstract
+    word-hyperbolicity gate used by the labelled-\(S^4\) lane.
+  - Proposition I.6.6 (Appendix I.6; restated as Proposition 12.2.2) and
+    Corollary 12.2.3 (Moussong) record the
+    flag-no-square generalized-homology-sphere obstruction used to exclude the
+    right-angled shortcut in dimension five.
   - DOI page: https://www.degruyter.com/document/doi/10.1515/9781400845941/html
+  - Author PDF: https://people.math.osu.edu/davis.12/davisbook.pdf
+
+- Gábor Moussong, _Hyperbolic Coxeter Groups_, PhD thesis, Ohio State
+  University, 1988.
+  - Supplies the special-subgroup criterion used in the exact preflight: a
+    Coxeter group is word-hyperbolic precisely when it has no irreducible
+    affine special subgroup of rank at least three and no commuting pair of
+    disjoint infinite special subgroups.
+  - This criterion concerns the abstract Coxeter system and does not require a
+    reflection realization in real hyperbolic space.
+
+- Grigori Avramidi, Boris Okun, and Kevin Schreve, **Homology growth,
+  hyperbolization, and fibering**, _Geometric and Functional Analysis_ 34
+  (2024), 303--376; arXiv:2301.06112.
+  - Restates the flag-no-square obstruction for four-dimensional homology
+    spheres in a remark after Theorem 5.3 (arXiv version), citing Davis,
+    Proposition I.6.6, and attributing it to Moussong. The repository uses that
+    precise scope to rule out a right-angled word-hyperbolic Coxeter group with
+    PL-\(S^4\) nerve, not to rule out non-right-angled labelled systems.
+  - DOI: https://doi.org/10.1007/s00039-024-00667-w
 
 - Michael W. Davis, Tadeusz Januszkiewicz, and Richard Scott,
   **Fundamental groups of blow-ups**, _Advances in Mathematics_ 177 (2003),
@@ -172,10 +298,11 @@ formulas are documented in
     `pi - pi/m_ij`.
   - The metric-flag criterion and Theorem 5.8.5 identify nonpositive curvature
     of a Coxeter cell complex with metric-flag vertex links. This is the
-    one-sided CAT(0)/asphericity certificate used for the generalized lawful
-    complex.
+    one-sided optional CAT(0)/asphericity diagnostic used for the generalized
+    lawful complex.
   - A failed metric-flag check rules out this inherited-metric certificate; it
-    does not prove that the complex is non-aspherical.
+    does not prove that the complex is non-aspherical and does not block the
+    Track A finite-height-band argument.
   - Author PDF: https://people.math.osu.edu/davis.12/old_papers/djs2.pdf
 
 - James E. Humphreys, _Reflection Groups and Coxeter Groups_, Cambridge
@@ -189,7 +316,31 @@ formulas are documented in
   (1993), 179--190.
   - Background for exact normal forms and automatic structures. Browser
     generation does not claim this backend unless its artifact says so.
+  - The elementary/small-root recursion also supplies the finite root states
+    used by the bounded Niblo--Reeves ultrafilter automaton. The repository
+    independently replays its exact root counts for each bundled target.
   - EuDML: https://eudml.org/doc/165119
+
+- Graham A. Niblo and Lawrence D. Reeves, **Coxeter groups act on CAT(0) cube
+  complexes**, _Journal of Group Theory_ 6 (2003), 399--413.
+  - Supports the wallspace cubing used in the dedicated compact-cube and `P2`
+    branch: vertices are consistent wall orientations, transverse walls span
+    cubes, and the Coxeter group acts properly and cocompactly on the resulting
+    CAT(0) cube complex.
+  - The repository's quotient parity DSU, exact `Sigma_n` cutoffs, and finite
+    directed-link certificates are implementation-specific calculations, not
+    claims copied from the paper.
+  - DOI: https://doi.org/10.1515/jgth.2003.028
+
+- Frederic Haglund and Daniel T. Wise, **Special cube complexes**,
+  _Geometric and Functional Analysis_ 17 (2008), 1551--1620.
+  - Supports the clean-hyperplane terminology: embedded and two-sided
+    hyperplanes without self-osculation or inter-osculation. The current
+    cubulation census records these pathologies separately from directed-link
+    connectivity.
+  - Specialness does not itself certify a nonzero character or connected
+    ascending and descending links.
+  - DOI: https://doi.org/10.1007/s00039-007-0629-4
 
 ## Golden Ideal 3-Cube
 
@@ -209,6 +360,20 @@ formulas are documented in
 The torsion-free interpretation of the `S4` action also uses Everitt's
 finite-special-subgroup and fixed-point criteria cited above. The source paper
 does not assert that this particular index-24 kernel is a smallest cover.
+
+## Three-Dimensional C(4,4;2,2;3,3) Benchmark
+
+- Bruno P. Zimmermann, **Tetrahedral Coxeter groups, large group-actions on
+  3-manifolds and equivariant Heegaard splittings**, arXiv:2003.00730 (2020).
+  - Supplies the `C(4,4;2,2;3,3)` tetrahedral group, its `PSL(2,7)` quotient,
+    and the index-336 torsion-free kernel used by the bundled
+    `compact_3_tetrahedron_c44_2233` example.
+  - The journal is recorded as _Rendiconti dell'Istituto di Matematica
+    dell'Universita di Trieste_ 52 (2020), 601--612, DOI
+    10.13137/2464-8728/30923. The arXiv page carries no journal reference, and
+    that DOI did not resolve through Crossref when checked on 2026-11-27, so
+    the journal details are recorded here as unverified.
+  - arXiv abstract: https://arxiv.org/abs/2003.00730
 
 ## Certified Compact Examples
 
@@ -237,11 +402,51 @@ does not assert that this particular index-24 kernel is a smallest cover.
   hyperbolic 5-orbifolds**, _Algebraic & Geometric Topology_ 13 (2013),
   817--829.
   - Supports the `P0`, `P1 = D P0`, and `P2` source family and Coxeter diagrams.
+  - The paper calls the `[5,3,3,3,4]` simplicial prism `P2`, says that Makarov
+    first discovered it, and was published on 30 March 2013.
   - `P1` is recorded as the double of `P0`, not as a third simplicial prism.
   - `scripts/certify_compact_5_prism_family.py` checks the stated transcription
     and Gram/signature scopes. Stored CoxIter results are a separate diagram
     check.
   - PDF: https://msp.org/agt/2013/13-2/agt-v13-n2-p05-s.pdf
+
+- Daniel Allcock, **Infinitely many hyperbolic Coxeter groups through
+  dimension 19**, _Geometry & Topology_ 10 (2006), 737--758.
+  - Supports the doubling-wall construction used to form reflection
+    subgroups from the two certified P2 doubling walls. The repository's exact
+    doubled-cellulation artifact, rather than the general theorem alone,
+    certifies those two instances.
+  - Journal record: https://msp.org/index/ail.php?jpath=gt&l=A
+  - Author PDF: https://web.ma.utexas.edu/users/allcock/research/doubling.pdf
+  - DOI: https://doi.org/10.2140/gt.2006.10.737
+
+- V. S. Makarov, **The Fedorov groups of four-dimensional and
+  five-dimensional Lobachevsky space**, in _Studies in General Algebra_,
+  volume 1, Kishinev State University (1968), 120--129; MR0259735.
+  - This is the original discovery reference for the compact prisms now called
+    `P0` and `P2`. The repository uses Emery--Kellerhals for the modern diagrams
+    and notation because that source is directly inspectable online.
+
+- Jacopo G. Chen, **Some closed hyperbolic 5-manifolds**, arXiv:2502.19225v2
+  (2025).
+  - The first submission was 26 February 2025; version 2 is dated 3 March 2025.
+  - Section 1 defines a Coxeter prism `P` (a--5--b--c--d--e--4--f, dotted
+    f--g; attributed by Chen to Bugaenko 1984) whose diagram is that of
+    Emery--Kellerhals P2, with a, ..., g = s0, ..., s6. Chen does not use the
+    name P2 or cite Makarov; the identification is by Coxeter diagram.
+    14,400 copies form a 120-cell prism.
+  - Section 4.3 proves vanishing first Betti number for the published closed
+    families used here only as negative controls.
+  - Sections 5.2--5.3 construct the alternative 650-cell four-manifold \(X\),
+    compute \(H_1(X;\mathbb Z)\cong\mathbb Z^{144}\), and describe colorings.
+    They do not compute \(b_1\) or prove fibering for the resulting closed
+    Section 5 colored five-manifolds.
+  - The author's GPL-3.0 computational supplement is
+    https://github.com/floatingpoint-754/closed-hyp-5-manifolds. The P2 import
+    binds `5-manifolds-2.ipynb` at commit
+    `f14f1a6018bb53c6fe55997cb9fba7f7278fa3bb` (17 September 2025), rather
+    than copying its code into this Apache-2.0 repository.
+  - arXiv: https://arxiv.org/abs/2502.19225v2
 
 - Pavel Tumarkin, **Compact Hyperbolic Coxeter n-Polytopes with n+3 Facets**,
   _Electronic Journal of Combinatorics_ 14 (2007), R69;
@@ -253,6 +458,39 @@ does not assert that this particular index-24 kernel is a smallest cover.
     dotted values, and normal-Gram rank/signature diagnostics.
   - Journal: https://www.combinatorics.org/ojs/index.php/eljc/article/view/v14i1r69
   - arXiv: https://arxiv.org/abs/math/0406226
+
+- Jiming Ma and Fangting Zheng, **Compact hyperbolic Coxeter five-dimensional
+  polytopes with nine facets**, arXiv:2203.16049 (2022).
+  - Supports the complete compact nine-facet 5-dimensional catalogue: 51
+    polytopes (types P284 x1, P302 x6, P312 x1, P313 x3, P319 x22, P322 x18),
+    with the dotted-edge length table used for the exact dotted values. The
+    bundled files are `mazheng_5d_9facet_p<type>[_<index>].json`.
+  - Its figure "Compact simplicial prisms in H^5" (bottom diagram, dotted value
+    `(1/2) sqrt(3 + sqrt(2))`) is the diagram source for the H5-P7-22 example
+    `compact_5_prism_h5_p7_22`.
+  - `scripts/certify_compact_5d_catalogue.py` checks the transcription and
+    normal-Gram rank/inertia from 80-digit eigenvalues. It runs no CoxIter or
+    Vinberg compactness check itself; the stored CoxIter diagram artifacts in
+    `scripts/certificates/coxiter/` are a separate check.
+  - Data provenance: the nine-facet transcription is
+    `scripts/data/mazheng_9facet_verified.jsonl`, a SHA-256-pinned copy of
+    `data/baselines/d5_m9/verified.jsonl` from the 10Facets5D census workspace
+    at commit `65380c1`. That file carries facet-labelled Coxeter labels, exact
+    dotted values (radicals, or a minimal polynomial with an isolating
+    interval), and an exact Sage `AA` inertia check. The workspace is outside
+    this repository.
+  - arXiv: https://arxiv.org/abs/2203.16049
+
+- I. M. Kaplinskaja, **Discrete groups generated by reflections in the faces
+  of simplicial prisms in Lobachevskian spaces**, _Mathematical Notes_ 15
+  (1974), 88--91.
+  - The classification of Coxeter simplicial prisms. The repository cites it
+    for H5-P7-22 as the third compact simplicial prism in `H^5`; the diagram
+    itself is read from Ma--Zheng's prism figure, not from this paper.
+  - Open question (as of 2026-10-04): P1 = D P0 is combinatorially a 7-facet
+    prism but is not in Ma--Zheng's three-diagram prism figure. Whether
+    Kaplinskaja's list (through Esselmann's `d+2` theorem) counts it separately
+    has not been checked against this paper or Felikson's tables.
 
 - Lizi Guo, Jiming Ma, Yourong Zang, and Fangting Zheng, **Several families of
   incommensurable noncompact hyperbolic Coxeter polytopes** (2026),

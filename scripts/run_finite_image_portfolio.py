@@ -58,6 +58,7 @@ CHECKPOINT_TYPE = "finite-image-residue-module-portfolio-checkpoint"
 MATERIALIZATION_REQUEST_TYPE = "finite-image-action-materialization-request"
 MATERIALIZED_ACTION_TYPE = "finite-image-materialized-composite-action"
 FIBERING_PROMOTION_TYPE = "materialized-action-two-track-promotion"
+FIBERING_PROMOTION_PROFILE = "materialized-action-two-track-promotion-v4"
 DEFAULT_FIBERING_SCRIPT = SCRIPT_DIR / "run_materialized_fibering.ts"
 DEFAULT_MOD3_STRUCTURAL_CERTIFICATE = (
     SCRIPT_DIR
@@ -2560,9 +2561,13 @@ def validate_fibering_promotion_artifact(
     )
     if (
         not isinstance(implementation, Mapping)
-        or implementation.get("profile")
-        != "materialized-action-two-track-promotion-v3"
-        or not isinstance(implementation_hashes, Mapping)
+        or implementation.get("profile") != FIBERING_PROMOTION_PROFILE
+    ):
+        raise InvalidPromotionArtifactError(
+            "The downstream promotion has an unsupported implementation profile."
+        )
+    if (
+        not isinstance(implementation_hashes, Mapping)
         or set(implementation_hashes) != required_implementation_hashes
         or not isinstance(implementation_manifest, Mapping)
     ):

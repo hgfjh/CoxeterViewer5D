@@ -1,5 +1,13 @@
 # Certifying A Virtual Algebraic Fibration
 
+**Status (as of 2026-10-04).** This is the canonical description of Track A,
+the Jankiewicz--Wise lawful-subcomplex route, and its certificate checklist.
+It is implemented and can promote a certificate. For how Track A relates to
+Track B, see the route map in
+[two-track-fibering-certification.md](two-track-fibering-certification.md).
+A passing Track A certificate proves a virtual algebraic fibration, not a
+topological or smooth bundle over the circle.
+
 > **Lawful-subcomplex profile.** This document describes the
 > Jankiewicz--Wise lawful-subcomplex argument in the compressed presentation
 > 2-complex. The action-rooted automatic certificate and the optional
@@ -67,6 +75,10 @@ The paper writes `G'` for the finite-index torsion-free subgroup. The app uses
   bigons and identifying relation cells with the same compressed boundary;
 - `Y`: the lawful subcomplex of `bar X` for a chosen wall orientation.
 
+Jankiewicz--Wise speak of an **orientation** of a wall; the code and the other
+docs often say **coorientation**. They are the same thing: a choice of one of
+the two sides of a two-sided wall.
+
 The compression checks should establish
 
 ```text
@@ -98,14 +110,19 @@ wall coorientation on bar X
         |         +--> chi: H -> dZ
         |
         +--> ascending and descending links in Y
+                  |
+                  +--> finite height band surjects on pi_1(Y_psi)
 
 phi = chi/d: H -> Z,       ker(phi) = ker(chi).
 ```
 
-The PL Morse theorem is applied to the lift of the map on `Y`, not directly to
-an arbitrary drawing of `bar X`. It proves that `ker(psi)` is finitely
-generated. Because `Y` and `bar X` have the same connected 1-skeleton, the map
-`pi_1(Y) -> H` is onto and restricts to an epimorphism
+The PL Morse argument is applied to the lift on the infinite cyclic cover
+`Y_psi` corresponding to `ker(psi)`, not to an arbitrary drawing of `bar X`.
+Connected ascending and descending links make the fundamental group of a
+finite height band surject onto `pi_1(Y_psi) = ker(psi)`. Thus `ker(psi)` is
+finitely generated; no asphericity hypothesis on `Y` is needed. Because `Y`
+and `bar X` have the same connected 1-skeleton, the map `pi_1(Y) -> H` is onto
+and restricts to an epimorphism
 
 ```text
 ker(psi) -> ker(chi) = ker(phi).
@@ -120,23 +137,23 @@ does not change the kernel or any edge direction.
 The app follows this dependency order. A later row is not allowed to pass when
 one of its required earlier rows is missing.
 
-| Step | Construction                             | What is checked                                                                                      |
-| ---- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| 1    | Validate the Coxeter system `W`          | Matrix symmetry, involutions, finite Coxeter relators, source hashes                                 |
-| 2    | Discover a finite transitive action      | Every generator is a permutation and every Coxeter relator acts trivially                            |
-| 3    | Define `H` as a point stabilizer         | Index, basepoint, coset convention, torsion-free evidence                                            |
-| 4    | Build `hat X`                            | One lift of every open presentation cell over every action point; every lifted attaching word closes |
-| 5    | Compress to `bar X`                      | Exact edge, bigon, and relation-cell fibers; signed boundaries agree                                 |
-| 6    | Find walls                               | Transitive closure of opposite sides in every compressed `2m`-gon                                    |
-| 7    | Test two-sidedness and choose wall signs | Orientation-parity constraints have no contradiction; every edge receives one direction              |
-| 8    | Form the wall cocycle                    | Every compressed relation-cell boundary has signed sum zero                                          |
-| 9    | Find lawful cells                        | Each retained boundary is two directed paths from one source to one sink                             |
-| 10   | Build ascending and descending links     | Exact incidence, nonemptiness, components, and connectivity witnesses at every vertex                |
-| 11   | Present `H`                              | Deterministic Reidemeister--Schreier generators and rewritten Coxeter relators                       |
-| 12   | Evaluate the wall map                    | Integer value on every Schreier generator and zero on every rewritten relator                        |
-| 13   | Prove the image and normalize            | Period gcd, Bezout witness, nonzero image, and primitive map `phi: H -> Z`                           |
-| 14   | Check the PL Morse hypotheses            | Finite affine/aspherical setting, Morse cells, discrete heights, and all directed-link conditions    |
-| 15   | Transfer finite generation to `H`        | Full 1-skeleton and the explicit commuting maps from `pi_1(Y)` to `H`                                |
+| Step | Construction                             | What is checked                                                                                          |
+| ---- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1    | Validate the Coxeter system `W`          | Matrix symmetry, involutions, finite Coxeter relators, source hashes                                     |
+| 2    | Discover a finite transitive action      | Every generator is a permutation and every Coxeter relator acts trivially                                |
+| 3    | Define `H` as a point stabilizer         | Index, basepoint, coset convention, torsion-free evidence                                                |
+| 4    | Build `hat X`                            | One lift of every open presentation cell over every action point; every lifted attaching word closes     |
+| 5    | Compress to `bar X`                      | Exact edge, bigon, and relation-cell fibers; signed boundaries agree                                     |
+| 6    | Find walls                               | Transitive closure of opposite sides in every compressed `2m`-gon                                        |
+| 7    | Test two-sidedness and choose wall signs | Orientation-parity constraints have no contradiction; every edge receives one direction                  |
+| 8    | Form the wall cocycle                    | Every compressed relation-cell boundary has signed sum zero                                              |
+| 9    | Find lawful cells                        | Each retained boundary is two directed paths from one source to one sink                                 |
+| 10   | Build ascending and descending links     | Exact incidence, nonemptiness, components, and connectivity witnesses at every vertex                    |
+| 11   | Present `H`                              | Deterministic Reidemeister--Schreier generators and rewritten Coxeter relators                           |
+| 12   | Evaluate the wall map                    | Integer value on every Schreier generator and zero on every rewritten relator                            |
+| 13   | Prove the image and normalize            | Period gcd, Bezout witness, nonzero image, and primitive map `phi: H -> Z`                               |
+| 14   | Certify the finite-height-band argument  | Finite PL Morse complex, discrete lifted heights, all directed links, and bounded-band `pi_1` surjection |
+| 15   | Transfer finite generation to `H`        | Full 1-skeleton and the explicit commuting maps from `pi_1(Y)` to `H`                                    |
 
 Steps 2--3 may be supplied by an imported exact artifact or discovered by the
 GAP/Sage strategy ladder. Steps 4--15 are deterministic for a fixed action and
@@ -156,6 +173,7 @@ signs        = search_or_supply_one_sign_per_wall(parities)
 cocycle      = assign_signed_values_to_dual_edges(signs)
 lawful_Y     = retain_full_skeleton_and_lawful_cells(cocycle)
 links        = build_directed_links_from_exact_incidence(lawful_Y)
+height_band  = certify_finite_height_band_pi1_surjection(lawful_Y, links)
 presentation = reidemeister_schreier(W, action)
 chi          = evaluate_cocycle_on_schreier_loops(presentation)
 phi          = normalize_by_period_gcd(chi)
@@ -173,8 +191,9 @@ The output keeps three logically different claims apart.
    subgroup `H`, and a Reidemeister--Schreier calculation presents `H`.
 2. **Cocycle layer:** the wall coorientation defines an integral cellular
    1-cocycle and hence an explicit primitive homomorphism `H -> Z`.
-3. **Morse layer:** a lawful affine subcomplex and its ascending and descending
-   links satisfy the hypotheses that imply finite generation of the kernel.
+3. **Morse layer:** a finite lawful PL-affine subcomplex, its ascending and
+   descending links, and the bounded-height-band argument imply finite
+   generation of the kernel.
 
 A run that passes only the first two layers has an explicit epimorphism, but
 not yet a verified algebraic fibration in the finiteness sense.
@@ -651,8 +670,12 @@ the unlawful 2-cells. Jankiewicz--Wise show that the restricted circle-valued
 map lifts to a Morse function
 
 ```text
-tilde Y -> R.
+Y_psi -> R,
 ```
+
+where `Y_psi` is the infinite cyclic cover corresponding to `ker(psi)`. A
+universal cover may also carry the lifted height, but it is not the cover used
+in the finite-height-band proof below.
 
 The certificate records, for every retained cell:
 
@@ -671,11 +694,13 @@ Keeping the entire 1-skeleton is essential. It is what later makes
 2-cells preserves the fundamental group; it records the resulting surjection
 and uses it in the direction in which it is valid.
 
-## 8. Check The PL Morse Hypotheses
+## 8. Certify The Finite-Height-Band Argument
 
-The finite-generation theorem quoted as Theorem 2.1 in Jankiewicz--Wise has
-several hypotheses. A theorem-level result needs all of them, not just a link
-graph drawn in the viewer.
+The finite-generation theorem quoted as Theorem 2.1 in Jankiewicz--Wise is a
+convenient aspherical package. For the `F_1` conclusion used here, one can
+apply the underlying Bestvina--Brady bounded-band argument directly to
+`Y_psi`. A theorem-level result still needs the finite PL Morse data below,
+not just a link graph drawn in the viewer.
 
 The checklist deliberately does **not** require embeddedness or absence of
 self-osculation. It reports them separately as diagnostics for the
@@ -687,23 +712,24 @@ required, as are the concrete cocycle, Morse-cell, and link checks below.
 For the complex to which Morse theory is applied, certify that it is:
 
 - **finite**;
-- **affine**, with convex Euclidean cell models whose face structures agree;
-- **aspherical**, or supplied with an accepted exact implication such as a
-  verified nonpositively curved structure;
+- **PL-affine**, either on compatible affine cells or on a face-compatible
+  subdivision;
 - equipped with a circle-valued map whose lift is affine and nonconstant on
-  each positive-dimensional cell;
+  each positive-dimensional retained cell or simplex;
 - equipped with a lift whose vertex heights form a closed discrete subset of
   `R`.
 
-In the Jankiewicz--Wise dimension-at-most-two setting, the inequalities
+Asphericity is not on this list. In the Jankiewicz--Wise
+dimension-at-most-two setting, the inequalities
 
 ```text
 1/m_ij + 1/m_jk + 1/m_ki <= 1
 ```
 
 for every triple give the regular-polygon nonpositively curved setting used in
-their discussion. A 3D rendering, a numerical Gram signature, or a passed
-cell-boundary sum is not an asphericity certificate.
+their discussion. Such an NPC/CAT(0) check remains useful stronger evidence,
+but passing it is not required for finite generation by the cyclic-cover
+argument, and failing it is not a fibering obstruction.
 
 ### The links
 
@@ -727,14 +753,37 @@ For finite generation, every ascending and descending link must be:
 nonempty and connected.
 ```
 
-Under the finite, aspherical, affine, and Morse hypotheses above,
-Bestvina--Brady Morse theory then proves that
+### The finite band
+
+Let `h:Y_psi -> R` be the lifted PL height. Because `Y` is finite, the deck
+action is cocompact; because the nonzero deck generator translates height by a
+nonzero period, a bounded interval meets only finitely many translates of each
+quotient cell. Choose `[a,b]` with nonempty height band. If all ascending and
+descending links are nonempty and connected, Bestvina--Brady Corollary 2.6(3),
+applied to `[a,b] subset R`, says that
 
 ```text
-ker(pi_1(Y) -> Z)
+pi_1(h^(-1)([a,b])) -> pi_1(Y_psi)
 ```
 
-is finitely generated.
+is surjective. The height band is a compact finite polyhedron. When an endpoint
+cuts a simplex, its induced finite subdivision supplies a finite CW structure;
+the band need not be a subcomplex of the original triangulation. It therefore
+has finitely generated fundamental group. Therefore its quotient,
+
+```text
+pi_1(Y_psi) = ker(pi_1(Y) -> Z),
+```
+
+is finitely generated. Neither this conclusion nor the identification with
+the kernel requires `Y` to be aspherical.
+
+The exported theorem-facing record is
+`LawfulFiniteHeightBandCertificate`, stored as `finiteHeightBand`, with method
+`bestvina-brady-finite-height-band-pi1-surjection`. It binds the finite lawful
+complex, PL height, discrete/cocompact lifted-height data, complete directed
+links, and the resulting bounded-band surjection. A CAT(0) or asphericity
+record is an independent optional diagnostic.
 
 ### Why This Proves Finite Generation For `ker(phi)`
 
@@ -783,9 +832,10 @@ presentations. Otherwise the passage from the lawful subcomplex back to `H`
 has not been certified.
 
 This argument also explains why connected links alone do not prove the final
-claim. They address `ker(psi)` only after the affine/aspherical Morse setup has
-been established. The map on `H`, its nonzero image, normalization, and the
-surjection from `pi_1(Y)` are separate global checks.
+claim. They address `ker(psi)` only after the finite PL Morse complex,
+circle-valued map, and discrete cyclic-cover height have been established.
+The map on `H`, its nonzero image, normalization, and the surjection from
+`pi_1(Y)` are separate global checks.
 
 ## Finite Generation And Finite Presentation Are Different Claims
 
@@ -793,10 +843,11 @@ The following distinctions are essential.
 
 ### Finite generation
 
-For a direct Bestvina--Brady Morse setup, nonempty connected ascending and
-descending links imply finite generation of the kernel. This is the conclusion
-used by Jankiewicz--Wise. In their lawful-subcomplex argument, finite
-generation passes from the kernel over `Y` to its quotient `ker(phi)`.
+For the finite cyclic-cover Morse setup above, nonempty connected ascending
+and descending links give a finite height band whose fundamental group
+surjects onto the kernel. This is the finite-generation conclusion used by
+Jankiewicz--Wise. In the lawful-subcomplex argument, finite generation passes
+from the kernel over `Y` to its quotient `ker(phi)`.
 
 ### Finite presentation
 
@@ -878,10 +929,14 @@ following records.
 ### Morse data
 
 - lawful and discarded cell ids with reasons;
-- exact affine/asphericity evidence for the lawful complex;
+- exact compatible PL-affine evidence for the lawful complex;
 - unique minimum and maximum check for every retained cell;
 - ascending and descending links at every vertex representative;
 - nonemptiness and connectivity witnesses;
+- `finiteHeightBand: LawfulFiniteHeightBandCertificate`, rechecking the finite
+  PL/link prerequisites and recording the bounded-band `pi_1` consequence;
+- optional CAT(0)/asphericity evidence, clearly marked as stronger diagnostic
+  information rather than a promotion gate;
 - optional simple-connectivity data, clearly separated from the conclusion it
   supports;
 - the map from the lawful-kernel presentation onto `ker(phi)`.
@@ -916,14 +971,15 @@ The following are exact finite computations for a supplied artifact:
 
 They become part of a theorem-level virtual-fibering certificate only when the
 artifact also proves that the finite action is the stated cover, that `H` has
-the required subgroup properties, and that the affine/aspherical Morse
-hypotheses apply. A browser drawing supplies none of those implications.
+the required subgroup properties, and that the finite PL Morse and
+bounded-height-band hypotheses apply. A browser drawing supplies none of
+those implications.
 
 Suggested UI language:
 
 - **Explicit primitive homomorphism:** presentation, relators, and gcd pass.
-- **Morse diagnostics pass:** lawful cells and finite links pass, but a global
-  hypothesis is missing.
+- **Morse diagnostics pass:** lawful cells and finite links pass, but the PL
+  height, finite-band, or kernel-transfer evidence is missing.
 - **Verified virtual algebraic fibration:** every subgroup, algebraic, and
   finite-generation hypothesis has a matching certificate.
 - **Non-finite-presentability conclusion:** the separate Bieri and Euler
@@ -954,10 +1010,12 @@ for this specification:
 - Proposition 3.5 and Sections 3.2--3.3: the good-wall hypotheses used in the
   paper's existence argument.
 
-The positive simple-connectivity criterion for finite presentation is
-Bestvina--Brady, _Morse theory and finiteness properties of groups_, Theorem
-4.1(3). Jankiewicz--Wise quote only the finite-generation specialization needed
-for their proof.
+The finite-height-band `pi_1`-surjection used here is Bestvina--Brady,
+_Morse theory and finiteness properties of groups_, Corollary 2.6(3). The
+positive simple-connectivity criterion for finite presentation is their
+Theorem 4.1(3). Jankiewicz--Wise quote the finite-generation specialization
+needed for their proof in an aspherical package; the direct cyclic-cover
+argument does not require that extra hypothesis.
 
 See also [Mathematical conventions](math.md),
 [From a finite cover to walls](cover-compression-walls.md), and

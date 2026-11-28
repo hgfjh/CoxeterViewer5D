@@ -1,21 +1,66 @@
-# Two-Track Fibering Certification For The Compact 5-Cube
+# Fibering Certification After A Cover: Track A And Track B
 
-This note describes two ways to certify a virtual algebraic fibration once a
-torsion-free finite-index subgroup of the compact 5-cube Coxeter group has
-been found. The two tracks use the same subgroup and apply PL Morse theory to
-different complexes. Track A is built from a wall coorientation. Track B can
-use that wall character or an independently certified integral character in
-the full lattice `H^1(H;Z)`.
+**Status (as of 2026-10-04).** Track A and Track B are implemented and can
+promote a certificate.
 
-The first track follows Jankiewicz--Wise as closely as the compact 5-cube
-allows: retain the full 1-skeleton and only those rank-two cells on which the
-wall map is lawful. It is usually the smaller calculation. The second track
-works on the complete Davis quotient and supplies a compatible subdivision
-and a generic PL height there. It is more expensive, but it avoids having to
-prove that a separately chosen 2-dimensional subcomplex is aspherical.
+This note is the map of what the repository can do once a finite torsion-free
+action of a Coxeter group `W` is in hand, that is, a torsion-free finite-index
+subgroup `H` given by a complete coset action. How to get such a cover is in
+[torsion-free-cover-discovery.md](torsion-free-cover-discovery.md) and
+compact-action-import.md. Background on
+compressions and walls is in [math.md](math.md); definitions are in
+[glossary.md](glossary.md).
 
-Neither track is a theorem prover. A run is promoted only when its finite
-artifact contains the data and witnesses listed below.
+Both tracks start from the same subgroup and apply PL Morse theory to
+different complexes. None of them is a theorem prover. A run is promoted only
+when its finite artifact contains the data and witnesses listed below. The
+worked numbers in this note come from the compact 5-cube.
+
+## The Two Tracks At A Glance
+
+|               | Track A                                                                                                             | Track B                                                                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Complex       | lawful subcomplex `Y` (or `Y^up`) of the compression, for one wall orientation                                      | full Davis quotient `K = H\Sigma` with a global pulling triangulation                                       |
+| Character     | wall cocycle                                                                                                        | wall cocycle, or any primitive class in a certified `H^1(H;Z)`                                              |
+| Local test    | ascending/descending links nonempty and connected                                                                   | ascending/descending links nonempty and connected                                                           |
+| Certifies     | virtual algebraic fibration, via the finite-height-band / `pi_1`-surjection argument and the kernel transfer to `H` | virtual algebraic fibration, directly on `K` (direct fixed-character branch and scalable full-`H^1` branch) |
+| Canonical doc | [virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)                                                      | [full-davis-fibering-certification.md](full-davis-fibering-certification.md)                                |
+| Entry points  | `pnpm cover:fiber:user-action`; the Covers + Walls export, checked by `node scripts/validate_virtual_fibering.mjs`  | `pnpm cover:fiber:user-action`, `pnpm cover:fiber:scalable-h1`                                              |
+| Status        | implemented; promotes                                                                                               | implemented; promotes                                                                                       |
+
+`pnpm bench:pipeline` runs the packed-manifest stages that come before any of
+these routes at scale: load the action, certify torsion-freeness, build the
+streamed oracle and prepare `H^1`. Packed actions use
+`generator-permutation-files` manifests
+(compact-action-import.md).
+
+### What a passing certificate means
+
+A **virtual algebraic fibration** is an epimorphism `phi: H -> Z` from a
+finite-index subgroup `H <= W` whose kernel is finitely generated. Track A and
+Track B certify exactly this, through the Bestvina--Brady first gate: every
+ascending and descending link nonempty and connected.
+
+For the compact hyperbolic Coxeter groups of dimension at least three targeted
+here (whose first `L^2`-Betti number vanishes), a finite-index algebraic
+fibration with finitely generated kernel is already known to exist abstractly
+(Kielak; Fisher; Haglund--Wise; see
+[references.md](references.md#abstract-virtual-fibering-results)). A passing
+certificate makes one explicit; it is not a new existence result. A finitely
+presented or type-`F` kernel for a closed hyperbolic manifold group of
+dimension at least five would be new, and neither track certifies one.
+
+Neither track certifies a topological or smooth bundle. The criterion this
+project uses to conclude that a manifold fibers over `S^1` is IMM Theorem 8: a
+compact smooth manifold of
+dimension at most five with a compatible affine structure, and every directed
+link **collapsible** (the second gate). The manifold hypotheses are not
+machine-checked. So no current artifact
+certifies a fibration over the circle. A cone link is only a sufficient
+condition for collapsibility.
+
+The rest of this note gives the setup shared by both tracks, the Track A and
+Track B promotion policy, and how the tracks relate.
 
 ## Common Setup
 
@@ -93,8 +138,9 @@ records, and replay reconstructs every chunk from the SHA-bound permutation
 action. Its rank-at-most-two result distinguishes a definition-level replay
 from a stronger bridge to a supplied materialized `hat X -> bar X` artifact.
 
-A two-sided quotient wall has two possible coorientations. Choosing one for
-each wall directs every geometric generator edge dual to it. Give an oriented
+A two-sided quotient wall has two possible coorientations (Jankiewicz--Wise
+call a coorientation an orientation of the wall; the two words mean the same
+thing here). Choosing one for each wall directs every geometric generator edge dual to it. Give an oriented
 edge `e` the value `c(e) = +1` when it follows that direction and `c(e) = -1`
 when it runs against it. Opposite sides of a Coxeter polygon receive
 compatible directions, so a candidate coorientation should satisfy
@@ -132,44 +178,19 @@ What remains is to certify that `ker(phi)` is finitely generated.
 
 ### The lawful polygon criterion
 
-Fix the wall coorientation. Read the directed edges around the attaching
-cycle of a rank-two polygon `C`. The polygon is **lawful** when its attaching
-map can be written
+Fix the wall orientation. A rank-two polygon is **lawful** when its boundary
+has exactly one source and one sink, that is, two positively directed paths
+with the same endpoints; for unit edge values this means the cyclic sign word
+has exactly two sign changes. Lawfulness is stronger than the zero boundary
+sum: `+ - + - + -` sums to zero but is not lawful, while `+ + + - - -` is. The
+full definition and the record kept for each retained cell are in
+[virtual-algebraic-fibering.md, section 7](virtual-algebraic-fibering.md#7-build-the-lawful-subcomplex).
 
-```text
-boundary(C) = alpha beta^(-1),
-```
-
-where `alpha` and `beta` are positively directed edge paths with the same
-initial and terminal vertices. Thus the boundary has one source, one sink,
-and two directed routes from the source to the sink. When the polygon is
-embedded and every boundary value is `+1` or `-1`, this is equivalent to the
-cyclic boundary-sign sequence having exactly two sign changes.
-
-Lawfulness is stronger than the cocycle equation. A hexagon with signs
-
-```text
-+ - + - + -
-```
-
-has total sum zero, but it has three local maxima and three local minima. It
-is not lawful. By contrast,
-
-```text
-+ + + - - -
-```
-
-has one source and one sink and is lawful.
-
-For this fixed coorientation, define `Y` by retaining:
-
-- every vertex of `K`;
-- every geometric generator edge of `K`;
-- exactly the lawful rank-two cells.
-
-There is no further choice of cells after the wall signs are fixed. Searching
-for a large lawful subcomplex means searching over wall coorientations, not
-discarding arbitrary lawful cells from a completed answer.
+For this fixed orientation, `Y` retains every vertex and every geometric
+generator edge of `K`, and exactly the lawful rank-two cells. There is no
+further choice of cells after the wall signs are fixed. Searching for a large
+lawful subcomplex means searching over wall orientations, not discarding
+arbitrary lawful cells from a completed answer.
 
 ### The generalized coface-closed lawful complex
 
@@ -197,18 +218,19 @@ strict face poset. Changing this option does not change the wall signs, the
 cocycle, or the rank-two lawfulness test.
 
 Closure is not a Morse theorem. A retained higher Coxeter cell may have only
-lawful polygonal faces without admitting the required compatible affine
-extension of the chosen wall map. Its higher-dimensional ascending and
-descending links may also differ from the graph links in the rank-two
-complex. Finally, deleting cofaces from a contractible complex does not by
-itself leave an aspherical complex. A theorem-facing certificate for `Y^up`
-therefore also requires scope-matched evidence for:
+lawful polygonal faces without making the wall height affine on that original,
+nonsimplicial cell. A compatible triangulation does, however, give a PL
+extension: integrate the cocycle on the vertices, break any new height ties,
+and extend uniquely over every simplex. The higher-dimensional ascending and
+descending links may differ from the graph links in the rank-two complex. A
+theorem-facing certificate for `Y^up` therefore requires scope-matched
+evidence for:
 
-- asphericity (or a contractible universal cover) of this actual retained
-  subcomplex;
-- a compatible nonconstant affine Morse extension over every retained higher
-  cell; and
-- the complete ascending and descending links in the retained subdivision.
+- a finite compatible triangulation and a nonconstant PL-affine Morse height
+  on every retained simplex;
+- the complete ascending and descending links in that retained subdivision;
+  and
+- the finite-height-band `pi_1`-surjection argument described below.
 
 These are executable checks, not external evidence fields. The subdivision is
 the global pulling subdivision defined by increasing quotient-vertex order.
@@ -230,18 +252,20 @@ calculation and replay, but archives only its vertex counts, component
 partition, and source-rooted digest. Those archived data are complete for
 testing nonemptiness and connectivity; they do not contain every link edge.
 
-Asphericity has a separate, one-sided certificate. Each retained Coxeter cell
-uses the inherited Davis--Moussong piecewise Euclidean metric. At every
+Asphericity remains a separate, optional stronger diagnostic. Each retained
+Coxeter cell uses the inherited Davis--Moussong piecewise Euclidean metric. At every
 quotient vertex, the implementation checks the metric-flag condition exactly:
 whenever the incident lawful rank-two faces form the edge set of a spherical
 subset, the corresponding retained higher cell must fill that simplex. If all
 links pass, the complex is locally CAT(0), and its universal cover is CAT(0)
 and contractible. A metric-flag obstruction means only that this inherited
-metric did not certify asphericity; it is not a proof of non-asphericity.
+metric did not certify asphericity; it is not a proof of non-asphericity and
+does not block the finite-generation conclusion.
 
 The ordinary `rank-two-lawful` model remains the default first track because
-its regular-polygon metric links and directed graph links can be checked
-directly and cheaply. The generalized model is implemented, but it is never
+its affine polygon models and directed graph links can be checked directly
+and cheaply. Its regular-polygon metric links are useful optional evidence,
+not a promotion gate. The generalized model is implemented, but it is never
 promoted merely because its cell set is downward closed.
 
 On every retained polygon, the circle-valued wall map has a lift with one
@@ -252,82 +276,34 @@ separately to certify nonpositive curvature. The certificate must record both
 structures and must not assume that regularity alone makes the wall map
 affine.
 
-### Why `pi_1(Y)` is enough
+### Why the finite-height band and `pi_1(Y)` are enough
 
-The inclusion `Y -> K` contains the entire connected 1-skeleton. Consequently
-it induces a surjection
+Two facts carry Track A. They are proved in
+[virtual-algebraic-fibering.md, section 8](virtual-algebraic-fibering.md#8-certify-the-finite-height-band-argument).
 
-```text
-q: pi_1(Y) -> pi_1(K) = H.
-```
+1. **Finite-height band.** Let `Y_psi -> Y` be the infinite cyclic cover for
+   `ker(psi)`, where `psi = chi o q` and `q: pi_1(Y) -> pi_1(K) = H` is onto
+   because `Y` contains the whole connected 1-skeleton. If every ascending and
+   descending link is nonempty and connected, Bestvina--Brady Corollary 2.6(3)
+   makes `pi_1` of a compact height band surject onto `pi_1(Y_psi) =
+ker(psi)`, so `ker(psi)` is finitely generated. This takes place in the
+   cyclic cover itself and needs no asphericity hypothesis on `Y`.
+2. **Kernel transfer.** `q` restricts to a surjection
+   `ker(psi) -> ker(chi) = ker(phi)`, so `ker(phi)` is finitely generated. This
+   is the kernel-quotient step of Jankiewicz--Wise, Section 3.3. It is why the
+   Morse function need not be defined on every cell of `K`.
 
-One way to see this is to construct `K` from its 1-skeleton. Adding the
-rank-two cells omitted from `Y` imposes additional relations on `pi_1(Y)`;
-adding cells of dimension at least three does not change the fundamental
-group. Thus every element of `H` is represented by an edge loop already
-present in `Y`.
+Jankiewicz--Wise package their two-dimensional application with an aspherical
+affine complex. Those nonpositive-curvature hypotheses matter for their other
+conclusions but are stronger than this `F_1` transfer needs. For Track A, a
+CAT(0) or asphericity certificate is optional geometric evidence; the
+theorem-facing record is the replayable `LawfulFiniteHeightBandCertificate`,
+whose method is `bestvina-brady-finite-height-band-pi1-surjection`.
 
-The unnormalized wall character on `Y` is the pullback of the character on
-`K`:
-
-```text
-psi = chi o q: pi_1(Y) -> Z.
-```
-
-The map `q` restricts to a surjection of kernels,
-
-```text
-q: ker(psi) -> ker(chi) = ker(phi).
-```
-
-Indeed, if `h` lies in `ker(phi)=ker(chi)`, choose `y in pi_1(Y)` with
-`q(y)=h`. Then `psi(y)=chi(h)=0`, so `y` lies in `ker(psi)`. It follows that
-`ker(phi)` is a quotient of `ker(psi)`. Therefore
-
-```text
-ker(psi) finitely generated  =>  ker(phi) finitely generated.
-```
-
-This is the kernel-quotient step used by Jankiewicz--Wise. It is why the
-Morse function need not be defined on every cell of `K` in order to prove an
-algebraic fibration of `H`.
-
-### The compact-5-cube asphericity problem
-
-The lawful route is not automatic in the compact-5-cube setting. The version
-of the Jankiewicz--Wise argument used for their two-dimensional Coxeter
-complexes assumes an aspherical affine complex. They obtain the relevant
-nonpositive-curvature setting when every three-generator special subgroup is
-infinite; in their notation the condition is
-
-```text
-1/m_ij + 1/m_jk + 1/m_ki <= 1
-```
-
-for every triple.
-
-The compact 5-cube has finite spherical subsets of rank three and higher. In
-the full Davis complex, a higher Coxeter cell fills the spherical residue
-created by such a subset. Its boundary can already appear as a sphere in the
-2-skeleton. Jankiewicz--Wise point out the rank-three instance explicitly:
-when a three-generator special subgroup is finite, the compressed
-2-complex contains a copy of `S^2`.
-
-This observation has two consequences.
-
-First, the asphericity of `K` does not imply the asphericity of `Y`. The
-higher Davis cells that make `Sigma` contractible are absent from `Y`.
-Second, the presence of spherical triples does not prove that every lawful
-`Y` is nonaspherical. Deleting unlawful polygons may break the offending
-spherical subcomplexes. Asphericity must therefore be checked for the actual
-`Y` produced by the chosen wall signs.
-
-The preferred finite certificate is a nonpositively curved piecewise
-Euclidean metric on `Y`: record the metric polygons and verify the metric link
-condition at every quotient vertex. A complete local CAT(0) certificate
-implies that the universal cover of `Y` is CAT(0), hence contractible. A
-different proof of asphericity may be supplied, but an unchecked assertion or
-a picture of the links is not enough.
+This distinction matters in the compact 5-cube. Its lawful subcomplex can
+fail the inherited Davis--Moussong metric-flag test because spherical cells
+were removed. That failure says nothing about the bounded-band argument once
+the actual PL height and all actual directed links pass.
 
 ### Current index-34,560 generalized calculation
 
@@ -349,11 +325,11 @@ components of sizes 77 and 7. This is the corrected generalized Track A
 failure; it is not the earlier rank-two-only calculation.
 
 All 16 candidates also have exact metric-flag obstructions in the inherited
-Davis--Moussong metric. Consequently neither the Morse-link gate nor this
-particular CAT(0) route certifies generalized Track A for the double cover.
-The latter failure still does not prove that these finite complexes are
-non-aspherical, and neither failure is a general obstruction to a different
-cover or Morse construction.
+Davis--Moussong metric. Those obstructions disable that optional CAT(0)
+certificate but are not a Track A failure. Generalized Track A fails here
+because its actual ascending and descending links are disconnected. That
+failure is still scoped to this cover and PL construction; it is not a
+general obstruction to a different cover or Morse construction.
 
 ### Lawful-track promotion gates
 
@@ -373,15 +349,19 @@ the following have passed:
    it contains the complete 1-skeleton and exactly the lawful polygons. For
    the generalized model, it additionally contains exactly the higher cells
    whose every 2-face is lawful and passes a downward-closure check.
-7. The selected `Y` is finite and affine, and its universal cover is certified
-   contractible, for example by a complete nonpositive-curvature link check.
-8. The lifted map is Morse on every retained cell, with discrete vertex
-   heights. The generalized model requires this check on its higher cells,
-   not only on their polygonal faces.
+7. The selected `Y` is finite and has a compatible affine or subdivided
+   PL-affine structure.
+8. The lifted map is Morse on every retained cell or simplex, with discrete
+   vertex heights. The generalized model requires this check on its higher
+   cells, not only on their polygonal faces.
 9. The complete ascending and descending links in the selected `Y` are
    nonempty and connected at every quotient vertex. Connectivity must carry
    replayable witnesses, not only Boolean fields.
-10. The maps `pi_1(Y) -> H -> Z` commute, so the exported kernel-surjection
+10. The `finiteHeightBand` record rechecks the finite quotient, PL height, and
+    directed-link prerequisites, then records the Bestvina--Brady
+    bounded-band `pi_1`-surjection consequence. It does not materialize the
+    infinite cyclic cover or the band.
+11. The maps `pi_1(Y) -> H -> Z` commute, so the exported kernel-surjection
     argument can be checked directly.
 
 If these gates pass, Bestvina--Brady Morse theory makes `ker(psi)` finitely
@@ -397,10 +377,10 @@ does not prove that `ker(phi)` is finitely presented, nor that a manifold
 fibers locally trivially over the circle.
 
 Failure also has to be read carefully. If no tested coorientation has enough
-lawful cells, the search may simply be incomplete. If the selected `Y` fails
-an NPC test, it might still be aspherical for another reason. If its directed
-links are disconnected, another coorientation may work. None of these is a
-general obstruction to virtual fibering.
+lawful cells, the search may simply be incomplete. Failure of an optional NPC
+test is not a fibering obstruction. If the directed links are disconnected,
+another coorientation or PL construction may work. None of these is a general
+obstruction to virtual fibering.
 
 ## Track B: The Full Davis Quotient
 
@@ -410,10 +390,11 @@ Track B applies Morse theory directly to
 K = H\Sigma.
 ```
 
-Here the global asphericity problem has already been solved: `Sigma` is the
-contractible universal cover and the torsion-free action identifies
-`pi_1(K)` with `H`. The price is that all Coxeter cells, not merely the
-rank-two polygons, must be handled compatibly.
+Here `Sigma` is the contractible universal cover and the torsion-free action
+identifies `pi_1(K)` with `H`. This supplies stronger ambient geometry than
+the finite-generation argument needs and removes the kernel-quotient transfer
+through `Y`. The price is that all Coxeter cells, not merely the rank-two
+polygons, must be handled compatibly.
 
 The wall cocycle gives an exact character on the 1-skeleton, but arbitrary
 vertex heights need not be the restriction of one affine function on a
@@ -441,7 +422,9 @@ following construction:
 The vertex order, pulling subdivision, and rational offsets are canonical
 implementation choices, not additional hypotheses of the fibering theorem.
 Their role is to produce a finite, exact, reproducible affine Morse model on
-the full Coxeter-cell complex.
+the full Coxeter-cell complex. The construction is specified in
+[full-davis-fibering-certification.md](full-davis-fibering-certification.md),
+sections 7--9.
 
 ### Full-Davis promotion gates
 
@@ -653,12 +636,16 @@ generation of the kernel.
 
 Track B still proves an algebraic fibration, not automatically a topological
 bundle. Connected directed links do not imply that the kernel is finitely
-presented. Stronger finiteness or manifold-fibration conclusions require
-their own hypotheses and must be stated separately.
+presented. Because `Sigma` is contractible and `H` acts freely and
+cocompactly, Bestvina--Brady Theorem 4.1 would give a finitely presented
+kernel from simply connected links and a kernel of type `F` from contractible
+links; the current certificate promotes neither. Stronger finiteness or
+manifold-fibration conclusions require their own hypotheses and must be
+stated separately.
 
-## How The Two Tracks Work Together
+## How The Routes Work Together
 
-The intended order is:
+The intended order for Track A and Track B is:
 
 ```text
 certify H and the wall character
@@ -679,12 +666,13 @@ Track A is cheaper because it works with the 1-skeleton and selected polygons;
 its directed links are graphs. It should be tried first. A pass is a complete
 finite-generation proof for `ker(phi)`, not a provisional result.
 
-Track B is the fallback when the lawful complex lacks a certified asphericity
-or NPC argument, when its directed links fail, or when a full-dimensional PL
-model is wanted for its own sake. Higher cells can add simplices to directed
-links, so failure of a lawful link does not force failure of the full-Davis
-link. Conversely, a successful lawful calculation says nothing automatic
-about the full links.
+Track B is the fallback when the lawful complex's directed links fail, when
+its PL Morse model cannot be certified, or when a full-dimensional model is
+wanted for its own sake. Failure of an optional lawful-complex CAT(0) or NPC
+diagnostic is not a reason by itself to invoke Track B. Higher cells can add
+simplices to directed links, so failure of a lawful link does not force
+failure of the full-Davis link. Conversely, a successful lawful calculation
+says nothing automatic about the full links.
 
 More precisely, for the same global pulling order and vertex height,
 
@@ -705,7 +693,9 @@ Failures in the common algebraic layer are different. If a wall is one-sided,
 a rank-two boundary sum is nonzero, or the resulting character is zero, the
 same wall assignment cannot be repaired merely by changing certification
 tracks. The app must find another wall coorientation, another finite cover, or
-another integral cocycle.
+another integral cocycle. Track B runs that take an intrinsic character instead of a wall
+character, such as the scalable full-`H^1` branch, can still proceed on such a
+cover.
 
 Every exported result should therefore name its scope explicitly:
 
@@ -729,8 +719,10 @@ Every exported result should therefore name its scope explicitly:
 - Mladen Bestvina and Noel Brady,
   [_Morse theory and finiteness properties of groups_](https://doi.org/10.1007/s002220050168),
   _Inventiones Mathematicae_ 129 (1997), 445--470. The affine Morse
-  definitions and Theorem 4.1 supply the ascending/descending-link criterion
-  used to deduce finite generation.
+  definitions and Corollary 2.6(3) supply the bounded-height-band
+  `pi_1`-surjection used here to deduce finite generation without an
+  asphericity hypothesis. Theorem 4.1 gives stronger group-action
+  applications under additional hypotheses.
 
 - Michael W. Davis,
   [_The Geometry and Topology of Coxeter Groups_](https://www.degruyter.com/document/doi/10.1515/9781400845941/html),
@@ -743,7 +735,7 @@ Every exported result should therefore name its scope explicitly:
   _Advances in Mathematics_ 177 (2003), 115--179. Section 5.8 gives the
   canonical metric on Coxeter cell complexes, link-edge lengths
   `pi - pi/m_ij`, and the metric-flag nonpositive-curvature criterion used by
-  the generalized lawful asphericity certificate.
+  the optional generalized lawful CAT(0)/asphericity diagnostic.
 
 - Mladen Bestvina,
   [_PL Morse theory_](https://www.math.utah.edu/~bestvina/eprints/minicourse.pdf),
@@ -761,8 +753,14 @@ Every exported result should therefore name its scope explicitly:
   Springer, 2010. This supports the compatible pulling-triangulation machinery
   used to make the full-Davis construction deterministic.
 
-The two-track policy itself is a synthesis. Jankiewicz--Wise supply the
+- Giovanni Italiano, Bruno Martelli, and Matteo Migliorini,
+  _Hyperbolic 5-manifolds that fiber over `S^1`_, _Inventiones Mathematicae_
+  231 (2023), 1--38. Theorem 8 is the collapsible-link fibering criterion
+  behind the second gate. Full details are in
+  [references.md](references.md).
+
+The policy itself is a synthesis. Jankiewicz--Wise supply the
 lawful-subcomplex and kernel-quotient argument; Bestvina--Brady supplies the
 Morse finiteness criterion; Davis supplies the full contractible Coxeter-cell
-complex. The project-specific responsibility is to turn every hypothesis in
-those arguments into finite, independently replayable evidence.
+complex; IMM supply the collapsible-link criterion. The project-specific responsibility is to turn every
+hypothesis in those arguments into finite, independently replayable evidence.

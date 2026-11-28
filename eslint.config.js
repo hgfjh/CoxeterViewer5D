@@ -13,6 +13,8 @@ export default tseslint.config(
       "test-results",
       ".tmp",
       ".h1-jobs",
+      ".cover-search",
+      ".benchmark-current",
       "src-tauri/gen",
       "src-tauri/target",
     ],

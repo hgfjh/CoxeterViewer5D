@@ -56,12 +56,15 @@ Core movement and inspection controls are:
   Forward/back movement is tuned for inspection rather than travel, and
   left/right strafing is intentionally gentler than forward/back movement.
 - Light/dark mode for the shell and scene background.
-- Viewer-only mode for hiding the side rails and header strip while keeping a
-  small `Show UI` button over the canvas.
+- Viewer-only mode (`U`, or the top-bar button) for hiding the side rails and
+  header strip while keeping a small **Show controls (U)** button over the
+  canvas.
+- `Q` and `E` move the camera down and up; Shift speeds up camera movement.
 - Fullscreen from the desktop menu uses the native Tauri window fullscreen API
   when available. Browser fullscreen remains the web fallback.
-- Reset view, toggle labels, toggle relation cells, and switch models through
-  the same app actions used by browser controls.
+- Reset camera, toggle labels, toggle relation cells, and switch between
+  Teaching and Research modes through the same app actions used by browser
+  controls.
 - The **Workflow** menu opens the current sequence: find a rank-two cell,
   inspect a finite cover, find walls in `bar X`, coorient walls, and inspect
   ascending or descending links.

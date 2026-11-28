@@ -78,9 +78,7 @@ function representativeWords(generatorImages: number[][]): number[][] {
     }
   }
   if (words.some((word) => word === undefined)) {
-    throw new Error(
-      "The six transpositions did not generate a transitive S4 action.",
-    );
+    throw new Error("The bundled generators did not act transitively.");
   }
   return words as number[][];
 }
@@ -185,6 +183,141 @@ export function buildIdealHyperbolic3CubeS4Cover(
     {
       name: "Regular ideal 3-cube S4-kernel cover (24 sheets)",
       subgroupName: "ker(W -> S4)",
+      checkedAt: "1970-01-01T00:00:00.000Z",
+    },
+  );
+}
+
+/**
+ * The Coxeter matrix of the compact hyperbolic tetrahedron C(4,4;2,2;3,3) in
+ * the labelling used by the bundled compact_3_tetrahedron_c44_2233 example.
+ */
+export const C44_2233_COXETER_MATRIX = [
+  [1, 3, 4, 2],
+  [3, 1, 2, 4],
+  [4, 2, 1, 3],
+  [2, 4, 3, 1],
+] as const;
+
+/** Projective involutions r_0..r_3 in PSL(2,7), as [a, b, c, d] for (a b; c d). */
+const C44_PSL27_INVOLUTIONS = [
+  [0, 1, 6, 0],
+  [0, 2, 3, 0],
+  [3, 3, 6, 4],
+  [3, 2, 2, 4],
+] as const;
+
+type ProjectiveSign = [number, number, number, number, number];
+
+function multiplyMod7(x: ProjectiveSign, y: ProjectiveSign): ProjectiveSign {
+  const p = 7;
+  return [
+    (x[0] * y[0] + x[1] * y[2]) % p,
+    (x[0] * y[1] + x[1] * y[3]) % p,
+    (x[2] * y[0] + x[3] * y[2]) % p,
+    (x[2] * y[1] + x[3] * y[3]) % p,
+    x[4] ^ y[4],
+  ];
+}
+
+/** A matrix and its negative are the same element of PSL(2,7). */
+function projectiveKey(x: ProjectiveSign): string {
+  const negated = x.map((value, index) =>
+    index < 4 ? (7 - value) % 7 : value,
+  );
+  const plain = x.join(",");
+  const other = negated.join(",");
+  return plain < other ? plain : other;
+}
+
+function assertC44Presentation(system: CoxeterSystemInput): void {
+  const ok =
+    system.rank === 4 &&
+    C44_2233_COXETER_MATRIX.every((row, i) =>
+      row.every((m, j) => system.coxeterMatrix[i][j] === m),
+    );
+  if (!ok) {
+    throw new Error(
+      "The bundled PSL(2,7) action requires the C(4,4;2,2;3,3) Coxeter matrix in the writeup's labelling.",
+    );
+  }
+}
+
+/**
+ * Regular right action of the image of W = C(4,4;2,2;3,3) under
+ * s_i -> (r_i, 1) in PSL(2,7) x C2 (Zimmermann's quotient, with reflection
+ * parity adjoined).  The image has order 336.  As for the S4 action,
+ * torsion-freeness is not inferred here; `buildC44Psl27Cover` certifies it.
+ */
+export function createC44Psl27Action(
+  system: CoxeterSystemInput,
+): TorsionFreeActionCandidate {
+  assertC44Presentation(system);
+  const generators = C44_PSL27_INVOLUTIONS.map(
+    (r) => [...r, 1] as ProjectiveSign,
+  );
+  const identity: ProjectiveSign = [1, 0, 0, 1, 0];
+  const elements: ProjectiveSign[] = [identity];
+  const pointByKey = new Map([[projectiveKey(identity), 0]]);
+  for (let head = 0; head < elements.length; head += 1) {
+    for (const generator of generators) {
+      const product = multiplyMod7(elements[head], generator);
+      const key = projectiveKey(product);
+      if (!pointByKey.has(key)) {
+        pointByKey.set(key, elements.length);
+        elements.push(product);
+      }
+    }
+  }
+  const generatorImages = generators.map((generator) =>
+    elements.map(
+      (element) =>
+        pointByKey.get(projectiveKey(multiplyMod7(element, generator)))!,
+    ),
+  );
+  return {
+    id: "c44-2233-psl27-c2-regular",
+    name: "ker(W -> PSL(2,7) x C2), s_i -> (r_i, 1)",
+    index: elements.length,
+    generatorImages,
+    pointLabels: elements.map(
+      ([a, b, c, d, parity]) =>
+        `[[${a},${b}],[${c},${d}]]${parity ? "-" : "+"}`,
+    ),
+    representativeWords: representativeWords(generatorImages),
+    backend: "bundled-exact-psl27-action",
+    backendVersion: "1.0.0",
+    source:
+      "Explicit map W -> PSL(2,7) x C2 after Zimmermann (arXiv:2003.00730).",
+    notes: [
+      "The four projective involutions have pair-product orders equal to the Coxeter matrix and generate PSL(2,7); with parity the image has order 336.",
+      "Every maximal spherical subgroup is B3 of order 48 and maps injectively, so the kernel is torsion-free; the in-repo certificate checks this exactly.",
+      "The parity coordinate puts the kernel in the orientation-preserving subgroup, so the quotient is a closed orientable hyperbolic 3-manifold.",
+    ],
+  };
+}
+
+/** Build the bundled 336-sheet cover only after the exact action certificate passes. */
+export function buildC44Psl27Cover(
+  system: CoxeterSystemInput,
+): QuotientComplex {
+  const candidate = createC44Psl27Action(system);
+  const certificate = certifyTorsionFreeAction(
+    system,
+    candidate,
+    planSphericalSpecialSubgroups(system),
+  );
+  if (certificate.status !== "passed") {
+    throw new Error(
+      `Bundled PSL(2,7) kernel failed its torsion-free certificate: ${certificate.errors.join(" ")}`,
+    );
+  }
+  return acceptedActionToQuotientComplex(
+    system,
+    { candidate, certificate },
+    {
+      name: "C(4,4;2,2;3,3) PSL(2,7) x C2 kernel cover (336 sheets)",
+      subgroupName: "ker(W -> PSL(2,7) x C2)",
       checkedAt: "1970-01-01T00:00:00.000Z",
     },
   );

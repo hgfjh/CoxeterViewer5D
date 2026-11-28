@@ -83,6 +83,9 @@ export function deriveWallIntegerCocycle(
     wallSystem.walls.map((wall) => [wall.id, wall] as const),
   );
   const knownEdgeIds = new Set(barX.geometricEdges.map((edge) => edge.id));
+  const wallEdgeSets = new Map(
+    wallSystem.walls.map((wall) => [wall.id, new Set(wall.edgeIds)] as const),
+  );
   const wallWeights = options.wallWeights ?? {};
   for (const wallId of Object.keys(wallWeights).sort(compareIds)) {
     if (!wallById.has(wallId)) {
@@ -130,7 +133,7 @@ export function deriveWallIntegerCocycle(
       continue;
     }
     const wall = wallById.get(wallId);
-    if (wall === undefined || !wall.edgeIds.includes(edge.id)) {
+    if (wall === undefined || !wallEdgeSets.get(wallId)!.has(edge.id)) {
       failures.push({
         kind: "missing-wall-for-edge",
         edgeId: edge.id,
@@ -637,8 +640,9 @@ function buildSpanningForest(barX: BarXCompressedComplex): SpanningForest {
   }
 
   // This assertion also catches malformed edges before path construction.
+  const nonTreeEdgeSet = new Set(nonTreeEdgeIds);
   for (const edge of barX.geometricEdges) {
-    if (!treeEdgeSet.has(edge.id) && !nonTreeEdgeIds.includes(edge.id)) {
+    if (!treeEdgeSet.has(edge.id) && !nonTreeEdgeSet.has(edge.id)) {
       throw new Error(`Edge ${edge.id} was not classified by the forest.`);
     }
   }
@@ -729,25 +733,42 @@ export function computeBezoutIdentity(
     }
   }
 
-  const coefficients = new Map<string, bigint>();
+  // Iterated extended gcd.  Step t rescales every coefficient chosen before
+  // it by its left Bezout factor, so the final coefficient of entry i is its
+  // own coefficient times the product of the left factors of all later
+  // steps.  One backward pass over those suffix products gives the same
+  // coefficients as rescaling eagerly, without the quadratic loop.
+  const chosen: Array<{ generatorId: string; coefficient: bigint }> = [];
+  const leftFactors: bigint[] = [];
   let gcd = 0n;
   for (const entry of sorted) {
     const value = BigInt(entry.value);
     if (value === 0n) continue;
     if (gcd === 0n) {
       gcd = absoluteBigInt(value);
-      coefficients.set(entry.generatorId, value > 0n ? 1n : -1n);
+      chosen.push({
+        generatorId: entry.generatorId,
+        coefficient: value > 0n ? 1n : -1n,
+      });
+      leftFactors.push(1n);
       continue;
     }
     const result = extendedGcd(gcd, absoluteBigInt(value));
-    for (const [generatorId, coefficient] of coefficients) {
-      coefficients.set(generatorId, coefficient * result.leftCoefficient);
-    }
-    coefficients.set(
-      entry.generatorId,
-      result.rightCoefficient * (value > 0n ? 1n : -1n),
-    );
+    leftFactors.push(result.leftCoefficient);
+    chosen.push({
+      generatorId: entry.generatorId,
+      coefficient: result.rightCoefficient * (value > 0n ? 1n : -1n),
+    });
     gcd = result.gcd;
+  }
+  const coefficients = new Map<string, bigint>();
+  let laterProduct = 1n;
+  for (let index = chosen.length - 1; index >= 0; index -= 1) {
+    coefficients.set(
+      chosen[index].generatorId,
+      chosen[index].coefficient * laterProduct,
+    );
+    laterProduct *= leftFactors[index];
   }
 
   const terms = sorted

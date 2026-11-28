@@ -13,12 +13,10 @@ import { dirname, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import {
-  buildCompactActionPortfolio,
-  COMPACT_TARGET_DEFINITIONS,
-  replayCompactActionPortfolio,
-  type CompactActionPortfolioArtifact,
-  type CompactTargetSourceInput,
-} from "../src/fibering/compactActionPortfolio";
+  buildCompactResearchPortfolio,
+  replayCompactResearchPortfolio,
+  type CompactResearchPortfolioArtifact,
+} from "../src/fibering/compactResearchPortfolio";
 import {
   buildJnwCubePositiveControlCertificate,
   replayJnwCubePositiveControlCertificate,
@@ -40,11 +38,10 @@ import {
 const DEFAULT_OUTPUT =
   "scripts/certificates/portfolio/fibering_research_portfolio.json";
 const COMPACT_OUTPUT =
-  "scripts/certificates/portfolio/compact_h5_action_portfolio.json";
+  "scripts/certificates/portfolio/compact_h5_research_portfolio.json";
 const JNW_SOURCE = "public/examples/jnw_cube_graph.json";
 const JNW_OUTPUT =
   "scripts/certificates/torsion-free/jnw_cube_graph_degree4_positive_control.json";
-const FIXED_PREFLIGHT_TIME = "2026-08-22T00:00:00.000Z";
 
 interface Arguments {
   output: string;
@@ -129,18 +126,6 @@ function atomicJson(path: string, value: unknown): void {
   }
 }
 
-function compactSources(): CompactTargetSourceInput[] {
-  return COMPACT_TARGET_DEFINITIONS.map((definition) => {
-    const bytes = readFileSync(resolve(definition.sourcePath));
-    return {
-      id: definition.id,
-      path: definition.sourcePath,
-      bytesSha256: sha256(bytes),
-      input: JSON.parse(bytes.toString("utf8")) as unknown,
-    };
-  });
-}
-
 function requireExistingArtifact(path: string, label: string): void {
   if (!existsSync(resolve(path))) {
     throw new Error(
@@ -150,17 +135,29 @@ function requireExistingArtifact(path: string, label: string): void {
 }
 
 function artifactHashIsValid(
-  artifact: FiberingResearchPortfolioArtifact,
+  artifact: { artifactHash: string } & object,
 ): boolean {
-  const { artifactHash, ...payload } = artifact;
+  const { artifactHash, ...payload } = artifact as Record<string, unknown> & {
+    artifactHash: string;
+  };
   return artifactHash === canonicalSha256(payload);
+}
+
+interface PriorAggregateCubeReceipt {
+  schemaVersion: 1 | 2;
+  kind: "fibering-research-portfolio";
+  status: "passed";
+  cubeRescue: FiberingResearchPortfolioArtifact["cubeRescue"];
+  artifactHash: string;
 }
 
 /**
  * Rebinding changes only the small aggregate envelope after another component
  * was regenerated. The previous aggregate is the receipt that the exact cube
- * replay already ran; the cube bytes and all three internal digests must be
- * unchanged. This is never a substitute for the initial fresh build.
+ * replay already ran. JSON whitespace may have changed, but the path, parsed
+ * runner digest, certificate digest, and replay digest must remain identical.
+ * The new aggregate binds the current bytes. This is never a substitute for
+ * the initial fresh build.
  */
 function loadCubeFromExistingAggregate(
   aggregatePath: string,
@@ -170,9 +167,9 @@ function loadCubeFromExistingAggregate(
     RANK19_CUBE_RESCUE_DEFAULT_OUTPUT,
     "cube-rescue artifact",
   );
-  const prior = readJson<FiberingResearchPortfolioArtifact>(aggregatePath);
+  const prior = readJson<PriorAggregateCubeReceipt>(aggregatePath);
   if (
-    prior.schemaVersion !== 1 ||
+    (prior.schemaVersion !== 1 && prior.schemaVersion !== 2) ||
     prior.kind !== "fibering-research-portfolio" ||
     prior.status !== "passed" ||
     !artifactHashIsValid(prior)
@@ -187,8 +184,8 @@ function loadCubeFromExistingAggregate(
   );
   if (
     prior.cubeRescue.path !== binding.path ||
-    prior.cubeRescue.bytesSha256 !== binding.bytesSha256 ||
     prior.cubeRescue.runnerArtifactDigest !== cube.artifactDigest ||
+    cube.artifactDigest !== canonicalSha256({ ...cube, artifactDigest: "" }) ||
     prior.cubeRescue.certificateDigest !== cube.certificate.certificateDigest ||
     prior.cubeRescue.replayDigest !== cube.replay.replayDigest ||
     prior.cubeRescue.noGlobalNormalCatalogueLoaded !== true ||
@@ -263,29 +260,20 @@ function loadCompact(
   rebuild: boolean,
   verifyOnly: boolean,
 ): {
-  artifact: CompactActionPortfolioArtifact;
-  replay: ReturnType<typeof replayCompactActionPortfolio>;
+  artifact: CompactResearchPortfolioArtifact;
+  replay: ReturnType<typeof replayCompactResearchPortfolio>;
 } {
-  const sources = compactSources();
   if (verifyOnly) {
-    requireExistingArtifact(
-      COMPACT_OUTPUT,
-      "compact-action preflight artifact",
-    );
+    requireExistingArtifact(COMPACT_OUTPUT, "compact research portfolio");
   }
   if (!existsSync(resolve(COMPACT_OUTPUT)) || rebuild) {
-    atomicJson(
-      COMPACT_OUTPUT,
-      buildCompactActionPortfolio(sources, {
-        generatedAt: FIXED_PREFLIGHT_TIME,
-      }),
-    );
+    atomicJson(COMPACT_OUTPUT, buildCompactResearchPortfolio());
   }
-  const artifact = readJson<CompactActionPortfolioArtifact>(COMPACT_OUTPUT);
-  const replay = replayCompactActionPortfolio(artifact, sources);
+  const artifact = readJson<CompactResearchPortfolioArtifact>(COMPACT_OUTPUT);
+  const replay = replayCompactResearchPortfolio(artifact);
   if (replay.status !== "passed") {
     throw new Error(
-      `Compact preflight replay failed: ${replay.errors.join(" ")}`,
+      `Compact research portfolio replay failed: ${replay.errors.join(" ")}`,
     );
   }
   return { artifact, replay };
@@ -352,10 +340,7 @@ export async function runFiberingResearchPortfolio(
       "cube-rescue artifact",
     );
     requireExistingArtifact(JNW_OUTPUT, "JNW positive-control artifact");
-    requireExistingArtifact(
-      COMPACT_OUTPUT,
-      "compact-action preflight artifact",
-    );
+    requireExistingArtifact(COMPACT_OUTPUT, "compact research portfolio");
   }
   const rebuilt = await rebuildFromComponents({
     rebuildCube: !args.verifyOnly && args.rebuildCube,
@@ -379,7 +364,7 @@ export async function runFiberingResearchPortfolio(
   }
   atomicJson(args.output, rebuilt);
   process.stdout.write(
-    `${JSON.stringify({ status: args.rebindOnly ? "rebound" : "written", output: args.output, cubeDecision: rebuilt.cubeRescue.decision, compactTargets: rebuilt.compactActions.orderedTargetIds, jnwPositiveControl: rebuilt.jnwPositiveControl.virtualAlgebraicFibration }, null, 2)}\n`,
+    `${JSON.stringify({ status: args.rebindOnly ? "rebound" : "written", output: args.output, cubeDecision: rebuilt.cubeRescue.decision, compactCampaigns: rebuilt.compactResearch.orderedCampaignIds, compactTargets: rebuilt.compactResearch.orderedTargetIds, p2PlanStatus: rebuilt.compactResearch.p2Plan.status, jnwPositiveControl: rebuilt.jnwPositiveControl.virtualAlgebraicFibration }, null, 2)}\n`,
   );
   return rebuilt;
 }

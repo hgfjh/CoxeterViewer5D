@@ -146,6 +146,10 @@ export interface SdfTextBatch {
     anchor: readonly [number, number, number],
   ): boolean;
   setLabelVisibility(labelId: string, visible: boolean): boolean;
+  /** Fractional visibility in [0, 1], e.g. for depth-based fading. */
+  setLabelOpacity(labelId: string, opacity: number): boolean;
+  /** Uniform screen-facing size multiplier for every label in the batch. */
+  setLabelScale(scale: number): void;
   dispose(): void;
 }
 
@@ -184,6 +188,7 @@ interface LabelVertexRanges {
 }
 
 const glyphVertexShader = /* glsl */ `
+uniform float uLabelScale;
 attribute vec2 aOffset;
 attribute vec4 aForeground;
 attribute float aVisibility;
@@ -194,7 +199,7 @@ varying float vVisibility;
 
 void main() {
   vec4 viewAnchor = modelViewMatrix * vec4(position, 1.0);
-  viewAnchor.xy += aOffset;
+  viewAnchor.xy += aOffset * uLabelScale;
   gl_Position = projectionMatrix * viewAnchor;
   vUv = uv;
   vForeground = aForeground;
@@ -226,6 +231,7 @@ void main() {
 `;
 
 const panelVertexShader = /* glsl */ `
+uniform float uLabelScale;
 attribute vec2 aOffset;
 attribute vec2 aPanelUv;
 attribute vec4 aBackground;
@@ -241,7 +247,7 @@ varying float vVisibility;
 
 void main() {
   vec4 viewAnchor = modelViewMatrix * vec4(position, 1.0);
-  viewAnchor.xy += aOffset;
+  viewAnchor.xy += aOffset * uLabelScale;
   gl_Position = projectionMatrix * viewAnchor;
   vPanelUv = aPanelUv;
   vBackground = aBackground;
@@ -503,12 +509,16 @@ export function createSdfTextBatch(
   glyphGeometry.computeBoundingSphere();
   panelGeometry.computeBoundingSphere();
   const depthTest = options.depthTest ?? false;
+  // One uniform object shared by both materials: scaling the camera-facing
+  // offsets resizes every label without rebuilding geometry.
+  const labelScale = { value: 1 };
   const glyphMaterial = new ShaderMaterial({
     uniforms: {
       uAtlas: { value: atlas.texture },
       uSmoothing: {
         value: positiveFinite(options.smoothing ?? 0.075, "smoothing"),
       },
+      uLabelScale: labelScale,
     },
     vertexShader: glyphVertexShader,
     fragmentShader: glyphFragmentShader,
@@ -520,6 +530,7 @@ export function createSdfTextBatch(
   const panelMaterial = new ShaderMaterial({
     uniforms: {
       uBorderFeather: { value: 0.0125 },
+      uLabelScale: labelScale,
     },
     vertexShader: panelVertexShader,
     fragmentShader: panelFragmentShader,
@@ -576,6 +587,9 @@ export function createSdfTextBatch(
       range.anchor = [...anchor];
       return true;
     },
+    setLabelScale(scale) {
+      labelScale.value = positiveFinite(scale, "label scale");
+    },
     setLabelVisibility(labelId, visible) {
       const range = ranges.get(labelId);
       if (!range || disposed) return false;
@@ -593,6 +607,32 @@ export function createSdfTextBatch(
         range.panelStart,
         range.panelCount,
         visible ? 1 : 0,
+        true,
+      );
+      return true;
+    },
+    setLabelOpacity(labelId, opacity) {
+      const range = ranges.get(labelId);
+      if (!range || disposed) return false;
+      // aVisibility multiplies both glyph and panel alpha in the shaders, so a
+      // fractional value fades the whole chip.
+      const value = Number.isFinite(opacity)
+        ? Math.min(1, Math.max(0, opacity))
+        : 1;
+      writeScalarRange(
+        glyphGeometry,
+        "aVisibility",
+        range.glyphStart,
+        range.glyphCount,
+        value,
+        true,
+      );
+      writeScalarRange(
+        panelGeometry,
+        "aVisibility",
+        range.panelStart,
+        range.panelCount,
+        value,
         true,
       );
       return true;

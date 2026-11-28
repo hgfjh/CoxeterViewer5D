@@ -1,0 +1,643 @@
+{
+  "artifactSha256": "501125fa7150a4d0c208cd4b40cd6a5132f7e04424820e71fd5f3219b165a16d",
+  "conclusion": "The type-6 wall cocycle is closed and primitive. Tie polarity -1 has connected nonempty ascending and descending identity links; tie polarity +1 has an empty descending identity link. The surviving anchor is not promoted: no global scan or exact local-template reduction has been completed.",
+  "factoredAction": {
+    "degree": 4792320000,
+    "materializedPermutationRows": false,
+    "qOrder": 9360000,
+    "sheetCount": 512,
+    "stateSpace": "F2^9 x Q"
+  },
+  "globalOrbitReductionAssessment": {
+    "certifiedSymmetryOrbitCount": 4792320000,
+    "consequence": "global order symmetries do not reduce the 4,792,320,000 roots; this says nothing about an exact local-template or finite-automaton reduction based only on co-occurring fibers",
+    "futureOptions": [
+      "certify a finite local-template automaton for this pulling rule",
+      "use a different symmetry-compatible pulling rule"
+    ],
+    "globalScanRun": false,
+    "localTemplateOrAutomatonReduction": "open",
+    "proof": "pullingRank is an injective total order on the finite action state set; every order-preserving permutation of a finite total order fixes each rank and is the identity",
+    "quotientVertexCount": 4792320000,
+    "status": "no-nontrivial-global-order-symmetry-certified"
+  },
+  "identityPullingLink": {
+    "connectivityCertificate": {
+      "positiveSide": {
+        "allPiecesConnected": true,
+        "commonVertexId": "t003:q1000001000001000001000001",
+        "pieces": [
+          {
+            "commonGenerators": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "commonVertexId": "t003:q1000001000001000001000001",
+            "facetStateCount": 14400,
+            "maximalCellGenerators": [
+              0,
+              1,
+              2,
+              3,
+              6
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the pulling triangulation of a Coxeter facet is connected",
+            "stateSet": {
+              "count": 14400,
+              "firstStateId": "t003:q0001000100010001000000001",
+              "lastStateId": "t003:q4430043400344000004000001",
+              "stateIdSha256": "4a71eab79ea2fb2b64a8d006f27ee8597b981f1a71c76d6172ac7267432ee9fa"
+            }
+          },
+          {
+            "commonGenerators": [
+              0,
+              1,
+              2,
+              4
+            ],
+            "commonVertexId": "t003:q1000001000001000001000001",
+            "facetStateCount": 240,
+            "maximalCellGenerators": [
+              0,
+              1,
+              2,
+              4,
+              6
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the pulling triangulation of a Coxeter facet is connected",
+            "stateSet": {
+              "count": 240,
+              "firstStateId": "t003:q0010010000010000001000001",
+              "lastStateId": "t003:q4430043400344000003200012",
+              "stateIdSha256": "f102a91068d1ea31ce893a144a06a84009f0373452cee2f15de2bc1a9f2da960"
+            }
+          },
+          {
+            "commonGenerators": [
+              0,
+              1,
+              3,
+              4
+            ],
+            "commonVertexId": "t003:q1000001000001000001000001",
+            "facetStateCount": 60,
+            "maximalCellGenerators": [
+              0,
+              1,
+              3,
+              4,
+              6
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the pulling triangulation of a Coxeter facet is connected",
+            "stateSet": {
+              "count": 60,
+              "firstStateId": "t003:q1000001000001000001000001",
+              "lastStateId": "t003:q4430043400344000003200012",
+              "stateIdSha256": "7494d605cb8fd1ecf2a918ac7c2aa5b01289a095516e4ac90d716c58ce85abef"
+            }
+          },
+          {
+            "commonGenerators": [
+              0,
+              2,
+              3,
+              4
+            ],
+            "commonVertexId": "t003:q1000001000001000001000001",
+            "facetStateCount": 48,
+            "maximalCellGenerators": [
+              0,
+              2,
+              3,
+              4,
+              6
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the pulling triangulation of a Coxeter facet is connected",
+            "stateSet": {
+              "count": 48,
+              "firstStateId": "t003:q1000001000001000001000001",
+              "lastStateId": "t003:q4000004441043230423303442",
+              "stateIdSha256": "2c13f36a43c2b7dfe30bbf6b08a6679a996f1e85694c1952c85006b6a99114df"
+            }
+          },
+          {
+            "commonGenerators": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "commonVertexId": "t003:q1000001000001000001000001",
+            "facetStateCount": 120,
+            "maximalCellGenerators": [
+              1,
+              2,
+              3,
+              4,
+              6
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the pulling triangulation of a Coxeter facet is connected",
+            "stateSet": {
+              "count": 120,
+              "firstStateId": "t003:q1000001000001000001000001",
+              "lastStateId": "t003:q4340034400443000003200012",
+              "stateIdSha256": "6b7315f17f554a5674a2ada3194e130b0f75c85070aad6951986b95843471c0f"
+            }
+          }
+        ],
+        "setEqualityChecked": true,
+        "unionConnected": true,
+        "vertexCount": 14647
+      },
+      "topologicalLemma": "a pulling triangulation triangulates each facet, and the link of its pulling apex in a positive-dimensional convex Coxeter cell is connected; unions of connected graphs sharing a vertex are connected",
+      "zeroSideWithoutIdentity": {
+        "allPiecesConnected": true,
+        "commonVertexId": "t001:q1000001000001000001000001",
+        "pieces": [
+          {
+            "commonGenerators": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "commonVertexId": "t001:q1000001000001000001000001",
+            "identityLinkVertexCount": 28799,
+            "maximalCellGenerators": [
+              0,
+              1,
+              2,
+              3,
+              5
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the identity link in the pulling triangulation of a five-dimensional Coxeter cell is connected",
+            "stateSet": {
+              "count": 28799,
+              "firstStateId": "t000:q0001000100010001000000001",
+              "lastStateId": "t001:q4430043400344000004000001",
+              "stateIdSha256": "f72931da5d2373911174b5318ce7f402febc0ef49addc2b5607fe2a1ea751214"
+            }
+          },
+          {
+            "commonGenerators": [
+              0,
+              1,
+              2,
+              4
+            ],
+            "commonVertexId": "t001:q1000001000001000001000001",
+            "identityLinkVertexCount": 959,
+            "maximalCellGenerators": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the identity link in the pulling triangulation of a five-dimensional Coxeter cell is connected",
+            "stateSet": {
+              "count": 959,
+              "firstStateId": "t000:q0010010000010000001000001",
+              "lastStateId": "t005:q4430043400344000003200012",
+              "stateIdSha256": "2ed81b39b5de1c90e17011c88ed768c25fcf8fbbf534632babc20db9cdba2531"
+            }
+          },
+          {
+            "commonGenerators": [
+              0,
+              1,
+              3,
+              4
+            ],
+            "commonVertexId": "t001:q1000001000001000001000001",
+            "identityLinkVertexCount": 479,
+            "maximalCellGenerators": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the identity link in the pulling triangulation of a five-dimensional Coxeter cell is connected",
+            "stateSet": {
+              "count": 479,
+              "firstStateId": "t000:q1000001000001000003200012",
+              "lastStateId": "t00d:q4430043400344000003200012",
+              "stateIdSha256": "4ef0dcdc6860c07af9cabe16425ec101b5d6ba543050159e9027e22876c9c43d"
+            }
+          },
+          {
+            "commonGenerators": [
+              0,
+              2,
+              3,
+              4
+            ],
+            "commonVertexId": "t001:q1000001000001000001000001",
+            "identityLinkVertexCount": 767,
+            "maximalCellGenerators": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the identity link in the pulling triangulation of a five-dimensional Coxeter cell is connected",
+            "stateSet": {
+              "count": 767,
+              "firstStateId": "t000:q1000001000001000003200012",
+              "lastStateId": "t07d:q4000004441043230423303442",
+              "stateIdSha256": "613808bee0b7d9bf7397cfcf3ced29e273791578583fc9016d9665e3da2589d4"
+            }
+          },
+          {
+            "commonGenerators": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "commonVertexId": "t001:q1000001000001000001000001",
+            "identityLinkVertexCount": 3839,
+            "maximalCellGenerators": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "pullingGraphConnected": true,
+            "reason": "the identity link in the pulling triangulation of a five-dimensional Coxeter cell is connected",
+            "stateSet": {
+              "count": 3839,
+              "firstStateId": "t000:q1000001000001000003200012",
+              "lastStateId": "t0fd:q4340034400443000003200012",
+              "stateIdSha256": "7c2ce5daa2e5c554d96f683531b6c928a0bfcc4ce754cecfaf94649f8e0136ac"
+            }
+          }
+        ],
+        "setEqualityChecked": true,
+        "type6BottomFacetContainmentChecks": [
+          {
+            "bottomStateCount": 14400,
+            "commonGenerators": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "containedInPairedType5Cell": true
+          },
+          {
+            "bottomStateCount": 240,
+            "commonGenerators": [
+              0,
+              1,
+              2,
+              4
+            ],
+            "containedInPairedType5Cell": true
+          },
+          {
+            "bottomStateCount": 60,
+            "commonGenerators": [
+              0,
+              1,
+              3,
+              4
+            ],
+            "containedInPairedType5Cell": true
+          },
+          {
+            "bottomStateCount": 48,
+            "commonGenerators": [
+              0,
+              2,
+              3,
+              4
+            ],
+            "containedInPairedType5Cell": true
+          },
+          {
+            "bottomStateCount": 120,
+            "commonGenerators": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "containedInPairedType5Cell": true
+          }
+        ],
+        "unionConnected": true,
+        "vertexCount": 33901
+      }
+    },
+    "fiberRecords": [
+      {
+        "expectedOrder": 28800,
+        "generators": [
+          0,
+          1,
+          2,
+          3,
+          5
+        ],
+        "rawHeightCensus": {
+          "0": 28800
+        },
+        "stateCount": 28800
+      },
+      {
+        "expectedOrder": 28800,
+        "generators": [
+          0,
+          1,
+          2,
+          3,
+          6
+        ],
+        "rawHeightCensus": {
+          "0": 14400,
+          "1": 14400
+        },
+        "stateCount": 28800
+      },
+      {
+        "expectedOrder": 960,
+        "generators": [
+          0,
+          1,
+          2,
+          4,
+          5
+        ],
+        "rawHeightCensus": {
+          "0": 960
+        },
+        "stateCount": 960
+      },
+      {
+        "expectedOrder": 480,
+        "generators": [
+          0,
+          1,
+          2,
+          4,
+          6
+        ],
+        "rawHeightCensus": {
+          "0": 240,
+          "1": 240
+        },
+        "stateCount": 480
+      },
+      {
+        "expectedOrder": 480,
+        "generators": [
+          0,
+          1,
+          3,
+          4,
+          5
+        ],
+        "rawHeightCensus": {
+          "0": 480
+        },
+        "stateCount": 480
+      },
+      {
+        "expectedOrder": 120,
+        "generators": [
+          0,
+          1,
+          3,
+          4,
+          6
+        ],
+        "rawHeightCensus": {
+          "0": 60,
+          "1": 60
+        },
+        "stateCount": 120
+      },
+      {
+        "expectedOrder": 768,
+        "generators": [
+          0,
+          2,
+          3,
+          4,
+          5
+        ],
+        "rawHeightCensus": {
+          "0": 768
+        },
+        "stateCount": 768
+      },
+      {
+        "expectedOrder": 96,
+        "generators": [
+          0,
+          2,
+          3,
+          4,
+          6
+        ],
+        "rawHeightCensus": {
+          "0": 48,
+          "1": 48
+        },
+        "stateCount": 96
+      },
+      {
+        "expectedOrder": 3840,
+        "generators": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "rawHeightCensus": {
+          "0": 3840
+        },
+        "stateCount": 3840
+      },
+      {
+        "expectedOrder": 240,
+        "generators": [
+          1,
+          2,
+          3,
+          4,
+          6
+        ],
+        "rawHeightCensus": {
+          "0": 120,
+          "1": 120
+        },
+        "stateCount": 240
+      }
+    ],
+    "heightModel": {
+      "checks": {
+        "globalRankInjective": true,
+        "nonzeroIntegralEdgeSignsPreserved": true,
+        "offsetAbsoluteDifferenceLessThanOneQuarter": true
+      },
+      "formula": "F_sigma=raw+sigma*pullingRank/offsetDenominator",
+      "offsetDenominator": "610351562500000000004",
+      "pullingRank": "identity first; otherwise 1+base5(t,q-matrix encoding)",
+      "raw": "type-6 signed wall cocycle"
+    },
+    "linkVertexCount": 48548,
+    "method": "paired-maximal-cell facet covers; no recursive edge materialization",
+    "polarities": {
+      "-1": {
+        "ascendingComponentCount": 1,
+        "ascendingVertexCount": 14647,
+        "descendingComponentCount": 1,
+        "descendingVertexCount": 33901,
+        "failures": [],
+        "status": "identity-link-passed"
+      },
+      "1": {
+        "ascendingComponents": "not-needed-after-empty-side-witness",
+        "ascendingVertexCount": 48548,
+        "descendingComponents": [],
+        "descendingVertexCount": 0,
+        "failures": [
+          "descending-empty"
+        ],
+        "status": "failed"
+      }
+    },
+    "rawHeightCensus": {
+      "0": 33901,
+      "1": 14647
+    },
+    "rootedMaximalFiberCount": 10,
+    "rootedStateUnionCount": 48549
+  },
+  "kind": "makarov-p2-type6-wall-cocycle-track-b",
+  "nonClaims": [
+    "An identity-link pass is not a global Track-B or fibering certificate.",
+    "No quotient vertex other than the identity is checked.",
+    "No recursive full pulling-link edge set or 4,792,320,000-row action is materialized.",
+    "Trivial global order symmetry does not exclude an exact local-template or automaton reduction.",
+    "This does not test a different pulling rule, periodic potential, subdivision, or finite cover.",
+    "The cocycle remains horizontal on generator types 0 through 5 before the pulling perturbation, so this is not a strict wall Track-A height."
+  ],
+  "primitivity": {
+    "cocycleEvaluation": -1,
+    "conjugatorWord": [
+      0,
+      1,
+      0,
+      3,
+      2,
+      1,
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "fixesIdentityActionState": true,
+    "nonzeroCrossings": [
+      {
+        "sourceSheet": 3,
+        "targetSheet": 0,
+        "value": -1,
+        "wordPosition": 24
+      }
+    ],
+    "periodGcdIsOne": true,
+    "primitiveIntegralCharacter": true,
+    "reason": "an integral closed loop has cocycle evaluation -1",
+    "stabilizerWord": [
+      5,
+      0,
+      1,
+      0,
+      3,
+      2,
+      1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      1,
+      2,
+      3,
+      0,
+      1,
+      0,
+      6
+    ],
+    "terminalStateId": "t000:q1000001000001000001000001",
+    "wordLength": 25
+  },
+  "producer": {
+    "script": "scripts/makarov_p2_type6_wall_track_b.py",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "coloring": {
+      "artifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+      "bytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+      "path": "scripts/data/makarov_p2_section5_coloring.json"
+    },
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "section5ImportCertificate": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    },
+    "wallCoorientationCertificate": {
+      "artifactSha256": "1adb8e9449e0b2cba37aa4d502877f07b7961092e8cec51e6b6369d20f1f5bfe",
+      "bytesSha256": "6db74185b74dfae335837d7957fa0388279c0b1bb8319520ab2db901f268e1af",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_wall_coorientation_obstruction.json"
+    }
+  },
+  "status": "primitive-cocycle-one-identity-polarity-passed",
+  "wallCocycle": {
+    "allFiniteRankTwoBoundarySumsZero": true,
+    "closureReason": {
+      "type6With0Through4": "s0,...,s4 preserve the sheet and commute with s6, so the two type-6 sides of each square have opposite signs",
+      "type6With5": "m_56 is infinite, so there is no rank-two Davis cell",
+      "types0Through5": "all assigned values are zero"
+    },
+    "coorientation": "a6(t,q)=(-1)^t0, where t0 is the first sheet bit",
+    "edgeReversalChecks": 512,
+    "finiteRankTwoTypeCount": 20,
+    "generator": 6,
+    "qStatesPerWall": 9360000,
+    "sheetMask": 3,
+    "twoSided": true,
+    "type6CommutingSquareChecks": 2560,
+    "wallCount": 256,
+    "zeroOnlyFiniteRankTwoTypeCount": 15
+  }
+}

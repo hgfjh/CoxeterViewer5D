@@ -2,6 +2,29 @@ import type { DirectedMorseLink } from "../walls";
 import type { VirtualAlgebraicFiberingCertificate } from "./certificate";
 import type { DirectedMorseLinkCertificate } from "./plMorseHypotheses";
 
+// Keep this literal in the standalone validator module. The CLI transpiles
+// this file to a self-contained data URL, so runtime imports are unavailable.
+const VALIDATOR_REQUIRED_PL_MORSE_CHECK_IDS = [
+  "finite-cover-action",
+  "torsion-free-subgroup",
+  "compression-certificate",
+  "finite-connected-complex",
+  "affine-cell-models",
+  "two-sided-walls",
+  "wall-coorientation",
+  "cellular-cocycle",
+  "circle-valued-map",
+  "schreier-presentation",
+  "lawful-full-skeleton",
+  "affine-morse-cells",
+  "discrete-lifted-heights",
+  "lawful-to-subgroup-surjection",
+  "morse-links",
+  "nonzero-wall-map",
+  "primitive-image",
+  "finite-height-band-pi1-surjection",
+] as const;
+
 export interface VirtualFiberingValidationResult {
   valid: boolean;
   checks: {
@@ -37,7 +60,7 @@ export function validateVirtualAlgebraicFiberingCertificate(
     return invalid(checks, ["Certificate must be a JSON object."]);
   }
   if (
-    input.schemaVersion !== 1 ||
+    input.schemaVersion !== 2 ||
     input.kind !== "virtual-algebraic-fibering-certificate" ||
     input.method !== "cooriented-walls-schreier-and-pl-morse"
   ) {
@@ -344,6 +367,46 @@ function checkConclusionConsistency(
   certificate: VirtualAlgebraicFiberingCertificate,
   errors: string[],
 ): boolean {
+  const recordedCheckIds = certificate.plMorse.checks.map(({ id }) => id);
+  const mandatoryCheckSetComplete =
+    new Set(recordedCheckIds).size === recordedCheckIds.length &&
+    sameIds(recordedCheckIds, [...VALIDATOR_REQUIRED_PL_MORSE_CHECK_IDS]);
+  if (!mandatoryCheckSetComplete) {
+    errors.push(
+      "The mandatory PL-Morse check set is incomplete, duplicated, or unsupported.",
+    );
+  }
+  const mandatoryCheckById = new Map(
+    certificate.plMorse.checks.map((check) => [check.id, check] as const),
+  );
+  const finiteBandPrerequisiteIds = [
+    "compression-certificate",
+    "finite-connected-complex",
+    "affine-cell-models",
+    "wall-coorientation",
+    "cellular-cocycle",
+    "circle-valued-map",
+    "lawful-full-skeleton",
+    "affine-morse-cells",
+    "discrete-lifted-heights",
+    "morse-links",
+    "nonzero-wall-map",
+    "primitive-image",
+  ];
+  const finiteBandPrerequisitesPass = finiteBandPrerequisiteIds.every(
+    (id) => mandatoryCheckById.get(id)?.status === "passed",
+  );
+  const finiteBandCheck = mandatoryCheckById.get(
+    "finite-height-band-pi1-surjection",
+  );
+  const finiteBandConsistent =
+    finiteBandCheck?.status ===
+    (finiteBandPrerequisitesPass ? "passed" : "failed");
+  if (!finiteBandConsistent) {
+    errors.push(
+      "The finite-height-band pi_1-surjection check disagrees with its recorded prerequisites.",
+    );
+  }
   const failedIds = certificate.plMorse.checks
     .filter((check) => check.status === "failed")
     .map((check) => check.id)
@@ -365,6 +428,8 @@ function checkConclusionConsistency(
     explicit &&
     certificate.plMorse.conclusion.virtualAlgebraicFibrationCertified;
   const valid =
+    mandatoryCheckSetComplete &&
+    finiteBandConsistent &&
     sameIds(failedIds, certificate.plMorse.failedCheckIds) &&
     sameIds(missingIds, certificate.plMorse.missingEvidenceCheckIds) &&
     certificate.plMorse.status === plStatus &&

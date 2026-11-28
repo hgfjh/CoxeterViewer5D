@@ -1,0 +1,6037 @@
+{
+  "schemaVersion": 1,
+  "name": "Q35: H3 unfolding of Tumarkin's G12221",
+  "description": "Compact hyperbolic Coxeter 5-polytope with 35 facets: the union of the 120 G12221 chambers around an H3 face.  Its Coxeter group is the kernel of the retraction W(G12221) -> W(H3); Q55 is its double across the facet E.",
+  "rank": 35,
+  "generators": [
+    {
+      "id": "q35_0",
+      "label": "A00"
+    },
+    {
+      "id": "q35_1",
+      "label": "A01"
+    },
+    {
+      "id": "q35_2",
+      "label": "A02"
+    },
+    {
+      "id": "q35_3",
+      "label": "A03"
+    },
+    {
+      "id": "q35_4",
+      "label": "A04"
+    },
+    {
+      "id": "q35_5",
+      "label": "A05"
+    },
+    {
+      "id": "q35_6",
+      "label": "A06"
+    },
+    {
+      "id": "q35_7",
+      "label": "A07"
+    },
+    {
+      "id": "q35_8",
+      "label": "A08"
+    },
+    {
+      "id": "q35_9",
+      "label": "A09"
+    },
+    {
+      "id": "q35_10",
+      "label": "A10"
+    },
+    {
+      "id": "q35_11",
+      "label": "A11"
+    },
+    {
+      "id": "q35_12",
+      "label": "C"
+    },
+    {
+      "id": "q35_13",
+      "label": "B"
+    },
+    {
+      "id": "q35_14",
+      "label": "E"
+    },
+    {
+      "id": "q35_15",
+      "label": "D00"
+    },
+    {
+      "id": "q35_16",
+      "label": "D01"
+    },
+    {
+      "id": "q35_17",
+      "label": "D02"
+    },
+    {
+      "id": "q35_18",
+      "label": "D03"
+    },
+    {
+      "id": "q35_19",
+      "label": "D04"
+    },
+    {
+      "id": "q35_20",
+      "label": "D05"
+    },
+    {
+      "id": "q35_21",
+      "label": "D06"
+    },
+    {
+      "id": "q35_22",
+      "label": "D07"
+    },
+    {
+      "id": "q35_23",
+      "label": "D08"
+    },
+    {
+      "id": "q35_24",
+      "label": "D09"
+    },
+    {
+      "id": "q35_25",
+      "label": "D10"
+    },
+    {
+      "id": "q35_26",
+      "label": "D11"
+    },
+    {
+      "id": "q35_27",
+      "label": "D12"
+    },
+    {
+      "id": "q35_28",
+      "label": "D13"
+    },
+    {
+      "id": "q35_29",
+      "label": "D14"
+    },
+    {
+      "id": "q35_30",
+      "label": "D15"
+    },
+    {
+      "id": "q35_31",
+      "label": "D16"
+    },
+    {
+      "id": "q35_32",
+      "label": "D17"
+    },
+    {
+      "id": "q35_33",
+      "label": "D18"
+    },
+    {
+      "id": "q35_34",
+      "label": "D19"
+    }
+  ],
+  "coxeterMatrix": [
+    [
+      1,
+      2,
+      2,
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      1,
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      3,
+      2,
+      2,
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      2,
+      1,
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      3,
+      2,
+      2,
+      2,
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      2,
+      "inf",
+      1,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      3,
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      "inf",
+      2,
+      "inf",
+      1,
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      1,
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      2,
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      1,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      1,
+      "inf",
+      2,
+      "inf",
+      2,
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      1,
+      "inf",
+      2,
+      2,
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      1,
+      2,
+      2,
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      2
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      2,
+      1,
+      2,
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      2
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      2,
+      2,
+      2,
+      1,
+      3,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      2,
+      2,
+      2
+    ],
+    [
+      3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    ],
+    [
+      2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 1, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    ],
+    [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      4,
+      1,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      1,
+      2,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      2,
+      1,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      1,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      1,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      1,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      1,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      1,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      1,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      1,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      1,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      1,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      1,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      1,
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      1,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      1,
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      1,
+      "inf",
+      "inf",
+      2,
+      "inf"
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      2,
+      "inf",
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      "inf",
+      1,
+      "inf",
+      "inf",
+      2
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      2,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      2,
+      "inf",
+      "inf",
+      1,
+      "inf",
+      2
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      2,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      "inf",
+      2,
+      "inf",
+      "inf",
+      1,
+      2
+    ],
+    [
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      2,
+      2,
+      2,
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      "inf",
+      2,
+      2,
+      2,
+      1
+    ]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 5,
+    "projection": "klein-pca",
+    "normalGram": [
+      [
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499007
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498951
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498951
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498951
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498978
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498978
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749897
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499002
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498996
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498996
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498985
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749895
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749895
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749893
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498987
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498991
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499027
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749899
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498938
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498973
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499013
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499027
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498976
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749899
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499018
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749909
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749904
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749898
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498945
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499002
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498996
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499013
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499045
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498985
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499002
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499025
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499096
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499025
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498973
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749901
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499053
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498951
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498976
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499002
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499801
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498991
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499027
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499064
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499082
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499087
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498973
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499007
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499013
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499047
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499801
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499002
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499064
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499038
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499082
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499073
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499007
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498973
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499022
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749904
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498985
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749895
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749902
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499007
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499064
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749909
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499042
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749907
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499007
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499027
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499042
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749895
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749894
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499056
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499073
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499025
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499051
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "coxeter",
+          "m": 5
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 5
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "coxeter",
+          "m": 4
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 4
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249698
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749899
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498951
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498991
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249693
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249698
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.8541019662497
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749898
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498982
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249693
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249705
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749895
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498985
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499801
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498982
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249695
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.23606797749979
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749895
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498938
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249694
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498922
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249699
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749899
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749896
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498987
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499007
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498978
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498942
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499016
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498947
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249694
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498951
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249699
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499804
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498962
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498978
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749903
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749904
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499806
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498973
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749896
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249699
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249699
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499018
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249699
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499018
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499809
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499811
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498987
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498976
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499007
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498947
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249694
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498982
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249699
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499812
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749904
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249692
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249695
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249699
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499803
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498865
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749899
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499056
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498985
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.8541019662496945
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249693
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249699
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498985
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998085
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498945
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749898
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498982
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498982
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499082
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249693
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249693
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249695
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.8541019662497
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499803
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499805
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749898
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749898
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499016
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499073
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499056
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749898
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249695
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499011
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499803
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249702
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499804
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499038
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499091
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499811
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499078
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498953
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498985
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499042
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499047
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749911
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249693
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249694
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498971
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499801
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499002
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499803
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749902
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249704
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499808
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998085
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499144
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499144
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498965
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499016
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499087
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749905
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498962
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249696
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249695
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498998
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498985
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249702
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499805
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749903
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499809
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499082
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499162
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498951
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499007
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499047
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499058
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499796
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249695
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498958
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498976
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774998005
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.8541019662496945
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249701
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498985
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499047
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499806
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498993
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499038
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499022
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749904
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499118
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499113
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.2360679774997925
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499797
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249698
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249705
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499002
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499805
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749903
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499809
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499815
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499127
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499073
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499207
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749897
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499803
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498973
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499045
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499033
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499104
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499107
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249691
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499792
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499799
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249704
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498967
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499807
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499011
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499809
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499814
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749903
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499144
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499118
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499189
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499794
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499798
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499802
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749894
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.618033988749901
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.6180339887499073
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498927
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749899
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.618033988749906
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.1441228056353685
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.854101966249698
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.85410196624969
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249697
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.854101966249703
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499789
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499795
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499793
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499807
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.236067977499803
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 4.23606797749981
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498885
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498922
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887498956
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499038
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.6180339887499056
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.61803398874991
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        }
+      ]
+    ]
+  },
+  "dataStatus": "verified-source",
+  "sourceRefs": [
+    {
+      "id": "tumarkin-2007-n-plus-3",
+      "citation": "Pavel Tumarkin, Compact Hyperbolic Coxeter n-Polytopes with n+3 Facets, Electronic Journal of Combinatorics 14 (2007), R69.",
+      "url": "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v14i1r69",
+      "locator": "Table 4.10, G12221 diagram (bundled as tumarkin_5d_8facet_g12221_01)",
+      "notes": "Source polytope; the unfolding is a reflection subgroup of its Coxeter group."
+    },
+    {
+      "id": "davis-2008-book",
+      "citation": "Michael W. Davis, The Geometry and Topology of Coxeter Groups, Princeton University Press, 2008.",
+      "url": "https://people.math.osu.edu/davis.12/davisbook.pdf",
+      "locator": "Special subgroups and retractions onto them",
+      "notes": "A retraction onto a finite special subgroup has a reflection-group kernel with fundamental domain the union of the chambers around the corresponding face."
+    }
+  ],
+  "certificate": {
+    "status": "passed",
+    "backend": "g12221RetractionUnfolding",
+    "backendVersion": "1.0.0",
+    "scopes": ["source-transcription", "gram-signature"],
+    "command": "python scripts/compact5d/make_g12221_unfoldings.py --check",
+    "sourceRefIds": ["tumarkin-2007-n-plus-3"],
+    "diagnostics": {
+      "retraction": "W(G12221) -> W_J, J = {u2, u3, u4}",
+      "unfolding": "H3",
+      "facets": 35,
+      "gramSignature": {
+        "positive": 5,
+        "negative": 1,
+        "zero": 29
+      },
+      "facetOrigins": {
+        "A": 12,
+        "C": 1,
+        "B": 1,
+        "E": 1,
+        "D": 20
+      }
+    }
+  },
+  "notes": [
+    "Facet labels: A = orbit of u1 (12), C = u5, B = u6, E = u7, D = orbit of u8 (20).",
+    "Vertex groups: H3xA1xA1 (60), D4xA1 (40), A3xA1xA1 (30), B2xA1xA1xA1 (20), A1^5 (50); index divisor 1920.",
+    "Further fibering work on this example is in progress and not yet published."
+  ],
+  "warnings": [
+    "Geometric rendering factors normalGram numerically for visualization.",
+    "Dihedral angles were classified numerically (tolerance 1e-7) from the certified G12221 Gram matrix."
+  ]
+}

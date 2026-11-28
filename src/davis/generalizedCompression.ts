@@ -10,7 +10,11 @@ import {
   type TorsionFreeCandidateResult,
 } from "../torsionFree";
 import type { CoxeterSystemInput } from "../types";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import {
+  canonicalSha256,
+  canonicalSha256WithRows,
+  createSha256Stream,
+} from "../utils/canonicalSha256";
 
 const DEFAULT_ROOT_CHUNK_SIZE = 4_096;
 const DEFAULT_FIBER_CHUNK_SIZE = 256;
@@ -184,7 +188,90 @@ interface RuntimeType {
   dimension: number;
   subgroupOrder: number;
   representatives: number[];
-  representativeByPoint: Uint32Array;
+  /**
+   * Fiber root of every action point.  Point-sized, so the certificate
+   * build keeps it only while hashing this type's root images; later passes
+   * recompute roots locally inside the fibers they walk.
+   */
+  representativeByPoint?: Uint32Array;
+  /** canonicalSha256 of the whole root-image array (rank <= 2 types). */
+  fullRootImageSha256?: string;
+}
+
+/**
+ * canonicalSha256 of an array of safe integers, streamed: the canonical
+ * JSON "[a,b,...]" is hashed in pieces instead of built as one string.
+ */
+function integerArraySha256(values: ArrayLike<number>): string {
+  const digest = createSha256Stream();
+  let text = "[";
+  for (let index = 0; index < values.length; index += 1) {
+    text += index === 0 ? `${values[index]}` : `,${values[index]}`;
+    if (text.length > 1 << 16) {
+      digest.update(text);
+      text = "";
+    }
+  }
+  digest.update(`${text}]`);
+  return digest.digestHex();
+}
+
+/**
+ * Scratch for faceRootsInFiber: two point-sized arrays shared by every face
+ * relation of a build, instead of a root table per spherical type.
+ */
+interface FaceRootScratch {
+  root: Uint32Array;
+  stamp: Uint32Array;
+  generation: number;
+  queue: number[];
+}
+
+function createFaceRootScratch(degree: number): FaceRootScratch {
+  return {
+    root: new Uint32Array(degree),
+    stamp: new Uint32Array(degree),
+    generation: 0,
+    queue: [],
+  };
+}
+
+/**
+ * Minimum point of the W_U-orbit of every point of one coface fiber, for
+ * U < T, left in scratch.root.  A W_U-orbit lies inside the W_T-orbit of any
+ * of its points, so the walk never leaves the fiber.  Entries are valid
+ * until the next call (generation stamps mark them).
+ */
+function faceRootsInFiber(
+  candidate: TorsionFreeActionCandidate,
+  faceGenerators: readonly number[],
+  cofacePoints: readonly number[],
+  scratch: FaceRootScratch,
+): Uint32Array {
+  scratch.generation += 1;
+  if (scratch.generation === 0xffff_ffff) {
+    scratch.stamp.fill(0);
+    scratch.generation = 1;
+  }
+  const { root, stamp, generation, queue } = scratch;
+  for (const start of cofacePoints) {
+    if (stamp[start] === generation) continue;
+    queue.length = 0;
+    queue.push(start);
+    stamp[start] = generation;
+    let minimum = start;
+    for (let cursor = 0; cursor < queue.length; cursor += 1) {
+      for (const generator of faceGenerators) {
+        const image = candidate.generatorImages[generator][queue[cursor]];
+        if (stamp[image] === generation) continue;
+        stamp[image] = generation;
+        queue.push(image);
+        if (image < minimum) minimum = image;
+      }
+    }
+    for (const point of queue) root[point] = minimum;
+  }
+  return root;
 }
 
 export class GeneralizedCompressionError extends Error {
@@ -265,11 +352,13 @@ function planOrder(plan: SphericalSpecialSubgroupPlan): number {
 }
 
 function actionRowsSha256(candidate: TorsionFreeActionCandidate): string {
-  return canonicalSha256({
-    schemaVersion: 1,
-    index: candidate.index,
-    generatorImages: candidate.generatorImages,
-  });
+  // Same digest as canonicalSha256 of the record, streamed so that large or
+  // packed (Uint32Array) actions never become one giant string.
+  return canonicalSha256WithRows(
+    { schemaVersion: 1, index: candidate.index },
+    "generatorImages",
+    candidate.generatorImages,
+  );
 }
 
 function prepareSource(
@@ -427,16 +516,16 @@ function hashRootImages(
   const chunkHashes: string[] = [];
   for (
     let start = 0;
-    start < type.representativeByPoint.length;
+    start < type.representativeByPoint!.length;
     start += chunkSize
   ) {
-    const end = Math.min(type.representativeByPoint.length, start + chunkSize);
+    const end = Math.min(type.representativeByPoint!.length, start + chunkSize);
     chunkHashes.push(
       canonicalSha256({
         sphericalSubsetId: type.id,
         startPoint: start,
         representativeByPoint: Array.from(
-          type.representativeByPoint.subarray(start, end),
+          type.representativeByPoint!.subarray(start, end),
         ),
       }),
     );
@@ -543,137 +632,158 @@ function createChunkCommitter(
   };
 }
 
-function buildFaceCompatibility(
+/**
+ * Face compatibility of one coface type with each of its proper faces.
+ * Every coface fiber is walked once and feeds all face relations, instead
+ * of being rebuilt for each face; each relation's transcript is the same
+ * chunk stream it would have on its own.
+ */
+function buildFaceCompatibilitiesForCoface(
   sourceHash: string,
   candidate: TorsionFreeActionCandidate,
-  face: RuntimeType,
   coface: RuntimeType,
-  faceRootImageHash: string,
-  cofaceRootImageHash: string,
+  faces: readonly RuntimeType[],
+  rootImageHashOf: (typeIndex: number) => string,
   chunkSize: number,
-): GeneralizedCompressionFaceCompatibility {
-  // The two committed root-image arrays determine every rooted record
-  // q -> (qW_T, qW_U). Rehashing all d triples for every U<T pair would
-  // duplicate those arrays thousands of times at target scale.
-  const rootedTranscriptFactorHashes: [string, string] = [
-    faceRootImageHash,
-    cofaceRootImageHash,
-  ];
-  const rootedTranscriptHash = canonicalSha256({
-    schemaVersion: 1,
-    method: "factorized-root-image-pair",
-    sourceHash,
-    faceSphericalSubsetId: face.id,
-    cofaceSphericalSubsetId: coface.id,
-    rootedFaceRecordCount: candidate.index,
-    rootedTranscriptFactorHashes,
+  scratch: FaceRootScratch,
+): GeneralizedCompressionFaceCompatibility[] {
+  const relations = faces.map((face) => {
+    const expectedFacesPerCoface = coface.subgroupOrder / face.subgroupOrder;
+    if (!Number.isSafeInteger(expectedFacesPerCoface)) {
+      throw new GeneralizedCompressionError("Invalid parabolic face index", [
+        `${face.id} < ${coface.id} gives |W_T|/|W_U|=${expectedFacesPerCoface}.`,
+      ]);
+    }
+    return {
+      face,
+      expectedFacesPerCoface,
+      chunkHashes: [] as string[],
+      records: [] as unknown[],
+      chunkStart: 0,
+      incidenceCount: 0,
+    };
   });
-
-  const expectedFacesPerCoface = coface.subgroupOrder / face.subgroupOrder;
-  if (!Number.isSafeInteger(expectedFacesPerCoface)) {
-    throw new GeneralizedCompressionError("Invalid parabolic face index", [
-      `${face.id} < ${coface.id} gives |W_T|/|W_U|=${expectedFacesPerCoface}.`,
-    ]);
-  }
-  const compressedTranscriptChunkHashes: string[] = [];
-  const compressedRecords: unknown[] = [];
-  let compressedChunkStart = 0;
-  let compressedFaceIncidenceCount = 0;
   for (const representativePoint of coface.representatives) {
     const cofacePoints = orbitFromRoot(
       candidate,
       coface.generators,
       representativePoint,
     );
-    const faceRepresentatives = [
-      ...new Set(
-        cofacePoints.map(
-          (point) => face.representativeByPoint[point] as number,
-        ),
-      ),
-    ].sort(compareNumbers);
-    if (faceRepresentatives.length !== expectedFacesPerCoface) {
+    for (const relation of relations) {
+      const { face } = relation;
+      const faceRoots = faceRootsInFiber(
+        candidate,
+        face.generators,
+        cofacePoints,
+        scratch,
+      );
+      const faceRepresentatives = [
+        ...new Set(cofacePoints.map((point) => faceRoots[point])),
+      ].sort(compareNumbers);
+      if (faceRepresentatives.length !== relation.expectedFacesPerCoface) {
+        throw new GeneralizedCompressionError(
+          "Incompatible spherical face fiber",
+          [
+            `${face.id} < ${coface.id} at q${representativePoint} has ${faceRepresentatives.length} faces; expected ${relation.expectedFacesPerCoface}.`,
+          ],
+        );
+      }
+      for (const faceRepresentative of faceRepresentatives) {
+        if (relation.records.length === 0) {
+          relation.chunkStart = relation.incidenceCount;
+        }
+        relation.records.push([representativePoint, faceRepresentative]);
+        relation.incidenceCount += 1;
+        if (relation.records.length === chunkSize) {
+          flushChunk(
+            relation.chunkHashes,
+            {
+              faceSphericalSubsetId: face.id,
+              cofaceSphericalSubsetId: coface.id,
+              startCompressedIncidence: relation.chunkStart,
+            },
+            relation.records,
+          );
+        }
+      }
+    }
+  }
+  return relations.map((relation) => {
+    const { face, expectedFacesPerCoface } = relation;
+    flushChunk(
+      relation.chunkHashes,
+      {
+        faceSphericalSubsetId: face.id,
+        cofaceSphericalSubsetId: coface.id,
+        startCompressedIncidence: relation.chunkStart,
+      },
+      relation.records,
+    );
+    const compressedFaceIncidenceCount = relation.incidenceCount;
+    const expectedCompressedCount =
+      coface.representatives.length * expectedFacesPerCoface;
+    if (compressedFaceIncidenceCount !== expectedCompressedCount) {
       throw new GeneralizedCompressionError(
-        "Incompatible spherical face fiber",
+        "Wrong compressed face-incidence count",
         [
-          `${face.id} < ${coface.id} at q${representativePoint} has ${faceRepresentatives.length} faces; expected ${expectedFacesPerCoface}.`,
+          `${face.id} < ${coface.id} produced ${compressedFaceIncidenceCount}; expected ${expectedCompressedCount}.`,
         ],
       );
     }
-    for (const faceRepresentative of faceRepresentatives) {
-      if (compressedRecords.length === 0) {
-        compressedChunkStart = compressedFaceIncidenceCount;
-      }
-      compressedRecords.push([representativePoint, faceRepresentative]);
-      compressedFaceIncidenceCount += 1;
-      if (compressedRecords.length === chunkSize) {
-        flushChunk(
-          compressedTranscriptChunkHashes,
-          {
-            faceSphericalSubsetId: face.id,
-            cofaceSphericalSubsetId: coface.id,
-            startCompressedIncidence: compressedChunkStart,
-          },
-          compressedRecords,
-        );
-      }
-    }
-  }
-  flushChunk(
-    compressedTranscriptChunkHashes,
-    {
+    // The two committed root-image arrays determine every rooted record
+    // q -> (qW_T, qW_U). Rehashing all d triples for every U<T pair would
+    // duplicate those arrays thousands of times at target scale.
+    const rootedTranscriptFactorHashes: [string, string] = [
+      rootImageHashOf(face.typeIndex),
+      rootImageHashOf(coface.typeIndex),
+    ];
+    const rootedTranscriptHash = canonicalSha256({
+      schemaVersion: 1,
+      method: "factorized-root-image-pair",
+      sourceHash,
       faceSphericalSubsetId: face.id,
       cofaceSphericalSubsetId: coface.id,
-      startCompressedIncidence: compressedChunkStart,
-    },
-    compressedRecords,
-  );
-  const expectedCompressedCount =
-    coface.representatives.length * expectedFacesPerCoface;
-  if (compressedFaceIncidenceCount !== expectedCompressedCount) {
-    throw new GeneralizedCompressionError(
-      "Wrong compressed face-incidence count",
-      [
-        `${face.id} < ${coface.id} produced ${compressedFaceIncidenceCount}; expected ${expectedCompressedCount}.`,
-      ],
-    );
-  }
-  const codimension = coface.dimension - face.dimension;
-  const transcriptHash = canonicalSha256({
-    schemaVersion: 1,
-    method: "rooted-and-compressed-face-chunk-sha256-tree",
-    sourceHash,
-    faceSphericalSubsetId: face.id,
-    cofaceSphericalSubsetId: coface.id,
-    codimension,
-    expectedFacesPerCoface,
-    rootedFaceRecordCount: candidate.index,
-    compressedFaceIncidenceCount,
-    chunkSize,
-    rootedTranscriptHash,
-    compressedTranscriptChunkHashes,
+      rootedFaceRecordCount: candidate.index,
+      rootedTranscriptFactorHashes,
+    });
+    const compressedTranscriptChunkHashes = relation.chunkHashes;
+    const codimension = coface.dimension - face.dimension;
+    const transcriptHash = canonicalSha256({
+      schemaVersion: 1,
+      method: "rooted-and-compressed-face-chunk-sha256-tree",
+      sourceHash,
+      faceSphericalSubsetId: face.id,
+      cofaceSphericalSubsetId: coface.id,
+      codimension,
+      expectedFacesPerCoface,
+      rootedFaceRecordCount: candidate.index,
+      compressedFaceIncidenceCount,
+      chunkSize,
+      rootedTranscriptHash,
+      compressedTranscriptChunkHashes,
+    });
+    return {
+      faceTypeIndex: face.typeIndex,
+      faceSphericalSubsetId: face.id,
+      cofaceTypeIndex: coface.typeIndex,
+      cofaceSphericalSubsetId: coface.id,
+      codimension,
+      immediate: codimension === 1,
+      expectedFacesPerCoface,
+      rootedFaceRecordCount: candidate.index,
+      compressedFaceIncidenceCount,
+      rootedTranscriptEncoding: "factorized-root-image-pair" as const,
+      rootedTranscriptFactorHashes,
+      rootedTranscriptHash,
+      compressedTranscriptChunkHashes,
+      transcriptHash,
+      checks: {
+        everyRootedFaceMapsIntoItsRootedCoface: true as const,
+        distinctFacesPerCofaceMatchParabolicIndex: true as const,
+        compressedIncidencesHaveExpectedCount: true as const,
+      },
+    };
   });
-  return {
-    faceTypeIndex: face.typeIndex,
-    faceSphericalSubsetId: face.id,
-    cofaceTypeIndex: coface.typeIndex,
-    cofaceSphericalSubsetId: coface.id,
-    codimension,
-    immediate: codimension === 1,
-    expectedFacesPerCoface,
-    rootedFaceRecordCount: candidate.index,
-    compressedFaceIncidenceCount,
-    rootedTranscriptEncoding: "factorized-root-image-pair",
-    rootedTranscriptFactorHashes,
-    rootedTranscriptHash,
-    compressedTranscriptChunkHashes,
-    transcriptHash,
-    checks: {
-      everyRootedFaceMapsIntoItsRootedCoface: true,
-      distinctFacesPerCofaceMatchParabolicIndex: true,
-      compressedIncidencesHaveExpectedCount: true,
-    },
-  };
 }
 
 function actionTruncationAgreement(
@@ -703,8 +813,8 @@ function actionTruncationAgreement(
       dimension: type.dimension,
       subgroupOrder: type.subgroupOrder,
       representativeCount: type.representatives.length,
-      representativesSha256: canonicalSha256(type.representatives),
-      rootImageHash: canonicalSha256(Array.from(type.representativeByPoint)),
+      representativesSha256: integerArraySha256(type.representatives),
+      rootImageHash: type.fullRootImageSha256!,
     };
     if (type.dimension !== 2) return common;
     const pair = type.generators as [number, number];
@@ -737,12 +847,9 @@ function actionTruncationAgreement(
             ],
           );
         }
-        boundary.push([
-          current,
-          generator,
-          next,
-          edgeType.representativeByPoint[current],
-        ]);
+        // The rank-one fiber of `current` is {current, next}; its root is
+        // the smaller point.
+        boundary.push([current, generator, next, Math.min(current, next)]);
         current = next;
       }
       if (current !== representativePoint) {
@@ -1463,12 +1570,20 @@ export function buildGeneralizedCompressionCertificate(
     candidateId: candidate.id,
     degree: candidate.index,
   });
-  const runtimeTypes = prepared.plans.map((plan, typeIndex) =>
-    buildRuntimeType(candidate, plan, typeIndex),
-  );
-  const sphericalTypes = runtimeTypes.map((type) => {
+  const runtimeTypes: RuntimeType[] = [];
+  const sphericalTypes = prepared.plans.map((plan, typeIndex) => {
+    const type = buildRuntimeType(candidate, plan, typeIndex);
     const rootImages = hashRootImages(sourceHash, type, rootHashChunkSize);
     const fibers = hashFibers(sourceHash, candidate, type, fiberHashChunkSize);
+    if (type.dimension <= 2) {
+      type.fullRootImageSha256 = integerArraySha256(
+        type.representativeByPoint!,
+      );
+    }
+    // Keeping one point-sized table per spherical type was the dominant
+    // memory cost (tens of GB at 10^7 points); release it now.
+    type.representativeByPoint = undefined;
+    runtimeTypes.push(type);
     return {
       typeIndex: type.typeIndex,
       sphericalSubsetId: type.id,
@@ -1493,26 +1608,25 @@ export function buildGeneralizedCompressionCertificate(
     };
   });
   const faceCompatibility: GeneralizedCompressionFaceCompatibility[] = [];
+  const faceRootScratch = createFaceRootScratch(candidate.index);
   for (const coface of runtimeTypes) {
-    for (const face of runtimeTypes) {
-      if (
-        face.dimension >= coface.dimension ||
-        !isSubset(face.generators, coface.generators)
-      ) {
-        continue;
-      }
-      faceCompatibility.push(
-        buildFaceCompatibility(
-          sourceHash,
-          candidate,
-          face,
-          coface,
-          sphericalTypes[face.typeIndex].rootImageHash,
-          sphericalTypes[coface.typeIndex].rootImageHash,
-          faceHashChunkSize,
-        ),
-      );
-    }
+    const faces = runtimeTypes.filter(
+      (face) =>
+        face.dimension < coface.dimension &&
+        isSubset(face.generators, coface.generators),
+    );
+    if (faces.length === 0) continue;
+    faceCompatibility.push(
+      ...buildFaceCompatibilitiesForCoface(
+        sourceHash,
+        candidate,
+        coface,
+        faces,
+        (typeIndex) => sphericalTypes[typeIndex].rootImageHash,
+        faceHashChunkSize,
+        faceRootScratch,
+      ),
+    );
   }
   faceCompatibility.sort(
     (left, right) =>
@@ -1807,8 +1921,8 @@ export function materializeGeneralizedCompressionFaceCompatibility(
     { length: prepared.candidate.index },
     (_unused, actionPoint) => ({
       actionPoint,
-      faceRepresentativePoint: face.representativeByPoint[actionPoint],
-      cofaceRepresentativePoint: coface.representativeByPoint[actionPoint],
+      faceRepresentativePoint: face.representativeByPoint![actionPoint],
+      cofaceRepresentativePoint: coface.representativeByPoint![actionPoint],
     }),
   );
   const compressedIncidences: MaterializedGeneralizedCompressionFaceIncidence[] =
@@ -1820,7 +1934,7 @@ export function materializeGeneralizedCompressionFaceCompatibility(
           prepared.candidate,
           coface.generators,
           cofaceRepresentativePoint,
-        ).map((point) => face.representativeByPoint[point] as number),
+        ).map((point) => face.representativeByPoint![point]),
       ),
     ].sort(compareNumbers);
     for (const faceRepresentativePoint of faceRepresentatives) {

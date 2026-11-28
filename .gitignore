@@ -20,3 +20,6 @@ dev-server.log
 *.log
 .DS_Store
 .tmp_sources
+
+# Local agent instructions; kept out of the published repository.
+AGENTS.md

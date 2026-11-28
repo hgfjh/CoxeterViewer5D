@@ -46,6 +46,7 @@ describe("simplicial collapsibility", () => {
     };
     const result = checkSimplicialCollapsibility(circleWithTail, {
       maxMilliseconds: Number.POSITIVE_INFINITY,
+      homologyPrecheck: false,
     });
 
     expect(result.status).toBe("proven-not-collapsible");
@@ -128,6 +129,7 @@ describe("simplicial collapsibility", () => {
     };
     const result = checkSimplicialCollapsibility(input, {
       maxMilliseconds: Number.POSITIVE_INFINITY,
+      homologyPrecheck: false,
     });
     if (result.status !== "proven-not-collapsible") {
       throw new Error("Expected an exhaustive negative certificate.");
@@ -169,5 +171,73 @@ describe("simplicial collapsibility", () => {
     expect(canonicalSimplexId(["c", "a,b"])).toBe(
       canonicalSimplexId(["a,b", "c"]),
     );
+  });
+
+  it("witnesses noncollapsibility by reduced Z/2 homology without a search", () => {
+    const circleWithTail = {
+      simplices: [
+        ["a", "b"],
+        ["b", "c"],
+        ["a", "c"],
+        ["a", "d"],
+      ],
+    };
+    const result = checkSimplicialCollapsibility(circleWithTail);
+    expect(result.status).toBe("proven-not-collapsible");
+    if (result.status !== "proven-not-collapsible")
+      throw new Error("unreachable");
+    expect(result.certificate).toMatchObject({
+      kind: "nonzero-reduced-homology",
+      field: "F2",
+      reducedBettiNumbers: [0, 1],
+    });
+    expect(result.stats.statesExpanded).toBe(0);
+    expect(
+      verifyCollapsibilityCertificate(circleWithTail, result.certificate),
+    ).toMatchObject({
+      valid: true,
+    });
+
+    const tampered = structuredClone(result.certificate);
+    if (tampered.kind !== "nonzero-reduced-homology")
+      throw new Error("unreachable");
+    tampered.reducedBettiNumbers = [0, 2];
+    expect(
+      verifyCollapsibilityCertificate(circleWithTail, tampered),
+    ).toMatchObject({
+      valid: false,
+    });
+    // A homology witness cannot be transplanted onto an acyclic complex.
+    const disk = { simplices: [["a", "b", "c"]] };
+    expect(
+      verifyCollapsibilityCertificate(disk, {
+        ...tampered,
+        initialSimplexIds: [],
+      }),
+    ).toMatchObject({ valid: false });
+  });
+
+  it("computes Betti numbers of a 2-sphere boundary and an acyclic dunce-free disk", () => {
+    const sphere = checkSimplicialCollapsibility({
+      simplices: [
+        ["a", "b", "c"],
+        ["a", "b", "d"],
+        ["a", "c", "d"],
+        ["b", "c", "d"],
+      ],
+    });
+    expect(sphere.status).toBe("proven-not-collapsible");
+    if (sphere.status === "proven-not-collapsible") {
+      expect(sphere.certificate).toMatchObject({
+        reducedBettiNumbers: [0, 0, 1],
+      });
+    }
+    const disk = checkSimplicialCollapsibility({
+      simplices: [
+        ["a", "b", "c"],
+        ["a", "c", "d"],
+      ],
+    });
+    expect(disk.status).toBe("collapsible");
   });
 });

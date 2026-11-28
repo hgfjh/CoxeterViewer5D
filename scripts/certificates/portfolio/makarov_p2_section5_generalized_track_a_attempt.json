@@ -1,0 +1,336 @@
+{
+  "certificateSha256": "bf7818d52afcf65e9d34080cfb7260ae3088e091a21b1bbf40a86b86000f938a",
+  "cofaceClosedLawfulRetention": {
+    "cofaceUpsetsDeleted": null,
+    "downwardClosureVerified": false,
+    "reason": "the explicit class fails before wall lawfulness, while the direct-cocycle lawful variant still needs a global nonhorizontal potential and complete cell/link enumeration",
+    "retainedCellSet": null,
+    "statusForDirectCocycleVariant": "not-run",
+    "statusForExplicitWallCharacter": "not-defined-character-fails-wall-span-gate",
+    "unlawfulRankTwoCellSet": null
+  },
+  "compatibleSubdivisionAndHeight": {
+    "acceptedForStrictTrackA": false,
+    "introducedVertices": "one vertex for every colored quotient cell",
+    "mixedPotentialIsExactAndGloballyGeneric": true,
+    "reason": "height compatibility does not supply wall lawfulness, and this barycentric subdivision is not the vertex-preserving pulling subdivision used by the existing generalized Track A implementation",
+    "subdivision": "barycentric order complex of the complete coarse colored cell poset"
+  },
+  "conclusions": {
+    "algebraicFiberingCertified": false,
+    "boundedAttemptStatus": "fixed-character-wall-track-a-obstructed-direct-variant-open",
+    "directCocycleTrackARun": false,
+    "explicitCharacterWallTrackAObstructed": true,
+    "finiteHeightBandGatePassed": false,
+    "formerTrackBNormalS0ObstructionPersists": false,
+    "lawfulRetainedComplexCertified": false,
+    "otherWallCharacterSearchRun": false,
+    "smoothFiberingCertified": false
+  },
+  "directedLinkCalculation": {
+    "allRetainedSubdivisionVerticesChecked": false,
+    "formerRootAllFourPotentialRunsPassed": true,
+    "formerRootCheckedIncludingSubdivisionVertices": true,
+    "status": "stopped-at-missing-lawful-retained-set"
+  },
+  "finiteHeightBandGate": {
+    "asphericityRequired": false,
+    "characterRestrictionChecked": false,
+    "conditionalLemmas": {
+      "fullOneSkeletonInclusionWouldInducePi1Surjection": true,
+      "kernelQuotientArgumentAppliesAfterCharacterCompatibility": true
+    },
+    "lawfulComplexAndInclusionReconstructed": false,
+    "mandatoryForTrackAPromotion": true,
+    "method": "bestvina-brady-finite-height-band-pi1-surjection",
+    "status": "not-run-missing-lawful-complex-and-global-links"
+  },
+  "inputAudit": {
+    "coarseCocycleCoefficientCensus": {
+      "absoluteNonzeroCounts": {
+        "1": 14650,
+        "2": 859,
+        "3": 8
+      },
+      "allEdgesAreUnitNonzero": false,
+      "edgeCount": 39000,
+      "nonzeroEdgeCount": 15517,
+      "signedNonzeroCounts": {
+        "-1": 7352,
+        "-2": 432,
+        "-3": 5,
+        "1": 7298,
+        "2": 427,
+        "3": 3
+      },
+      "zeroEdgeCount": 23483
+    },
+    "coarsePrimalTwoCellBoundaryLengthHistogram": {
+      "5": 156000
+    },
+    "explicitPrimitiveCocyclePresent": true,
+    "factoredFineEdgeCocycleOracleAvailable": true,
+    "factoredFineEdgeOracleFormula": "c((t,q),i)=z(r(q),r(q*s_i)) for i=4 and 0 otherwise",
+    "fineWallPartitionReconstructed": false,
+    "fixedCharacterWallSpanComparisonSupplied": true,
+    "primitiveArtifactEnumeratesAllMEdgeRows": false,
+    "pullbackCharacterCertifiedPrimitive": true,
+    "standardOppositeEdgeWallRuleAvailableOnCoarsePentagons": false,
+    "wallCoorientationSearchRun": false
+  },
+  "kind": "makarov-p2-section5-generalized-track-a-bounded-attempt",
+  "mixedPotentialProbe": {
+    "coloredCopiesOfFormerRootCovered": 256,
+    "formerNormalS0ObstructionDisappears": true,
+    "globalColorTranslationReduction": "only the index-two kernel of the selected character preserves the potential; no full F2^9 reduction is claimed",
+    "globalDirectedLinksChecked": false,
+    "globalGenericityProof": "raw barycenter differences lie in (1/60)Z; the state perturbation changes an edge by at most 2/1000 and the dimension term by at most 5/100000; a nonzero state difference is at least 1/1000 and dominates the dimension term",
+    "heightFamily": "raw + statePolarity*u_bar/1000 + dimensionPolarity*dim/100000",
+    "purpose": "test whether the Track B normal S^0 is intrinsic before stopping at the Track A input gate",
+    "representsSamePrimitiveCharacter": true,
+    "rootCoverageReason": "every bottom coset averages to zero and its two normal lifts have opposite character values",
+    "runs": [
+      {
+        "ascending": {
+          "completeLinkDigest": "5885f9a4b781f607a199445f2f0ba241bf15d626e7a5992fca5a03e71467b075",
+          "componentCount": 1,
+          "componentSizes": [
+            1
+          ],
+          "connected": true,
+          "edgeCount": 0,
+          "nonempty": true,
+          "vertexCount": 1
+        },
+        "descending": {
+          "completeLinkDigest": "ab856d4b6475fc898879aaf690b4e9d522d60e9091bce52ce7ed7a5e02610e41",
+          "componentCount": 1,
+          "componentSizes": [
+            2641
+          ],
+          "connected": true,
+          "edgeCount": 19680,
+          "nonempty": true,
+          "vertexCount": 2641
+        },
+        "dimensionPolarity": 1,
+        "failures": [],
+        "normalDifferences": {
+          "interior:0:coset-000": "101/100000",
+          "interior:0:coset-003": "-99/100000"
+        },
+        "root": {
+          "colorCosetRepresentative": 0,
+          "dualSimplex": [
+            0
+          ],
+          "layer": "bottom"
+        },
+        "rootLinkPassed": true,
+        "statePolarity": 1
+      },
+      {
+        "ascending": {
+          "completeLinkDigest": "ec80477b2881a88a6744a371b1216b5fa9f58571dd3cad3d9a85efafe25cf1b6",
+          "componentCount": 1,
+          "componentSizes": [
+            2641
+          ],
+          "connected": true,
+          "edgeCount": 19680,
+          "nonempty": true,
+          "vertexCount": 2641
+        },
+        "descending": {
+          "completeLinkDigest": "b4e50c93d6f7d2e360b4b8a0bfec2ae75953b4d92d4ede252d954740f0eebf5a",
+          "componentCount": 1,
+          "componentSizes": [
+            1
+          ],
+          "connected": true,
+          "edgeCount": 0,
+          "nonempty": true,
+          "vertexCount": 1
+        },
+        "dimensionPolarity": -1,
+        "failures": [],
+        "normalDifferences": {
+          "interior:0:coset-000": "99/100000",
+          "interior:0:coset-003": "-101/100000"
+        },
+        "root": {
+          "colorCosetRepresentative": 0,
+          "dualSimplex": [
+            0
+          ],
+          "layer": "bottom"
+        },
+        "rootLinkPassed": true,
+        "statePolarity": 1
+      },
+      {
+        "ascending": {
+          "completeLinkDigest": "b4e50c93d6f7d2e360b4b8a0bfec2ae75953b4d92d4ede252d954740f0eebf5a",
+          "componentCount": 1,
+          "componentSizes": [
+            1
+          ],
+          "connected": true,
+          "edgeCount": 0,
+          "nonempty": true,
+          "vertexCount": 1
+        },
+        "descending": {
+          "completeLinkDigest": "ec80477b2881a88a6744a371b1216b5fa9f58571dd3cad3d9a85efafe25cf1b6",
+          "componentCount": 1,
+          "componentSizes": [
+            2641
+          ],
+          "connected": true,
+          "edgeCount": 19680,
+          "nonempty": true,
+          "vertexCount": 2641
+        },
+        "dimensionPolarity": 1,
+        "failures": [],
+        "normalDifferences": {
+          "interior:0:coset-000": "-99/100000",
+          "interior:0:coset-003": "101/100000"
+        },
+        "root": {
+          "colorCosetRepresentative": 0,
+          "dualSimplex": [
+            0
+          ],
+          "layer": "bottom"
+        },
+        "rootLinkPassed": true,
+        "statePolarity": -1
+      },
+      {
+        "ascending": {
+          "completeLinkDigest": "ab856d4b6475fc898879aaf690b4e9d522d60e9091bce52ce7ed7a5e02610e41",
+          "componentCount": 1,
+          "componentSizes": [
+            2641
+          ],
+          "connected": true,
+          "edgeCount": 19680,
+          "nonempty": true,
+          "vertexCount": 2641
+        },
+        "descending": {
+          "completeLinkDigest": "5885f9a4b781f607a199445f2f0ba241bf15d626e7a5992fca5a03e71467b075",
+          "componentCount": 1,
+          "componentSizes": [
+            1
+          ],
+          "connected": true,
+          "edgeCount": 0,
+          "nonempty": true,
+          "vertexCount": 1
+        },
+        "dimensionPolarity": -1,
+        "failures": [],
+        "normalDifferences": {
+          "interior:0:coset-000": "-101/100000",
+          "interior:0:coset-003": "99/100000"
+        },
+        "root": {
+          "colorCosetRepresentative": 0,
+          "dualSimplex": [
+            0
+          ],
+          "layer": "bottom"
+        },
+        "rootLinkPassed": true,
+        "statePolarity": -1
+      }
+    ],
+    "stateCharacter": {
+      "baseColorHasCharacterValueMinusOne": true,
+      "cellVertexPotential": "average u over the incident-color coset",
+      "coordinate": 0,
+      "formula": "u(t)=(-1)^bit_coordinate(t)"
+    },
+    "status": "passed-at-former-obstruction-root"
+  },
+  "nonClaims": [
+    "The wall-span obstruction is character-specific and does not rule out another wall-derived P2 character.",
+    "The mixed potential is a cohomologous PL-height perturbation, not a wall coorientation.",
+    "The rooted potential probe is not a global directed-link certificate.",
+    "The direct-cocycle lawful-subcomplex variant of Track A has not been run globally.",
+    "The simplicial surrogate is not a completed lawful-subcomplex Track A calculation.",
+    "No asphericity, algebraic fibering, or smooth fibering conclusion is claimed."
+  ],
+  "optionalAsphericityEvidence": {
+    "blocksAlgebraicFiberingConclusion": false,
+    "required": false,
+    "status": "not-run"
+  },
+  "producer": {
+    "script": "scripts/makarov_p2_generalized_track_a.py",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 1,
+  "simplicialLawfulnessSurrogate": {
+    "cofaceClosedRetainedSet": "the entire coarse colored order complex",
+    "directCocycleLawfulDeletionCertified": false,
+    "observation": "under any generic height every barycentric two-simplex has one minimum, one maximum, and two monotone boundary paths",
+    "reason": "declaring subdivision triangles lawful discards no original cell; it neither repairs the wall-span obstruction nor performs a direct-cocycle lawful-cell deletion",
+    "status": "exact-but-not-a-lawful-deletion",
+    "strictWallTrackAAdmissible": false,
+    "unlawfulSubdivisionTriangleCount": 0
+  },
+  "sourceBinding": {
+    "coloring": "scripts/data/makarov_p2_section5_coloring.json",
+    "coloringArtifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+    "coloringBytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "primitiveCocycle": "scripts/certificates/portfolio/makarov_p2_section5_x_primitive_cocycle.json",
+    "primitiveCocycleBytesSha256": "0ce60376a14c89927a6b09289a9a66318ea0a601ede2101489975ddbb6ce1cd3",
+    "primitiveCocycleCertificateSha256": "aeb2591986d77a5d60e595920eaf1af5e9bfca805314ed6c0acccef13e03acd7",
+    "primitiveCocycleIndependentReplay": {
+      "badTriangleCount": 0,
+      "certificateFileBytesSha256": "0ce60376a14c89927a6b09289a9a66318ea0a601ede2101489975ddbb6ce1cd3",
+      "certificateSha256": "aeb2591986d77a5d60e595920eaf1af5e9bfca805314ed6c0acccef13e03acd7",
+      "cocycleTranscriptSha256": "612ac45416eb4f0c3cec428b57bdebc99817eeac6a9420fdf49c9255abdf2049",
+      "importCertificateFileBytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "importCertificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+      "maximumAbsoluteCocycleValue": 3,
+      "maximumAbsoluteTriangleSum": 0,
+      "nonzeroCocycleEdgeCount": 15517,
+      "nonzeroTreeEdgeCount": 0,
+      "periodGcd": 1,
+      "status": "passed",
+      "treeEdgeCountVerified": 649,
+      "triangleCountVerified": 156000,
+      "witnessBoundarySupport": 0,
+      "witnessEvaluation": 1
+    },
+    "wallCompatibility": "scripts/certificates/portfolio/makarov_p2_section5_wall_compatibility.json",
+    "wallCompatibilityArtifactSha256": "f8c0bbbaec0f2896239c362c44801e9c985bfd8bfed0ceea849253ca1164f423",
+    "wallCompatibilityBytesSha256": "970761eabe64396fed9b618c46fd15131f73e0897ea209d325c41668de9d8366"
+  },
+  "strictGeneralizedTrackA": {
+    "firstExactObstruction": "the explicit primitive character has no cohomologous representative in the rational wall-cochain span",
+    "fixedCharacterWallCompatibility": {
+      "artifactSha256": "f8c0bbbaec0f2896239c362c44801e9c985bfd8bfed0ceea849253ca1164f423",
+      "failedOppositeEdgeEquationsInStoredGauge": 1430046720,
+      "gaugeIndependent": true,
+      "rationalSolutionExistsAfterCoboundaryAndScaling": false,
+      "totalOppositeEdgeEquationsInStoredGauge": 47923200000
+    },
+    "requiredMissingObjects": [
+      "for a search over other characters: the complete ambient wall equivalence classes on fine quotient edges",
+      "for a search over other characters: two-sidedness, orientation parity, and one transverse sign per wall",
+      "for direct-cocycle Track A: a global periodic potential, lawful-cell closure, and all directed links"
+    ],
+    "scope": "this excludes only the explicit primitive character from wall Track A; another wall-derived character on P2 remains open",
+    "statusForExplicitPrimitiveCharacter": "obstructed-not-in-rational-wall-span",
+    "statusForOtherWallCharacters": "not-run-fine-wall-partition-not-reconstructed",
+    "whyCoarseIncidenceIsInsufficient": "all 156000 primal two-cells dual to triangles of K are pentagons, so the Davis opposite-edge relation is not defined on them; the needed walls live in a finer Coxeter cellulation",
+    "whyTheFixedCharacterFails": "sheet-translation averaging, the m_45=4 octagons, and the odd-label chain force every hypothetical wall-compatible representative to vanish, contradicting the period-one cycle"
+  }
+}

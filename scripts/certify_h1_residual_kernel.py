@@ -8,9 +8,10 @@ the sparse output of the companion exact LinBox elimination: its first line is
 
 and each following line is ``basis_index nnz column value ...``.  The checker
 replays every row both modulo the stated prime and over the integers.  It then
-saturates the lifted lattice by exact mod-2 descent and requires a unimodular
-coordinate minor.  The latter proves that the resulting lattice is primitive
-in the ambient integer lattice.
+saturates the lifted lattice by exact p-adic descent.  Primitivity is certified
+from the determinantal divisor: for every prime dividing one selected nonzero
+maximal minor, the final coordinate matrix must have full rank modulo that
+prime.
 
 The reported finite-field rank comes from exact LinBox Gaussian elimination,
 not a floating-point or randomized rank estimate.  Combined with the replayed
@@ -28,7 +29,7 @@ from typing import Any, Iterable
 
 
 BACKEND = "h1ResidualKernelExactChecker"
-BACKEND_VERSION = "1.0.0"
+BACKEND_VERSION = "1.1.0"
 
 
 class CertificateError(ValueError):
@@ -80,10 +81,16 @@ def read_sparse_matrix(path: Path) -> SparseMatrix:
         for row_index, line in enumerate(stream):
             tokens = list(map(int, line.split()))
             entries = tuple(zip(tokens[1::2], tokens[2::2]))
-            if not tokens or tokens[0] != len(entries) or len(tokens) != 1 + 2 * len(entries):
+            if (
+                not tokens
+                or tokens[0] != len(entries)
+                or len(tokens) != 1 + 2 * len(entries)
+            ):
                 raise CertificateError(f"Malformed sparse row {row_index}.")
             if any(column < 0 or column >= column_count for column, _ in entries):
-                raise CertificateError(f"Out-of-range column in sparse row {row_index}.")
+                raise CertificateError(
+                    f"Out-of-range column in sparse row {row_index}."
+                )
             rows.append(entries)
             nonzero_count += len(entries)
     if len(rows) != row_count:
@@ -108,16 +115,24 @@ def read_modular_kernel(path: Path) -> ModularKernel:
                 raise CertificateError(f"Malformed modular vector {expected_basis}.")
             vector = dict(zip(tokens[2::2], tokens[3::2]))
             if len(vector) != tokens[1]:
-                raise CertificateError(f"Duplicate coordinate in modular vector {expected_basis}.")
+                raise CertificateError(
+                    f"Duplicate coordinate in modular vector {expected_basis}."
+                )
             if any(column < 0 or column >= column_count for column in vector):
-                raise CertificateError(f"Out-of-range coordinate in modular vector {expected_basis}.")
+                raise CertificateError(
+                    f"Out-of-range coordinate in modular vector {expected_basis}."
+                )
             vectors.append(vector)
     if len(vectors) != nullity:
-        raise CertificateError(f"Expected {nullity} modular vectors; found {len(vectors)}.")
+        raise CertificateError(
+            f"Expected {nullity} modular vectors; found {len(vectors)}."
+        )
     if not is_prime(prime):
         raise CertificateError(f"The stated modulus {prime} is not prime.")
     if reported_rank + nullity != column_count:
-        raise CertificateError("Reported rank and nullity do not sum to the column count.")
+        raise CertificateError(
+            "Reported rank and nullity do not sum to the column count."
+        )
     return ModularKernel(tuple(vectors), column_count, prime, reported_rank)
 
 
@@ -134,7 +149,9 @@ def replay(
     maxima = [0] * len(materialized)
     for row in matrix.rows:
         for basis, vector in enumerate(materialized):
-            residual = sum(coefficient * vector.get(column, 0) for column, coefficient in row)
+            residual = sum(
+                coefficient * vector.get(column, 0) for column, coefficient in row
+            )
             if modulus is not None:
                 residual %= modulus
             maxima[basis] = max(maxima[basis], abs(residual))
@@ -145,7 +162,9 @@ def replay(
 
 def coordinate_mask(vectors: list[dict[int, int]], column: int) -> int:
     return sum(
-        (1 << basis) for basis, vector in enumerate(vectors) if vector.get(column, 0) & 1
+        (1 << basis)
+        for basis, vector in enumerate(vectors)
+        if vector.get(column, 0) & 1
     )
 
 
@@ -171,6 +190,116 @@ def mod2_dependency(rows: list[tuple[int, int]], rank: int) -> int:
     return 0
 
 
+def modp_row_basis(
+    vectors: list[dict[int, int]], column_count: int, prime: int
+) -> dict[int, tuple[list[int], int]]:
+    """Return a row-echelon basis for the coordinate rows modulo ``prime``.
+
+    The input vectors are the columns of an ambient-coordinate matrix.  A
+    rank drop here is exactly a mod-p dependence among the lattice basis
+    vectors, hence an index-p enlargement of their integral span.
+    """
+
+    echelon: dict[int, tuple[list[int], int]] = {}
+    rank = len(vectors)
+    for column in range(column_count):
+        row = [vector.get(column, 0) % prime for vector in vectors]
+        for pivot in sorted(echelon):
+            coefficient = row[pivot]
+            if coefficient:
+                pivot_row = echelon[pivot][0]
+                row = [
+                    (value - coefficient * pivot_value) % prime
+                    for value, pivot_value in zip(row, pivot_row)
+                ]
+        pivot = next((index for index, value in enumerate(row) if value), None)
+        if pivot is None:
+            continue
+        inverse = pow(row[pivot], prime - 2, prime)
+        row = [(value * inverse) % prime for value in row]
+        echelon[pivot] = (row, column)
+        if len(echelon) == rank:
+            break
+    return echelon
+
+
+def modp_dependency(
+    echelon: dict[int, tuple[list[int], int]], rank: int, prime: int
+) -> list[int]:
+    """Find one nonzero right-kernel vector for a deficient echelon form."""
+
+    free = next((index for index in range(rank) if index not in echelon), None)
+    if free is None:
+        return []
+    dependency = [0] * rank
+    dependency[free] = 1
+    for pivot in sorted(echelon, reverse=True):
+        row = echelon[pivot][0]
+        dependency[pivot] = (
+            -sum(row[column] * dependency[column] for column in range(pivot + 1, rank))
+            % prime
+        )
+    return dependency
+
+
+def prime_factors(value: int) -> list[int]:
+    """Return the distinct prime factors of a positive integer."""
+
+    factors: list[int] = []
+    divisor = 2
+    while divisor * divisor <= value:
+        if value % divisor == 0:
+            factors.append(divisor)
+            while value % divisor == 0:
+                value //= divisor
+        divisor = 3 if divisor == 2 else divisor + 2
+    if value > 1:
+        factors.append(value)
+    return factors
+
+
+def enlarge_lattice_at_prime(
+    vectors: list[dict[int, int]], relation: list[int], prime: int
+) -> tuple[int, list[int]]:
+    """Adjoin a p-division witness and return the replaced basis index.
+
+    We normalize the replaced coefficient to one modulo p.  Consequently the
+    old lattice is contained in the new one with exact index p, rather than
+    merely producing another rational basis of the same kernel.
+    """
+
+    replacement = max(
+        index for index, coefficient in enumerate(relation) if coefficient
+    )
+    scale = pow(relation[replacement], prime - 2, prime)
+    normalized = [(coefficient * scale) % prime for coefficient in relation]
+    normalized = [
+        coefficient - prime if coefficient > prime // 2 else coefficient
+        for coefficient in normalized
+    ]
+    if normalized[replacement] != 1:
+        # The centered representative of 1 is always 1, including p=2.
+        raise CertificateError("Could not normalize a p-descent relation.")
+    support = set().union(
+        *(vectors[basis] for basis, coefficient in enumerate(normalized) if coefficient)
+    )
+    new_vector: dict[int, int] = {}
+    for column in support:
+        numerator = sum(
+            coefficient * vectors[basis].get(column, 0)
+            for basis, coefficient in enumerate(normalized)
+        )
+        if numerator % prime:
+            raise CertificateError(
+                "A mod-p dependence was not coordinatewise divisible."
+            )
+        value = numerator // prime
+        if value:
+            new_vector[column] = value
+    vectors[replacement] = new_vector
+    return replacement, normalized
+
+
 def bareiss_determinant(matrix: list[list[int]]) -> int:
     size = len(matrix)
     if any(len(row) != size for row in matrix):
@@ -190,7 +319,10 @@ def bareiss_determinant(matrix: list[list[int]]) -> int:
         pivot = work[pivot_index][pivot_index]
         for row in range(pivot_index + 1, size):
             for column in range(pivot_index + 1, size):
-                numerator = work[row][column] * pivot - work[row][pivot_index] * work[pivot_index][column]
+                numerator = (
+                    work[row][column] * pivot
+                    - work[row][pivot_index] * work[pivot_index][column]
+                )
                 if numerator % previous:
                     raise CertificateError("Bareiss division was not exact.")
                 work[row][column] = numerator // previous
@@ -222,7 +354,9 @@ def certify(
     ]
     integer_failures, integer_maxima = replay(matrix, vectors)
     if any(integer_failures):
-        raise CertificateError(f"Centered integer lift failed replay: {integer_failures}.")
+        raise CertificateError(
+            f"Centered integer lift failed replay: {integer_failures}."
+        )
 
     rank = len(vectors)
     singleton_columns = [-1] * rank
@@ -238,8 +372,21 @@ def certify(
             if abs(value) == lift_factor and singleton_columns[basis] < 0:
                 singleton_columns[basis] = column
                 singleton_values[basis] = value
-    if any(column < 0 for column in singleton_columns):
-        raise CertificateError("No diagonal independence minor was found for the lifted vectors.")
+    independence_echelon = modp_row_basis(vectors, matrix.column_count, modular.prime)
+    if len(independence_echelon) != rank:
+        raise CertificateError(
+            "The lifted vectors are not independent modulo the rank prime."
+        )
+    independence_columns = [
+        independence_echelon[pivot][1] for pivot in sorted(independence_echelon)
+    ]
+    independence_minor = [
+        [vectors[basis].get(column, 0) for basis in range(rank)]
+        for column in independence_columns
+    ]
+    independence_determinant = bareiss_determinant(independence_minor)
+    if independence_determinant == 0:
+        raise CertificateError("The lifted independence minor is singular over Z.")
 
     steps: list[dict[str, Any]] = []
     while True:
@@ -263,6 +410,7 @@ def certify(
         steps.append(
             {
                 "step": len(steps),
+                "prime": 2,
                 "mod2RankBefore": len(row_basis),
                 "selectedBasisIndices": selected,
                 "replacedBasisIndex": replacement,
@@ -273,13 +421,66 @@ def certify(
 
     final_rows = mod2_row_basis(vectors, matrix.column_count)
     minor_columns = [column for _mask, column in final_rows]
-    minor = [
-        [vectors[basis].get(column, 0) for basis in range(rank)]
-        for column in minor_columns
-    ]
-    determinant = bareiss_determinant(minor)
-    if abs(determinant) != 1:
-        raise CertificateError(f"The final coordinate minor is not unimodular: {determinant}.")
+    prime_rank_witnesses: list[dict[str, Any]] = []
+    primitive_prime_checks: list[dict[str, Any]] = []
+    while True:
+        minor = [
+            [vectors[basis].get(column, 0) for basis in range(rank)]
+            for column in minor_columns
+        ]
+        determinant = bareiss_determinant(minor)
+        if determinant == 0:
+            raise CertificateError("The selected saturation minor became singular.")
+        if abs(determinant) == 1:
+            primitive_prime_checks = []
+            break
+
+        descended = False
+        for prime in prime_factors(abs(determinant)):
+            echelon = modp_row_basis(vectors, matrix.column_count, prime)
+            prime_rank_witnesses.append(
+                {
+                    "prime": prime,
+                    "rank": len(echelon),
+                    "pivotColumns": [echelon[pivot][1] for pivot in sorted(echelon)],
+                }
+            )
+            if len(echelon) == rank:
+                continue
+            relation = modp_dependency(echelon, rank, prime)
+            if not relation:
+                raise CertificateError("Could not find a deficient-prime dependence.")
+            replacement, normalized = enlarge_lattice_at_prime(vectors, relation, prime)
+            steps.append(
+                {
+                    "step": len(steps),
+                    "prime": prime,
+                    "rankBefore": len(echelon),
+                    "relationCoefficients": normalized,
+                    "selectedBasisIndices": [
+                        basis
+                        for basis, coefficient in enumerate(normalized)
+                        if coefficient
+                    ],
+                    "replacedBasisIndex": replacement,
+                    "verifiedCoordinatewiseDivisibleNumerator": True,
+                }
+            )
+            descended = True
+            break
+        if not descended:
+            # Every prime that could divide the determinantal divisor divides
+            # this selected nonzero maximal minor.  Full coordinate rank at
+            # each such prime proves that none divides every maximal minor.
+            primitive_prime_checks = [
+                witness
+                for witness in prime_rank_witnesses[
+                    -len(prime_factors(abs(determinant))) :
+                ]
+            ]
+            if any(witness["rank"] != rank for witness in primitive_prime_checks):
+                raise CertificateError("The determinantal-divisor proof is incomplete.")
+            break
     saturated_failures, saturated_maxima = replay(matrix, vectors)
     if any(saturated_failures):
         raise CertificateError(f"Saturated-kernel replay failed: {saturated_failures}.")
@@ -329,19 +530,30 @@ def certify(
             "liftFactor": lift_factor,
             "failureRows": integer_failures,
             "maximumAbsoluteResiduals": integer_maxima,
-            "independenceMinorColumns": singleton_columns,
-            "independenceMinorDiagonal": singleton_values,
+            "independenceMinorColumns": independence_columns,
+            "independenceMinorDeterminant": independence_determinant,
+            "singletonMinorColumns": singleton_columns,
+            "singletonMinorDiagonal": singleton_values,
         },
         "saturation": {
-            "prime": 2,
+            "primes": sorted({step["prime"] for step in steps}),
             "steps": steps,
             "finalMod2Rank": len(final_rows),
-            "unimodularMinorColumns": minor_columns,
-            "unimodularMinorDeterminant": determinant,
+            "primeRankWitnesses": prime_rank_witnesses,
+            "unimodularMinorColumns": minor_columns if abs(determinant) == 1 else None,
+            "unimodularMinorDeterminant": determinant
+            if abs(determinant) == 1
+            else None,
+            "determinantalDivisorProof": {
+                "selectedMinorColumns": minor_columns,
+                "selectedMinorDeterminant": determinant,
+                "primeDivisors": prime_factors(abs(determinant)),
+                "fullCoordinateRankWitnesses": primitive_prime_checks,
+            },
             "argument": (
-                "Every descent step adjoins half of a coordinatewise-even integer-kernel combination. "
-                "The final basis has a coordinate minor of determinant +/-1, so its span is primitive in Z^n. "
-                "It is therefore the full integer kernel because the exact modular rank bounds the Q-nullity by the same rank."
+                "Every p-descent step adjoins a coordinatewise p-divisible integer-kernel combination and enlarges the lattice by index p. "
+                "Every prime that could divide the final determinantal divisor divides the selected nonzero maximal minor; full coordinate rank modulo each such prime proves that none divides every maximal minor. "
+                "The final lattice is therefore primitive in Z^n and is the full integer kernel because the exact modular rank bounds the Q-nullity by the same rank."
             ),
         },
         "saturatedBasis": {
@@ -356,7 +568,9 @@ def certify(
         },
     }
     certificate_output.parent.mkdir(parents=True, exist_ok=True)
-    certificate_output.write_text(json.dumps(certificate, indent=2) + "\n", encoding="utf8")
+    certificate_output.write_text(
+        json.dumps(certificate, indent=2) + "\n", encoding="utf8"
+    )
     return certificate
 
 

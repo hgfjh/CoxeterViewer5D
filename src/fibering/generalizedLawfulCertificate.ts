@@ -488,7 +488,38 @@ function uniqueSortedStrings(values: readonly string[]): string[] {
 }
 
 function uniqueSortedNumbers(values: readonly number[]): number[] {
-  return [...new Set(values)].sort(compareNumbers);
+  // Most inputs (generator lists, cell vertices) are already strictly
+  // increasing; a linear check avoids a Set and a sort for them.
+  for (let index = 1; index < values.length; index += 1) {
+    if (!(values[index - 1] < values[index])) {
+      return [...new Set(values)].sort(compareNumbers);
+    }
+  }
+  return values.slice();
+}
+
+/** Both arrays strictly increasing: is every entry of `subset` in `superset`? */
+function sortedIncludesAll(
+  superset: readonly number[],
+  subset: readonly number[],
+): boolean {
+  let cursor = 0;
+  for (const entry of subset) {
+    while (cursor < superset.length && superset[cursor] < entry) cursor += 1;
+    if (cursor === superset.length || superset[cursor] !== entry) return false;
+    cursor += 1;
+  }
+  return true;
+}
+
+/** Sort cells by their stable id, computing each id once. */
+function sortCellsById<Cell extends GeneralizedLawfulCellKey>(
+  cells: Iterable<Cell>,
+): Cell[] {
+  return [...cells]
+    .map((cell) => ({ cell, id: generalizedLawfulCellId(cell) }))
+    .sort((left, right) => compareIds(left.id, right.id))
+    .map((entry) => entry.cell);
 }
 
 function generatorKey(generators: readonly number[]): string {
@@ -731,9 +762,7 @@ function sortedFacets<Cell extends GeneralizedLawfulCellKey>(
   oracle.forEachFacet(cell, (facet) => {
     facets.set(generalizedLawfulCellId(facet), facet);
   });
-  return [...facets.values()].sort((left, right) =>
-    compareIds(generalizedLawfulCellId(left), generalizedLawfulCellId(right)),
-  );
+  return sortCellsById(facets.values());
 }
 
 function sortedRankTwoFaces<Cell extends GeneralizedLawfulCellKey>(
@@ -745,9 +774,7 @@ function sortedRankTwoFaces<Cell extends GeneralizedLawfulCellKey>(
   oracle.forEachRankTwoFace(cell, (face) => {
     faces.set(generalizedLawfulCellId(face), face);
   });
-  return [...faces.values()].sort((left, right) =>
-    compareIds(generalizedLawfulCellId(left), generalizedLawfulCellId(right)),
-  );
+  return sortCellsById(faces.values());
 }
 
 function cellVertices<Cell extends GeneralizedLawfulCellKey>(
@@ -1554,10 +1581,9 @@ function minimalSupportingCell<Cell extends GeneralizedLawfulCellKey>(
     const id = generalizedLawfulCellId(cell);
     if (visited.has(id)) return;
     visited.add(id);
-    const matching = sortedFacets(oracle, cell).filter((facet) => {
-      const vertices = new Set(cellVertices(oracle, facet));
-      return required.every((point) => vertices.has(point));
-    });
+    const matching = sortedFacets(oracle, cell).filter((facet) =>
+      sortedIncludesAll(cellVertices(oracle, facet), required),
+    );
     if (matching.length === 0) {
       leaves.set(id, cell);
       return;

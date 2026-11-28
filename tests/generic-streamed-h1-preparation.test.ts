@@ -8,8 +8,10 @@ import {
 } from "../src/fibering/genericActionH1";
 import { computeGenericSparseIntegerMatrixDigest } from "../src/fibering/genericSparseModularRank";
 import {
+  boundaryRowJobs,
   computeGenericStreamedH1PreparationDigest,
   prepareGenericStreamedH1,
+  prepareGenericStreamedH1Parallel,
   replayGenericStreamedH1Preparation,
   type GenericStreamedH1BoundaryRow,
   type GenericStreamedH1PreparationCertificate,
@@ -22,6 +24,8 @@ import {
   type TorsionFreeActionCandidate,
   type TorsionFreeCandidateResult,
 } from "../src/torsionFree";
+import type { KernelPool } from "../src/parallel/kernelPool";
+import { runKernel } from "../src/parallel/kernels";
 import { canonicalSha256 } from "../src/utils/canonicalSha256";
 
 function certify(
@@ -357,5 +361,73 @@ describe("generic streamed integral H1 preparation", () => {
         actionRootedReconstructionMatches: false,
       },
     });
+  });
+
+  it("gives the identical preparation when boundary rows run on a kernel pool", async () => {
+    // Kernels run inline, with results passed through structured clone as
+    // they would be from a worker thread.
+    const clonePool: KernelPool = {
+      size: 3,
+      kind: "node-workers",
+      run: async (name, args) => structuredClone(runKernel(name, args)),
+      close: async () => {},
+    };
+    for (const { system, accepted } of [
+      universalDihedralAction(),
+      { system: jnw, accepted: jnwAccepted },
+    ]) {
+      const oracle = oracleFor(system, accepted);
+      const sequential = prepareGenericStreamedH1(oracle).certificate;
+      const parallel = (
+        await prepareGenericStreamedH1Parallel(oracle, clonePool)
+      ).certificate;
+      expect(canonicalSha256(parallel)).toBe(canonicalSha256(sequential));
+    }
+  });
+
+  it("splits boundary rows into ordered jobs that cover every cell once", () => {
+    const oracle = oracleFor(jnw, jnwAccepted);
+    const expected: string[] = [];
+    oracle.forEachRankTwoCellPacked((cell) => expected.push(cell.cellId));
+    const walk = oracle.rankTwoWalkTables();
+    const tables = {
+      ...walk.tables,
+      cotreeColumnByEdge: new Int32Array(0),
+      edgeToWall: new Uint32Array(0),
+      edgeParity: new Int8Array(0),
+      twoSidedWallIndex: new Uint8Array(0),
+    };
+    // Odd job sizes force splits inside bitset words and across types.
+    for (const jobRows of [1, 5, 37, 1000]) {
+      const seen: string[] = [];
+      let nextRow = 0;
+      for (const job of boundaryRowJobs(walk, tables, jobRows)) {
+        expect(job.firstRow).toBe(nextRow);
+        let taken = 0;
+        for (const segment of job.segments) {
+          let skip = segment.skip;
+          let take = segment.take;
+          segment.rootBits.forEach((bits, word) => {
+            for (let bit = 0; bit < 32; bit += 1) {
+              if (((bits >>> bit) & 1) === 0) continue;
+              if (skip > 0) {
+                skip -= 1;
+              } else if (take > 0) {
+                take -= 1;
+                seen.push(
+                  `${segment.idPrefix}${(segment.firstWord + word) * 32 + bit}`,
+                );
+              }
+            }
+          });
+          expect(take).toBe(0);
+          taken += segment.take;
+        }
+        nextRow += taken;
+        expect(taken).toBeLessThanOrEqual(jobRows);
+        if (nextRow < expected.length) expect(taken).toBe(jobRows);
+      }
+      expect(seen).toEqual(expected);
+    }
   });
 });

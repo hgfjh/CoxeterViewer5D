@@ -8,6 +8,7 @@ import {
 import { torsionFreeActionFingerprint } from "./certification";
 import type {
   AcceptedActionQuotientOptions,
+  ActionRow,
   TorsionFreeCandidateResult,
 } from "./types";
 
@@ -20,7 +21,7 @@ function edgeId(generator: number, sourcePoint: number): string {
 }
 
 function relationBoundary(
-  generatorImages: number[][],
+  generatorImages: readonly ActionRow[],
   start: number,
   pair: [number, number],
   m: number,
@@ -161,7 +162,10 @@ export function acceptedActionToQuotientComplex(
     permutationAction: candidate.generatorImages.map((images, generator) => ({
       generator,
       images: Object.fromEntries(
-        images.map((image, point) => [vertexId(point), vertexId(image)]),
+        Array.from(images, (image, point) => [
+          vertexId(point),
+          vertexId(image),
+        ]),
       ),
     })),
     twoCells: buildRankTwoCells(system, accepted),

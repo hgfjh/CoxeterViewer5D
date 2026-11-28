@@ -1,0 +1,222 @@
+{
+  "certificateSha256": "ee447ec91aed2ac4d84d68e35386942043c6ed3fb450b1ec55d35adb83c2526a",
+  "coarseModel": {
+    "base": "the dual-block regular CW complex C of the complete dual triangulation K of X",
+    "closureRule": "(d,u+L_d) <= (e,t+L_e) iff d <= e and the cosets agree after projection to V/L_d",
+    "colorTranslationReduction": {
+      "group": "F2^9",
+      "reason": "the pullback height and dimension perturbation are independent of the color-state coset",
+      "validForThisHeight": true
+    },
+    "coloredQuotientCellCount": {
+      "bottom": 119974400,
+      "interior": 239948800,
+      "top": 22630400,
+      "total": 382553600
+    },
+    "dualSimplexCount": 468650,
+    "dualTriangulationFVector": [650, 39000, 156000, 195000, 78000],
+    "fineP2ChambersEnumerated": 0,
+    "quotientCellRule": "cells are (e,t+L_e), where L_e is the span of colors of facets containing e",
+    "subdivision": "barycentric subdivision of the complete colored quotient cell poset",
+    "thickening": "Y = C x I",
+    "translationReducedUnderlyingYCellCount": 1405950
+  },
+  "conclusions": {
+    "algebraicFiberingCertified": false,
+    "bothCanonicalPerturbationPolaritiesObstructed": true,
+    "coarseTrackBPassed": false,
+    "negativeResultScope": "only the explicit primitive cocycle, the complete coarse dual-block colored model, and the two dimension-perturbation polarities",
+    "smoothFiberingCertified": false
+  },
+  "height": {
+    "genericOnEveryOrderSimplex": true,
+    "genericityProof": "nonzero raw differences have magnitude at least 1/60 while the largest perturbation change is 5/720; raw ties are broken because comparable cells have distinct dimensions",
+    "perturbation": "F(e)=raw(e)+polarity*dim(e)/720",
+    "perturbationPolarities": [1, -1],
+    "raw": "affine pullback of the primitive cocycle height to barycenters of dual cells, constant in I and color state",
+    "samePrimitiveCharacter": true,
+    "simplexBarycenterDenominatorDivides": 60
+  },
+  "kind": "makarov-p2-section5-coarse-order-complex-track-b",
+  "manifoldAndPLGates": {
+    "allVertexLinksIndependentlyCertifiedPLThreeSpheres": false,
+    "dualBlockIdentification": "source-bound from Section 5.2 and the combinatorial 120-cell-prism collar; not promoted to an independent PL-sphere certificate",
+    "effectOnThisResult": "the local order-complex obstruction is exact for the constructed coarse colored cell poset; identifying that poset with Chen's smooth M retains the stated source-bound PL gate",
+    "importerVerifiedClosedOrientablePseudomanifoldIncidence": true,
+    "sourceStatesXIsClosedHyperbolicFourManifold": true
+  },
+  "nonClaims": [
+    "This is not the fine Davis/P2 Track B calculation.",
+    "Failure for the two canonical dimension perturbations does not obstruct other periodic potentials, subdivisions, cocycles, or finite covers.",
+    "No algebraic or smooth fibering conclusion is certified.",
+    "The importer does not independently certify every link of K as a PL 3-sphere."
+  ],
+  "producer": {
+    "script": "scripts/makarov_p2_coarse_track_b.py",
+    "version": "1.0.0"
+  },
+  "rootedObstruction": {
+    "allRootedCocycleEdgesZero": true,
+    "explanation": "the two colored normal cofaces have the perturbation sign, while every lower dual-block face has the opposite sign; the directed normal link is therefore two isolated vertices in one polarity direction",
+    "rootVertex": 0,
+    "rootedBoundaryOrderComplexVertexCount": 2640,
+    "rootedCocycleEdgeCount": 120,
+    "rootedStarSimplexCountIncludingRoot": 2641
+  },
+  "runs": [
+    {
+      "ascending": {
+        "componentCount": 2,
+        "componentRepresentatives": [
+          "interior:0:coset-000",
+          "interior:0:coset-003"
+        ],
+        "componentSizes": [1, 1],
+        "componentsSha256": "836373fc267767dfccab942788b554b35a5fd701507600fabf42a0da02a7d7eb",
+        "connected": false,
+        "edgeCount": 0,
+        "edgeIdsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "explicitComponents": [
+          ["interior:0:coset-000"],
+          ["interior:0:coset-003"]
+        ],
+        "nonempty": true,
+        "spanningTreeEdgeCount": 0,
+        "spanningTreeSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "vertexCount": 2,
+        "vertexIdsSha256": "dada0d628a4a8c66d33c6ce88fc2c90ea80bf64c4647050716c0f150a3ae4258"
+      },
+      "coloredQuotientVerticesRepresentedByCheckedRoot": 256,
+      "descending": {
+        "componentCount": 1,
+        "componentRepresentatives": ["bottom:0,100,161,416,434:coset-000"],
+        "componentSizes": [2640],
+        "componentsSha256": "7d9ad2ee09975aa66135690d5d562e26e7665a5c05db929162ecf81ed4b10f20",
+        "connected": true,
+        "edgeCount": 17040,
+        "edgeIdsSha256": "f25840708021d14d777588ae592ff0d56189c709820a7354ff6e0d83551e2b5f",
+        "explicitComponents": null,
+        "nonempty": true,
+        "spanningTreeEdgeCount": 2639,
+        "spanningTreeSha256": "3c64c777656af2e2bdcf9a030ee9a4f3f68a4774113e4889dd8ae3c059c79bf7",
+        "vertexCount": 2640,
+        "vertexIdsSha256": "b0a80793e49af0e091fc3f06ec542724fa06cdcd453fc8f91a7d247ae18b5185"
+      },
+      "exhaustive": false,
+      "failures": ["ascending-disconnected"],
+      "firstFailure": "ascending-disconnected",
+      "localCensus": {
+        "lowerIntervalVertexCount": 2640,
+        "normalPerturbedSign": 1,
+        "normalRawHeightDifference": "0/1",
+        "rawLowerHeightDifferenceHistogram": {
+          "0/1": 2640
+        },
+        "upperIntervalVertexCount": 2
+      },
+      "polarity": 1,
+      "root": {
+        "chosenCosetRepresentative": 0,
+        "dualSimplex": [0],
+        "incidentColorSpanRank": 1,
+        "layer": "bottom",
+        "underlyingCellDimension": 4
+      },
+      "status": "failed",
+      "stopAtFirstFailure": true,
+      "translationReducedRootsChecked": 1
+    },
+    {
+      "ascending": {
+        "componentCount": 1,
+        "componentRepresentatives": ["bottom:0,100,161,416,434:coset-000"],
+        "componentSizes": [2640],
+        "componentsSha256": "7d9ad2ee09975aa66135690d5d562e26e7665a5c05db929162ecf81ed4b10f20",
+        "connected": true,
+        "edgeCount": 17040,
+        "edgeIdsSha256": "f25840708021d14d777588ae592ff0d56189c709820a7354ff6e0d83551e2b5f",
+        "explicitComponents": null,
+        "nonempty": true,
+        "spanningTreeEdgeCount": 2639,
+        "spanningTreeSha256": "3c64c777656af2e2bdcf9a030ee9a4f3f68a4774113e4889dd8ae3c059c79bf7",
+        "vertexCount": 2640,
+        "vertexIdsSha256": "b0a80793e49af0e091fc3f06ec542724fa06cdcd453fc8f91a7d247ae18b5185"
+      },
+      "coloredQuotientVerticesRepresentedByCheckedRoot": 256,
+      "descending": {
+        "componentCount": 2,
+        "componentRepresentatives": [
+          "interior:0:coset-000",
+          "interior:0:coset-003"
+        ],
+        "componentSizes": [1, 1],
+        "componentsSha256": "836373fc267767dfccab942788b554b35a5fd701507600fabf42a0da02a7d7eb",
+        "connected": false,
+        "edgeCount": 0,
+        "edgeIdsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "explicitComponents": [
+          ["interior:0:coset-000"],
+          ["interior:0:coset-003"]
+        ],
+        "nonempty": true,
+        "spanningTreeEdgeCount": 0,
+        "spanningTreeSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "vertexCount": 2,
+        "vertexIdsSha256": "dada0d628a4a8c66d33c6ce88fc2c90ea80bf64c4647050716c0f150a3ae4258"
+      },
+      "exhaustive": false,
+      "failures": ["descending-disconnected"],
+      "firstFailure": "descending-disconnected",
+      "localCensus": {
+        "lowerIntervalVertexCount": 2640,
+        "normalPerturbedSign": -1,
+        "normalRawHeightDifference": "0/1",
+        "rawLowerHeightDifferenceHistogram": {
+          "0/1": 2640
+        },
+        "upperIntervalVertexCount": 2
+      },
+      "polarity": -1,
+      "root": {
+        "chosenCosetRepresentative": 0,
+        "dualSimplex": [0],
+        "incidentColorSpanRank": 1,
+        "layer": "bottom",
+        "underlyingCellDimension": 4
+      },
+      "status": "failed",
+      "stopAtFirstFailure": true,
+      "translationReducedRootsChecked": 1
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceBinding": {
+    "coloring": "scripts/data/makarov_p2_section5_coloring.json",
+    "coloringArtifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+    "coloringBytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "primitiveCocycle": "scripts/certificates/portfolio/makarov_p2_section5_x_primitive_cocycle.json",
+    "primitiveCocycleBytesSha256": "0ce60376a14c89927a6b09289a9a66318ea0a601ede2101489975ddbb6ce1cd3",
+    "primitiveCocycleCertificateSha256": "aeb2591986d77a5d60e595920eaf1af5e9bfca805314ed6c0acccef13e03acd7",
+    "primitiveCocycleIndependentReplay": {
+      "badTriangleCount": 0,
+      "certificateFileBytesSha256": "0ce60376a14c89927a6b09289a9a66318ea0a601ede2101489975ddbb6ce1cd3",
+      "certificateSha256": "aeb2591986d77a5d60e595920eaf1af5e9bfca805314ed6c0acccef13e03acd7",
+      "cocycleTranscriptSha256": "612ac45416eb4f0c3cec428b57bdebc99817eeac6a9420fdf49c9255abdf2049",
+      "importCertificateFileBytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "importCertificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+      "maximumAbsoluteCocycleValue": 3,
+      "maximumAbsoluteTriangleSum": 0,
+      "nonzeroCocycleEdgeCount": 15517,
+      "nonzeroTreeEdgeCount": 0,
+      "periodGcd": 1,
+      "status": "passed",
+      "treeEdgeCountVerified": 649,
+      "triangleCountVerified": 156000,
+      "witnessBoundarySupport": 0,
+      "witnessEvaluation": 1
+    }
+  }
+}

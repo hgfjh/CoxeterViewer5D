@@ -9,6 +9,7 @@ import {
   acceptedActionToQuotientComplex,
   buildIdealHyperbolic3CubeS4Cover,
   certifyTorsionFreeAction,
+  certifyTorsionFreeActionParallel,
   computeTorsionFreeIndexLowerBound,
   discoverTorsionFreeCover,
   leastCommonMultiple,
@@ -16,6 +17,8 @@ import {
   createIdealHyperbolic3CubeS4Action,
   type TorsionFreeActionCandidate,
 } from "../src/torsionFree";
+import type { KernelPool } from "../src/parallel/kernelPool";
+import { runKernel } from "../src/parallel/kernels";
 import type { CoxeterSystemInput } from "../src/types";
 
 const I2_5_SYSTEM = I2_5 as CoxeterSystemInput;
@@ -366,6 +369,28 @@ describe("Tits-criterion finite-action certification", () => {
       faithful: true,
       free: true,
     });
+  });
+
+  it("gives byte-identical certificates when checks run on a kernel pool", async () => {
+    // Kernels run inline here, but results pass through structured clone as
+    // they would from a worker thread.
+    const clonePool: KernelPool = {
+      size: 4,
+      kind: "node-workers",
+      run: async (name, args) => structuredClone(runKernel(name, args)),
+      close: async () => {},
+    };
+    const plan = planSphericalSpecialSubgroups(A3_SYSTEM);
+    for (const action of [a3RegularAction(), a3NaturalAction()]) {
+      const sequential = certifyTorsionFreeAction(A3_SYSTEM, action, plan);
+      const parallel = await certifyTorsionFreeActionParallel(
+        A3_SYSTEM,
+        action,
+        plan,
+        clonePool,
+      );
+      expect(parallel).toEqual(sequential);
+    }
   });
 
   it("reports fixed spherical elements in the natural A3 action", () => {

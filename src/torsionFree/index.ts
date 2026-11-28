@@ -6,6 +6,7 @@ export {
 } from "./arithmetic";
 export {
   certifyTorsionFreeAction,
+  certifyTorsionFreeActionParallel,
   torsionFreeActionFingerprint,
 } from "./certification";
 export {
@@ -14,10 +15,28 @@ export {
 } from "./composite";
 export { discoverTorsionFreeCover } from "./discovery";
 export { acceptedActionToQuotientComplex } from "./quotient";
+export {
+  materializeFiniteQuotientSubgroupAction,
+  parseCompactActionImport,
+  validatePackedPermutationRow,
+} from "./compactActionImport";
+export type {
+  CompactActionImportInput,
+  CompactActionImportKind,
+  FiniteQuotientMaterialization,
+  FiniteQuotientSubgroupActionImport,
+  GeneratorPermutationActionImport,
+  GeneratorPermutationFilesImport,
+  PackedGeneratorPermutationFile,
+  SubgroupGeneratorActionImport,
+} from "./compactActionImport";
 export * from "./exactPermutationArtifact";
 export * from "./derivedCharacterLift";
 export {
   buildIdealHyperbolic3CubeS4Cover,
+  buildC44Psl27Cover,
+  createC44Psl27Action,
+  C44_2233_COXETER_MATRIX,
   createIdealHyperbolic3CubeS4Action,
 } from "./goldenActions";
 export {

@@ -192,6 +192,7 @@ class FiniteImage:
     order: int | None
     permutation_degree: int | None
     relation_checks: list[dict[str, Any]]
+    permutation_relation_checks: list[dict[str, Any]]
     spherical_checks: list[dict[str, Any]]
 
     @property
@@ -684,6 +685,136 @@ def check_matrix_relations(
     return checks
 
 
+def _finite_field_coefficient_row(element: Any, degree: int) -> list[int]:
+    """Encode an extension-field element in its defining power basis.
+
+    This is certificate metadata, not a lossy integer coercion: the returned
+    row is the unique coefficient vector of ``element`` in
+    ``1, generator, ..., generator^(degree-1)`` over the prime field.
+    """
+
+    coefficients = list(element.polynomial())
+    return [
+        int(coefficients[index]) if index < len(coefficients) else 0
+        for index in range(degree)
+    ]
+
+
+def gap_compatible_finite_field_transport(
+    source_field: Any,
+) -> tuple[Any, Any, dict[str, Any]]:
+    """Return an exact isomorphism into a Conway-defined finite field.
+
+    Sage's libGAP bridge refuses Givaro extension-field elements unless their
+    parent is defined by a Conway polynomial.  Number-field residue fields are
+    normally defined by the reduced prime-ideal polynomial instead.  We keep
+    the mathematically meaningful reduction into that residue field, then use
+    an explicitly certified field isomorphism before any ``MatrixGroup`` call.
+
+    The chosen image of the source generator is the lexicographically least
+    root of the source modulus in the Conway field, expressed in the Conway
+    power basis.  Root evaluation is exact finite-field arithmetic.
+    """
+
+    characteristic = int(source_field.characteristic())
+    degree = int(source_field.degree())
+    field_order = int(source_field.order())
+    if degree == 1 or bool(source_field.is_conway()):
+        return (
+            source_field,
+            source_field.hom(source_field),
+            {
+                "status": "identity",
+                "method": "already-gap-compatible",
+                "exact": True,
+                "characteristic": characteristic,
+                "degree": degree,
+                "fieldOrder": field_order,
+            },
+        )
+
+    try:
+        conway_field = GF(field_order, "c", modulus="conway")
+    except Exception as exc:  # noqa: BLE001 - Sage finite-field constructor
+        raise ExactInvariantError(
+            "No Sage Conway field is available for exact libGAP transport of "
+            f"GF({characteristic}^{degree}): {exc}"
+        ) from exc
+    if not bool(conway_field.is_conway()):
+        raise ExactInvariantError(
+            "Sage did not construct the requested Conway-defined finite field."
+        )
+
+    source_modulus = source_field.modulus()
+    roots = list(source_modulus.change_ring(conway_field).roots(multiplicities=False))
+    if len(roots) != degree:
+        raise ExactInvariantError(
+            "The source finite-field modulus did not split into the expected "
+            f"{degree} exact roots in its Conway copy."
+        )
+    root = min(
+        roots,
+        key=lambda value: tuple(_finite_field_coefficient_row(value, degree)),
+    )
+    if source_modulus.change_ring(conway_field)(root) != conway_field.zero():
+        raise ExactInvariantError(
+            "The selected Conway-field element is not a root of the source modulus."
+        )
+    transport = source_field.hom([root], conway_field)
+    if transport(source_field.gen()) != root:
+        raise ExactInvariantError(
+            "Sage's finite-field homomorphism changed the certified generator image."
+        )
+
+    return (
+        conway_field,
+        transport,
+        {
+            "status": "transported",
+            "method": "exact-root-isomorphism-to-conway-field",
+            "exact": True,
+            "characteristic": characteristic,
+            "degree": degree,
+            "fieldOrder": field_order,
+            "sourceModulusCoefficients": [
+                int(coefficient) for coefficient in source_modulus.list()
+            ],
+            "targetConwayModulusCoefficients": [
+                int(coefficient) for coefficient in conway_field.modulus().list()
+            ],
+            "sourceGeneratorImageCoefficients": _finite_field_coefficient_row(
+                root, degree
+            ),
+        },
+    )
+
+
+def transport_matrices_to_gap_compatible_field(
+    source_field: Any, generators: Sequence[Any]
+) -> tuple[Any, list[Any], dict[str, Any]]:
+    """Apply the exact Conway-field transport entrywise to matrix generators."""
+
+    target_field, transport, certificate = gap_compatible_finite_field_transport(
+        source_field
+    )
+    if target_field is source_field:
+        return target_field, list(generators), certificate
+    transported = [
+        matrix(
+            target_field,
+            [
+                [
+                    transport(generator[row, column])
+                    for column in range(generator.ncols())
+                ]
+                for row in range(generator.nrows())
+            ],
+        )
+        for generator in generators
+    ]
+    return target_field, transported, certificate
+
+
 def residue_candidates(
     coxeter_matrix: Sequence[Sequence[int]], primes: Sequence[int]
 ) -> Iterable[ResidueCandidate]:
@@ -721,7 +852,7 @@ def residue_candidates(
         for ideal_index, ideal in enumerate(ideals):
             residue_field = ideal.residue_field()
             reduction_map = residue_field.reduction_map()
-            reduced = [
+            reduced_in_residue_field = [
                 matrix(
                     residue_field,
                     [
@@ -734,10 +865,15 @@ def residue_candidates(
                 )
                 for generator in number_field_generators
             ]
+            computation_field, reduced, field_transport = (
+                transport_matrices_to_gap_compatible_field(
+                    residue_field, reduced_in_residue_field
+                )
+            )
             yield ResidueCandidate(
                 candidate_id=f"p{prime}-ideal{ideal_index}-q{int(residue_field.order())}",
                 rational_prime=prime,
-                field=residue_field,
+                field=computation_field,
                 generators=reduced,
                 metadata={
                     "coefficientModel": "cyclotomic-standard-tits",
@@ -748,6 +884,8 @@ def residue_candidates(
                     "residueDegree": int(ideal.residue_class_degree()),
                     "residueField": str(residue_field),
                     "residueFieldOrder": int(residue_field.order()),
+                    "gapComputationField": str(computation_field),
+                    "gapFiniteFieldTransport": field_transport,
                     "ramificationPolicy": (
                         "Ramified and small characteristics are not assumed good; "
                         "they survive only exact relation and spherical-injectivity checks."
@@ -779,62 +917,113 @@ def materialize_permutation_image(
             "A finite image must have a verified exact order before permutation materialization."
         )
     deadline.check(f"constructing BSGS representation of {candidate.candidate_id}")
-    permutation_group = matrix_group.as_permutation_group(
-        algorithm="smaller", seed=seed
-    )
-    permutation_order = int(permutation_group.order())
-    if permutation_order != image_order:
-        raise ExactInvariantError(
-            f"Matrix/permutation image orders disagree: {image_order} != {permutation_order}."
-        )
 
-    # Rebuild Sage's seeded maps so redundant source generators retain their
-    # original order across the matrix/permutation certificate boundary.
+    # This is one authoritative homomorphism chain.  Calling
+    # MatrixGroup.as_permutation_group() first and then rebuilding its GAP calls
+    # does not recover the map used by Sage: GAP may choose a different (but
+    # isomorphic) action on either call.  Comparing those actions therefore
+    # rejected valid images.  We instead retain these two exact maps and use
+    # their images for both the certificate and Sage's wrapper object.
     libgap.set_seed(seed)
     matrix_gap = matrix_group.gap()
+    matrix_gap_order = int(libgap.Size(matrix_gap))
+    if matrix_gap_order != image_order:
+        raise ExactInvariantError(
+            f"Sage/libGAP matrix-image orders disagree: {image_order} != {matrix_gap_order}."
+        )
+    source_sage_generators = list(matrix_group.gens())
+    source_gap_generators = list(libgap.GeneratorsOfGroup(matrix_gap))
+    if not (
+        len(source_sage_generators)
+        == len(source_gap_generators)
+        == len(candidate.generators)
+    ):
+        raise ExactInvariantError(
+            "The matrix group did not retain every ordered source generator."
+        )
+    for index, (source_sage, source_matrix) in enumerate(
+        zip(source_sage_generators, candidate.generators, strict=True)
+    ):
+        if source_sage.matrix() != source_matrix:
+            raise ExactInvariantError(
+                f"Matrix-group source generator {index} changed before permutation transport."
+            )
+
     matrix_to_permutation = libgap.IsomorphismPermGroup(matrix_gap)
+    if not bool(libgap.IsBijective(matrix_to_permutation)):
+        raise ExactInvariantError(
+            "GAP did not return an isomorphism from the exact matrix image."
+        )
     first_permutation_image = libgap.Image(matrix_to_permutation)
+    if int(libgap.Size(first_permutation_image)) != image_order:
+        raise ExactInvariantError(
+            "The first permutation image has the wrong exact group order."
+        )
     smaller_isomorphism = libgap.SmallerDegreePermutationRepresentation(
         first_permutation_image
     )
+    if not bool(libgap.IsBijective(smaller_isomorphism)):
+        raise ExactInvariantError(
+            "GAP's smaller-degree representation is not an isomorphism."
+        )
     compact_gap = libgap.Image(smaller_isomorphism)
     compact_order = int(libgap.Size(compact_gap))
     compact_degree = int(libgap.LargestMovedPoint(compact_gap))
-    if compact_order != image_order or compact_degree != int(
-        permutation_group.degree()
-    ):
+    if compact_order != image_order:
         raise ExactInvariantError(
-            "The explicit seeded libGAP isomorphism disagrees with "
-            "MatrixGroup.as_permutation_group()."
+            "The compact permutation image has the wrong exact group order."
         )
 
     mapping_checks: list[dict[str, Any]] = []
     q_generators: list[Any] = []
-    for index, generator in enumerate(candidate.generators):
+    for index, source_gap in enumerate(source_gap_generators):
         try:
-            source_gap = matrix_group(generator).gap()
-            mapped = libgap.Image(
-                smaller_isomorphism,
-                libgap.Image(matrix_to_permutation, source_gap),
+            first_mapped = libgap.Image(matrix_to_permutation, source_gap)
+            first_round_trip = libgap.PreImagesRepresentative(
+                matrix_to_permutation, first_mapped
+            )
+            mapped = libgap.Image(smaller_isomorphism, first_mapped)
+            compact_round_trip = libgap.PreImagesRepresentative(
+                smaller_isomorphism, mapped
             )
             round_trip = libgap.PreImagesRepresentative(
-                matrix_to_permutation,
-                libgap.PreImagesRepresentative(smaller_isomorphism, mapped),
+                matrix_to_permutation, compact_round_trip
             )
         except Exception as exc:  # noqa: BLE001 - Sage/libGAP boundary
             raise ExactInvariantError(
                 f"Could not transport source generator {index} through the "
                 f"compact permutation isomorphism: {exc}"
             ) from exc
+        first_round_trip_equal = bool(first_round_trip == source_gap)
+        compact_round_trip_equal = bool(compact_round_trip == first_mapped)
         round_trip_equal = bool(round_trip == source_gap)
+        source_order = int(libgap.Order(source_gap))
+        first_mapped_order = int(libgap.Order(first_mapped))
         mapped_order = int(libgap.Order(mapped))
+        order_preserved = source_order == first_mapped_order == mapped_order
+        mapped_row = [
+            int(value) for value in libgap.ListPerm(mapped, compact_degree)
+        ]
         q_generators.append(mapped)
         mapping_checks.append(
             {
                 "sourceGenerator": index,
+                "sourceMatrixRetainedExactly": True,
+                "firstPermutationRoundTripEqual": first_round_trip_equal,
+                "compactPermutationRoundTripEqual": compact_round_trip_equal,
                 "matrixPermutationRoundTripEqual": round_trip_equal,
+                "sourceOrder": source_order,
+                "firstMappedOrder": first_mapped_order,
                 "mappedOrder": mapped_order,
-                "passed": round_trip_equal and mapped_order == 2,
+                "orderPreserved": order_preserved,
+                "sourceGeneratorNontrivialInResidueImage": source_order != 1,
+                "mappedPermutationRowSha256": digest_json(mapped_row),
+                "passed": (
+                    first_round_trip_equal
+                    and compact_round_trip_equal
+                    and round_trip_equal
+                    and order_preserved
+                ),
             }
         )
     if not all(check["passed"] for check in mapping_checks):
@@ -846,10 +1035,79 @@ def materialize_permutation_image(
         raise ExactInvariantError(
             "The ordered source-generator images do not generate the full finite image."
         )
+
+    permutation_relation_checks: list[dict[str, Any]] = []
+    for source_check in finite_image.relation_checks:
+        if source_check.get("passed") is not True:
+            raise ExactInvariantError(
+                "Permutation materialization received an uncertified matrix relation."
+            )
+        kind = source_check.get("kind")
+        indices = source_check.get("generators")
+        exponent = source_check.get("exponent")
+        if (
+            kind not in {"involution", "coxeter"}
+            or not isinstance(indices, list)
+            or len(indices) != 2
+            or not all(isinstance(value, int) for value in indices)
+            or not isinstance(exponent, int)
+            or exponent < 1
+            or not all(0 <= value < len(q_generators) for value in indices)
+        ):
+            raise ExactInvariantError(
+                "A matrix relation has an invalid exact-certificate record."
+            )
+        left, right = indices
+        relation_element = (
+            q_generators[left] ** exponent
+            if kind == "involution"
+            else (q_generators[left] * q_generators[right]) ** exponent
+        )
+        passed = bool(libgap.IsOne(relation_element))
+        permutation_relation_checks.append(
+            {
+                "kind": kind,
+                "generators": [left, right],
+                "exponent": exponent,
+                "phase": "authoritative-matrix-to-compact-permutation-chain",
+                "passed": passed,
+            }
+        )
+        if not passed:
+            raise ExactInvariantError(
+                f"Permutation relation {kind} on generators {indices} failed."
+            )
+
+    # Wrap the exact GAP group we just certified.  Supplying this same object
+    # avoids asking Sage to choose another permutation representation.  The
+    # ordered GAP generator list (including identities or duplicates) remains
+    # the source list used by every downstream coset calculation.
+    from sage.groups.perm_gps.permgroup import (  # type: ignore[import-not-found]
+        PermutationGroup,
+    )
+
+    permutation_group = PermutationGroup(gap_group=q_gap, canonicalize=False)
+    wrapped_gap = permutation_group.gap()
+    wrapped_generators = list(libgap.GeneratorsOfGroup(wrapped_gap))
+    if len(wrapped_generators) != len(q_generators) or any(
+        wrapped != mapped
+        for wrapped, mapped in zip(wrapped_generators, q_generators, strict=True)
+    ):
+        raise ExactInvariantError(
+            "Sage's permutation-group wrapper changed the ordered source images."
+        )
+    if (
+        int(permutation_group.order()) != image_order
+        or int(permutation_group.degree()) != compact_degree
+    ):
+        raise ExactInvariantError(
+            "Sage's wrapper disagrees with the authoritative compact GAP image."
+        )
     finite_image.permutation_group = permutation_group
-    finite_image.q_gap = q_gap
-    finite_image.q_generators = q_generators
+    finite_image.q_gap = wrapped_gap
+    finite_image.q_generators = wrapped_generators
     finite_image.permutation_degree = compact_degree
+    finite_image.permutation_relation_checks = permutation_relation_checks
     return mapping_checks
 
 
@@ -924,6 +1182,7 @@ def inspect_residue(
         order=image_order,
         permutation_degree=None,
         relation_checks=relation_checks,
+        permutation_relation_checks=[],
         spherical_checks=spherical_checks,
     )
     generator_mapping_checks: list[dict[str, Any]] = []
@@ -949,6 +1208,7 @@ def inspect_residue(
             "permutationDegree": finite_image.permutation_degree,
             "relationChecks": relation_checks,
             "sourceGeneratorMappingChecks": generator_mapping_checks,
+            "permutationRelationChecks": finite_image.permutation_relation_checks,
             "sphericalRestrictionChecks": spherical_checks,
         }
     )
@@ -3738,6 +3998,9 @@ def run_search(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                 attempt["permutationMaterialized"] = True
                 attempt["permutationDegree"] = finite_image.permutation_degree
                 attempt["sourceGeneratorMappingChecks"] = mapping_checks
+                attempt["permutationRelationChecks"] = (
+                    finite_image.permutation_relation_checks
+                )
             if catalogue is None:
                 witnesses = build_witness_catalogue(
                     finite_image,

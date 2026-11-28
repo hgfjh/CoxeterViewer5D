@@ -361,13 +361,13 @@ describe("generic compact expensive stage", () => {
       outcome: "exact-arrangement-complete",
       checks: {
         oracleExactlyBoundToAcceptedAction: true,
-        h1CertificateReplayed: true,
+        h1CertificateVerified: true,
         fullIntegralH1BasisBound: true,
         cheapScreenReplayed: true,
         selectedCheapScreenTrialPassed: true,
-        generalizedCompressionReplayed: true,
+        generalizedCompressionBuilt: true,
         templateRuleMatchesSelectedSurvivor: true,
-        exactArrangementReplayed: true,
+        exactArrangementBuilt: true,
         allClaimedChecksPassed: true,
       },
       arrangement: {
@@ -452,11 +452,10 @@ describe("generic compact expensive stage", () => {
       outcome: "compression-sidecar-only",
       generalizedCompression: {
         certificate: { status: "passed" },
-        replay: { valid: true },
       },
       nonpromotableGap: {
         code: "cheap-survivor-rule-not-supported-by-full-template-api",
-        preservedResult: "replayed-full-generalized-compression-sidecar",
+        preservedResult: "full-generalized-compression-sidecar",
       },
       upstream: {
         survivor: {
@@ -588,7 +587,7 @@ describe("generic compact expensive stage", () => {
       expect(certificate).toMatchObject({
         status: "incomplete",
         outcome: "compression-sidecar-only",
-        generalizedCompression: { replay: { valid: true } },
+        generalizedCompression: { certificate: { status: "passed" } },
         stop: { stage: expectedStage, code: expectedCode },
       });
       expect(certificate.arrangement).toBeUndefined();
@@ -647,10 +646,10 @@ describe("generic compact expensive stage", () => {
       status: "incomplete",
       outcome: "compression-sidecar-only",
       upstream: { h1Rank: 6 },
-      generalizedCompression: { replay: { valid: true } },
+      generalizedCompression: { certificate: { status: "passed" } },
       nonpromotableGap: {
         code: "full-h1-rank-exceeds-in-process-exact-cone-engine",
-        preservedResult: "replayed-full-generalized-compression-sidecar",
+        preservedResult: "full-generalized-compression-sidecar",
       },
       stop: {
         stage: "exact-height-arrangement",

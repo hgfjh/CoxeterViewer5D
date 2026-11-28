@@ -1,0 +1,98 @@
+{
+  "artifactSha256": "f50a61abe654c8a08f65d0004929a55c9b477a0caacb2cd20b9014e6eea3f804",
+  "candidates": [
+    {
+      "cheapTrackBScreen": {
+        "allRootedRawHeightsZero": true,
+        "artifactSha256": "7bbf2806f85f39b9e91e3e666eef7b972ca4e7fa7d1a73113ea1a231c6357ea0",
+        "bytesSha256": "8c959c660d96ec8d66704b520b4ee8fb243cac4944256109da8e5c1f386977f8",
+        "checkedQuotientVertexCount": 1,
+        "identityLinkVertexCount": 48548,
+        "model": "identity-first global pulling rank with both signed quotient-periodic rank offsets",
+        "path": "scripts/certificates/portfolio/makarov_p2_section5_compressed_track_b.json",
+        "status": "fixed-model-obstructed-at-anchor"
+      },
+      "cohomologyEigencharacter": [
+        -1,
+        -1,
+        -1
+      ],
+      "id": "eigen-mmm",
+      "primitiveCocycle": {
+        "bytesSha256": "0ce60376a14c89927a6b09289a9a66318ea0a601ede2101489975ddbb6ce1cd3",
+        "certificateSha256": "aeb2591986d77a5d60e595920eaf1af5e9bfca805314ed6c0acccef13e03acd7",
+        "eigencharacterAuditSha256": "5ab27aa8b7496f2e21036c7e8f06400eff04add4ad11cc0227f7a64d8ac19962",
+        "maximumAbsoluteValue": 3,
+        "nonzeroEdgeCount": 15517,
+        "path": "scripts/certificates/portfolio/makarov_p2_section5_x_primitive_cocycle.json",
+        "primitiveCycleEvaluation": 1,
+        "triangleCountVerified": 156000
+      }
+    },
+    {
+      "cheapTrackBScreen": {
+        "allRootedRawHeightsZero": true,
+        "artifactSha256": "a3c0f02b6d4e01498d42d1a5e4f7abed28f2b6eb6373b98ecc2a071916169477",
+        "bytesSha256": "61a8930cbf6d6ba11456adcebd36d5c7f523bf4d01df6392d826790f08001796",
+        "checkedQuotientVertexCount": 1,
+        "identityLinkVertexCount": 48548,
+        "model": "identity-first global pulling rank with both signed quotient-periodic rank offsets",
+        "path": "scripts/certificates/portfolio/makarov_p2_section5_compressed_track_b_eigen_mmp.json",
+        "status": "fixed-model-obstructed-at-anchor"
+      },
+      "cohomologyEigencharacter": [
+        -1,
+        -1,
+        1
+      ],
+      "id": "eigen-mmp",
+      "primitiveCocycle": {
+        "bytesSha256": "2ca2dff68016625d40eb61b8d1b1e87ca53c0d5ef7c708f5109f7e64ad5b7d9a",
+        "certificateSha256": "b4a90749558665ace4cf538796d5af0d8b3eecfa3526d2e93dbf3ad58f4b2e60",
+        "eigencharacterAuditSha256": "ced4a18a0a7939f8bba9ecd1319557c45fc3b2550265dca3bfe44c93727b0dd8",
+        "maximumAbsoluteValue": 6,
+        "nonzeroEdgeCount": 20471,
+        "path": "scripts/certificates/portfolio/makarov_p2_section5_x_primitive_cocycle_eigen_mmp.json",
+        "primitiveCycleEvaluation": 1,
+        "triangleCountVerified": 156000
+      }
+    }
+  ],
+  "conclusion": "A second exact primitive Section-5 class is available without a full H1 computation. The same canonical identity-first pulling model rejects both registered classes at its anchor.",
+  "independence": {
+    "coefficientField": "Q",
+    "eigenvalues": [
+      -1,
+      1
+    ],
+    "proved": true,
+    "reason": "Both primitive classes are nonzero and exact replay puts them in opposite eigenspaces of the reflection s4, so they are Q-linearly independent.",
+    "witnessGenerator": 4
+  },
+  "kind": "makarov-p2-primitive-cocycle-track-b-screening-portfolio",
+  "nextScreeningRule": {
+    "cheapFirstGate": "replay the identity-first factored Track B anchor before any global cell-orbit scan",
+    "registeredCandidateIds": [
+      "eigen-mmm",
+      "eigen-mmp"
+    ],
+    "survivorAction": "only an anchor survivor may enter a global barycentric link scan"
+  },
+  "nonClaims": [
+    "The two classes are not a full integral H1 basis.",
+    "The anchor failures do not obstruct either character under another gauge, periodic potential, subdivision, or finite cover.",
+    "The full canonical barycentric/full-star height family is not scanned or closed for either class.",
+    "No global Track B link scan, algebraic fibering, or smooth fibering result is claimed."
+  ],
+  "producer": {
+    "script": "scripts/makarov_p2_cocycle_screening_portfolio.py",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 1,
+  "sourceBinding": {
+    "section5ImportBytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+    "section5ImportCertificate": "scripts/certificates/portfolio/makarov_p2_section5_import.json",
+    "section5ImportCertificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8"
+  },
+  "status": "two-independent-primitive-classes-cheap-screened"
+}

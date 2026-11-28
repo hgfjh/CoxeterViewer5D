@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
+import { readdirSync } from "node:fs";
 
 // Research-grade validation is a gate over independent artifacts, not a single
 // theorem prover. Each child command returns JSON so CI can show which scope
@@ -98,6 +99,27 @@ checks.push(
     "--require-external",
   ]),
 );
+
+// The H5-P7-22 prism and the Ma--Zheng nine-facet catalogue
+// (scripts/certify_compact_5d_catalogue.py) get the same CoxIter diagram check.
+checks.push(
+  run("python", [
+    "scripts/coxiter_check_compact.py",
+    "public/examples/compact_5_prism_h5_p7_22.json",
+    "--require-external",
+  ]),
+);
+for (const name of readdirSync("public/examples")
+  .filter((file) => /^mazheng_5d_9facet_p\d{3}(_\d{2})?\.json$/u.test(file))
+  .sort()) {
+  checks.push(
+    run("python", [
+      "scripts/coxiter_check_compact.py",
+      `public/examples/${name}`,
+      "--require-external",
+    ]),
+  );
+}
 
 const coxiterAvailability =
   process.platform === "win32"

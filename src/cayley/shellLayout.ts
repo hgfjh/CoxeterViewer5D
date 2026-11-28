@@ -13,6 +13,7 @@ function shellPoint(
   index: number,
   count: number,
   shellSpacing: number,
+  maxShell: number,
 ): [number, number, number] {
   if (shell === 0) {
     return [0, 0, 0];
@@ -20,6 +21,20 @@ function shellPoint(
 
   if (count === 1) {
     return [shell * shellSpacing, 0, 0];
+  }
+
+  if (count === 2) {
+    // Every shell of a dihedral ball has two elements, one per reduced word
+    // s t s ... and t s t .... The Fibonacci sphere below would put them at
+    // the poles, collapsing the 2m-cycle onto a line. Instead the pair opens
+    // symmetrically in the xy-plane, from ±90° at length 1 down to the
+    // +x axis, where a single longest element sits, so the cycle is drawn
+    // as a closed polygon.
+    const span = Math.max(maxShell, shell + 1);
+    const angle = (Math.PI / 2) * (1 - (shell - 1) / span);
+    const sign = index === 0 ? 1 : -1;
+    const radius = shell * shellSpacing;
+    return [radius * Math.cos(angle), sign * radius * Math.sin(angle), 0];
   }
 
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
@@ -56,6 +71,7 @@ export function assignShellLayout(
   }
 
   const positions = new Map<string, [number, number, number]>();
+  const maxShell = Math.max(0, ...shells.keys());
 
   for (const [shell, shellNodes] of shells) {
     const sorted = [...shellNodes].sort((left, right) => {
@@ -66,7 +82,7 @@ export function assignShellLayout(
     sorted.forEach((node, index) => {
       positions.set(
         node.id,
-        shellPoint(shell, index, sorted.length, shellSpacing),
+        shellPoint(shell, index, sorted.length, shellSpacing, maxShell),
       );
     });
   }

@@ -9,14 +9,18 @@ import {
   parseCoxeterSystemInput,
 } from "../coxeter";
 import {
-  identityMatrix,
-  multiplyMatrices,
+  multiplyPackedMatrices,
   roundedMatrixKey,
-  type Matrix,
+  roundPackedMatrix,
+  sameRoundedEntries,
+  unpackMatrix,
 } from "../coxeter/linearAlgebra";
 
 interface InternalNode extends CayleyNode {
-  matrix: Matrix;
+  /** Row-major rank x rank matrix of the group element. */
+  matrix: Float64Array;
+  /** Entries rounded to integers at the key precision (dedupe identity). */
+  rounded: Float64Array;
 }
 
 const defaultOptions = {
@@ -84,9 +88,19 @@ export function generateCayleyBall(
     );
   }
 
-  const reflections = buildSimpleReflectionMatrices(system.coxeterMatrix);
-  const identity = identityMatrix(system.rank);
-  const identityKey = roundedMatrixKey(identity, matrixKeyPrecision);
+  const size = system.rank;
+  const reflections = buildSimpleReflectionMatrices(system.coxeterMatrix).map(
+    (matrix) => Float64Array.from(matrix.flat()),
+  );
+  const identity = new Float64Array(size * size);
+  for (let index = 0; index < size; index += 1)
+    identity[index * size + index] = 1;
+  const scale = 10 ** matrixKeyPrecision;
+  const identityRounded = roundPackedMatrix(identity, scale);
+  const identityKey = roundedMatrixKey(
+    unpackMatrix(identity, size),
+    matrixKeyPrecision,
+  );
   const nodes: InternalNode[] = [
     {
       id: "e",
@@ -94,9 +108,17 @@ export function generateCayleyBall(
       length: 0,
       matrixKey: identityKey,
       matrix: identity,
+      rounded: identityRounded.rounded,
     },
   ];
-  const keyToNodeId = new Map<string, string>([[identityKey, "e"]]);
+  // Probing a candidate costs one hash lookup and a 49-number compare instead
+  // of formatting 49 decimals; only new nodes get their string key.
+  const nodesByHash = new Map<number, InternalNode[]>([
+    [identityRounded.hash, [nodes[0]]],
+  ]);
+  // Matrices with huge entries use the decimal string as their identity.
+  const keyToNodeId = new Map<string, string>();
+  if (!identityRounded.exact) keyToNodeId.set(identityKey, "e");
   const nodeById = new Map<string, InternalNode>([["e", nodes[0]]]);
   const edges = new Map<string, CayleyEdge>();
   let nodeCapHit = false;
@@ -108,9 +130,27 @@ export function generateCayleyBall(
     for (let generator = 0; generator < system.rank; generator += 1) {
       // The rest of the app uses right multiplication: w --s_i--> w s_i.
       // The stored word is only a preferred reduced representative.
-      const nextMatrix = multiplyMatrices(node.matrix, reflections[generator]);
-      const nextKey = roundedMatrixKey(nextMatrix, matrixKeyPrecision);
-      let targetId = keyToNodeId.get(nextKey);
+      const nextMatrix = multiplyPackedMatrices(
+        node.matrix,
+        reflections[generator],
+        size,
+      );
+      const probe = roundPackedMatrix(nextMatrix, scale);
+      let nextKey: string | undefined;
+      let targetId: string | undefined;
+      if (probe.exact) {
+        targetId = nodesByHash
+          .get(probe.hash)
+          ?.find((candidate) =>
+            sameRoundedEntries(candidate.rounded, probe.rounded),
+          )?.id;
+      } else {
+        nextKey = roundedMatrixKey(
+          unpackMatrix(nextMatrix, size),
+          matrixKeyPrecision,
+        );
+        targetId = keyToNodeId.get(nextKey);
+      }
 
       if (targetId === undefined) {
         if (node.length >= radius) {
@@ -124,16 +164,27 @@ export function generateCayleyBall(
 
         const word = [...node.word, generator];
         targetId = nodeIdFromWord(word);
+        nextKey ??= roundedMatrixKey(
+          unpackMatrix(nextMatrix, size),
+          matrixKeyPrecision,
+        );
         const nextNode: InternalNode = {
           id: targetId,
           word,
           length: node.length + 1,
           matrixKey: nextKey,
           matrix: nextMatrix,
+          rounded: probe.rounded,
         };
 
         nodes.push(nextNode);
-        keyToNodeId.set(nextKey, targetId);
+        if (probe.exact) {
+          const bucket = nodesByHash.get(probe.hash);
+          if (bucket) bucket.push(nextNode);
+          else nodesByHash.set(probe.hash, [nextNode]);
+        } else {
+          keyToNodeId.set(nextKey, targetId);
+        }
         nodeById.set(targetId, nextNode);
       }
 

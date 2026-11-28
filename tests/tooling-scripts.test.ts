@@ -1143,7 +1143,7 @@ describe("optional exact exporter tooling", () => {
     expect(stored.benchmark).toBe("catalogue-static-v1");
     expect(stored.elapsedMs).toBeUndefined();
     expect(stored.totals).toMatchObject({
-      examples: 27,
+      examples: 82,
       generated: 6,
       generatedNodes: 80,
       generatedEdges: 104,
@@ -1205,7 +1205,7 @@ describe("release orientation documentation", () => {
       "Davis cell",
       "`hat X`",
       "`bar X`",
-      "Wall Coorientation",
+      "Wall Orientation (Coorientation)",
       "Lawful Cell",
       "Gamma",
       "Geometric Projection",
@@ -1224,11 +1224,11 @@ describe("release orientation documentation", () => {
     }
     for (const region of [
       "Model switch",
-      "Start Here + Focus controls",
+      "Start Here",
       "Inspector",
       "Caveats drawer",
       "Research tools",
-      "Export + notebook",
+      "Notebook + Export",
     ]) {
       expect(uiMap).toContain(region);
     }

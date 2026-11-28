@@ -11,6 +11,7 @@ import { createServer } from "node:http";
 import { dirname, extname, join, relative, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { chromium } from "@playwright/test";
+import { runScaleSuite } from "./benchmark_timed_scale.mjs";
 
 const DEFAULT_OUTPUT = "scripts/benchmarks/timed-browser-v1.json";
 const EXTERNAL_BENCHMARK_URL = process.env.COXETER_BENCHMARK_URL;
@@ -156,6 +157,7 @@ function parseArgs(argv) {
     check: undefined,
     report: undefined,
     machineClass: "local-dev-laptop",
+    suite: "core",
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -168,6 +170,14 @@ function parseArgs(argv) {
       args.report =
         argv[index + 1] ?? ".benchmark-current/timed-browser-v1.json";
       index += 1;
+      continue;
+    }
+    if (arg === "--suite") {
+      args.suite = argv[index + 1] ?? "core";
+      index += 1;
+      if (args.suite !== "core" && args.suite !== "scale") {
+        throw new Error(`unknown timed benchmark suite: ${args.suite}`);
+      }
       continue;
     }
     if (arg === "--machine-class") {
@@ -953,6 +963,64 @@ const browser = await chromium.launch();
 const context = await browser.newContext({ acceptDownloads: true });
 const page = await context.newPage();
 const startedAt = performance.now();
+
+// Scale suite: regression guard against its own baseline (elapsed time may
+// grow by at most 50% + 150 ms, and no scenario may stop measuring).
+if (args.suite === "scale") {
+  try {
+    const scenarios = await runScaleSuite(page, {
+      benchmarkUrl: BENCHMARK_URL,
+      startLongTaskTrace,
+      finishLongTaskTrace,
+      browserHeapBytes,
+    });
+    const report = {
+      benchmark: "timed-browser-scale-v1",
+      schemaVersion: 1,
+      createdAt: new Date().toISOString(),
+      browser: { name: "chromium", version: browser.version() },
+      machineClass: args.machineClass,
+      totalElapsedMs: round(performance.now() - startedAt),
+      scenarios,
+    };
+    const failures = scenarios
+      .filter((entry) => entry.status !== "measured")
+      .map((entry) => `${entry.id}: ${entry.reason}`);
+    if (args.check) {
+      const baseline = existsSync(args.check)
+        ? JSON.parse(readFileSync(args.check, "utf8"))
+        : { scenarios: [] };
+      for (const entry of scenarios) {
+        const prior = baseline.scenarios.find((item) => item.id === entry.id);
+        if (
+          prior?.elapsedMs !== undefined &&
+          entry.elapsedMs !== undefined &&
+          entry.elapsedMs > prior.elapsedMs * 1.5 + 150
+        ) {
+          failures.push(
+            `${entry.id}: ${entry.elapsedMs} ms exceeds baseline ${prior.elapsedMs} ms`,
+          );
+        }
+      }
+    }
+    report.failures = failures;
+    if (args.write && failures.length === 0) {
+      mkdirSync(dirname(args.write), { recursive: true });
+      writeFileSync(args.write, stableJson(report), "utf8");
+    }
+    if (args.report) {
+      mkdirSync(dirname(args.report), { recursive: true });
+      writeFileSync(args.report, stableJson(report), "utf8");
+    }
+    console.log(stableJson(report));
+    if (failures.length > 0) process.exitCode = 1;
+  } finally {
+    await context.close();
+    await browser.close();
+    await benchmarkServer.dispose();
+  }
+  process.exit();
+}
 
 try {
   const cases = [];

@@ -1,5 +1,10 @@
 # Scalable exact height-cone certificates
 
+This is the character-search stage of Track B for large `H^1` ranks
+([full-davis-fibering-certification.md](full-davis-fibering-certification.md);
+route map in
+[two-track-fibering-certification.md](two-track-fibering-certification.md)).
+
 The in-process solver in `streamedHeightArrangement.ts` uses exact
 Fourier--Motzkin elimination and intentionally stops at rank four. That is a
 useful small-rank implementation, but it is not an appropriate algorithm for

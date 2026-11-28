@@ -11,7 +11,7 @@ import { prefilterSpatialPickSpheres } from "../src/render/SceneView";
 describe("scene label helpers", () => {
   it("keeps short labels unchanged and compacts long words", () => {
     expect(compactLabelText("s0s1", 8)).toBe("s0s1");
-    expect(compactLabelText("s0s1s2s3s4", 8)).toBe("s0s...s4");
+    expect(compactLabelText("s0s1s2s3s4", 8)).toBe("s0s1…s4 (ℓ=5)");
   });
 
   it("keeps selected labels before lower-priority labels when capped", () => {

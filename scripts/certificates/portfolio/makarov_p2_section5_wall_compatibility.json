@@ -1,0 +1,179 @@
+{
+  "artifactSha256": "f8c0bbbaec0f2896239c362c44801e9c985bfd8bfed0ceea849253ca1164f423",
+  "cohomologyClassAudit": {
+    "cohomologousPeriodicPotentialCanRepair": false,
+    "gaugeIndependentConclusion": true,
+    "importAndIncidenceCrossBindingReplayed": true,
+    "integralSolutionExists": false,
+    "oddPropagationChain": [
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "primitiveCycleEvaluation": 1,
+    "rationalSolutionExists": false,
+    "reduction": [
+      "Average u over the 512 pure sheet translations; the equations and c are invariant, so a rational solution would have a sheet-independent solution.",
+      "For a sheet-independent potential, a_5=a_6=0 because generators 5 and 6 do not change q.",
+      "In every (4,5) octagon, an oriented generator-4 edge and its opposite have the same averaged value; their signed wall equation is 2*a_4=0, hence a_4=0 over Q.",
+      "The odd labels m_34=m_23=m_12=3 and m_01=5 pair each remaining generator edge with the next zero generator type, successively forcing a_3=a_2=a_1=a_0=0.",
+      "Thus a=0.  The certified section cycle has c-evaluation 1, so evaluating d*c=-delta(u) on that cycle gives d=0, a contradiction."
+    ],
+    "saturationCanRepair": false,
+    "sectionPullbackPrimitiveReplayed": true,
+    "systemTested": "find nonzero rational d and a vertex potential u such that a=d*c+delta(u) satisfies every signed opposite-edge equation"
+  },
+  "directStoredGaugeAudit": {
+    "allOtherFiniteTypesPassInStoredGauge": true,
+    "equationsPerFiniteType": 2396160000,
+    "explicitHexagonWitness": {
+      "boundaryCocycleValues": [
+        1,
+        0,
+        -2,
+        0,
+        1,
+        0
+      ],
+      "boundaryGenerators": [
+        4,
+        3,
+        4,
+        3,
+        4,
+        3
+      ],
+      "boundaryStateIds": [
+        "t000:q4034012331034224022333232",
+        "t000:q4032312303034334024033210",
+        "t000:q4411311143003034403032000",
+        "t000:q4411311104003314404132000",
+        "t000:q4032310444022014333133210",
+        "t000:q4034010411022124330333232"
+      ],
+      "closedBoundarySum": 0,
+      "oppositePair": [
+        0,
+        3
+      ],
+      "oppositePairResidual": 1,
+      "projectedLabelEdges": [
+        [
+          90,
+          649
+        ],
+        [
+          649,
+          649
+        ],
+        [
+          649,
+          591
+        ],
+        [
+          591,
+          591
+        ],
+        [
+          591,
+          90
+        ],
+        [
+          90,
+          90
+        ]
+      ],
+      "rootStateId": "t000:q4034012331034224022333232"
+    },
+    "failedOppositeEdgeEquations": 1430046720,
+    "failingTypes": {
+      "3,4": {
+        "failedOppositeEdgeEquations": 953364480,
+        "liftsPerXTriangle": 5120,
+        "m": 3,
+        "quotientCellCount": 798720000,
+        "residualAbsoluteValueCensus": {
+          "1": 900096000,
+          "2": 52776960,
+          "3": 491520
+        }
+      },
+      "4,5": {
+        "failedOppositeEdgeEquations": 476682240,
+        "liftsPerXEdge": 15360,
+        "m": 4,
+        "quotientCellCount": 599040000,
+        "residualAbsoluteValueCensus": {
+          "2": 450048000,
+          "4": 26388480,
+          "6": 245760
+        }
+      }
+    },
+    "finiteRankTwoTypeCount": 20,
+    "passedOppositeEdgeEquations": 46493153280,
+    "qTransitivity": {
+      "edgeOrbitSizes": [
+        39000
+      ],
+      "triangleOrbitSizes": [
+        156000
+      ]
+    },
+    "storedGaugeWallCompatible": false,
+    "totalOppositeEdgeEquations": 47923200000,
+    "wallEquationConvention": "for boundary-oriented values a_0,...,a_(2m-1), opposite-edge compatibility is a_k+a_(k+m)=0",
+    "xIncidence": {
+      "absoluteValueCensus": {
+        "1": 14650,
+        "2": 859,
+        "3": 8
+      },
+      "edgeCount": 39000,
+      "nonzeroCocycleEdges": 15517,
+      "triangleCount": 156000,
+      "trianglesPerEdge": 12
+    }
+  },
+  "factoredActionFacts": {
+    "degree": 4792320000,
+    "generators5And6LeaveQCoordinateFixed": true,
+    "pulledCocycleIsSheetTranslationInvariant": true,
+    "pureSheetTranslations": "tau_h(t,q)=(t+h,q)",
+    "qOrder": 9360000,
+    "sheetCount": 512,
+    "sheetTranslationsCommuteWithAllSevenRightGeneratorMoves": true,
+    "stateSpace": "F2^9 x Q"
+  },
+  "kind": "makarov-p2-section5-wall-compatibility-obstruction",
+  "nonClaims": [
+    "This does not rule out a different wall-derived character on the P2 cover.",
+    "This does not obstruct the explicit character in Track B, where arbitrary cellular cocycles and subdivisions are allowed.",
+    "No CAT(0), asphericity, or contractible-universal-cover claim is used.",
+    "The corrected finite-height-band/pi1-surjection gate is downstream and is not reached for this character."
+  ],
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "primitiveCocycle": {
+      "bytesSha256": "0ce60376a14c89927a6b09289a9a66318ea0a601ede2101489975ddbb6ce1cd3",
+      "certificateSha256": "aeb2591986d77a5d60e595920eaf1af5e9bfca805314ed6c0acccef13e03acd7",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_x_primitive_cocycle.json"
+    },
+    "section5ImportCertificate": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    }
+  },
+  "status": "explicit-character-not-in-rational-wall-span",
+  "trackA": {
+    "asphericityGateRequired": false,
+    "cofaceClosedLawfulSetConstructed": false,
+    "finiteHeightBandPi1SurjectionGateRun": false,
+    "reason": "the character has no representative in the rational wall-cochain span",
+    "statusForExplicitPrimitiveCharacter": "obstructed-before-lawful-cell-construction"
+  }
+}

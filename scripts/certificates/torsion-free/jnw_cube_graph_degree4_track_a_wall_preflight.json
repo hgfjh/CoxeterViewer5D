@@ -1,0 +1,1284 @@
+{
+  "schemaVersion": 1,
+  "kind": "track-a-wall-cleanliness-and-local-morse-preflight",
+  "status": "rank-two-feasible",
+  "method": "exact-rank-two-wall-germ-preflight",
+  "source": {
+    "kind": "bar-x-compression",
+    "name": "JNW degree-four move-kernel bar-X compression",
+    "archiveHash": "6f5745f8a04ddaabd60fc483996576d70f967866a616bcc66f464216552888a9",
+    "notes": [
+      "Materialized from the bundled verified JNW cube-graph source and its complete four-state move orbit.",
+      "This Track A preflight is independent of the existing JNW cellular-cocycle positive control."
+    ],
+    "inputName": "bar X compression of JNW cube graph RACG Track A wall preflight",
+    "inputCanonicalSha256": "9a214f6ccef18d0ee3a8d3510875e06ce723e413344a41d28aff01d4dd50404b"
+  },
+  "definitions": {
+    "wall": "A whole equivalence component of supplied geometric edges under every declared dual segment through every supplied rank-two cell; the computation does not sample representative edges.",
+    "wallGerm": "One endpoint of one geometric edge at a quotient vertex; the two ends of a loop are distinct germs.",
+    "twoSided": "The signed edge-direction constraints across every dual segment admit a coherent {+1,-1} assignment on the wall.",
+    "repeatedWallGerm": "A wall has at least two distinct edge-end germs at the same quotient vertex; this is reported before deciding whether a rank-two corner supports the pair.",
+    "selfIntersectionAnalogue": "Two declared crossing dual segments in one rank-two cell belong to the same wall, or one dual segment pairs two occurrences of the same quotient edge.",
+    "selfOsculation": "Two germs of the same wall meet at a vertex and that exact germ pair is not the corner of any supplied rank-two cell.",
+    "directSelfOsculation": "For a two-sided wall, the two unsupported germs have the same in/out direction; global wall reversal preserves this classification.",
+    "indirectSelfOsculation": "For a two-sided wall, the two unsupported germs have opposite in/out directions; global wall reversal preserves this classification.",
+    "crossing": "Two distinct walls cross when declared crossing dual segments representing them occur in one rank-two cell.",
+    "interOsculation": "The same pair of distinct walls crosses in at least one rank-two cell and has an unsupported pair of germs at some vertex.",
+    "retainedRankTwoCell": "For a coorientation, a rank-two cell is retained exactly when its cyclic signed boundary has two sign transitions, equivalently one source and one sink.",
+    "directedLink": "At a vertex, directed link vertices are edge germs pointing out or in; a retained rank-two corner is directed when every dual segment points away from or toward that corner. Feasibility requires both induced graphs to be nonempty and connected."
+  },
+  "counts": {
+    "vertices": 4,
+    "edges": 16,
+    "rankTwoCells": 12
+  },
+  "cleanliness": {
+    "wallCount": 8,
+    "segmentCount": 24,
+    "germCount": 32,
+    "twoSided": true,
+    "twoSidedWallCount": 8,
+    "oneSidedWallIds": [],
+    "parityConflicts": [],
+    "repeatedWallGermFree": true,
+    "repeatedWallGerms": [],
+    "selfIntersectionFree": true,
+    "selfIntersections": [],
+    "selfOsculationFree": true,
+    "directSelfOsculations": [],
+    "indirectSelfOsculations": [],
+    "unclassifiedSelfOsculations": [],
+    "interOsculationFree": true,
+    "wallPairInteractions": [
+      {
+        "wallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [
+          "bar:r:g0-g1:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [
+          "bar:r:g0-g2:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [
+          "bar:r:g0-g4:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g0:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [
+          "bar:r:g1-g3:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [
+          "bar:r:g1-g5:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g1:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [
+          "bar:r:g2-g3:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [
+          "bar:r:g2-g6:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g2:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g3:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [
+          "bar:r:g3-g7:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [
+          "bar:r:g4-g5:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [
+          "bar:r:g4-g6:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target",
+              "germ:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g4:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g7:jnw%3Astate%3A1.3.4.5:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5"
+        ],
+        "crossingCellIds": [],
+        "osculations": [
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "germIds": [
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "germIds": [
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:source"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "germIds": [
+              "germ:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5:target"
+            ]
+          },
+          {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "germIds": [
+              "germ:bar:e:g5:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target",
+              "germ:bar:e:g6:jnw%3Astate%3A0.2.6.7:jnw%3Astate%3A2.3.5.7:target"
+            ]
+          }
+        ],
+        "crosses": false,
+        "osculates": true,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [
+          "bar:r:g5-g7:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      },
+      {
+        "wallIds": [
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "crossingCellIds": [
+          "bar:r:g6-g7:jnw%3Astate%3A0.1.4.6"
+        ],
+        "osculations": [],
+        "crosses": true,
+        "osculates": false,
+        "interOsculates": false
+      }
+    ],
+    "pathologyCounts": {
+      "oneSidedWalls": {
+        "count": 0,
+        "universe": 8,
+        "unit": "wall"
+      },
+      "parityConflictSegments": {
+        "count": 0,
+        "universe": 24,
+        "unit": "dual-segment"
+      },
+      "repeatedWallGermSites": {
+        "count": 0,
+        "universe": 32,
+        "unit": "vertex-wall-site"
+      },
+      "selfIntersectionSites": {
+        "count": 0,
+        "universe": 36,
+        "unit": "declared-local-intersection-site"
+      },
+      "directSelfOsculatingGermPairs": {
+        "count": 0,
+        "universe": 0,
+        "unit": "same-wall-germ-pair"
+      },
+      "indirectSelfOsculatingGermPairs": {
+        "count": 0,
+        "universe": 0,
+        "unit": "same-wall-germ-pair"
+      },
+      "unorientableSelfOsculatingGermPairs": {
+        "count": 0,
+        "universe": 0,
+        "unit": "same-wall-germ-pair"
+      },
+      "crossingWallPairs": {
+        "count": 12,
+        "universe": 28,
+        "unit": "unordered-wall-pair"
+      },
+      "osculatingWallPairs": {
+        "count": 16,
+        "universe": 28,
+        "unit": "unordered-wall-pair"
+      },
+      "interOsculatingWallPairs": {
+        "count": 0,
+        "universe": 28,
+        "unit": "unordered-wall-pair"
+      }
+    }
+  },
+  "perVertexNecessaryFeasibility": {
+    "method": "exact-projected-wall-enumeration-per-vertex",
+    "interpretation": "necessary-not-sufficient-for-one-global-coorientation",
+    "exactWallLimit": 24,
+    "assignmentCapPerVertex": 100000,
+    "vertexCount": 4,
+    "feasibleVertexCount": 4,
+    "infeasibleVertexCount": 0,
+    "incompleteVertexCount": 0,
+    "everyVertexIndividuallyFeasible": true,
+    "records": [
+      {
+        "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+        "relevantWallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "wallVariableCount": 8,
+        "freeVariableCount": 7,
+        "status": "feasible",
+        "exact": true,
+        "assignmentSpaceSize": 128,
+        "assignmentsTested": 1,
+        "terminationReason": "witness-found",
+        "witness": {
+          "relevantWallSigns": {
+            "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+            "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1
+          },
+          "retainedIncidentRankTwoCellIds": [
+            "bar:r:g0-g1:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g2:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g4:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g3-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g5-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g6-g7:jnw%3Astate%3A0.1.4.6"
+          ],
+          "link": {
+            "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+            "ascendingVertexCount": 1,
+            "ascendingEdgeCount": 0,
+            "ascendingComponentCount": 1,
+            "descendingVertexCount": 7,
+            "descendingEdgeCount": 9,
+            "descendingComponentCount": 1,
+            "ascendingNonemptyConnected": true,
+            "descendingNonemptyConnected": true
+          }
+        }
+      },
+      {
+        "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+        "relevantWallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "wallVariableCount": 8,
+        "freeVariableCount": 7,
+        "status": "feasible",
+        "exact": true,
+        "assignmentSpaceSize": 128,
+        "assignmentsTested": 13,
+        "terminationReason": "witness-found",
+        "witness": {
+          "relevantWallSigns": {
+            "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+            "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+            "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": 1,
+            "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1
+          },
+          "retainedIncidentRankTwoCellIds": [
+            "bar:r:g0-g1:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g2:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g4:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g3-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g5-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g6-g7:jnw%3Astate%3A0.1.4.6"
+          ],
+          "link": {
+            "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+            "ascendingVertexCount": 5,
+            "ascendingEdgeCount": 5,
+            "ascendingComponentCount": 1,
+            "descendingVertexCount": 3,
+            "descendingEdgeCount": 2,
+            "descendingComponentCount": 1,
+            "ascendingNonemptyConnected": true,
+            "descendingNonemptyConnected": true
+          }
+        }
+      },
+      {
+        "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+        "relevantWallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "wallVariableCount": 8,
+        "freeVariableCount": 7,
+        "status": "feasible",
+        "exact": true,
+        "assignmentSpaceSize": 128,
+        "assignmentsTested": 13,
+        "terminationReason": "witness-found",
+        "witness": {
+          "relevantWallSigns": {
+            "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+            "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+            "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": 1,
+            "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1
+          },
+          "retainedIncidentRankTwoCellIds": [
+            "bar:r:g0-g1:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g2:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g4:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g3-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g5-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g6-g7:jnw%3Astate%3A0.1.4.6"
+          ],
+          "link": {
+            "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+            "ascendingVertexCount": 3,
+            "ascendingEdgeCount": 2,
+            "ascendingComponentCount": 1,
+            "descendingVertexCount": 5,
+            "descendingEdgeCount": 5,
+            "descendingComponentCount": 1,
+            "ascendingNonemptyConnected": true,
+            "descendingNonemptyConnected": true
+          }
+        }
+      },
+      {
+        "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+        "relevantWallIds": [
+          "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7",
+          "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+          "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7"
+        ],
+        "wallVariableCount": 8,
+        "freeVariableCount": 7,
+        "status": "feasible",
+        "exact": true,
+        "assignmentSpaceSize": 128,
+        "assignmentsTested": 1,
+        "terminationReason": "witness-found",
+        "witness": {
+          "relevantWallSigns": {
+            "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+            "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+            "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+            "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1
+          },
+          "retainedIncidentRankTwoCellIds": [
+            "bar:r:g0-g1:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g2:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g0-g4:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g1-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g3:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g2-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g3-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g5:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g4-g6:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g5-g7:jnw%3Astate%3A0.1.4.6",
+            "bar:r:g6-g7:jnw%3Astate%3A0.1.4.6"
+          ],
+          "link": {
+            "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+            "ascendingVertexCount": 7,
+            "ascendingEdgeCount": 9,
+            "ascendingComponentCount": 1,
+            "descendingVertexCount": 1,
+            "descendingEdgeCount": 0,
+            "descendingComponentCount": 1,
+            "ascendingNonemptyConnected": true,
+            "descendingNonemptyConnected": true
+          }
+        }
+      }
+    ]
+  },
+  "globalMorseFeasibility": {
+    "method": "exact-global-reversal-reduced-enumeration",
+    "wallVariableCount": 8,
+    "freeVariableCount": 7,
+    "exactVariableLimit": 24,
+    "assignmentCap": 100000,
+    "status": "feasible",
+    "exact": true,
+    "globalReversalFixedWallId": "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5",
+    "assignmentSpaceSize": 128,
+    "assignmentsTested": 14,
+    "terminationReason": "witness-found",
+    "witness": {
+      "wallSigns": {
+        "wall:bar:e:g0:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+        "wall:bar:e:g1:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": 1,
+        "wall:bar:e:g2:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1,
+        "wall:bar:e:g3:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": 1,
+        "wall:bar:e:g4:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": 1,
+        "wall:bar:e:g5:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+        "wall:bar:e:g6:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A1.3.4.5": -1,
+        "wall:bar:e:g7:jnw%3Astate%3A0.1.4.6:jnw%3Astate%3A0.2.6.7": -1
+      },
+      "passed": true,
+      "retainedRankTwoCellIds": [
+        "bar:r:g0-g1:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g0-g2:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g0-g4:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g1-g3:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g1-g5:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g2-g3:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g2-g6:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g3-g7:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g4-g5:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g4-g6:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g5-g7:jnw%3Astate%3A0.1.4.6",
+        "bar:r:g6-g7:jnw%3Astate%3A0.1.4.6"
+      ],
+      "discardedRankTwoCellIds": [],
+      "vertexLinks": [
+        {
+          "vertexId": "bar:v:jnw%3Astate%3A0.1.4.6",
+          "ascendingVertexCount": 4,
+          "ascendingEdgeCount": 3,
+          "ascendingComponentCount": 1,
+          "descendingVertexCount": 4,
+          "descendingEdgeCount": 3,
+          "descendingComponentCount": 1,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        },
+        {
+          "vertexId": "bar:v:jnw%3Astate%3A0.2.6.7",
+          "ascendingVertexCount": 4,
+          "ascendingEdgeCount": 3,
+          "ascendingComponentCount": 1,
+          "descendingVertexCount": 4,
+          "descendingEdgeCount": 3,
+          "descendingComponentCount": 1,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        },
+        {
+          "vertexId": "bar:v:jnw%3Astate%3A1.3.4.5",
+          "ascendingVertexCount": 4,
+          "ascendingEdgeCount": 3,
+          "ascendingComponentCount": 1,
+          "descendingVertexCount": 4,
+          "descendingEdgeCount": 3,
+          "descendingComponentCount": 1,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        },
+        {
+          "vertexId": "bar:v:jnw%3Astate%3A2.3.5.7",
+          "ascendingVertexCount": 4,
+          "ascendingEdgeCount": 3,
+          "ascendingComponentCount": 1,
+          "descendingVertexCount": 4,
+          "descendingEdgeCount": 3,
+          "descendingComponentCount": 1,
+          "ascendingNonemptyConnected": true,
+          "descendingNonemptyConnected": true
+        }
+      ]
+    },
+    "failureCensus": {
+      "ascending-disconnected": 11,
+      "descending-disconnected": 7
+    }
+  },
+  "triage": [
+    {
+      "order": 1,
+      "gate": "two-sidedness",
+      "disposition": "pass",
+      "detail": "All 8 whole wall components admit coherent coorientations."
+    },
+    {
+      "order": 2,
+      "gate": "projected-per-vertex-morse",
+      "disposition": "pass",
+      "detail": "All 4 vertices have exact projected witnesses; these witnesses need not be mutually compatible."
+    },
+    {
+      "order": 3,
+      "gate": "global-coorientation-morse",
+      "disposition": "survivor",
+      "detail": "A single coorientation passes every supplied rank-two vertex link after 14 assignment(s)."
+    },
+    {
+      "order": 4,
+      "gate": "wall-cleanliness-diagnostics",
+      "disposition": "diagnostic-only",
+      "detail": "0/32 vertex-wall sites repeat germs; 0/36 declared local-intersection sites self-intersect; 0 direct, 0 indirect, and 0 unorientable self-osculating germ pairs; 0/28 unordered wall pairs inter-osculate. These counts do not veto rank-two Morse feasibility."
+    }
+  ],
+  "checks": {
+    "inputValid": true,
+    "wallEquivalenceComplete": true,
+    "everySuppliedEdgeAndSegmentBoundToOneWholeWallComponent": true,
+    "parityConstraintsExact": true,
+    "everyEdgeEndGermRecorded": true,
+    "everyRankTwoCornerRecorded": true,
+    "localEnumerationExactWhenCompleted": true
+  },
+  "conclusion": "One global wall coorientation gives nonempty connected ascending and descending retained rank-two links at every supplied vertex.",
+  "nonClaims": [
+    "This preflight checks only the supplied rank-two skeleton.",
+    "It does not construct the coface-closed higher-cell lawful complex or a compatible subdivision.",
+    "It does not check links at retained higher-cell barycenters or other new subdivision vertices.",
+    "Local feasibility is not a finite-height-band, pi1-surjection, or fibering certificate.",
+    "Crossing and osculation use the explicit dual-segment and crossing data; no cubical carrier geometry is inferred.",
+    "Separate per-vertex witnesses need not agree on one global wall coorientation; they are necessary feasibility evidence only.",
+    "A capped global search with no witness is incomplete, not an obstruction.",
+    "Apart from two-sidedness, cleanliness pathologies are diagnostic and do not by themselves veto the retained rank-two Morse search.",
+    "The normalized pathology counts are combinatorial counts over stated universes, not probabilities or success scores."
+  ],
+  "artifactDigest": "f6b267c88b35a78092c99c8cb1ba502f4072f9dae1337023fb3f4f858adc5710"
+}

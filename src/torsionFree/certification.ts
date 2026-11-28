@@ -1,5 +1,11 @@
 import { parseCoxeterSystemInput } from "../coxeter";
+import {
+  isFreeByOrbitTemplate,
+  firstAlternatingRelationFailure,
+  isInvolutionRow,
+} from "./relationCheck";
 import type { CoxeterSystemInput } from "../types";
+import { shareRows, type KernelPool } from "../parallel/kernelPool";
 import { exactIntegerToBigInt } from "./arithmetic";
 import { computeTorsionFreeIndexLowerBound } from "./sphericalPlanning";
 import type {
@@ -210,42 +216,101 @@ function streamPermutationDiagnostics(
 function sphericalActionOrbitSizes(
   candidate: TorsionFreeActionCandidate,
   subgroup: SphericalSpecialSubgroupPlan,
+  visited: Uint8Array = new Uint8Array(candidate.index),
+  /** Result of isFreeByOrbitTemplate on these rows, when already known. */
+  knownFree?: boolean,
 ): number[] {
-  const visited = new Uint8Array(candidate.index);
+  const order = exactIntegerToBigInt(subgroup.order);
+  if (order <= BigInt(candidate.index)) {
+    const free =
+      knownFree ??
+      isFreeByOrbitTemplate(
+        subgroup.generators.map(
+          (generator) => candidate.generatorImages[generator],
+        ),
+        candidate.index,
+        Number(order),
+        visited,
+      );
+    if (free) {
+      return new Array<number>(candidate.index / Number(order)).fill(
+        Number(order),
+      );
+    }
+  }
+  visited.fill(0);
+  // An orbit of a finite group has at most |W_T| points, so one queue of
+  // that length is reused for every orbit.
+  const queue = new Uint32Array(
+    Math.min(candidate.index, Number(exactIntegerToBigInt(subgroup.order))),
+  );
+  const rows = subgroup.generators.map(
+    (generator) => candidate.generatorImages[generator],
+  );
   const orbitSizes: number[] = [];
   for (let start = 0; start < candidate.index; start += 1) {
     if (visited[start] !== 0) {
       continue;
     }
-    const orbit = [start];
     visited[start] = 1;
-    for (let cursor = 0; cursor < orbit.length; cursor += 1) {
-      const point = orbit[cursor];
-      for (const generator of subgroup.generators) {
-        const image = candidate.generatorImages[generator][point];
+    queue[0] = start;
+    let tail = 1;
+    for (let cursor = 0; cursor < tail; cursor += 1) {
+      const point = queue[cursor];
+      for (const row of rows) {
+        const image = row[point];
         if (visited[image] === 0) {
           visited[image] = 1;
-          orbit.push(image);
+          queue[tail] = image;
+          tail += 1;
         }
       }
     }
-    orbitSizes.push(orbit.length);
+    orbitSizes.push(tail);
   }
   return orbitSizes;
 }
 
-function applyAlternatingRelation(
-  start: number,
-  left: number[],
-  right: number[],
-  m: number,
-): number {
-  let point = start;
-  for (let repeat = 0; repeat < m; repeat += 1) {
-    point = left[point];
-    point = right[point];
+/**
+ * Orbit sizes for the spherical subgroups that need an explicit pass.
+ * A subgroup of a group acting freely acts freely, so once W_S passes the
+ * orbit test every spherical W_T with T a subset of S is free as well; its
+ * certificate record is then fully determined and needs no further pass
+ * over the action.  Subgroups are tested from the largest rank down, so in
+ * a torsion-free action only the maximal spherical subgroups are walked.
+ * Returns undefined for subgroups whose freeness is implied.
+ */
+function sphericalOrbitSizesByNecessity(
+  candidate: TorsionFreeActionCandidate,
+  subgroups: readonly SphericalSpecialSubgroupPlan[],
+  knownFree?: ReadonlyMap<string, boolean>,
+): Array<number[] | undefined> {
+  const masks = subgroups.map((subgroup) =>
+    subgroup.generators.reduce((mask, generator) => mask | (1 << generator), 0),
+  );
+  const order = subgroups
+    .map((_subgroup, index) => index)
+    .sort(
+      (left, right) =>
+        subgroups[right].generators.length - subgroups[left].generators.length,
+    );
+  const freeMasks: number[] = [];
+  const result: Array<number[] | undefined> = Array(subgroups.length);
+  const visited = new Uint8Array(candidate.index);
+  for (const index of order) {
+    const mask = masks[index];
+    if (freeMasks.some((free) => (free & mask) === mask)) continue;
+    const sizes = sphericalActionOrbitSizes(
+      candidate,
+      subgroups[index],
+      visited,
+      knownFree?.get(subgroups[index].id),
+    );
+    result[index] = sizes;
+    const expected = Number(exactIntegerToBigInt(subgroups[index].order));
+    if (sizes.every((size) => size === expected)) freeMasks.push(mask);
   }
-  return point;
+  return result;
 }
 
 function validateCandidateShape(
@@ -281,23 +346,33 @@ function validateCandidateShape(
 
   for (let generator = 0; generator < system.rank; generator += 1) {
     const permutation = candidate.generatorImages[generator];
-    if (!Array.isArray(permutation) || permutation.length !== candidate.index) {
+    if (
+      !(Array.isArray(permutation) || permutation instanceof Uint32Array) ||
+      permutation.length !== candidate.index
+    ) {
       const message = `Generator ${generator} must have ${candidate.index} images.`;
       errors.push(message);
       addWitness({ kind: "invalid-permutation", generator, message });
       continue;
     }
-    const images = new Set<number>();
-    for (const image of permutation) {
+    // A byte mask instead of Set<number>: Sets stop at ~2^24 entries and box
+    // every key, while covers of interest have 10^7..10^8 points.
+    const seen = new Uint8Array(candidate.index);
+    let distinct = 0;
+    for (let point = 0; point < permutation.length; point += 1) {
+      const image = permutation[point];
       if (!Number.isInteger(image) || image < 0 || image >= candidate.index) {
         const message = `Generator ${generator} has image ${String(image)} outside 0..${candidate.index - 1}.`;
         errors.push(message);
         addWitness({ kind: "invalid-permutation", generator, message });
         continue;
       }
-      images.add(image);
+      if (seen[image] === 0) {
+        seen[image] = 1;
+        distinct += 1;
+      }
     }
-    if (images.size !== candidate.index) {
+    if (distinct !== candidate.index) {
       const message = `Generator ${generator} images are not a bijection.`;
       errors.push(message);
       addWitness({ kind: "invalid-permutation", generator, message });
@@ -306,39 +381,110 @@ function validateCandidateShape(
   return errors;
 }
 
-function actionOrbit(candidate: TorsionFreeActionCandidate): number[] {
-  const seen = new Set([0]);
-  const queue = [0];
-  for (let cursor = 0; cursor < queue.length; cursor += 1) {
-    const point = queue[cursor];
+/** Orbit of point 0 as a visited mask plus its size (typed BFS, no boxing). */
+function actionOrbitMask(candidate: TorsionFreeActionCandidate): {
+  visited: Uint8Array;
+  size: number;
+} {
+  const visited = new Uint8Array(candidate.index);
+  const queue = new Uint32Array(candidate.index);
+  visited[0] = 1;
+  let tail = 1;
+  for (let head = 0; head < tail; head += 1) {
+    const point = queue[head];
     for (const permutation of candidate.generatorImages) {
       const image = permutation[point];
-      if (!seen.has(image)) {
-        seen.add(image);
-        queue.push(image);
+      if (visited[image] === 0) {
+        visited[image] = 1;
+        queue[tail] = image;
+        tail += 1;
       }
     }
   }
-  return [...seen].sort((left, right) => left - right);
+  return { visited, size: tail };
 }
 
-/** A stable diagnostic key tying a certificate to its system and action data. */
+/**
+ * Streaming FNV-1a 64 over UTF-16 code units, kept in four 16-bit limbs so
+ * every intermediate stays an exact double.  Multiplying by the FNV prime
+ * 2^40 + 0x1b3 is one small multiply per limb plus a 40-bit shift.
+ */
+class Fnv1a64 {
+  private h0 = 0x2325;
+  private h1 = 0x8422;
+  private h2 = 0x9ce4;
+  private h3 = 0xcbf2;
+  private readonly digits = new Uint8Array(16);
+
+  code(unit: number): void {
+    const h0 = this.h0 ^ unit;
+    const h1 = this.h1;
+    let r = h0 * 0x1b3;
+    this.h0 = r & 0xffff;
+    r = h1 * 0x1b3 + (r >>> 16);
+    this.h1 = r & 0xffff;
+    r = this.h2 * 0x1b3 + h0 * 256 + (r >>> 16);
+    this.h2 = r & 0xffff;
+    this.h3 = (this.h3 * 0x1b3 + h1 * 256 + (r >>> 16)) & 0xffff;
+  }
+
+  text(value: string): void {
+    for (let index = 0; index < value.length; index += 1) {
+      this.code(value.charCodeAt(index));
+    }
+  }
+
+  /** Same code units as String(value), without allocating a string. */
+  number(value: number): void {
+    if (!Number.isSafeInteger(value) || value < 0) {
+      this.text(String(value));
+      return;
+    }
+    let count = 0;
+    do {
+      this.digits[count] = value % 10;
+      count += 1;
+      value = Math.floor(value / 10);
+    } while (value > 0);
+    while (count > 0) {
+      count -= 1;
+      this.code(48 + this.digits[count]);
+    }
+  }
+
+  hex(): string {
+    return [this.h3, this.h2, this.h1, this.h0]
+      .map((limb) => limb.toString(16).padStart(4, "0"))
+      .join("");
+  }
+}
+
+/**
+ * A stable diagnostic key tying a certificate to its system and action data.
+ *
+ * The key is FNV-1a 64 of the string
+ *   rank | coxeterMatrix.flat().join(",") | index | row_0.join(",") | ...
+ * hashed incrementally: the string itself would exceed the engine's maximum
+ * string length for actions with tens of millions of points.
+ */
 export function torsionFreeActionFingerprint(
   system: CoxeterSystemInput,
   candidate: TorsionFreeActionCandidate,
 ): string {
-  const canonical = [
-    system.rank,
-    system.coxeterMatrix.flat().join(","),
-    candidate.index,
-    ...candidate.generatorImages.map((images) => images.join(",")),
-  ].join("|");
-  let hash = 0xcbf29ce484222325n;
-  for (let index = 0; index < canonical.length; index += 1) {
-    hash ^= BigInt(canonical.charCodeAt(index));
-    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+  const hash = new Fnv1a64();
+  hash.text(String(system.rank));
+  hash.code(124); // "|"
+  hash.text(system.coxeterMatrix.flat().join(","));
+  hash.code(124);
+  hash.text(String(candidate.index));
+  for (const row of candidate.generatorImages) {
+    hash.code(124);
+    for (let point = 0; point < row.length; point += 1) {
+      if (point > 0) hash.code(44); // ","
+      hash.number(row[point]);
+    }
   }
-  return `fnv1a64:${hash.toString(16).padStart(16, "0")}`;
+  return `fnv1a64:${hash.hex()}`;
 }
 
 /**
@@ -356,15 +502,118 @@ export function torsionFreeActionFingerprint(
  * W_T. A compact Schreier chain is built only after a failed orbit check, to
  * preserve the certificate's exact legacy image-order and fixed-point details.
  */
+export interface CertifyTorsionFreeActionOptions {
+  maxSphericalSubgroupElements?: number;
+  maxWitnesses?: number;
+  onProgress?: ProgressReporter;
+}
+
+/**
+ * Kernel results computed on worker threads for exactly this candidate.
+ * Module-private: a caller-supplied value could forge a certificate.
+ */
+interface PrecomputedActionChecks {
+  /** First relation failure per "left,right" pair, null when it holds. */
+  relationFailures: ReadonlyMap<
+    string,
+    { point: number; image: number } | null
+  >;
+  /** isFreeByOrbitTemplate per spherical subgroup id. */
+  freeBySubgroupId: ReadonlyMap<string, boolean>;
+}
+
 export function certifyTorsionFreeAction(
   input: unknown,
   candidate: TorsionFreeActionCandidate,
   sphericalPlan: SphericalSubsetPlan,
-  options: {
-    maxSphericalSubgroupElements?: number;
-    maxWitnesses?: number;
-    onProgress?: ProgressReporter;
-  } = {},
+  options: CertifyTorsionFreeActionOptions = {},
+): TorsionFreeActionCertificate {
+  return certifyWithChecks(input, candidate, sphericalPlan, options);
+}
+
+/**
+ * Same certificate as certifyTorsionFreeAction, with the relation checks and
+ * the free-orbit passes of maximal spherical subgroups (the two linear-time
+ * scans over the action) spread over a kernel pool.  Results are combined in
+ * the sequential order, so the certificate is byte-identical.
+ */
+export async function certifyTorsionFreeActionParallel(
+  input: unknown,
+  candidate: TorsionFreeActionCandidate,
+  sphericalPlan: SphericalSubsetPlan,
+  pool: KernelPool,
+  options: CertifyTorsionFreeActionOptions = {},
+): Promise<TorsionFreeActionCertificate> {
+  const system = parseCoxeterSystemInput(input);
+  const shape = validateCandidateShape(system, candidate, () => {});
+  if (shape.length > 0 || pool.kind === "inline") {
+    return certifyWithChecks(input, candidate, sphericalPlan, options);
+  }
+  const rows = shareRows(candidate.generatorImages);
+  const involutive = rows.map(isInvolutionRow);
+  const relationJobs: Array<
+    Promise<[string, { point: number; image: number } | null]>
+  > = [];
+  for (let left = 0; left < system.rank; left += 1) {
+    for (let right = left + 1; right < system.rank; right += 1) {
+      const m = system.coxeterMatrix[left][right];
+      if (m === "inf") continue;
+      relationJobs.push(
+        pool
+          .run("alternatingRelation", {
+            left: rows[left],
+            right: rows[right],
+            m,
+            degree: candidate.index,
+            involutions: involutive[left] && involutive[right],
+          })
+          .then((failure) => [`${left},${right}`, failure]),
+      );
+    }
+  }
+  // Only subgroups not contained in another are walked when the action is
+  // free (see sphericalOrbitSizesByNecessity).
+  const subgroups = sphericalPlan.sphericalSubgroups;
+  const masks = subgroups.map((subgroup) =>
+    subgroup.generators.reduce((mask, generator) => mask | (1 << generator), 0),
+  );
+  const freeJobs = subgroups
+    .filter((subgroup, index) => {
+      const mask = masks[index];
+      return !masks.some(
+        (other, otherIndex) =>
+          otherIndex !== index && other !== mask && (other & mask) === mask,
+      );
+    })
+    .filter(
+      (subgroup) =>
+        exactIntegerToBigInt(subgroup.order) <= BigInt(candidate.index),
+    )
+    .map((subgroup) =>
+      pool
+        .run("freeOrbitTemplate", {
+          rows: subgroup.generators.map((generator) => rows[generator]),
+          degree: candidate.index,
+          order: Number(exactIntegerToBigInt(subgroup.order)),
+        })
+        .then((free): [string, boolean] => [subgroup.id, free]),
+    );
+  const [relations, frees] = await Promise.all([
+    Promise.all(relationJobs),
+    Promise.all(freeJobs),
+  ]);
+  return certifyWithChecks(input, candidate, sphericalPlan, options, {
+    relationFailures: new Map(relations),
+    freeBySubgroupId: new Map(frees),
+  });
+}
+
+function certifyWithChecks(
+  input: unknown,
+  candidate: TorsionFreeActionCandidate,
+  sphericalPlan: SphericalSubsetPlan,
+  options: CertifyTorsionFreeActionOptions,
+  precomputed?: PrecomputedActionChecks,
 ): TorsionFreeActionCertificate {
   const system = parseCoxeterSystemInput(input);
   const indexLowerBound = computeTorsionFreeIndexLowerBound(sphericalPlan);
@@ -410,17 +659,18 @@ export function certifyTorsionFreeAction(
   });
 
   if (checks.actionShape) {
-    const orbit = actionOrbit(candidate);
-    checks.transitive = orbit.length === candidate.index;
+    const { visited, size } = actionOrbitMask(candidate);
+    checks.transitive = size === candidate.index;
     if (!checks.transitive) {
-      const orbitSet = new Set(orbit);
-      const unreachablePoints = Array.from(
-        { length: candidate.index },
-        (_unused, point) => point,
-      ).filter((point) => !orbitSet.has(point));
+      // Witness lists are only materialized on failure, in ascending order.
+      const orbit: number[] = [];
+      const unreachablePoints: number[] = [];
+      for (let point = 0; point < candidate.index; point += 1) {
+        (visited[point] !== 0 ? orbit : unreachablePoints).push(point);
+      }
       addWitness({ kind: "intransitive-action", orbit, unreachablePoints });
       errors.push(
-        `Action orbit from point 0 has ${orbit.length} of ${candidate.index} points.`,
+        `Action orbit from point 0 has ${size} of ${candidate.index} points.`,
       );
     }
 
@@ -448,33 +698,36 @@ export function certifyTorsionFreeAction(
     }
 
     checks.coxeterRelations = true;
+    const involutive = candidate.generatorImages.map(isInvolutionRow);
     for (let left = 0; left < system.rank; left += 1) {
       for (let right = left + 1; right < system.rank; right += 1) {
         const m = system.coxeterMatrix[left][right];
         if (m === "inf") {
           continue;
         }
-        for (let point = 0; point < candidate.index; point += 1) {
-          const image = applyAlternatingRelation(
-            point,
-            candidate.generatorImages[left],
-            candidate.generatorImages[right],
+        const known = precomputed?.relationFailures.get(`${left},${right}`);
+        const failure =
+          known !== undefined
+            ? (known ?? undefined)
+            : firstAlternatingRelationFailure(
+                candidate.generatorImages[left],
+                candidate.generatorImages[right],
+                m,
+                candidate.index,
+                involutive[left] && involutive[right],
+              );
+        if (failure) {
+          checks.coxeterRelations = false;
+          addWitness({
+            kind: "coxeter-relation-failure",
+            generatorPair: [left, right],
             m,
+            point: failure.point,
+            image: failure.image,
+          });
+          errors.push(
+            `Relation (${left}, ${right}, m=${m}) fails at point ${failure.point}.`,
           );
-          if (image !== point) {
-            checks.coxeterRelations = false;
-            addWitness({
-              kind: "coxeter-relation-failure",
-              generatorPair: [left, right],
-              m,
-              point,
-              image,
-            });
-            errors.push(
-              `Relation (${left}, ${right}, m=${m}) fails at point ${point}.`,
-            );
-            break;
-          }
         }
       }
     }
@@ -511,6 +764,11 @@ export function certifyTorsionFreeAction(
   let allFree = true;
 
   if (structuralChecksPass) {
+    const orbitSizesBySubgroup = sphericalOrbitSizesByNecessity(
+      candidate,
+      sphericalPlan.sphericalSubgroups,
+      precomputed?.freeBySubgroupId,
+    );
     sphericalPlan.sphericalSubgroups.forEach((subgroup, subgroupIndex) => {
       options.onProgress?.({
         phase: "spherical-action",
@@ -521,7 +779,8 @@ export function certifyTorsionFreeAction(
         message: `Checking ${subgroup.type} action for ${candidate.id}.`,
       });
       const expectedOrder = exactIntegerToBigInt(subgroup.order);
-      const orbitSizes = sphericalActionOrbitSizes(candidate, subgroup);
+      // undefined: implied free by a spherical supergroup that passed.
+      const orbitSizes = orbitSizesBySubgroup[subgroupIndex] ?? [];
       const free = orbitSizes.every(
         (orbitSize) => BigInt(orbitSize) === expectedOrder,
       );
@@ -536,7 +795,8 @@ export function certifyTorsionFreeAction(
       if (!free) {
         const generators = subgroup.generators.map<WordPermutation>(
           (generator) => ({
-            images: candidate.generatorImages[generator],
+            // Failure path only: the Schreier chain wants plain arrays.
+            images: Array.from(candidate.generatorImages[generator]),
             word: [generator],
           }),
         );

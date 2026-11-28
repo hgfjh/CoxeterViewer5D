@@ -6,6 +6,8 @@ integral-lift pipeline. It does not trust a stored torsion-free certificate.
 It recomputes the complete spherical-subgroup plan and certifies the action
 before constructing the streamed Davis oracle.
 
+The package command `cover:prepare:generic-h1` runs the same script.
+
 ```powershell
 corepack pnpm exec tsx scripts/prepare_generic_h1_external_job.ts `
   --system public/examples/jnw_cube_graph.json `
@@ -58,6 +60,8 @@ an output-size breach, or an existing output directory is a hard stop. No
 rank, integral kernel, wall-saturation, or fibering claim is made at this
 stage. Continue with the rank worker and bridge described in
 [`scalable-generic-integral-h1.md`](scalable-generic-integral-h1.md).
-That bridge currently ends at an emitted integral-kernel witness; the
-wall-Smith completion is library-only, and no generic CLI yet carries the full
-`H^1` result through height chambers and Morse links.
+After the bridge emits its rank certificate and integral-kernel witness, the
+`cover:fiber:scalable-h1` CLI replays the wall-Smith completion and carries the
+full `H^1` result through generalized compression, exact height faces, and
+all-cell ascending and descending links. Job preparation alone still makes none of those later
+claims.

@@ -19,13 +19,39 @@ export interface PLMorseHypothesisCheck {
 }
 
 export interface PLMorseAuxiliaryDiagnostic {
-  id: "embedded-walls" | "self-osculation-free";
+  id:
+    | "dimension-at-most-two"
+    | "aspherical-npc-setting"
+    | "embedded-walls"
+    | "self-osculation-free";
   label: string;
   passed: boolean;
-  role: "probabilistic-orientation-search";
+  role: "optional-stronger-topology" | "probabilistic-orientation-search";
   detail: string;
   evidence: string[];
 }
+
+/** Exact mandatory rows in a schema-v2 rank-two Track A certificate. */
+export const PL_MORSE_REQUIRED_CHECK_IDS = [
+  "finite-cover-action",
+  "torsion-free-subgroup",
+  "compression-certificate",
+  "finite-connected-complex",
+  "affine-cell-models",
+  "two-sided-walls",
+  "wall-coorientation",
+  "cellular-cocycle",
+  "circle-valued-map",
+  "schreier-presentation",
+  "lawful-full-skeleton",
+  "affine-morse-cells",
+  "discrete-lifted-heights",
+  "lawful-to-subgroup-surjection",
+  "morse-links",
+  "nonzero-wall-map",
+  "primitive-image",
+  "finite-height-band-pi1-surjection",
+] as const;
 
 export interface DimensionTwoTripleCheck {
   generators: [number, number, number];
@@ -197,18 +223,6 @@ export function certifyPLMorseHypotheses(input: {
   );
 
   const dimensionTwo = checkDimensionAtMostTwo(cover.barX.sourceSystem);
-  add(
-    "dimension-at-most-two",
-    "Two-dimensional nonpositively curved Coxeter setting",
-    dimensionTwo.passed ? "passed" : "failed",
-    dimensionTwo.passed
-      ? "Every generator triple has reciprocal Coxeter sum at most one."
-      : `${dimensionTwo.failedTriples.length} generator triple(s) have reciprocal Coxeter sum greater than one.`,
-    dimensionTwo.failedTriples.map(
-      (triple) =>
-        `${triple.generators.join(",")}: ${formatNumber(triple.reciprocalSum)} > 1`,
-    ),
-  );
 
   const regularCells = cover.barX.relationCells.every(
     (cell) =>
@@ -221,7 +235,7 @@ export function certifyPLMorseHypotheses(input: {
     "Compatible affine cell models",
     regularCells ? "passed" : "failed",
     regularCells
-      ? "Every compressed relation cell has the expected 2m attaching cycle; its standard regular-polygon affine model is available."
+      ? "Every compressed relation cell has the expected 2m attaching cycle and therefore admits a compatible convex-polygon affine chart. The separate regular-polygon chart is used only for the optional NPC metric."
       : "At least one compressed relation cell does not have an expected 2m attaching cycle.",
     ["exact boundary occurrence arrays", "Coxeter exponent m"],
   );
@@ -230,20 +244,6 @@ export function certifyPLMorseHypotheses(input: {
     cover.certificate.status === "passed" &&
     dimensionTwo.passed &&
     regularCells;
-  add(
-    "aspherical-npc-setting",
-    "Aspherical nonpositively curved setting",
-    npcAsphericityEvidence ? "passed" : "failed",
-    npcAsphericityEvidence
-      ? "The certified compression, regular 2m cells, and dimension-at-most-two inequalities supply the nonpositive-curvature/asphericity implication used in the Jankiewicz--Wise setting."
-      : "The accepted nonpositive-curvature/asphericity implication is unavailable because the compression, regular-cell, or dimension-at-most-two check fails.",
-    [
-      "Jankiewicz--Wise, Section 2.1",
-      "regular 2m cell boundary checks",
-      "all generator-triple reciprocal-sum checks",
-    ],
-  );
-
   add(
     "two-sided-walls",
     "Globally coorientable two-sided walls",
@@ -257,6 +257,33 @@ export function certifyPLMorseHypotheses(input: {
   );
 
   const auxiliaryDiagnostics: PLMorseAuxiliaryDiagnostic[] = [
+    {
+      id: "dimension-at-most-two",
+      label: "Two-dimensional Coxeter setting",
+      passed: dimensionTwo.passed,
+      role: "optional-stronger-topology",
+      detail: dimensionTwo.passed
+        ? "Every generator triple has reciprocal Coxeter sum at most one."
+        : `${dimensionTwo.failedTriples.length} generator triple(s) have reciprocal Coxeter sum greater than one. This does not obstruct the finite-height-band argument.`,
+      evidence: dimensionTwo.failedTriples.map(
+        (triple) =>
+          `${triple.generators.join(",")}: ${formatNumber(triple.reciprocalSum)} > 1`,
+      ),
+    },
+    {
+      id: "aspherical-npc-setting",
+      label: "Aspherical nonpositively curved setting",
+      passed: npcAsphericityEvidence,
+      role: "optional-stronger-topology",
+      detail: npcAsphericityEvidence
+        ? "The certified compression, regular 2m cells, and dimension-at-most-two inequalities supply an additional nonpositive-curvature/asphericity certificate."
+        : "The nonpositive-curvature/asphericity implication is unavailable. Asphericity is not required for finite generation via a finite height band.",
+      evidence: [
+        "Jankiewicz--Wise, Section 2.1",
+        "regular 2m cell boundary checks",
+        "all generator-triple reciprocal-sum checks",
+      ],
+    },
     {
       id: "embedded-walls",
       label: "Embedded walls",
@@ -369,7 +396,7 @@ export function certifyPLMorseHypotheses(input: {
     "Affine nonconstant Morse map on retained cells",
     everyEdgeDirected && affineMorseCells ? "passed" : "failed",
     everyEdgeDirected && affineMorseCells
-      ? "Each retained 2-cell has one source, one sink, and two positive boundary paths; the regular affine extension is nonconstant on every positive-dimensional cell."
+      ? "Each retained 2-cell has one source, one sink, and two positive boundary paths. Lawfulness supplies a convex affine polygon chart whose height is nonconstant affine; this is separate from the optional regular NPC metric."
       : "At least one edge has zero/undefined direction or one retained cell lacks the required source, sink, and two positive boundary paths.",
     lawfulSubcomplex.retainedCellIds,
   );
@@ -393,7 +420,7 @@ export function certifyPLMorseHypotheses(input: {
       ? "passed"
       : "failed",
     lawfulKeepsSkeleton && homomorphism.schreierPresentationPassed
-      ? "The lawful subcomplex and bar X have the same connected 1-skeleton, so pi_1(Y) -> pi_1(bar X)=H is onto and carries the same edge cocycle. Its kernel therefore surjects onto ker(phi)."
+      ? `The lawful subcomplex and bar X have the same connected 1-skeleton, so pi_1(Y) -> pi_1(bar X)=H is onto and pulls back the raw edge character. Dividing closed-loop periods by the certified divisor ${homomorphism.periodDivisor ?? 1} gives the normalized character with the same kernel, which therefore surjects onto ker(phi).`
       : "The full-one-skeleton or subgroup-presentation evidence needed for the kernel-surjection step is missing.",
     [
       "identical retained vertex and edge ids",
@@ -452,6 +479,32 @@ export function certifyPLMorseHypotheses(input: {
     [],
   );
 
+  const finiteHeightBandPiOneSurjection =
+    cover.certificate.status === "passed" &&
+    connected &&
+    regularCells &&
+    lawfulKeepsSkeleton &&
+    everyEdgeDirected &&
+    affineMorseCells &&
+    homomorphism.wallCocyclePassed &&
+    homomorphism.wallCocycleNonzero &&
+    homomorphism.primitiveImagePassed &&
+    linksPass;
+  add(
+    "finite-height-band-pi1-surjection",
+    "Finite height band surjecting on the cyclic-cover fundamental group",
+    finiteHeightBandPiOneSurjection ? "passed" : "failed",
+    finiteHeightBandPiOneSurjection
+      ? `Integral raw heights and the finite quotient give a finite height band. The raw character has image ${(homomorphism.periodDivisor ?? 1).toString()}Z and the same kernel as its primitive normalization. Connected nonempty ascending and descending links imply that the band inclusion surjects onto the fundamental group of that cyclic cover, so the character kernel is finitely generated.`
+      : "The finite-height-band argument is unavailable because finiteness, the integral PL Morse map, the primitive wall character, or a directed-link condition failed.",
+    [
+      "finite quotient with finitely many retained cell orbits",
+      "integral nonzero edge increments and affine retained cells",
+      "all ascending and descending links nonempty and connected",
+      "Bestvina--Brady finite-height-band pi_1-surjection argument",
+    ],
+  );
+
   const failedCheckIds = checks
     .filter((check) => check.status === "failed")
     .map((check) => check.id);
@@ -471,7 +524,7 @@ export function certifyPLMorseHypotheses(input: {
     status,
     method: "jankiewicz-wise-lawful-subcomplex-pl-morse-checklist",
     theoremBoundary:
-      "This certificate applies the finite lawful-subcomplex and Bestvina--Brady link criterion used by Jankiewicz--Wise; it is not a general theorem prover.",
+      "This certificate applies the finite-height-band and directed-link argument to the lawful cyclic cover. It does not require the lawful complex to be aspherical and is not a general theorem prover.",
     checks,
     auxiliaryDiagnostics,
     failedCheckIds,

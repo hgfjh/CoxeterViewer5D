@@ -5,6 +5,12 @@ import { spawnSync } from "node:child_process";
 
 import { describe, expect, it } from "vitest";
 
+import { buildCoverCompression } from "../src/compression";
+import {
+  buildGeneralizedLawfulCertificateFromStreamed,
+  type GeneralizedLawfulCertificate,
+} from "../src/fibering/generalizedLawfulCertificate";
+import { lawfulCoorientationSignKey } from "../src/fibering/lawfulSearch";
 import {
   computePackedMaterializedActionSha256,
   promoteMaterializedActionToFullDavisFibering,
@@ -12,8 +18,16 @@ import {
   type MaterializedActionImplementationManifest,
   type MaterializedActionPromotionArtifact,
 } from "../src/fibering/materializedActionPipeline";
+import { buildStreamedLawfulDavisOracle } from "../src/fibering/streamedLawfulDavis";
+import {
+  acceptedActionToQuotientComplex,
+  certifyTorsionFreeAction,
+  planSphericalSpecialSubgroups,
+  type TorsionFreeActionCandidate,
+} from "../src/torsionFree";
 import type { CoxeterSystemInput } from "../src/types";
 import { canonicalSha256 } from "../src/utils/canonicalSha256";
+import { findWallSystem } from "../src/walls";
 
 const PRODUCT_SYSTEM: CoxeterSystemInput = {
   schemaVersion: 1,
@@ -31,11 +45,169 @@ const PRODUCT_SYSTEM: CoxeterSystemInput = {
   ],
 };
 
+const A3_DINFINITY_SYSTEM: CoxeterSystemInput = {
+  schemaVersion: 1,
+  name: "A3 times infinite dihedral materialized-action fixture",
+  rank: 5,
+  generators: Array.from({ length: 5 }, (_, generator) => ({
+    id: `s${generator}`,
+    label: `s${generator}`,
+  })),
+  coxeterMatrix: Array.from({ length: 5 }, (_, left) =>
+    Array.from({ length: 5 }, (_, right) => {
+      if (left === right) return 1;
+      if ((left === 3 && right === 4) || (left === 4 && right === 3)) {
+        return "inf";
+      }
+      if (left <= 2 && right <= 2 && Math.abs(left - right) === 1) return 3;
+      return 2;
+    }),
+  ),
+};
+
 const ROWS = [
   [1, 0, 3, 2],
   [1, 0, 3, 2],
   [2, 3, 0, 1],
 ];
+
+function permutations(values: number[]): number[][] {
+  if (values.length === 0) return [[]];
+  return values.flatMap((value, index) =>
+    permutations(
+      values.filter((_entry, entryIndex) => entryIndex !== index),
+    ).map((tail) => [value, ...tail]),
+  );
+}
+
+function a3DinfinityRows(): number[][] {
+  const elements = permutations([0, 1, 2, 3]);
+  const indexByKey = new Map(
+    elements.map((element, index) => [element.join(","), index]),
+  );
+  const finiteGenerators = [
+    [1, 0, 2, 3],
+    [0, 2, 1, 3],
+    [0, 1, 3, 2],
+  ];
+  return Array.from({ length: 5 }, (_, generator) =>
+    Array.from({ length: 48 }, (_, point) => {
+      const permutation = Math.floor(point / 2);
+      const bit = point % 2;
+      if (generator >= 3) return permutation * 2 + (bit ^ 1);
+      const image = indexByKey.get(
+        finiteGenerators[generator]
+          .map((entry) => elements[permutation][entry])
+          .join(","),
+      );
+      if (image === undefined) throw new Error("Incomplete S4 fixture.");
+      return image * 2 + bit;
+    }),
+  );
+}
+
+async function a3DinfinityMaterializedArtifact(
+  rows: readonly (readonly number[])[],
+): Promise<Record<string, unknown>> {
+  const actionSha256 = await computePackedMaterializedActionSha256(rows, 48);
+  return {
+    schemaVersion: 1,
+    solver: {
+      id: "packed-composite-permutation-module-solver",
+      version: "1.0.0",
+    },
+    problemSha256: canonicalSha256({ fixture: "a3-times-dinfinity-action" }),
+    candidate: {
+      id: "composite:a3-times-dinfinity-action",
+      moduleIndices: [0, 1],
+      moduleIds: ["s4-regular", "c2-regular"],
+      representativeCode: "0",
+      representativeTuple: [0, 0],
+      orbitIndex: 0,
+      degree: 48,
+      cartesianDegree: "48",
+      decompositionKind: "double-coset-diagonal-orbit",
+      actionMaterialized: true,
+      actionSha256,
+      witnessChecks: [],
+    },
+    generatorActions: rows.map((row) => [...row]),
+    orbitPointCodes: Array.from({ length: 48 }, (_, point) => point),
+  };
+}
+
+function a3DinfinityGeneralizedEvidence(rows: number[][]): {
+  generalized: GeneralizedLawfulCertificate;
+  generalizedCertificatesBySignKey: Record<
+    string,
+    GeneralizedLawfulCertificate
+  >;
+} {
+  const candidate: TorsionFreeActionCandidate = {
+    id: "a3-times-dinfinity-regular-image",
+    name: "Regular S4 times C2 image",
+    index: 48,
+    generatorImages: rows,
+    backend: "exact-test-action",
+  };
+  const torsionFree = certifyTorsionFreeAction(
+    A3_DINFINITY_SYSTEM,
+    candidate,
+    planSphericalSpecialSubgroups(A3_DINFINITY_SYSTEM),
+  );
+  if (torsionFree.status !== "passed") {
+    throw new Error(torsionFree.errors.join("\n"));
+  }
+  const quotient = acceptedActionToQuotientComplex(A3_DINFINITY_SYSTEM, {
+    candidate,
+    certificate: torsionFree,
+  });
+  const cover = buildCoverCompression(quotient);
+  const wallSystem = findWallSystem(cover.barX);
+  const wallSigns = Object.fromEntries(
+    wallSystem.walls.map((wall) => {
+      const edge = cover.barX.geometricEdges.find(
+        (candidateEdge) => candidateEdge.id === wall.canonicalEdgeId,
+      );
+      if (!edge)
+        throw new Error(`Missing canonical edge ${wall.canonicalEdgeId}.`);
+      return [wall.id, edge.generator === 4 ? -1 : 1] as const;
+    }),
+  ) as Record<string, 1 | -1>;
+  const oracle = buildStreamedLawfulDavisOracle({
+    system: A3_DINFINITY_SYSTEM,
+    generatorImages: rows,
+  });
+  const evaluation = oracle.bindCoorientations([
+    {
+      id: "opposed-dihedral-walls",
+      wallSigns: Object.fromEntries(
+        oracle.walls.walls.map((wall) => {
+          const sign = wallSigns[wall.id];
+          if (sign !== 1 && sign !== -1) {
+            throw new Error(
+              `Compression and streamed wall ids disagree at ${wall.id}.`,
+            );
+          }
+          return [wall.id, sign] as const;
+        }),
+      ),
+    },
+  ]);
+  const generalized = buildGeneralizedLawfulCertificateFromStreamed({
+    oracle,
+    evaluation,
+    candidateIndex: 0,
+  });
+  const key = lawfulCoorientationSignKey(
+    wallSystem.walls.map((wall) => wall.id).sort(),
+    wallSigns,
+  );
+  return {
+    generalized,
+    generalizedCertificatesBySignKey: { [key]: generalized },
+  };
+}
 
 async function materializedArtifact(): Promise<Record<string, unknown>> {
   const actionSha256 = await computePackedMaterializedActionSha256(ROWS, 4);
@@ -170,6 +342,14 @@ describe("materialized action downstream promotion", () => {
     ]);
     expect(result.selectedTrack).toBe("lawful-subcomplex");
     expect(result.torsionFreeCertificate?.status).toBe("passed");
+    expect(result.lawfulSearch?.bestScore).toMatchObject({
+      finiteHeightBandPi1Surjection: true,
+      morseDataPassed: true,
+    });
+    expect(result.lawfulCertificate?.lawful.finiteHeightBand).toMatchObject({
+      status: "passed",
+      method: "bestvina-brady-finite-height-band-pi1-surjection",
+    });
     expect(
       result.lawfulCertificate?.lawful.conclusion
         .virtualAlgebraicFibrationCertified,
@@ -182,6 +362,15 @@ describe("materialized action downstream promotion", () => {
       valid: true,
       mandatoryChecksPassed: true,
     });
+    const lawfulStage = result.stages.find(
+      ({ id }) => id === "lawful-subcomplex",
+    );
+    expect(lawfulStage?.detail).toContain("finite-height-band pi_1-surjection");
+    expect(lawfulStage?.detail).toContain(
+      "CAT(0)/asphericity is retained only as optional stronger evidence",
+    );
+    expect(lawfulStage?.detail).not.toContain("metric-link asphericity");
+    expect(result.claims.join(" ")).toContain("finite-height-band");
     expect(
       verifyMaterializedActionPromotionArtifact(result, implementationManifest),
     ).toMatchObject({ valid: true, implementationManifestMatches: true });
@@ -193,6 +382,61 @@ describe("materialized action downstream promotion", () => {
     );
     expect(replay).toEqual(result);
   });
+
+  it("promotes replay-valid generalized Track A without an asphericity gate", async () => {
+    const rows = a3DinfinityRows();
+    const { generalized, generalizedCertificatesBySignKey } =
+      a3DinfinityGeneralizedEvidence(rows);
+    expect(generalized.directedLinks.morseCondition).toBe("passed");
+    expect(generalized.asphericity.status).toBe("not-established");
+
+    const result = await promoteMaterializedActionToFullDavisFibering(
+      A3_DINFINITY_SYSTEM,
+      await a3DinfinityMaterializedArtifact(rows),
+      {
+        ...passingOptions(),
+        lawfulSearch: {
+          exactWallLimit: 16,
+          maxCandidates: 256,
+          deterministicCandidateBudgetOnly: true,
+          certificationComplex: "coface-closed-full",
+          generalizedCertificatesBySignKey,
+        },
+      },
+    );
+
+    expect(result.status, JSON.stringify(result.errors)).toBe("passed");
+    expect(result.selectedTrack).toBe("lawful-subcomplex");
+    expect(result.lawfulSearch).toMatchObject({
+      status: "found",
+      bestScore: {
+        certificationComplex: "coface-closed-full",
+        finiteHeightBandPi1Surjection: true,
+        generalizedCertificatePassed: true,
+        npcAsphericity: false,
+        passed: true,
+      },
+    });
+    expect(result.lawfulCertificate?.lawful.generalized).toMatchObject({
+      status: "passed",
+      checks: {
+        actionRootedReplayPassed: true,
+        actualDirectedLinksPassed: true,
+        asphericityPassed: false,
+        finiteHeightBandPi1SurjectionPassed: true,
+      },
+    });
+    expect(result.lawfulCertificate?.lawful.finiteHeightBand.status).toBe(
+      "passed",
+    );
+    expect(result.lawfulCertificateReplay).toMatchObject({
+      valid: true,
+      mandatoryChecksPassed: true,
+    });
+    expect(
+      verifyMaterializedActionPromotionArtifact(result, implementationManifest),
+    ).toMatchObject({ valid: true, implementationManifestMatches: true });
+  }, 20_000);
 
   it("rejects a self-attested nested replay and a changed implementation tree", async () => {
     const result = await promoteMaterializedActionToFullDavisFibering(
@@ -224,6 +468,30 @@ describe("materialized action downstream promotion", () => {
         alterManifest(implementationManifest),
       ),
     ).toMatchObject({ valid: false, implementationManifestMatches: false });
+
+    const legacyLawfulCertificate = structuredClone(result);
+    (
+      legacyLawfulCertificate.lawfulCertificate!.lawful as unknown as {
+        schemaVersion: number;
+      }
+    ).schemaVersion = 1;
+    expect(
+      verifyMaterializedActionPromotionArtifact(
+        legacyLawfulCertificate,
+        implementationManifest,
+      ).errors.join(" "),
+    ).toContain("embedded lawful certificate header is unsupported");
+
+    const legacyPromotionProfile = structuredClone(result);
+    (
+      legacyPromotionProfile.implementation as unknown as { profile: string }
+    ).profile = "materialized-action-two-track-promotion-v3";
+    expect(
+      verifyMaterializedActionPromotionArtifact(
+        legacyPromotionProfile,
+        implementationManifest,
+      ).errors,
+    ).toContain("The two-track promotion header is unsupported.");
   });
 
   it("accepts a raw user coset action and independently certifies it", async () => {
