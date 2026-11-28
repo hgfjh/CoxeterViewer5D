@@ -53,6 +53,79 @@ walls instead of generators.
 The sentence below the buttons describes the active layer. The Focus Inspector
 contains the longer explanation.
 
+### Cell atlas (hat X and bar X)
+
+In hat X and bar X a **3D | Cell atlas** switch sits at the top left of the
+viewer (below **Show controls** in viewer-only mode). The 3D drawing cannot
+show every relation cell undistorted: in the ideal 3-cube cover each 6-vertex
+S3 coset carries three hexagons, the three Hamiltonian 6-cycles of `K_{3,3}`
+for the three generator pairs, and no placement of six points makes all three
+convex. The cell atlas draws each relation cell separately as a regular
+`2m`-gon read from its exact boundary word:
+
+- sections per relation family `{s_i, s_j}` (title `t12–t13, m = 3 · 4 cells`),
+  with a family filter and a vertex-label text filter;
+- sides coloured and labelled by generator; corners labelled by cover vertex.
+  Each cycle starts at its smallest vertex label (code-point order) and keeps
+  the stored boundary direction, so cells of one family read alike;
+- in bar X, with a coorientation: arrows on each side, a triangle at the source
+  corner and a square at the sink corner of lawful cells, faint cards for cells
+  the lawful subcomplex discards, and the selected wall's dual edges and arcs
+  dashed in the wall colour;
+- hovering a corner or a side highlights every cell containing that vertex or
+  edge and reports the count. This is how the atlas shows the gluing without
+  drawing the cells glued;
+- clicking a card selects the same cell id as the 3D scene, so the inspector
+  describes it and the 3D view highlights it. If the bar X relation-family
+  filter hides that family, the filter switches to it.
+
+hat X generator bigons are not drawn; the atlas states their count. Polygon
+shape inside a card is a drawing convention; words, corners and shared-cell
+counts are exact.
+
+### Unit cell (Davis complex, with a cover loaded)
+
+bar X = `H\Σ` cannot be drawn in 3D without overlaps, but its universal cover,
+the Davis complex, can. With a finite cover loaded, the Davis model has a
+**Ball | Unit cell** switch at the top left of the viewer. **Unit cell** draws a
+fundamental domain `D` of the torsion-free subgroup `H` in the Davis complex,
+like a crystallographic unit cell or a polygon with side pairings: local
+geometry is read inside `D`, global topology from the gluing labels.
+
+- **Representatives (Dirichlet type).** `D` has one chamber per coset (per bar X
+  vertex). It is grown outward from the base chamber `e`: among the chambers
+  adjacent to `D` whose coset is not yet represented, the one nearest `e` joins
+  next (hyperbolic distance `d(x0, w·x0)` for systems with reflection data,
+  Euclidean distance in the Tits representation for finite groups, word length
+  otherwise; ties go to the shorter, then lexicographically smaller word). `D`
+  is therefore connected, and the accepting edges form a spanning tree of the
+  coset graph. Domain vertices carry their bar X labels; selecting one selects
+  the same bar X vertex, so switching to bar X keeps the selection. The
+  **Unit-cell chamber** select in the Labels panel picks one by keyboard.
+- **Ghosts.** A chamber just outside `D` is a ghost, labelled `≡ (12)(34)`: it is
+  `H`-equivalent to the representative of that coset. Selecting a domain
+  vertex lights all of its ghosts in the selection colour.
+- **Gluing tags.** An edge leaving `D` is a dashed stub. The two stubs that lift
+  one bar X edge carry the same tag, `a` and `a′` (letters skip `e`, the name of
+  the identity chamber), and a tag colour that avoids the generator colours.
+  Selecting a stub or its tag highlights its partner and labels the ghosts at
+  both ends. Edges of bar X whose lift stays inside `D` are drawn solid.
+- **Cells.** Each bar X relation cell is drawn once, lifted from the
+  representative of its first boundary vertex, and shares its id with bar X and
+  the cell atlas. Cells wholly inside `D` have the normal fill; cells crossing
+  the boundary are faint, with their outside edges dotted.
+- **Show neighbouring copies** (Labels panel) adds faint translates `h·D`,
+  `h ∈ H`, across the gluings (capped), so the tiling around `D` is visible.
+  Hyperbolic copies shrink toward the ideal boundary in the projection.
+
+The camera opens on an oblique three-quarter view of `D` (reset returns to
+it). The badge reads `Unit cell: N chambers, M gluing pairs`. Exact: the
+cosets, representatives, gluings and cell boundaries, all from the finite
+action. Drawing: positions are the reflection orbit, as in the Ball view.
+Whether two words name the same drawn chamber is decided in floating point,
+by comparing their Tits-representation matrices to relative precision `1e-7`;
+this only affects which drawn points coincide, never a gluing.
+
 ## Covers + Walls
 
 The panel reads from top to bottom in the order of the construction: a short
