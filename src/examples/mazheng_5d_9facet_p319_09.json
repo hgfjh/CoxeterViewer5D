@@ -1,0 +1,646 @@
+{
+  "schemaVersion": 1,
+  "name": "Ma-Zheng 5D nine-facet P319,9",
+  "description": "Compact hyperbolic Coxeter 5-polytope with 9 facets from the Ma--Zheng classification.",
+  "rank": 9,
+  "generators": [
+    {
+      "id": "f0",
+      "label": "F1"
+    },
+    {
+      "id": "f1",
+      "label": "F2"
+    },
+    {
+      "id": "f2",
+      "label": "F3"
+    },
+    {
+      "id": "f3",
+      "label": "F4"
+    },
+    {
+      "id": "f4",
+      "label": "F5"
+    },
+    {
+      "id": "f5",
+      "label": "F6"
+    },
+    {
+      "id": "f6",
+      "label": "F7"
+    },
+    {
+      "id": "f7",
+      "label": "F8"
+    },
+    {
+      "id": "f8",
+      "label": "F9"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, 2, 2, 3, 2, 2, 2, "inf", "inf"],
+    [2, 1, "inf", 2, 2, 2, 2, "inf", "inf"],
+    [2, "inf", 1, 2, 2, 3, 2, 2, "inf"],
+    [3, 2, 2, 1, 3, 3, 2, 2, 2],
+    [2, 2, 2, 3, 1, 2, 5, 2, 2],
+    [2, 2, 3, 3, 2, 1, 2, 3, 2],
+    [2, 2, 2, 2, 5, 2, 1, 2, 2],
+    ["inf", "inf", 2, 2, 2, 3, 2, 1, 4],
+    ["inf", "inf", "inf", 2, 2, 2, 2, 4, 1]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 5,
+    "projection": "klein-pca",
+    "normalGram": [
+      [
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 6.683740008009234,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 6.683740008009234,
+            "minimalPolynomial": [4, -20, -42, -20, -1],
+            "isolatingInterval": [6.683740007909234, 6.683740008109234]
+          }
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 14.707396054943267,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 14.707396054943267,
+            "minimalPolynomial": [
+              256, 0, -57600, 0, 482800, 0, -315000, 0, 50625
+            ],
+            "isolatingInterval": [14.707396054843267, 14.707396055043267]
+          }
+        }
+      ],
+      [
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.014646981559337,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.014646981559337,
+            "minimalPolynomial": [64, 0, -96, 0, 31],
+            "isolatingInterval": [1.014646981459337, 1.014646981659337]
+          }
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 3.711470901791822,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 3.711470901791822,
+            "minimalPolynomial": [4096, 0, -59392, 0, 41344, 0, -6048, 0, 81],
+            "isolatingInterval": [3.711470901691822, 3.711470901891822]
+          }
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.150886998379565,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 5.150886998379565,
+            "minimalPolynomial": [64, -480, 872, -520, 89],
+            "isolatingInterval": [5.150886998279565, 5.150886998479565]
+          }
+        }
+      ],
+      [
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 1.014646981559337,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 1.014646981559337,
+            "minimalPolynomial": [64, 0, -96, 0, 31],
+            "isolatingInterval": [1.014646981459337, 1.014646981659337]
+          }
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.995352392457285,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2.995352392457285,
+            "minimalPolynomial": [4, 0, -36, 0, 1],
+            "isolatingInterval": [2.995352392357285, 2.995352392557285]
+          }
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        }
+      ],
+      [
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 5,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        }
+      ],
+      [
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        }
+      ],
+      [
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 5,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 6.683740008009234,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 6.683740008009234,
+            "minimalPolynomial": [4, -20, -42, -20, -1],
+            "isolatingInterval": [6.683740007909234, 6.683740008109234]
+          }
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 3.711470901791822,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 3.711470901791822,
+            "minimalPolynomial": [4096, 0, -59392, 0, 41344, 0, -6048, 0, 81],
+            "isolatingInterval": [3.711470901691822, 3.711470901891822]
+          }
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 3,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 4,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        }
+      ],
+      [
+        {
+          "kind": "dotted",
+          "coshDistance": 14.707396054943267,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 14.707396054943267,
+            "minimalPolynomial": [
+              256, 0, -57600, 0, 482800, 0, -315000, 0, 50625
+            ],
+            "isolatingInterval": [14.707396054843267, 14.707396055043267]
+          }
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 5.150886998379565,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 5.150886998379565,
+            "minimalPolynomial": [64, -480, 872, -520, 89],
+            "isolatingInterval": [5.150886998279565, 5.150886998479565]
+          }
+        },
+        {
+          "kind": "dotted",
+          "coshDistance": 2.995352392457285,
+          "sourceRefId": "ma-zheng-2022-nine-facets",
+          "exact": {
+            "kind": "algebraic-real",
+            "decimal": 2.995352392457285,
+            "minimalPolynomial": [4, 0, -36, 0, 1],
+            "isolatingInterval": [2.995352392357285, 2.995352392557285]
+          }
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "right",
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "coxeter",
+          "m": 4,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1,
+          "sourceRefId": "ma-zheng-2022-nine-facets"
+        }
+      ]
+    ]
+  },
+  "dataStatus": "certified",
+  "sourceRefs": [
+    {
+      "id": "ma-zheng-2022-nine-facets",
+      "citation": "Jiming Ma and Fangting Zheng, Compact hyperbolic Coxeter five-dimensional polytopes with nine facets, arXiv:2203.16049 (2022).",
+      "url": "https://arxiv.org/abs/2203.16049",
+      "notes": "Complete classification: 51 compact Coxeter 5-polytopes with 9 facets, with a table of dotted-edge lengths.",
+      "locator": "Classification table entry P_{319,9}; dotted lengths from the length table."
+    },
+    {
+      "id": "10facets5d-m9-verified",
+      "citation": "10Facets5D census workspace, data/baselines/d5_m9/verified.jsonl (commit 65380c1), pinned here as scripts/data/mazheng_9facet_verified.jsonl.",
+      "notes": "Facet-labelled HCPdm potential vectors reconciled with the Ma--Zheng labels, exact dotted values, and an exact Sage AA inertia check."
+    }
+  ],
+  "certificate": {
+    "status": "passed",
+    "backend": "compact5dCatalogueExactChecker",
+    "backendVersion": "1.0.0",
+    "scopes": ["source-transcription", "gram-signature"],
+    "command": "python scripts/certify_compact_5d_catalogue.py public/examples/mazheng_5d_9facet_p319_09.json",
+    "sourceRefIds": ["ma-zheng-2022-nine-facets", "10facets5d-m9-verified"],
+    "diagnostics": {
+      "publishedLabel": "P_{319,9}",
+      "combinatorialType": "P319",
+      "sourceTranscription": "scripts/data/mazheng_9facet_verified.jsonl",
+      "sourceSha256": "fa703b36143d046c41e8b5c652ff8f1d7be845b961d76e26ca3cae186e57f1af",
+      "sourceCanonicalKey": "d=5|m=9|O:0-1:3,0-2:3,0-3:3,1-4:3,1-5:3,2-6:4,4-7:5|D:2-5:x:sha256:9191cd45fcd851a16de2d17d8fe40849bc8239b67f33fee91f1e114209a1719c,2-8:x:sha256:72f0a601dd3036d7544166af619ed18d8dc64b3ef2c091367c3236d507ea2268,3-6:x:sha256:420985ae59487f0868cf01ace0124eea22ee998b0ce05caf16b6088e7f2be2a8,3-8:x:sha256:a8e6ea2048efa0475445a3c0e0af6757db385f3a4f3889bddf175cc2ec28e1dd,5-6:x:sha256:34d1efe6d49d66f36ad0e00a6a8b5a7f4c81a18a85430f9af8130ffa49178e91,6-8:x:sha256:33d41c90d9e301e17b9fc6359a629ad6141d1f81fb4d5cd0849ae57018392c73|R:0-4,0-5,0-6,0-7,0-8,1-2,1-3,1-6,1-7,1-8,2-3,2-4,2-7,3-4,3-5,3-7,4-5,4-6,4-8,5-7,5-8,6-7,7-8|V:{0,1,2,3,4},{0,1,2,3,7},{0,1,2,4,6},{0,1,2,6,7},{0,1,3,4,5},{0,1,3,5,7},{0,1,4,5,8},{0,1,4,6,7},{0,1,4,7,8},{0,1,5,7,8},{0,2,3,4,7},{0,2,4,6,7},{0,3,4,5,7},{0,4,5,7,8},{1,2,3,4,7},{1,2,4,6,7},{1,3,4,5,7},{1,4,5,7,8}|M:{0,1,2,4,7},{0,1,3,4,7},{0,1,4,5,7},{2,5},{2,8},{3,6},{3,8},{5,6},{6,8}",
+      "sourceSageInertia": [5, 1, 3],
+      "claims": [
+        "facet-labelled Coxeter matrix and dotted values match the pinned 10Facets5D verified record",
+        "normal Gram rank 6 and inertia (5,1,3)"
+      ],
+      "signature": {
+        "positive": 5,
+        "negative": 1,
+        "zero": 3,
+        "rank": 6,
+        "rankMethod": "80-digit symmetric eigenvalues; zero means |lambda| < 1e-40",
+        "largestZeroEigenvalue": 2.299570058959987e-81,
+        "smallestNonzeroEigenvalue": 0.57696220029675
+      },
+      "dottedWeights": [
+        {
+          "edge": [0, 7],
+          "decimal": 6.683740008009234,
+          "minimalPolynomial": [4, -20, -42, -20, -1],
+          "isolatingInterval": [6.683740007909234, 6.683740008109234]
+        },
+        {
+          "edge": [0, 8],
+          "decimal": 14.707396054943267,
+          "minimalPolynomial": [
+            256, 0, -57600, 0, 482800, 0, -315000, 0, 50625
+          ],
+          "isolatingInterval": [14.707396054843267, 14.707396055043267]
+        },
+        {
+          "edge": [1, 2],
+          "decimal": 1.014646981559337,
+          "minimalPolynomial": [64, 0, -96, 0, 31],
+          "isolatingInterval": [1.014646981459337, 1.014646981659337]
+        },
+        {
+          "edge": [1, 7],
+          "decimal": 3.711470901791822,
+          "minimalPolynomial": [4096, 0, -59392, 0, 41344, 0, -6048, 0, 81],
+          "isolatingInterval": [3.711470901691822, 3.711470901891822]
+        },
+        {
+          "edge": [1, 8],
+          "decimal": 5.150886998379565,
+          "minimalPolynomial": [64, -480, 872, -520, 89],
+          "isolatingInterval": [5.150886998279565, 5.150886998479565]
+        },
+        {
+          "edge": [2, 8],
+          "decimal": 2.995352392457285,
+          "minimalPolynomial": [4, 0, -36, 0, 1],
+          "isolatingInterval": [2.995352392357285, 2.995352392557285]
+        }
+      ],
+      "nonClaims": [
+        "not a CoxIter or Vinberg-algorithm compactness check run in this repository",
+        "not a quotient, manifold, or PL Morse certificate",
+        "geometric coordinates are still produced numerically by the viewer"
+      ]
+    }
+  },
+  "notes": [
+    "Ma--Zheng label P_{319,9}, combinatorial type P319. Facet labels F1..F9 follow the 10Facets5D facet labelling of that type.",
+    "The source catalogue records an exact Sage algebraic-number inertia check; this repository recomputes the inertia from 80-digit eigenvalues.",
+    "Normal coordinates and chamber basepoints are computed numerically from normalGram; geometric mode is visualization-grade."
+  ],
+  "warnings": [
+    "Geometric rendering factors normalGram numerically for visualization.",
+    "The 3D projection is a drawing convention and does not certify hyperbolic distances or intersections."
+  ],
+  "checkerSummaries": [
+    {
+      "status": "passed",
+      "backend": "coxiterCompactDiagramChecker",
+      "backendVersion": "1.0.0",
+      "checker": "CoxIter",
+      "scopes": ["coxiter-diagram"],
+      "command": "python scripts/coxiter_check_compact.py public/examples/mazheng_5d_9facet_p319_09.json --require-external",
+      "inputHash": "f99ba3c80127a02b0592dc5ba30653d6995ac816a3769139751b65915ad4b3ec",
+      "outputHash": "dada05b28a66fbc930ed17f65765f1e24839ce15a0848992021aca8dadd794b2",
+      "sourceRefIds": ["ma-zheng-2022-nine-facets", "10facets5d-m9-verified"],
+      "diagnostics": {
+        "artifactPath": "scripts/certificates/coxiter/mazheng_5d_9facet_p319_09.coxiter.json",
+        "coxiterGraphSha256": "b8198952b73bfcf3ad288fa93455d2e73924a00c25ecfb5b73058f20acec7670",
+        "parsed": {
+          "cocompact": "yes",
+          "dimension": 5,
+          "eulerCharacteristic": "0",
+          "fVector": "18, 45, 50, 30, 9, 1",
+          "finiteCovolume": "yes",
+          "growthRate": "3.9516125721972197929564029086453361066",
+          "signature": "7,2,0",
+          "vertices": 9,
+          "verticesAtInfinity": 0
+        },
+        "nonClaims": [
+          "CoxIter checks the prepared diagram input (cocompactness, f-vector, Euler characteristic); its numerical signature is not used.",
+          "The in-repo catalogue certifier owns source transcription and normal-Gram diagnostics."
+        ]
+      },
+      "warnings": []
+    }
+  ]
+}

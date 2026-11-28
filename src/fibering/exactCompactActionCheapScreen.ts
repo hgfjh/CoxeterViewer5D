@@ -1,3 +1,4 @@
+import { snapshotCocycleSection } from "./cocycleSectionSnapshot";
 import type {
   StreamedDavisCell,
   StreamedLawfulDavisOracle,
@@ -225,6 +226,39 @@ export interface ExactCompactActionCheapScreenOptions {
   /** Omit for the canonical prefix q0,... determined by maxSamplePoints. */
   samplePoints?: readonly number[];
   bounds: ExactCompactActionCheapScreenBounds;
+}
+
+/**
+ * Standalone replayable check for one supplied integral cocycle section.
+ *
+ * This is the source gate used by both the full-H1 and direct-character
+ * branches. It deliberately certifies only exact edge antisymmetry and closure
+ * on every rank-two relation cell; it makes no claim that the coordinates form
+ * the full integral cohomology lattice.
+ */
+export interface ExactIntegralCocycleSectionCertificate {
+  schemaVersion: 1;
+  kind: "exact-integral-cocycle-section-certificate";
+  status: "passed";
+  source: {
+    oracleStructureHash: string;
+    actionRowsCanonicalSha256: string;
+    degree: number;
+    generatorCount: number;
+    coordinateIds: string[];
+    latticeBasisDigest: string;
+    expectedCocycleSectionDigest: string;
+    cocycleSectionDigest: string;
+  };
+  checkedDirectedEdgeCount: number;
+  checkedRankTwoCellCount: number;
+  checks: {
+    cocycleSectionDigestMatches: true;
+    directedEdgesAntisymmetric: true;
+    everyRankTwoBoundaryClosed: true;
+  };
+  verificationDigest: string;
+  certificateDigest: string;
 }
 
 export interface ExactCompactActionCheapScreenReplay {
@@ -599,28 +633,22 @@ function materializeIntegralCocycleBasis(
   const expectedCocycleSectionDigest = basis.expectedCocycleSectionDigest;
   const edgeCoordinatePairs = basis.edgeCoordinatePairs.bind(basis);
   const rank = coordinateIds.length;
-  const directedEdges = Array.from(
-    { length: oracle.degree * oracle.generatorCount },
-    () => [] as Array<readonly [number, StreamedTrackBIntegralCoordinate]>,
-  );
-  for (let point = 0; point < oracle.degree; point += 1) {
-    for (let generator = 0; generator < oracle.generatorCount; generator += 1) {
-      const index = point * oracle.generatorCount + generator;
-      directedEdges[index] = canonicalPairs(
+  const snapshot = snapshotCocycleSection(
+    oracle.degree,
+    oracle.generatorCount,
+    (point, generator) =>
+      canonicalPairs(
         edgeCoordinatePairs(point, generator),
         rank,
         `q${point}s${generator}`,
-      ).map(([coordinate, value]) => [coordinate, value.toString()] as const);
-    }
-  }
+      ),
+  );
   return {
     coordinateIds,
     latticeBasisDigest,
     expectedCocycleSectionDigest,
     edgeCoordinatePairs: (point, generator) =>
-      directedEdges[point * oracle.generatorCount + generator].map(
-        ([coordinate, value]) => [coordinate, value] as const,
-      ),
+      snapshot.pairsAt(point, generator),
   };
 }
 
@@ -631,6 +659,7 @@ function verifyIntegralCocycleBasis(options: {
   cocycleSectionDigest: string;
   directedEdgesAntisymmetric: boolean;
   everyRankTwoBoundaryClosed: boolean;
+  checkedRankTwoCellCount: number;
   verificationDigest: string;
   materializedBasis: StreamedTrackBIntegralCocycleBasis;
 } {
@@ -708,9 +737,47 @@ function verifyIntegralCocycleBasis(options: {
     cocycleSectionDigest,
     directedEdgesAntisymmetric,
     everyRankTwoBoundaryClosed,
+    checkedRankTwoCellCount,
     verificationDigest,
     materializedBasis: basis,
   };
+}
+
+/** Verify and hash a concrete integral cocycle section without running links. */
+export function certifyExactIntegralCocycleSection(options: {
+  oracle: StreamedLawfulDavisOracle;
+  cocycleBasis: StreamedTrackBIntegralCocycleBasis;
+}): ExactIntegralCocycleSectionCertificate {
+  const verified = verifyIntegralCocycleBasis({
+    oracle: options.oracle,
+    basis: options.cocycleBasis,
+  });
+  const payload = {
+    schemaVersion: 1 as const,
+    kind: "exact-integral-cocycle-section-certificate" as const,
+    status: "passed" as const,
+    source: {
+      oracleStructureHash: options.oracle.structureHash,
+      actionRowsCanonicalSha256: options.oracle.actionRowsCanonicalSha256,
+      degree: options.oracle.degree,
+      generatorCount: options.oracle.generatorCount,
+      coordinateIds: [...verified.materializedBasis.coordinateIds],
+      latticeBasisDigest: verified.materializedBasis.latticeBasisDigest,
+      expectedCocycleSectionDigest:
+        verified.materializedBasis.expectedCocycleSectionDigest,
+      cocycleSectionDigest: verified.cocycleSectionDigest,
+    },
+    checkedDirectedEdgeCount:
+      options.oracle.degree * options.oracle.generatorCount,
+    checkedRankTwoCellCount: verified.checkedRankTwoCellCount,
+    checks: {
+      cocycleSectionDigestMatches: true as const,
+      directedEdgesAntisymmetric: true as const,
+      everyRankTwoBoundaryClosed: true as const,
+    },
+    verificationDigest: verified.verificationDigest,
+  };
+  return { ...payload, certificateDigest: canonicalSha256(payload) };
 }
 
 function densePairs(values: readonly bigint[]): Array<[number, string]> {

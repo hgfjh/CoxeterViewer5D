@@ -13,8 +13,62 @@ import {
 import { buildWallScene } from "../src/app/wallScene";
 import I2_5IdentityQuotient from "../src/examples/I2_5_identity_quotient.json";
 import IDEAL_3_CUBE from "../src/examples/ideal_hyperbolic_3_cube_m3.json";
-import { buildIdealHyperbolic3CubeS4Cover } from "../src/torsionFree";
+import C44_SYSTEM from "../src/examples/compact_3_tetrahedron_c44_2233.json";
+import {
+  buildC44Psl27Cover,
+  buildIdealHyperbolic3CubeS4Cover,
+} from "../src/torsionFree";
 import type { CoxeterSystemInput } from "../src/types";
+
+type Point = [number, number, number];
+
+function scenePositions(
+  nodes: ReadonlyArray<{ id: string; position?: Point }>,
+): Map<string, Point> {
+  return new Map(
+    nodes
+      .filter((node) => node.position)
+      .map((node) => [node.id, node.position!] as const),
+  );
+}
+
+function distance(left: Point, right: Point): number {
+  return Math.hypot(left[0] - right[0], left[1] - right[1], left[2] - right[2]);
+}
+
+function centroid(points: readonly Point[]): Point {
+  return [0, 1, 2].map(
+    (axis) =>
+      points.reduce((sum, point) => sum + point[axis], 0) / points.length,
+  ) as Point;
+}
+
+/** Newell normal; defined for non-planar cycles as well. */
+function cycleNormal(points: readonly Point[]): Point {
+  const normal: Point = [0, 0, 0];
+  points.forEach((point, index) => {
+    const next = points[(index + 1) % points.length];
+    normal[0] += (point[1] - next[1]) * (point[2] + next[2]);
+    normal[1] += (point[2] - next[2]) * (point[0] + next[0]);
+    normal[2] += (point[0] - next[0]) * (point[1] + next[1]);
+  });
+  const length = Math.hypot(...normal);
+  return normal.map((value) => value / length) as Point;
+}
+
+function distanceToPlane(point: Point, cycle: readonly Point[]): number {
+  const centre = centroid(cycle);
+  const normal = cycleNormal(cycle);
+  return Math.abs(
+    (point[0] - centre[0]) * normal[0] +
+      (point[1] - centre[1]) * normal[1] +
+      (point[2] - centre[2]) * normal[2],
+  );
+}
+
+function planarityResidual(cycle: readonly Point[]): number {
+  return Math.max(...cycle.map((point) => distanceToPlane(point, cycle)));
+}
 
 describe("hat X and bar X scene adapters", () => {
   const cover = buildCoverCompression(
@@ -201,7 +255,7 @@ describe("hat X and bar X scene adapters", () => {
     expect(JSON.stringify(idealCover.barX)).toBe(before);
   });
 
-  it("fans all 48 ideal-cube disks from one exact quotient skeleton", () => {
+  it("fills all 48 ideal-cube disks inside their own cycles on one skeleton", () => {
     const idealCover = buildCoverCompression(
       buildIdealHyperbolic3CubeS4Cover(IDEAL_3_CUBE as CoxeterSystemInput),
     );
@@ -218,14 +272,16 @@ describe("hat X and bar X scene adapters", () => {
     expect(scene.edges.every((edge) => !edge.drawingOnly)).toBe(true);
     expect(scene.cells.every((cell) => !cell.drawingOnly)).toBe(true);
     expect(scene.edges.every((edge) => edge.alwaysLabel)).toBe(true);
+    // No detached copy: a fill is spanned only by its true boundary vertices.
     expect(
-      new Set(scene.cells.map((cell) => cell.drawingInteriorPoint?.join(",")))
-        .size,
-    ).toBe(48);
+      scene.cells.every(
+        (cell) =>
+          cell.drawingInteriorPoint === undefined &&
+          cell.drawingInteriorRing === undefined,
+      ),
+    ).toBe(true);
+    const positions = scenePositions(scene.nodes);
     for (const cell of scene.cells) {
-      expect(cell.boundaryNodeIds).toHaveLength(6);
-      expect(cell.drawingInteriorPoint).toBeDefined();
-      expect(cell.drawingInteriorRing).toHaveLength(6);
       const source = idealCover.barX.relationCells.find(
         (candidate) => candidate.id === cell.id,
       )!;
@@ -234,9 +290,116 @@ describe("hat X and bar X scene adapters", () => {
           (occurrence) => occurrence.sourceVertexId,
         ),
       );
+      // S4 acts on R^3 by reflections, so every attaching cycle is flat.
+      expect(
+        planarityResidual(cell.boundaryNodeIds.map((id) => positions.get(id)!)),
+      ).toBeLessThan(1e-6);
     }
     expect(scene.wallSegmentCount).toBe(0);
     expect(scene.warnings.join(" ")).toContain("shared quotient 1-skeleton");
+    expect(scene.warnings.join(" ")).toContain("chamber orbit");
     expect(scene.warnings.join(" ")).not.toContain("repeated");
+  });
+
+  it("lays out every C44 relation family as disjoint regular polygons", () => {
+    const system = C44_SYSTEM as CoxeterSystemInput;
+    const c44 = buildCoverCompression(buildC44Psl27Cover(system));
+    for (const [pair, sides, count] of [
+      [[0, 1], 6, 56],
+      [[0, 2], 8, 42],
+      [[0, 3], 4, 84],
+    ] as const) {
+      const scene = buildBarXScene(c44.barX, {
+        relationFamily: [pair[0], pair[1]],
+        spreadRelationCells: true,
+      });
+      expect(scene.cells).toHaveLength(count);
+      expect(scene.nodes).toHaveLength(336);
+      const positions = scenePositions(scene.nodes);
+      const discs = scene.cells.map((cell) => {
+        const points = cell.boundaryNodeIds.map((id) => positions.get(id)!);
+        expect(points).toHaveLength(sides);
+        const sideLengths = points.map((point, index) =>
+          distance(point, points[(index + 1) % points.length]),
+        );
+        expect(
+          Math.max(...sideLengths) - Math.min(...sideLengths),
+        ).toBeLessThan(1e-9);
+        expect(planarityResidual(points)).toBeLessThan(1e-9);
+        const centre = centroid(points);
+        return {
+          centre,
+          radius: Math.max(...points.map((point) => distance(point, centre))),
+        };
+      });
+      // Before the fix, counts other than 4 were stacked on one sphere.
+      for (let left = 0; left < discs.length; left += 1) {
+        for (let right = left + 1; right < discs.length; right += 1) {
+          expect(
+            distance(discs[left].centre, discs[right].centre),
+          ).toBeGreaterThan(discs[left].radius + discs[right].radius);
+        }
+      }
+      expect(scene.warnings.join(" ")).not.toContain("share boundary vertices");
+    }
+  });
+
+  it("bends non-boundary chords off the cell plane in a family view", () => {
+    const idealCover = buildCoverCompression(
+      buildIdealHyperbolic3CubeS4Cover(IDEAL_3_CUBE as CoxeterSystemInput),
+    );
+    const scene = buildBarXScene(idealCover.barX, {
+      relationFamily: [0, 1],
+      spreadRelationCells: true,
+    });
+    const positions = scenePositions(scene.nodes);
+    const chords = scene.edges.filter((edge) => edge.drawingControlPoint);
+    // Each <t12, t13> hexagon carries three t23 diagonals.
+    expect(chords).toHaveLength(12);
+    expect(chords.every((edge) => edge.generator === 3)).toBe(true);
+    for (const chord of chords) {
+      const cell = scene.cells.find(
+        (candidate) =>
+          candidate.boundaryNodeIds.includes(chord.source) &&
+          candidate.boundaryNodeIds.includes(chord.target),
+      )!;
+      const points = cell.boundaryNodeIds.map((id) => positions.get(id)!);
+      expect(
+        distanceToPlane(chord.drawingControlPoint!, points),
+      ).toBeGreaterThan(0.5);
+    }
+    expect(scene.warnings.join(" ")).toContain("bent off the cell plane");
+  });
+
+  it("styles selected-wall dual edges apart from relation boundaries", () => {
+    const walls = findWallSystem(cover.barX);
+    const selected = walls.walls[0];
+    const scene = buildWallScene(cover.barX, walls, {
+      selectedWallId: selected.id,
+    });
+    const dual = scene.edges.filter(
+      (edge) => edge.emphasisRole === "wall-dual",
+    );
+    expect(new Set(dual.map((edge) => edge.id))).toEqual(
+      new Set(selected.edgeIds),
+    );
+    expect(dual.every((edge) => edge.emphasis !== "readable-boundary")).toBe(
+      true,
+    );
+
+    const idealCover = buildCoverCompression(
+      buildIdealHyperbolic3CubeS4Cover(IDEAL_3_CUBE as CoxeterSystemInput),
+    );
+    const family = buildBarXScene(idealCover.barX, {
+      relationFamily: [0, 1],
+      spreadRelationCells: true,
+    });
+    const boundary = family.edges.filter(
+      (edge) => edge.emphasis === "readable-boundary",
+    );
+    expect(boundary).toHaveLength(24);
+    expect(
+      boundary.every((edge) => edge.emphasisRole === "relation-boundary"),
+    ).toBe(true);
   });
 });

@@ -20,10 +20,15 @@ export function ResearchInspector({
   summary,
   warnings,
 }: ResearchInspectorProps) {
+  // With nothing selected, the summary's reason is the model description
+  // already shown above it. Show a selection hint instead of repeating it.
+  const nothingSelected = summary.reason === modelDescription;
+  const caveatCount = warnings.length;
   return (
     <>
       <Panel
         title="Focus Inspector"
+        tourId="focus-inspector"
         actions={<span className="status-pill">{modelLabel}</span>}
       >
         <p className="model-summary">{modelDescription}</p>
@@ -31,7 +36,13 @@ export function ResearchInspector({
           heading="What is selected?"
           answer={summary.selected}
         />
-        <InspectorAnswer heading="Why is it here?" answer={summary.reason} />
+        {nothingSelected ? (
+          <p className="field-help">
+            Click a vertex, edge, or cell in the viewer to inspect it.
+          </p>
+        ) : (
+          <InspectorAnswer heading="Why is it here?" answer={summary.reason} />
+        )}
         <InspectorAnswer heading="Exact or drawing?" answer={summary.status} />
         {summary.details && summary.details.length > 0 ? (
           <details className="advanced-details compact-details">
@@ -50,13 +61,23 @@ export function ResearchInspector({
 
       <Panel
         title="Caveats"
-        actions={<span className="warning-pill">{warnings.length}</span>}
+        actions={
+          <span
+            className="warning-pill"
+            role="img"
+            aria-label={`${caveatCount} active ${caveatCount === 1 ? "caveat" : "caveats"}`}
+          >
+            {caveatCount}
+          </span>
+        }
       >
-        {warnings.length === 0 ? (
+        {caveatCount === 0 ? (
           <p className="field-help">No active caveats.</p>
         ) : (
           <details className="compact-details">
-            <summary>{warnings[0]}</summary>
+            <summary>
+              Show {caveatCount} {caveatCount === 1 ? "caveat" : "caveats"}
+            </summary>
             <ul className="warning-list">
               {warnings.map((warning) => (
                 <li key={warning}>{warning}</li>

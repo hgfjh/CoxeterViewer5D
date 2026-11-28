@@ -72,6 +72,19 @@ export interface ExampleGalleryEntry {
   actionLabel: string;
 }
 
+export interface CompactResearchCatalogueNotice {
+  id:
+    | "makarov-p0-p1"
+    | "tumarkin-06-15"
+    | "makarov-p2"
+    | "tumarkin-g12221"
+    | "h5-p7-22";
+  label: string;
+  status: string;
+  summary: string;
+  sourceAvailability: "bundled-source" | "external-evidence-required";
+}
+
 const deterministicTimestamp = "1970-01-01T00:00:00.000Z";
 
 export const viewComparisonOptions: Array<{
@@ -103,6 +116,54 @@ export const viewComparisonOptions: Array<{
       "Compare geometric projection status with the local combinatorial view.",
   },
 ];
+
+/**
+ * These notices describe research priority and evidence boundaries. They do
+ * not promote a source example to a finite action or a fibering certificate.
+ */
+export const compactResearchCatalogueNotices: CompactResearchCatalogueNotice[] =
+  [
+    {
+      id: "makarov-p0-p1",
+      label: "Makarov P0 / P1",
+      status: "paired primary campaign",
+      summary:
+        "Treat P0 and its index-two P1 double as one finite-action campaign.",
+      sourceAvailability: "bundled-source",
+    },
+    {
+      id: "tumarkin-06-15",
+      label: "Tumarkin G11411 #06 / #15",
+      status: "paired bounded comparison",
+      summary:
+        "Run #06 and #15 as peers under the same bounded search, not as mathematical exclusions.",
+      sourceAvailability: "bundled-source",
+    },
+    {
+      id: "makarov-p2",
+      label: "Makarov P2",
+      status: "Track B archived / NR affine CEGAR inconclusive",
+      summary:
+        "The declared 240-record multi-cellulation Track B portfolio is archived: one selected record and all 239 batch records have exact bad-link witnesses, with no prefix survivor or unresolved record. This closes only the declared characters, cellulations, gauges, and pulling subdivision—not Track B or P2 fibering in general. In the rank-312 Niblo-Reeves cubing, the canonical primitive coorientation and all sheet-independent projected-wall flips are closed. The exact component bridge is implemented, but common-family and key-specific affine residual CEGAR both reached their 32-round limits with exact bad sheets and found neither a principal survivor nor an obstruction. The gated frontier did not run. General component-resolved orientations remain open; these affine ansatzes are now deprioritized.",
+      sourceAvailability: "bundled-source",
+    },
+    {
+      id: "tumarkin-g12221",
+      label: "Tumarkin G12221",
+      status: "catalogued / deferred",
+      summary:
+        "The certified source is bundled, but this campaign is deferred; it is not mathematically excluded.",
+      sourceAvailability: "bundled-source",
+    },
+    {
+      id: "h5-p7-22",
+      label: "H5-P7-22",
+      status: "cover studied / no wall fibering",
+      summary:
+        "The certified source is bundled. Its index-39,628,800 torsion-free cover has one-sided walls; on the two-sided index-79,257,600 cover, CP-SAT shows every wall orientation leaves at least 818,128 chambers failing the first low-barycentric gate. Other covers and non-wall cocycles remain open. The large action is not bundled; see h5-p7-22_index39628800/.",
+      sourceAvailability: "bundled-source",
+    },
+  ];
 
 /**
  * Gallery entries are navigation affordances, not a source catalogue.
@@ -150,30 +211,31 @@ export function defaultGalleryEntries(): ExampleGalleryEntry[] {
       label: "Makarov 5-prism P0",
       family: "compact",
       summary:
-        "Inspect the certified [5,3,3,3,3] prism source with local/projection views.",
-      actionLabel: "Open example",
+        "Open the P0 half of the paired P0/P1 primary finite-action campaign.",
+      actionLabel: "Open primary target",
     },
     {
       id: "compact:5-polytope-p1",
       label: "P1 double of P0",
       family: "compact",
-      summary: "Open the verified-source Coxeter double from Emery-Kellerhals.",
-      actionLabel: "Open example",
+      summary:
+        "Open the index-two companion in the paired P0/P1 primary campaign.",
+      actionLabel: "Open primary target",
     },
     {
       id: "compact:5-prism-p2",
       label: "Makarov 5-prism P2",
       family: "compact",
       summary:
-        "Open the verified-source [5,3,3,3,4] prism from Emery-Kellerhals.",
-      actionLabel: "Open example",
+        "Inspect the archived 240-record Track B portfolio and the bounded-inconclusive rank-312 component-resolved Niblo-Reeves CEGAR experiment. This is a scoped research result, not a cubulation or nonfibering theorem.",
+      actionLabel: "View bounded experiment",
     },
     {
       id: "catalogue:8facet:all",
       label: "16 eight-facet 5D cases",
       family: "catalogue",
       summary:
-        "Browse the certified Tumarkin Table 4.10 G11411 examples without crowding the main gallery.",
+        "Browse all certified Tumarkin sources; G12221 is catalogued and deferred, not excluded.",
       actionLabel: "Open catalogue",
     },
     {
@@ -185,20 +247,52 @@ export function defaultGalleryEntries(): ExampleGalleryEntry[] {
       actionLabel: "Open catalogue",
     },
     {
-      id: "catalogue:8facet:08",
-      label: "Eight-facet case #8",
+      id: "catalogue:8facet:06",
+      label: "Eight-facet case #06",
       family: "catalogue",
       summary:
-        "Middle representative certified G11411 entry from Tumarkin Table 4.10.",
-      actionLabel: "Open catalogue",
+        "One peer in the paired #06/#15 bounded finite-action comparison.",
+      actionLabel: "Open comparison target",
     },
     {
       id: "catalogue:8facet:15",
       label: "Eight-facet case #15",
       family: "catalogue",
       summary:
-        "Final representative certified G11411 entry from Tumarkin Table 4.10.",
+        "One peer in the paired #06/#15 bounded finite-action comparison.",
+      actionLabel: "Open comparison target",
+    },
+    {
+      id: "catalogue:8facet:g12221",
+      label: "Eight-facet G12221",
+      family: "catalogue",
+      summary:
+        "Certified and catalogued, but deferred by campaign priority; it is not mathematically excluded.",
+      actionLabel: "Open deferred source",
+    },
+    {
+      id: "compact:5-prism-h5-p7-22",
+      label: "H5-P7-22 prism",
+      family: "compact",
+      summary:
+        "The third compact simplicial 5-prism. Its Sylow-7 cover is studied; no wall orientation of the two-sided cover fibers.",
+      actionLabel: "Open example",
+    },
+    {
+      id: "catalogue:9facet:all",
+      label: "51 nine-facet 5D cases",
+      family: "catalogue",
+      summary:
+        "Browse the complete Ma-Zheng classification of compact Coxeter 5-polytopes with 9 facets, certified in-repo.",
       actionLabel: "Open catalogue",
+    },
+    {
+      id: "compact:3-tetrahedron-c44",
+      label: "Closed 3D C(4,4;2,2;3,3)",
+      family: "compact",
+      summary:
+        "Golden closed example: a 336-sheet PSL(2,7) cover with a wall orientation passing both low-barycentric gates.",
+      actionLabel: "Open example",
     },
   ];
 }

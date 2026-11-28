@@ -18,6 +18,13 @@ export interface CollapsibilitySearchOptions {
   maxMilliseconds?: number;
   /** Ignore wall time and stop only at deterministic state/transition bounds. */
   deterministicStateBudgetOnly?: boolean;
+  /**
+   * Check reduced Z/2 homology before searching (default true).  A collapsible
+   * complex is contractible, hence acyclic, so a nonzero reduced Betti number
+   * settles noncollapsibility in polynomial time; the exhaustive collapse
+   * search it replaces is exponential and stores every visited state.
+   */
+  homologyPrecheck?: boolean;
 }
 
 export interface ResolvedCollapsibilityBudget {
@@ -61,9 +68,27 @@ export interface ExhaustiveNonCollapsibilityCertificate {
   states: ExhaustiveCollapseStateCertificate[];
 }
 
+/**
+ * Noncollapsibility witnessed by nonzero reduced homology over Z/2: a
+ * collapsible complex is contractible and therefore acyclic.  Verification
+ * recomputes the Betti numbers exactly from the supplied complex.
+ */
+export interface HomologyNonCollapsibilityCertificate {
+  schemaVersion: 1;
+  kind: "nonzero-reduced-homology";
+  field: "F2";
+  initialSimplexIds: string[];
+  /** Reduced Betti numbers over Z/2, indexed by dimension. */
+  reducedBettiNumbers: number[];
+}
+
+export type NonCollapsibilityCertificate =
+  | ExhaustiveNonCollapsibilityCertificate
+  | HomologyNonCollapsibilityCertificate;
+
 export type SimplicialCollapsibilityCertificate =
   | CollapseSequenceCertificate
-  | ExhaustiveNonCollapsibilityCertificate;
+  | NonCollapsibilityCertificate;
 
 export interface CollapsibilitySearchStats {
   statesExpanded: number;
@@ -87,7 +112,7 @@ export interface CollapsibleResult {
 export interface ProvenNonCollapsibleResult {
   status: "proven-not-collapsible";
   collapsible: false;
-  certificate: ExhaustiveNonCollapsibilityCertificate;
+  certificate: NonCollapsibilityCertificate;
   stats: CollapsibilitySearchStats;
 }
 
@@ -414,73 +439,235 @@ function budgetReason(
   return undefined;
 }
 
-function searchCollapses(
-  active: number[],
-  context: SearchContext,
-  depth: number,
-): SearchOutcome {
-  context.maximumDepth = Math.max(context.maximumDepth, depth);
-  if (isPoint(active, context.complex)) {
-    return { kind: "found", sequence: [], finalVertexIndex: active[0] };
-  }
+/**
+ * Incremental search state.  The original formulation rebuilt a Set of all
+ * active simplices and a joined string key at every state, which is
+ * quadratic along a collapse path; here presence and present-coface counts
+ * are updated per collapse and undone on backtrack.  Branch order (free
+ * faces by increasing index, each with its unique present coface), memo
+ * semantics, statistics and certificates are unchanged.
+ */
+interface IncrementalState {
+  present: Uint8Array;
+  presentCofaces: Int32Array;
+  facets: number[][];
+  activeCount: number;
+  hashLow: number;
+  hashHigh: number;
+  zobristLow: Int32Array;
+  zobristHigh: Int32Array;
+  /** Dead states bucketed by hash; membership is decided by exact bitsets. */
+  dead: Map<string, Uint8Array[]>;
+}
 
-  const key = stateKey(active);
-  if (context.deadStates.has(key)) {
-    context.memoHits += 1;
-    return { kind: "dead" };
+function createIncrementalState(complex: NormalizedComplex): IncrementalState {
+  const count = complex.simplices.length;
+  const facets: number[][] = complex.simplices.map(() => []);
+  complex.immediateCofaces.forEach((cofaces, faceIndex) => {
+    for (const coface of cofaces) facets[coface].push(faceIndex);
+  });
+  const presentCofaces = new Int32Array(count);
+  complex.immediateCofaces.forEach((cofaces, index) => {
+    presentCofaces[index] = cofaces.length;
+  });
+  // Deterministic pseudo-random keys (xorshift) for Zobrist hashing.
+  const zobristLow = new Int32Array(count);
+  const zobristHigh = new Int32Array(count);
+  let seed = 0x9e3779b9;
+  const next = () => {
+    seed ^= seed << 13;
+    seed ^= seed >>> 17;
+    seed ^= seed << 5;
+    return seed | 0;
+  };
+  let hashLow = 0;
+  let hashHigh = 0;
+  for (let index = 0; index < count; index += 1) {
+    zobristLow[index] = next();
+    zobristHigh[index] = next();
+    hashLow ^= zobristLow[index];
+    hashHigh ^= zobristHigh[index];
   }
+  return {
+    present: new Uint8Array(count).fill(1),
+    presentCofaces,
+    facets,
+    activeCount: count,
+    hashLow,
+    hashHigh,
+    zobristLow,
+    zobristHigh,
+    dead: new Map(),
+  };
+}
 
-  const exhausted = budgetReason(context);
-  if (exhausted !== undefined) {
-    context.exhaustedReason ??= exhausted;
-    return { kind: "unknown" };
+function toggleSimplex(state: IncrementalState, index: number, on: boolean) {
+  state.present[index] = on ? 1 : 0;
+  state.activeCount += on ? 1 : -1;
+  state.hashLow ^= state.zobristLow[index];
+  state.hashHigh ^= state.zobristHigh[index];
+  const delta = on ? 1 : -1;
+  for (const facet of state.facets[index]) state.presentCofaces[facet] += delta;
+}
+
+function activeIndices(state: IncrementalState): number[] {
+  const active: number[] = [];
+  for (let index = 0; index < state.present.length; index += 1) {
+    if (state.present[index] === 1) active.push(index);
   }
-  context.statesExpanded += 1;
+  return active;
+}
 
-  const pairs = legalCollapses(active, context.complex);
-  if (pairs.length === 0) {
-    context.terminalStates += 1;
-  }
+function deadStateKey(state: IncrementalState): string {
+  return `${state.hashLow >>> 0}:${state.hashHigh >>> 0}`;
+}
 
-  const transitions: ExhaustiveCollapseTransitionCertificate[] = [];
-  for (const pair of pairs) {
+function isKnownDead(state: IncrementalState): boolean {
+  const bucket = state.dead.get(deadStateKey(state));
+  if (!bucket) return false;
+  return bucket.some((stored) => {
+    for (let index = 0; index < stored.length; index += 1) {
+      if (stored[index] !== state.present[index]) return false;
+    }
+    return true;
+  });
+}
+
+function rememberDead(state: IncrementalState): void {
+  const key = deadStateKey(state);
+  const bucket = state.dead.get(key) ?? [];
+  bucket.push(state.present.slice());
+  state.dead.set(key, bucket);
+}
+
+function incrementalLegalCollapses(
+  state: IncrementalState,
+  complex: NormalizedComplex,
+): CollapsePair[] {
+  const pairs: CollapsePair[] = [];
+  for (let faceIndex = 0; faceIndex < state.present.length; faceIndex += 1) {
     if (
-      context.useTimeBudget &&
-      now() - context.startedAt >= context.budget.maxMilliseconds
+      state.present[faceIndex] === 0 ||
+      state.presentCofaces[faceIndex] !== 1
     ) {
-      context.exhaustedReason ??= "time-budget";
-      return { kind: "unknown" };
+      continue;
     }
-    if (context.transitionsExamined >= context.budget.maxTransitions) {
-      context.exhaustedReason ??= "transition-budget";
-      return { kind: "unknown" };
+    for (const cofaceIndex of complex.immediateCofaces[faceIndex]) {
+      if (state.present[cofaceIndex] === 1) {
+        pairs.push({ faceIndex, cofaceIndex });
+        break;
+      }
     }
-    context.transitionsExamined += 1;
+  }
+  return pairs;
+}
 
-    const child = collapseState(active, pair);
-    const outcome = searchCollapses(child, context, depth + 1);
-    if (outcome.kind === "found") {
-      return {
-        kind: "found",
-        sequence: [pair, ...outcome.sequence],
-        finalVertexIndex: outcome.finalVertexIndex,
-      };
+interface SearchFrame {
+  pairs: CollapsePair[];
+  next: number;
+  transitions: ExhaustiveCollapseTransitionCertificate[];
+}
+
+/**
+ * Depth-first search over elementary collapses with an explicit frame stack:
+ * collapse paths in order complexes run to tens of thousands of steps, more
+ * than the call stack allows.  Visit order and bookkeeping match the former
+ * recursive search exactly.
+ */
+function searchCollapsesIncremental(
+  state: IncrementalState,
+  context: SearchContext,
+  rootDepth: number,
+): SearchOutcome {
+  const frames: SearchFrame[] = [];
+  const applied: CollapsePair[] = [];
+
+  // Enter the current state: a final outcome, or a new frame to expand.
+  const enter = (depth: number): SearchOutcome | "expanded" => {
+    context.maximumDepth = Math.max(context.maximumDepth, depth);
+    if (state.activeCount === 1) {
+      const only = state.present.indexOf(1);
+      if (context.complex.simplices[only].length === 1) {
+        return {
+          kind: "found",
+          sequence: [...applied],
+          finalVertexIndex: only,
+        };
+      }
     }
-    if (outcome.kind === "unknown") {
-      return outcome;
+    if (isKnownDead(state)) {
+      context.memoHits += 1;
+      return { kind: "dead" };
     }
-    transitions.push({
+    const exhausted = budgetReason(context);
+    if (exhausted !== undefined) {
+      context.exhaustedReason ??= exhausted;
+      return { kind: "unknown" };
+    }
+    context.statesExpanded += 1;
+    const pairs = incrementalLegalCollapses(state, context.complex);
+    if (pairs.length === 0) context.terminalStates += 1;
+    frames.push({ pairs, next: 0, transitions: [] });
+    return "expanded";
+  };
+
+  let outcome = enter(rootDepth);
+  if (outcome !== "expanded") return outcome;
+  while (frames.length > 0) {
+    const frame = frames[frames.length - 1];
+    if (frame.next < frame.pairs.length) {
+      if (
+        context.useTimeBudget &&
+        now() - context.startedAt >= context.budget.maxMilliseconds
+      ) {
+        context.exhaustedReason ??= "time-budget";
+        return { kind: "unknown" };
+      }
+      if (context.transitionsExamined >= context.budget.maxTransitions) {
+        context.exhaustedReason ??= "transition-budget";
+        return { kind: "unknown" };
+      }
+      context.transitionsExamined += 1;
+      const pair = frame.pairs[frame.next];
+      toggleSimplex(state, pair.faceIndex, false);
+      toggleSimplex(state, pair.cofaceIndex, false);
+      applied.push(pair);
+      outcome = enter(rootDepth + frames.length);
+      if (outcome === "expanded") continue;
+      if (outcome.kind !== "dead") return outcome;
+      // The child is dead: record the transition and undo the collapse.
+      frame.transitions.push({
+        freeFaceId: context.complex.simplexIds[pair.faceIndex],
+        cofaceId: context.complex.simplexIds[pair.cofaceIndex],
+        targetStateId: stateId(activeIndices(state)),
+      });
+      applied.pop();
+      toggleSimplex(state, pair.cofaceIndex, true);
+      toggleSimplex(state, pair.faceIndex, true);
+      frame.next += 1;
+      continue;
+    }
+    // Every branch of this state is dead.
+    rememberDead(state);
+    const active = activeIndices(state);
+    context.proofStates.set(stateKey(active), {
+      stateId: stateId(active),
+      collapses: frame.transitions,
+    });
+    frames.pop();
+    const parent = frames[frames.length - 1];
+    if (!parent) return { kind: "dead" };
+    const pair = parent.pairs[parent.next];
+    parent.transitions.push({
       freeFaceId: context.complex.simplexIds[pair.faceIndex],
       cofaceId: context.complex.simplexIds[pair.cofaceIndex],
-      targetStateId: stateId(child),
+      targetStateId: stateId(active),
     });
+    applied.pop();
+    toggleSimplex(state, pair.cofaceIndex, true);
+    toggleSimplex(state, pair.faceIndex, true);
+    parent.next += 1;
   }
-
-  context.deadStates.add(key);
-  context.proofStates.set(key, {
-    stateId: stateId(active),
-    collapses: transitions,
-  });
   return { kind: "dead" };
 }
 
@@ -501,6 +688,74 @@ function searchStats(
 }
 
 /**
+ * Reduced Betti numbers over Z/2 by Gaussian elimination of boundary
+ * matrices stored as bitsets (rows: simplices, columns: their facets).  The
+ * augmentation C_0 -> Z/2 makes these the reduced numbers.
+ */
+function reducedZ2BettiNumbers(complex: NormalizedComplex): number[] {
+  const byDimension = new Map<number, number[]>();
+  complex.simplices.forEach((simplex, index) => {
+    const dimension = simplex.length - 1;
+    const bucket = byDimension.get(dimension) ?? [];
+    bucket.push(index);
+    byDimension.set(dimension, bucket);
+  });
+  const top = Math.max(-1, ...byDimension.keys());
+  // Position of each simplex within its dimension, for column indexing.
+  const positionOf = new Int32Array(complex.simplices.length);
+  for (const bucket of byDimension.values()) {
+    bucket.forEach((index, position) => {
+      positionOf[index] = position;
+    });
+  }
+  const rankOfBoundary = (dimension: number): number => {
+    const rows = byDimension.get(dimension) ?? [];
+    if (rows.length === 0) return 0;
+    if (dimension === 0) return 1; // augmentation onto Z/2
+    const facetCount = (byDimension.get(dimension - 1) ?? []).length;
+    const words = Math.ceil(facetCount / 32);
+    const pivots = new Map<number, Uint32Array>();
+    let rank = 0;
+    for (const row of rows) {
+      const bits = new Uint32Array(words);
+      const simplex = complex.simplices[row];
+      for (let omitted = 0; omitted < simplex.length; omitted += 1) {
+        const facet = simplex.filter((_, index) => index !== omitted);
+        const facetIndex = complex.idToIndex.get(canonicalSimplexId(facet))!;
+        const column = positionOf[facetIndex];
+        bits[column >>> 5] ^= 1 << (column & 31);
+      }
+      // Reduce by existing pivots, highest set bit first.
+      for (let word = words - 1; word >= 0; word -= 1) {
+        while (bits[word] !== 0) {
+          const bit = 31 - Math.clz32(bits[word]);
+          const column = word * 32 + bit;
+          const pivot = pivots.get(column);
+          if (!pivot) {
+            pivots.set(column, bits);
+            rank += 1;
+            word = -1;
+            break;
+          }
+          for (let k = 0; k <= word; k += 1) bits[k] ^= pivot[k];
+        }
+      }
+    }
+    return rank;
+  };
+  const betti: number[] = [];
+  const ranks = new Map<number, number>();
+  for (let dimension = 0; dimension <= top + 1; dimension += 1) {
+    ranks.set(dimension, rankOfBoundary(dimension));
+  }
+  for (let dimension = 0; dimension <= top; dimension += 1) {
+    const chains = (byDimension.get(dimension) ?? []).length;
+    betti.push(chains - ranks.get(dimension)! - ranks.get(dimension + 1)!);
+  }
+  return betti;
+}
+
+/**
  * Decide simplicial collapsibility when the configured search budget permits.
  * A negative answer is returned only after all elementary-collapse choices
  * have been exhausted. Budget exhaustion is therefore never reported as a
@@ -512,6 +767,32 @@ export function checkSimplicialCollapsibility(
 ): SimplicialCollapsibilityResult {
   const complex = normalizeComplex(input);
   const budget = resolveBudget(options);
+  if (options.homologyPrecheck !== false && complex.simplices.length > 0) {
+    const reducedBettiNumbers = reducedZ2BettiNumbers(complex);
+    if (reducedBettiNumbers.some((value) => value !== 0)) {
+      return {
+        status: "proven-not-collapsible",
+        collapsible: false,
+        certificate: {
+          schemaVersion: 1,
+          kind: "nonzero-reduced-homology",
+          field: "F2",
+          initialSimplexIds: [...complex.simplexIds],
+          reducedBettiNumbers,
+        },
+        stats: {
+          statesExpanded: 0,
+          transitionsExamined: 0,
+          memoHits: 0,
+          terminalStates: 0,
+          maximumDepth: 0,
+          elapsedMilliseconds: 0,
+          exhaustive: false,
+          budget,
+        },
+      };
+    }
+  }
   const context: SearchContext = {
     complex,
     budget,
@@ -526,7 +807,11 @@ export function checkSimplicialCollapsibility(
     proofStates: new Map(),
   };
   const root = complex.simplices.map((_, index) => index);
-  const outcome = searchCollapses(root, context, 0);
+  const outcome = searchCollapsesIncremental(
+    createIncrementalState(complex),
+    context,
+    0,
+  );
 
   if (outcome.kind === "found") {
     const sequence = outcome.sequence.map((pair) => ({
@@ -719,11 +1004,60 @@ interface ParsedExhaustiveState {
   rawCollapses: unknown[];
 }
 
-/** Verify that an exhaustive decision DAG accounts for every legal collapse. */
+/** Recompute the reduced Z/2 Betti numbers claimed by a homology witness. */
+function verifyHomologyCertificate(
+  input: SimplicialCollapsibilityInput,
+  certificate: Record<string, unknown>,
+): CollapsibilityCertificateVerification {
+  const kind = "nonzero-reduced-homology" as const;
+  const complex = normalizeComplex(input);
+  const headerError = verifyHeader(complex, certificate);
+  if (headerError !== undefined) {
+    return invalidVerification(headerError, { certificateKind: kind });
+  }
+  if (certificate.field !== "F2") {
+    return invalidVerification("Homology certificates must use field F2.", {
+      certificateKind: kind,
+    });
+  }
+  const recomputed = reducedZ2BettiNumbers(complex);
+  const claimed = certificate.reducedBettiNumbers;
+  if (
+    !Array.isArray(claimed) ||
+    claimed.length !== recomputed.length ||
+    claimed.some((value, index) => value !== recomputed[index])
+  ) {
+    return invalidVerification(
+      "Claimed reduced Betti numbers do not match the complex.",
+      { certificateKind: kind },
+    );
+  }
+  if (recomputed.every((value) => value === 0)) {
+    return invalidVerification(
+      "The complex is acyclic; homology does not witness noncollapsibility.",
+      { certificateKind: kind },
+    );
+  }
+  return {
+    valid: true,
+    certificateKind: kind,
+    stepsVerified: 0,
+    statesVerified: 0,
+    transitionsVerified: 0,
+  };
+}
+
+/** Verify a noncollapsibility certificate of either supported kind. */
 export function verifyNonCollapsibilityCertificate(
   input: SimplicialCollapsibilityInput,
   certificate: unknown,
 ): CollapsibilityCertificateVerification {
+  if (
+    isRecord(certificate) &&
+    certificate.kind === "nonzero-reduced-homology"
+  ) {
+    return verifyHomologyCertificate(input, certificate);
+  }
   const kind = "exhaustive-non-collapsibility" as const;
   if (!isRecord(certificate) || certificate.kind !== kind) {
     return invalidVerification(
@@ -934,7 +1268,10 @@ export function verifyCollapsibilityCertificate(
   if (certificate.kind === "collapse-sequence") {
     return verifyCollapseCertificate(input, certificate);
   }
-  if (certificate.kind === "exhaustive-non-collapsibility") {
+  if (
+    certificate.kind === "exhaustive-non-collapsibility" ||
+    certificate.kind === "nonzero-reduced-homology"
+  ) {
     return verifyNonCollapsibilityCertificate(input, certificate);
   }
   return invalidVerification("Unknown collapsibility certificate kind.");

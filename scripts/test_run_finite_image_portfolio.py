@@ -514,11 +514,13 @@ class FakePromotionRunner:
         tamper_hash: bool = False,
         tamper_source_system: bool = False,
         reject_verifier: bool = False,
+        promotion_profile: str = portfolio.FIBERING_PROMOTION_PROFILE,
     ) -> None:
         self.calls = 0
         self.tamper_hash = tamper_hash
         self.tamper_source_system = tamper_source_system
         self.reject_verifier = reject_verifier
+        self.promotion_profile = promotion_profile
 
     @staticmethod
     def argument(command: tuple[str, ...], flag: str) -> Path:
@@ -602,7 +604,7 @@ class FakePromotionRunner:
             "promotionOutcome": "inconclusive",
             "selectedTrack": None,
             "implementation": {
-                "profile": "materialized-action-two-track-promotion-v3",
+                "profile": self.promotion_profile,
                 "hashes": {
                     "runner": "1" * 64,
                     "materializedActionPipeline": "2" * 64,
@@ -1174,6 +1176,25 @@ class PortfolioOrchestratorTests(unittest.TestCase):
                 worker_runner=worker,
                 solver_runner=solver,
                 promotion_runner=FakePromotionRunner(tamper_hash=True),
+            )
+
+    def test_legacy_promotion_profile_fails_closed(self) -> None:
+        worker, solver = self.runners(candidate=True)
+        with self.assertRaisesRegex(
+            portfolio.InvalidPromotionArtifactError,
+            "unsupported implementation profile",
+        ):
+            portfolio.run_portfolio(
+                self.config(
+                    "legacy-promotion-profile",
+                    run_fibering_pipeline=True,
+                    fibering_runtime=("fake-runtime",),
+                ),
+                worker_runner=worker,
+                solver_runner=solver,
+                promotion_runner=FakePromotionRunner(
+                    promotion_profile="materialized-action-two-track-promotion-v3"
+                ),
             )
 
     def test_independent_promotion_verifier_is_mandatory(self) -> None:

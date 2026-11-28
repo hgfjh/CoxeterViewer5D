@@ -37,6 +37,7 @@ interface WallExperiment {
     certificate: { optimalityProven: boolean };
   };
   virtualAlgebraicFibering?: {
+    schemaVersion: 2;
     status: string;
     primitiveHomomorphism: {
       rawImage: string;
@@ -189,14 +190,14 @@ test("opens on the I2(5) bar-X wall workflow with all five models", async ({
     "I2(5) quotient (identity subgroup)",
   );
   await expect(steps.nth(2)).toContainText("3. Compress to bar X");
-  await expect(steps.nth(2)).toContainText("10 edges, 1 relation cells");
+  await expect(steps.nth(2)).toContainText("10 edges, 1 relation cell");
   await expect(steps.nth(3)).toContainText("4. Find walls");
   await expect(steps.nth(3)).toContainText("5 opposite-edge classes");
   await expect(steps.nth(4)).toContainText("5. Coorient walls");
   await expect(steps.nth(4)).toContainText("Coherent directions");
   await expect(steps.nth(5)).toContainText("6. Keep lawful cells");
   await expect(steps.nth(5)).toContainText("1 of 1 retained");
-  await expect(steps.nth(6)).toContainText("7. Certify a primitive map to Z");
+  await expect(steps.nth(6)).toContainText("7. Certify a primitive map to ℤ");
   await expectStat(page, "Vertices", 10);
   await expectStat(page, "Edges", 10);
   await expectStat(page, "Cells", 1);
@@ -214,7 +215,7 @@ test("makes bounded automatic cover discovery the primary cover action", async (
   await expect(coversPanel).toContainText("Necessary index divisor");
   await expect(coversPanel).toContainText(/10/);
   await expect(coversPanel).toContainText(
-    "finite image -> composite -> small GAP fallback",
+    "finite image → composite → small GAP fallback",
   );
 
   await coversPanel
@@ -363,6 +364,33 @@ test("selects and flips a wall without changing the underlying wall system", asy
   expect(arrowsHidden.view.showInducedDirections).toBe(false);
 });
 
+test("runs the cover chain in a worker with the same results as inline", async ({
+  page,
+}) => {
+  async function flipSecondWall(url: string) {
+    await page.goto(url);
+    await expect(
+      page.getByTestId("scene-canvas").locator("canvas"),
+    ).toBeVisible();
+    await switchToResearch(page);
+    const wallReader = page.getByRole("region", { name: "Wall reader" });
+    await wallReader.getByRole("button", { name: "Selected wall" }).click();
+    await page.getByLabel("Select a wall").selectOption({ index: 1 });
+    await page.getByRole("button", { name: "Flip selected wall" }).click();
+    // The worker reports progress until lawful cells and Morse links catch up.
+    await expect(page.locator(".viewer-progress")).toHaveCount(0);
+    return downloadExperiment(page);
+  }
+
+  const inline = await flipSecondWall("/?coverWorker=never");
+  const worker = await flipSecondWall("/?coverWorker=always");
+  // Everything but the export time must agree.
+  expect({ ...worker, createdAt: undefined }).toEqual({
+    ...inline,
+    createdAt: undefined,
+  });
+});
+
 test("proves the largest lawful subcomplex for the default decagon", async ({
   page,
 }) => {
@@ -373,7 +401,7 @@ test("proves the largest lawful subcomplex for the default decagon", async ({
     .getByRole("button", { name: "Find largest lawful subcomplex" })
     .click();
   await expect(panel(page, /Covers \+ Walls/)).toContainText(
-    /Proven optimum: 1 lawful cells\./,
+    /Proven optimum: 1 lawful cell\./,
     { timeout: 15_000 },
   );
 
@@ -553,6 +581,34 @@ test("uses an imported finite action as the source for every model", async ({
   );
 });
 
+test("keeps the nine-facet catalogue and the new compact sources reachable", async ({
+  page,
+}) => {
+  await openApp(page);
+  await expect(
+    page.locator(
+      '#example-select optgroup[label="Certified nine-facet catalogue (Ma-Zheng)"] option',
+    ),
+  ).toHaveCount(51);
+  await page
+    .getByLabel("Source Coxeter system")
+    .selectOption("mazheng_5d_9facet_p319_10");
+  await expect(page.getByTestId("active-source-system")).toContainText(
+    "Ma-Zheng 5D nine-facet P319,10",
+  );
+  await page
+    .getByLabel("Source Coxeter system")
+    .selectOption("compact_5_prism_h5_p7_22");
+  await expect(page.getByTestId("active-source-system")).toContainText(
+    "H5-P7-22 compact simplicial 5-prism",
+  );
+  await page
+    .getByLabel("Source Coxeter system")
+    .selectOption("compact_3_tetrahedron_c44_2233");
+  await chooseModel(page, "bar X compression");
+  await expectStat(page, "Vertices", 336);
+});
+
 test("keeps all certified eight-facet examples reachable without crowding the picker", async ({
   page,
 }) => {
@@ -561,6 +617,15 @@ test("keeps all certified eight-facet examples reachable without crowding the pi
     '#example-select optgroup[label="Certified eight-facet catalogue"] option',
   );
   await expect(catalogue).toHaveCount(16);
+  await expect(
+    catalogue.filter({ hasText: "G11411 #06 — bounded comparison pair" }),
+  ).toHaveCount(1);
+  await expect(
+    catalogue.filter({ hasText: "G11411 #15 — bounded comparison pair" }),
+  ).toHaveCount(1);
+  await expect(
+    catalogue.filter({ hasText: "G12221 — catalogued/deferred" }),
+  ).toHaveCount(1);
 
   await page
     .getByLabel("Source Coxeter system")
@@ -574,6 +639,23 @@ test("keeps all certified eight-facet examples reachable without crowding the pi
       exact: true,
     }),
   ).toHaveAttribute("aria-pressed", "true");
+
+  await switchToResearch(page);
+  const campaigns = page.getByTestId("compact-research-campaigns");
+  await campaigns.locator("summary").click();
+  await expect(campaigns).toContainText("P0 / P1: paired primary campaign");
+  await expect(campaigns).toContainText("#06 / #15: paired bounded comparison");
+  await expect(campaigns).toContainText(
+    "P2: Track B archived / NR affine CEGAR inconclusive",
+  );
+  await expect(campaigns).toContainText("G12221: catalogued / deferred");
+  await expect(campaigns).toContainText(
+    "H5-P7-22: cover studied / no wall fibering",
+  );
+  await expect(campaigns).toContainText(
+    "not Track B or P2 fibering in general",
+  );
+  await expect(campaigns).toContainText("not mathematically excluded");
 });
 
 test("loads the ideal 3-cube with its certified index-24 S4 cover", async ({
@@ -654,7 +736,7 @@ test("reads four or 48 ideal-cube hexagons on one shared quotient skeleton", asy
   await expect(selector.locator("option")).toHaveCount(14);
   await expect(
     page.getByRole("region", { name: "bar X relation reader" }),
-  ).toContainText("24/(2 x 3) = 4 hexagons");
+  ).toContainText("24/(2 × 3) = 4 hexagons");
   await expectStat(page, "Vertices", 24);
   await expectStat(page, "Edges", 72);
   await expectStat(page, "Cells", 4);
@@ -755,12 +837,14 @@ test("certifies the smaller lawful complex before building the full Davis quotie
   await card
     .getByRole("button", { name: "Run lawful-first certification" })
     .click();
-  await expect(card).toContainText("Track A: lawful 2-complex", {
-    timeout: 30_000,
-  });
-  await expect(card).toContainText("exact metric-link check");
+  await expect(
+    card.getByRole("heading", { name: "Track A (lawful complex)" }),
+  ).toBeVisible({ timeout: 30_000 });
+  await expect(card).toContainText("Checked on the lawful 2-complex");
+  await expect(card).toContainText("π₁-surjection certified");
+  await expect(card).toContainText("CAT(0)/asphericity (optional)");
   await expect(card).toContainText("finite generation transferred to H");
-  await expect(card.getByText("Track B: complete Davis quotient")).toHaveCount(
-    0,
-  );
+  await expect(
+    card.getByRole("heading", { name: "Track B (full Davis quotient)" }),
+  ).toHaveCount(0);
 });

@@ -22,7 +22,7 @@ import {
   type TorsionFreeActionCertificate,
 } from "../torsionFree";
 import type { CoxeterSystemInput } from "../types";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import { canonicalJsonSha256, canonicalSha256 } from "../utils/canonicalSha256";
 
 const INITIAL_STATE_GENERATORS = [0, 2, 6, 7] as const;
 const EXPECTED_GENERATOR_IDS = [
@@ -1385,7 +1385,7 @@ export function buildJnwCubePositiveControlCertificate(
   });
   const source: JnwCubePositiveControlCertificate["source"] = {
     systemName: system.name,
-    systemCanonicalSha256: canonicalSha256(jsonCopy(system)),
+    systemCanonicalSha256: canonicalJsonSha256(system),
     sourceReferenceId: SOURCE_REFERENCE_ID,
     initialStateGenerators: [...INITIAL_STATE_GENERATORS],
     exactCubeGraphTranscription: true as const,
@@ -1394,7 +1394,7 @@ export function buildJnwCubePositiveControlCertificate(
   const legalSystem = {
     moveSystem: jsonCopy(moveSystem),
     summary: jsonCopy(summary),
-    quotientDigest: canonicalSha256(jsonCopy(quotient)),
+    quotientDigest: canonicalJsonSha256(quotient),
     checks: legalChecks,
   };
   const finiteAction = {
@@ -1526,9 +1526,9 @@ export function replayJnwCubePositiveControlCertificate(
       const source = parseCoxeterSystemInput(authoritativeSource);
       authoritativeSourceMatches =
         certificate.source.systemCanonicalSha256 ===
-          canonicalSha256(jsonCopy(source)) &&
+          canonicalJsonSha256(source) &&
         canonicalSha256(certificate.source.sourceSystem) ===
-          canonicalSha256(jsonCopy(source));
+          canonicalJsonSha256(source);
       if (!authoritativeSourceMatches) {
         errors.push(
           "The certificate is not bound to the authoritative JNW source.",

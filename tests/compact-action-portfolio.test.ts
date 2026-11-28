@@ -344,7 +344,7 @@ describe("compact H5 action portfolio", () => {
     );
   });
 
-  it("materializes and restricts a P0 action into its one or two P1 orbits", () => {
+  it("materializes both exact discovery row encodings and restricts a P0 action", () => {
     const identity = [0, 1];
     const swap = [1, 0];
     const parent: TorsionFreeActionCandidate = {
@@ -392,6 +392,73 @@ describe("compact H5 action portfolio", () => {
       [1, 0],
       [1, 0],
     ]);
+
+    // The active finite-action producer writes point indices: integer i means
+    // the vertex at finiteAction.vertices[i]. The legacy vertex-id encoding
+    // above remains replayable.
+    const producerShaped = {
+      status: "passed",
+      artifactHash: "b".repeat(64),
+      certificate: { status: "passed" },
+      finiteAction: {
+        degree: 3,
+        vertices: [
+          { id: "q0", representativeWord: [] },
+          { id: "q1", representativeWord: [0] },
+          { id: "q2", representativeWord: [1] },
+        ],
+        generatorActions: [
+          { generator: 0, images: [1, 0, 2] },
+          { generator: 1, images: [2, 1, 0] },
+        ],
+      },
+    };
+    expect(
+      actionFromCompactDiscoveryArtifact(producerShaped, "integer-rows")
+        .generatorImages,
+    ).toEqual([
+      [1, 0, 2],
+      [2, 1, 0],
+    ]);
+
+    const outOfRange = structuredClone(producerShaped);
+    outOfRange.finiteAction.generatorActions[0].images[2] = 3;
+    expect(() =>
+      actionFromCompactDiscoveryArtifact(outOfRange, "out-of-range"),
+    ).toThrow(/out-of-range point-index/iu);
+
+    const nonPermutation = structuredClone(producerShaped);
+    nonPermutation.finiteAction.generatorActions[0].images = [1, 1, 2];
+    expect(() =>
+      actionFromCompactDiscoveryArtifact(nonPermutation, "not-a-permutation"),
+    ).toThrow(/not a permutation/iu);
+  });
+
+  it("restricts the largest reviewed P0 tier without spreading its point set", () => {
+    const degree = 115_200;
+    const identity = Array.from({ length: degree }, (_unused, point) => point);
+    const evenPairing = identity.map((point) =>
+      point % 2 === 0 ? point + 1 : point - 1,
+    );
+    const oddPairing = identity.map((point) => {
+      if (point === 0 || point === degree - 1) return point;
+      return point % 2 === 1 ? point + 1 : point - 1;
+    });
+    const restricted = restrictP0ActionToP1({
+      id: "max-reviewed-tier",
+      index: degree,
+      generatorImages: [
+        evenPairing,
+        oddPairing,
+        identity,
+        identity,
+        identity,
+        identity,
+        identity,
+      ],
+    });
+    expect(restricted).toHaveLength(1);
+    expect(restricted[0].index).toBe(degree);
   });
 
   it("runs and action-rootedly replays exact H1 followed by the bounded screen", () => {
@@ -418,7 +485,7 @@ describe("compact H5 action portfolio", () => {
       status: "passed",
       h1CertificateDigest: evidence.h1Wall?.certificateDigest,
       screenCertificateDigest: evidence.cheapScreen?.certificateDigest,
-      replayPassed: true,
+      checksPassed: true,
       stageCertificate: {
         status: "completed",
         outcome: "exact-arrangement-complete",
@@ -440,7 +507,7 @@ describe("compact H5 action portfolio", () => {
     );
     expect(evidence.exactArrangement).toMatchObject({
       status: "passed",
-      replayPassed: true,
+      checksPassed: true,
     });
     expect(
       replayCompactPostActionEvidence(input.system, input.accepted, evidence),
@@ -753,7 +820,7 @@ describe("compact H5 action portfolio", () => {
         actionDigest: "forged",
         screenCertificateDigest: "forged",
         certificateDigest: "forged",
-        replayPassed: true,
+        checksPassed: true,
       },
     } as unknown as CompactTargetEvidence;
     expect(() =>

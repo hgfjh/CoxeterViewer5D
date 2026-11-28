@@ -33,7 +33,7 @@ try {
     `${JSON.stringify(
       {
         validator: "virtual-algebraic-fibering-certificate-validator",
-        schemaVersion: 1,
+        schemaVersion: 2,
         source: argument,
         ...validation,
         valid,
@@ -69,8 +69,33 @@ async function loadValidator() {
 }
 
 function minimalConsistentFailedCertificate() {
+  const checkIds = [
+    "finite-cover-action",
+    "torsion-free-subgroup",
+    "compression-certificate",
+    "finite-connected-complex",
+    "affine-cell-models",
+    "two-sided-walls",
+    "wall-coorientation",
+    "cellular-cocycle",
+    "circle-valued-map",
+    "schreier-presentation",
+    "lawful-full-skeleton",
+    "affine-morse-cells",
+    "discrete-lifted-heights",
+    "lawful-to-subgroup-surjection",
+    "morse-links",
+    "nonzero-wall-map",
+    "primitive-image",
+    "finite-height-band-pi1-surjection",
+  ];
+  const failedCheckIds = [
+    "nonzero-wall-map",
+    "primitive-image",
+    "finite-height-band-pi1-surjection",
+  ];
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: "virtual-algebraic-fibering-certificate",
     method: "cooriented-walls-schreier-and-pl-morse",
     status: "failed",
@@ -100,16 +125,14 @@ function minimalConsistentFailedCertificate() {
     morseLinks: { vertices: [] },
     plMorse: {
       status: "failed",
-      checks: [
-        {
-          id: "nonzero-wall-map",
-          status: "failed",
-          label: "Nontrivial wall map",
-          detail: "Self-test zero map.",
-          evidence: [],
-        },
-      ],
-      failedCheckIds: ["nonzero-wall-map"],
+      checks: checkIds.map((id) => ({
+        id,
+        status: failedCheckIds.includes(id) ? "failed" : "passed",
+        label: id,
+        detail: "Standalone validator self-test row.",
+        evidence: [],
+      })),
+      failedCheckIds,
       missingEvidenceCheckIds: [],
       linkCertificates: [],
       conclusion: { virtualAlgebraicFibrationCertified: false },

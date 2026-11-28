@@ -1,4 +1,4 @@
-import type { TorsionFreeActionCandidate } from "./types";
+import type { ActionRow, TorsionFreeActionCandidate } from "./types";
 
 /**
  * A prime-order torsion representative written in the same right-action word
@@ -256,12 +256,15 @@ function validateWitnessCatalogue(
 }
 
 function validatePermutation(
-  images: number[],
+  images: ActionRow,
   index: number,
   label: string,
   errors: string[],
 ): boolean {
-  if (!Array.isArray(images) || images.length !== index) {
+  if (
+    !(Array.isArray(images) || images instanceof Uint32Array) ||
+    images.length !== index
+  ) {
     errors.push(
       `${label} has length ${images?.length ?? 0}; expected ${index}.`,
     );

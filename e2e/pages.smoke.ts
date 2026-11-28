@@ -120,7 +120,7 @@ test("runs the real viewer and lawful search from the Pages project subpath", as
       .click(),
   ]);
   expect(worker.url()).toMatch(`${base.href}assets/searchWorker-`);
-  await expect(page.getByText(/Proven optimum: 1 lawful cells\./)).toBeVisible({
+  await expect(page.getByText(/Proven optimum: 1 lawful cell\./)).toBeVisible({
     timeout: 15_000,
   });
 

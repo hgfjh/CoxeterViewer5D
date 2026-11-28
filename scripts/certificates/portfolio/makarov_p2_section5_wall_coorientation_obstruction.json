@@ -1,0 +1,559 @@
+{
+  "allSmallFacetLabelsAudit": {
+    "canonicalMinimumDependencySize": 5,
+    "characteristicColorCount": 13,
+    "dependencies": [
+      {
+        "neighborColors": [
+          1,
+          3,
+          7,
+          9,
+          10
+        ],
+        "neighborMasks": [
+          2,
+          8,
+          128,
+          121,
+          242
+        ],
+        "ownColor": 0,
+        "ownMask": 1,
+        "xor": 1
+      },
+      {
+        "neighborColors": [
+          0,
+          3,
+          7,
+          9,
+          10
+        ],
+        "neighborMasks": [
+          1,
+          8,
+          128,
+          121,
+          242
+        ],
+        "ownColor": 1,
+        "ownMask": 2,
+        "xor": 2
+      },
+      {
+        "neighborColors": [
+          0,
+          4,
+          6,
+          11,
+          12
+        ],
+        "neighborMasks": [
+          1,
+          16,
+          64,
+          484,
+          433
+        ],
+        "ownColor": 2,
+        "ownMask": 4,
+        "xor": 4
+      },
+      {
+        "neighborColors": [
+          0,
+          1,
+          7,
+          9,
+          10
+        ],
+        "neighborMasks": [
+          1,
+          2,
+          128,
+          121,
+          242
+        ],
+        "ownColor": 3,
+        "ownMask": 8,
+        "xor": 8
+      },
+      {
+        "neighborColors": [
+          0,
+          2,
+          6,
+          11,
+          12
+        ],
+        "neighborMasks": [
+          1,
+          4,
+          64,
+          484,
+          433
+        ],
+        "ownColor": 4,
+        "ownMask": 16,
+        "xor": 16
+      },
+      {
+        "neighborColors": [
+          0,
+          3,
+          4,
+          6,
+          9
+        ],
+        "neighborMasks": [
+          1,
+          8,
+          16,
+          64,
+          121
+        ],
+        "ownColor": 5,
+        "ownMask": 32,
+        "xor": 32
+      },
+      {
+        "neighborColors": [
+          0,
+          1,
+          8,
+          10,
+          12
+        ],
+        "neighborMasks": [
+          1,
+          2,
+          256,
+          242,
+          433
+        ],
+        "ownColor": 6,
+        "ownMask": 64,
+        "xor": 64
+      },
+      {
+        "neighborColors": [
+          0,
+          1,
+          3,
+          9,
+          10
+        ],
+        "neighborMasks": [
+          1,
+          2,
+          8,
+          121,
+          242
+        ],
+        "ownColor": 7,
+        "ownMask": 128,
+        "xor": 128
+      },
+      {
+        "neighborColors": [
+          0,
+          1,
+          6,
+          10,
+          12
+        ],
+        "neighborMasks": [
+          1,
+          2,
+          64,
+          242,
+          433
+        ],
+        "ownColor": 8,
+        "ownMask": 256,
+        "xor": 256
+      },
+      {
+        "neighborColors": [
+          0,
+          1,
+          3,
+          7,
+          10
+        ],
+        "neighborMasks": [
+          1,
+          2,
+          8,
+          128,
+          242
+        ],
+        "ownColor": 9,
+        "ownMask": 121,
+        "xor": 121
+      },
+      {
+        "neighborColors": [
+          0,
+          1,
+          3,
+          7,
+          9
+        ],
+        "neighborMasks": [
+          1,
+          2,
+          8,
+          128,
+          121
+        ],
+        "ownColor": 10,
+        "ownMask": 242,
+        "xor": 242
+      },
+      {
+        "neighborColors": [
+          0,
+          2,
+          4,
+          6,
+          12
+        ],
+        "neighborMasks": [
+          1,
+          4,
+          16,
+          64,
+          433
+        ],
+        "ownColor": 11,
+        "ownMask": 484,
+        "xor": 484
+      },
+      {
+        "neighborColors": [
+          0,
+          1,
+          6,
+          8,
+          10
+        ],
+        "neighborMasks": [
+          1,
+          2,
+          64,
+          256,
+          242
+        ],
+        "ownColor": 12,
+        "ownMask": 433,
+        "xor": 433
+      }
+    ],
+    "distinctNeighborColorsPerLabel": 12,
+    "labelsPassingFullSpanTest": 650,
+    "labelsPerColor": 50,
+    "neighborColorRankAtEveryLabel": 9,
+    "neighborsPerLabel": 120,
+    "neighborsPerOtherColor": 10,
+    "smallFacetLabelCount": 650
+  },
+  "artifactSha256": "1adb8e9449e0b2cba37aa4d502877f07b7961092e8cec51e6b6369d20f1f5bfe",
+  "explicitRootWallWitness": {
+    "centralizesRootReflectionByCoxeterRelations": true,
+    "fixesRootActionState": true,
+    "relationReason": "s0,...,s3 commute with s5 and s4*s5*s4 commutes with s5 because m45=4",
+    "reversesTheRootType5Wall": true,
+    "rootColorMask": 1,
+    "rootSmallFacetLabel": 0,
+    "rootStateId": "t000:q1000001000001000001000001",
+    "sidePreservingBlockMaskXor": 1,
+    "sidePreservingBlocks": [
+      {
+        "conjugatorWord": [
+          3,
+          2,
+          1,
+          0,
+          1,
+          0,
+          2,
+          1,
+          0,
+          1
+        ],
+        "neighborColor": 1,
+        "neighborLabel": 70,
+        "sidePreservingReflectionWord": [
+          1,
+          0,
+          1,
+          2,
+          0,
+          1,
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0,
+          1,
+          0,
+          2,
+          1,
+          0,
+          1
+        ],
+        "terminalQIsIdentity": true,
+        "terminalSheetMask": 2,
+        "transverseParity": 0
+      },
+      {
+        "conjugatorWord": [
+          3
+        ],
+        "neighborColor": 3,
+        "neighborLabel": 90,
+        "sidePreservingReflectionWord": [
+          3,
+          4,
+          5,
+          4,
+          3
+        ],
+        "terminalQIsIdentity": true,
+        "terminalSheetMask": 8,
+        "transverseParity": 0
+      },
+      {
+        "conjugatorWord": [
+          3,
+          2,
+          1
+        ],
+        "neighborColor": 7,
+        "neighborLabel": 414,
+        "sidePreservingReflectionWord": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          4,
+          3,
+          2,
+          1
+        ],
+        "terminalQIsIdentity": true,
+        "terminalSheetMask": 128,
+        "transverseParity": 0
+      },
+      {
+        "conjugatorWord": [
+          3,
+          2
+        ],
+        "neighborColor": 9,
+        "neighborLabel": 98,
+        "sidePreservingReflectionWord": [
+          2,
+          3,
+          4,
+          5,
+          4,
+          3,
+          2
+        ],
+        "terminalQIsIdentity": true,
+        "terminalSheetMask": 121,
+        "transverseParity": 0
+      },
+      {
+        "conjugatorWord": [
+          3,
+          2,
+          1,
+          0
+        ],
+        "neighborColor": 10,
+        "neighborLabel": 284,
+        "sidePreservingReflectionWord": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "terminalQIsIdentity": true,
+        "terminalSheetMask": 242,
+        "transverseParity": 0
+      }
+    ],
+    "stabilizerWord": [
+      5,
+      1,
+      0,
+      1,
+      2,
+      0,
+      1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      1,
+      0,
+      2,
+      1,
+      0,
+      1,
+      3,
+      4,
+      5,
+      4,
+      3,
+      1,
+      2,
+      3,
+      4,
+      5,
+      4,
+      3,
+      2,
+      1,
+      2,
+      3,
+      4,
+      5,
+      4,
+      3,
+      2,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "stabilizerWordLength": 56,
+    "terminalStateId": "t000:q1000001000001000001000001",
+    "transverseParity": 1
+  },
+  "factoredAction": {
+    "billionsOfPermutationRowsMaterialized": false,
+    "degree": 4792320000,
+    "normalSubgroupAssumed": false,
+    "qOrder": 9360000,
+    "regularActionAssumed": false,
+    "sheetCount": 512,
+    "stateSpace": "F2^9 x Q"
+  },
+  "kind": "makarov-p2-section5-full-wall-coorientability-obstruction",
+  "nonClaims": [
+    "This does not obstruct the explicit primitive cellular character in Track B.",
+    "This does not obstruct direct-cocycle Track A, which does not require wall origin.",
+    "This does not prove that every further finite cover has a one-sided wall.",
+    "No orientation double cover is constructed or certified here.",
+    "The type-6 zero-extended wall cocycle is not a strict PL Morse height because six generator types remain horizontal."
+  ],
+  "orientationParityEquations": {
+    "contradiction": "neighbor colors span c_y, so invariance gives e_y(t xor c_y)=e_y(t), contrary to edge reversal",
+    "derivedNeighborInvariance": "e_y(t xor c_x)=e_y(t) for every adjacent x~y",
+    "edgeReversal": "e_y(t xor c_y)=e_y(t)+1",
+    "m45OctagonTransport": "e_y(t xor c_x xor c_y)=e_y(t)+1 for every adjacent x~y",
+    "rootOctagonStateReplay": {
+      "adjacentColor": 2,
+      "adjacentLabel": 2,
+      "adjacentMask": 4,
+      "boundaryGeneratorsBeforeOppositeType5Edge": [
+        5,
+        4,
+        5,
+        4
+      ],
+      "formula": "(t,q) after 5,4,5,4 is (t xor c_y xor c_x,q)",
+      "oppositeType5OccurrenceHasSameLabel": true,
+      "rootColor": 0,
+      "rootLabel": 0,
+      "rootMask": 1,
+      "terminalQIsIdentity": true,
+      "terminalSheetMask": 5
+    },
+    "variable": "e_y(t) in F2 for a directed generator-5 edge at sheet t and small-facet label y"
+  },
+  "producer": {
+    "script": "scripts/makarov_p2_wall_coorientation_obstruction.py",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "coloring": {
+      "artifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+      "bytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+      "path": "scripts/data/makarov_p2_section5_coloring.json"
+    },
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "section5ImportCertificate": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    }
+  },
+  "status": "full-wall-system-not-coorientable",
+  "trackAConsequences": {
+    "asphericityGateRequired": false,
+    "directCocycleTrackAStatus": "unaffected-by-wall-one-sidedness",
+    "directedLinksDefined": false,
+    "finiteHeightBandPi1SurjectionGateRun": false,
+    "fullWallCoorientationFound": false,
+    "globalLawfulCellClosureDefined": false,
+    "strictWallTrackAStatus": "blocked-one-sided-ambient-wall-system"
+  },
+  "type6PartialWallFamily": {
+    "baseColorMask": 3,
+    "canonicalCoorientation": "orient min(t,t xor 3) to max(t,t xor 3)",
+    "generator": 6,
+    "proof": "s6 commutes with s0,...,s4; those moves change q but not t, whereas an odd number of s6 moves changes t by the nonzero mask 3",
+    "qStatesPerWall": 9360000,
+    "strictTrackAHeightAdmissible": false,
+    "strictTrackAReason": "the zero extension is horizontal on generators 0,...,5",
+    "twoSided": true,
+    "wallCount": 256,
+    "wallLabels": "unordered sheet pairs {t,t xor 3}",
+    "zeroExtendedCocycleClosed": true,
+    "zeroExtension": "give generator-6 edges their wall signs and all other generator edges weight zero"
+  },
+  "wallConclusion": {
+    "atLeastOneOneSidedWallSuffices": true,
+    "everyType5WallComponentOneSided": true,
+    "fullWallSystemCoorientable": false,
+    "generatorType": 5,
+    "labelsChecked": 650,
+    "quotientWallOrbitCountClaimed": false,
+    "reasonForNoOrbitCountClaim": "the stabilizer action need not be normal or regular"
+  }
+}

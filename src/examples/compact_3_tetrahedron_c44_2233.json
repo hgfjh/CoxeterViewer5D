@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "name": "Compact tetrahedron C(4,4;2,2;3,3)",
+  "description": "Compact hyperbolic Coxeter tetrahedron with dihedral angles pi/2, pi/2, pi/3, pi/3, pi/4, pi/4. Every vertex stabilizer is B3 of order 48. The bundled PSL(2,7) x C2 kernel gives a closed orientable hyperbolic 3-manifold tiled by 336 tetrahedra: the golden closed example for wall orientation plus the low-barycentric (IMM) subdivision in dimension 3.",
+  "rank": 4,
+  "generators": [
+    {
+      "id": "s0",
+      "label": "s0",
+      "colorHint": "#2563eb"
+    },
+    {
+      "id": "s1",
+      "label": "s1",
+      "colorHint": "#16a34a"
+    },
+    {
+      "id": "s2",
+      "label": "s2",
+      "colorHint": "#dc2626"
+    },
+    {
+      "id": "s3",
+      "label": "s3",
+      "colorHint": "#9333ea"
+    }
+  ],
+  "coxeterMatrix": [
+    [1, 3, 4, 2],
+    [3, 1, 2, 4],
+    [4, 2, 1, 3],
+    [2, 4, 3, 1]
+  ],
+  "geometry": {
+    "model": "hyperboloid",
+    "dimension": 3,
+    "normalGram": [
+      [
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "coxeter",
+          "m": 4
+        },
+        {
+          "kind": "right"
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 4
+        }
+      ],
+      [
+        {
+          "kind": "coxeter",
+          "m": 4
+        },
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        }
+      ],
+      [
+        {
+          "kind": "right"
+        },
+        {
+          "kind": "coxeter",
+          "m": 4
+        },
+        {
+          "kind": "coxeter",
+          "m": 3
+        },
+        {
+          "kind": "numericGram",
+          "value": 1
+        }
+      ]
+    ],
+    "projection": "poincare-axes",
+    "source": "Gram entries -cos(pi/m_ij) from the Coxeter matrix; normal coordinates are obtained numerically by the viewer's Lorentzian Gram factorization, so the placement is a drawing aid."
+  },
+  "sourceRefs": [
+    {
+      "id": "zimmermann-2020-tetrahedral",
+      "citation": "Bruno P. Zimmermann, Tetrahedral Coxeter groups, large group-actions on 3-manifolds and equivariant Heegaard splittings, Rendiconti dell'Istituto di Matematica dell'Universita di Trieste 52 (2020), 601-612; arXiv:2003.00730.",
+      "url": "https://arxiv.org/abs/2003.00730",
+      "locator": "Discussion around Corollary 2.3: the C(4,4;2,2;3,3) kernel K_2, its PSL(2,7) quotient, and abelianization of free rank 13.",
+      "notes": "Supports the tetrahedron, the finite quotient, and b_1 = 13. The wall-orientation fibering computation is this repository's own."
+    },
+    {
+      "id": "c44-writeup",
+      "citation": "docs/C44_2233_3D_Coxeter_Wall_Fibering_Writeup.md (this repository).",
+      "locator": "Sections 1-2 for the Coxeter matrix labelling and the four projective involutions; sections 9-14 for the low-barycentric fibering argument.",
+      "notes": "In-repo writeup; its original computational artifacts are not in this repository."
+    }
+  ],
+  "dataStatus": "verified-source",
+  "notes": [
+    "The bundled cover is the regular action of the image of s_i -> (r_i, 1) in PSL(2,7) x C2 (order 336); the in-repo certificate checks every spherical B3 restriction before calling the kernel torsion-free.",
+    "All 42 quotient walls are two-sided. tests/c44-golden-example.test.ts records a wall orientation whose low-barycentric subdivision passes both gates at every vertex (nonempty, connected, collapsible) with a nonzero wall class.",
+    "Gram signature and compactness are not certified by an in-repo checker for this example; the data status is verified-source, not certified."
+  ],
+  "warnings": [
+    "Projected geometry is a drawing of chamber barycentres; it does not preserve hyperbolic distances or angles."
+  ]
+}

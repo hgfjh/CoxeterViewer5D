@@ -42,7 +42,7 @@ test.describe("cover, compression, and wall workflow media", () => {
   test("records the finite presentation cover hat X", async ({ page }) => {
     await openApp(page);
     await chooseModel(page, "hat X cover");
-    await expect(page.getByText(/10 edges, 1 relation cells/)).toBeVisible();
+    await expect(page.getByText(/10 edges, 1 relation cell\b/)).toBeVisible();
     await capture(page, `${screenshotDir}/cover-walls-01-hat-x.png`);
   });
 
@@ -72,11 +72,11 @@ test.describe("cover, compression, and wall workflow media", () => {
     await page
       .getByRole("button", { name: "Find largest lawful subcomplex" })
       .click();
-    await expect(
-      page.getByText(/Proven optimum: 1 lawful cells\./),
-    ).toBeVisible({
-      timeout: 15_000,
-    });
+    await expect(page.getByText(/Proven optimum: 1 lawful cell\./)).toBeVisible(
+      {
+        timeout: 15_000,
+      },
+    );
     await page
       .getByRole("group", { name: "Interface mode" })
       .getByRole("button", { name: "Research", exact: true })

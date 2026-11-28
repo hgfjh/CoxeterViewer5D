@@ -244,10 +244,9 @@ export interface LawfulTrackMorseCertificate {
 }
 
 /**
- * The theorem gate for the coface-closed complex.  The older polygonal Morse
- * and NPC certificates remain in the enclosing result as diagnostics, but
- * they do not decide this gate: its links and asphericity refer to the actual
- * retained higher-dimensional complex and its declared subdivision.
+ * The executable PL-Morse gate for the coface-closed complex. The inherited
+ * Moussong-metric result remains in the enclosing artifact as an optional
+ * diagnostic; failure to establish asphericity is not a failure of this gate.
  */
 export interface LawfulTrackGeneralizedCertificateGate {
   status: LawfulTrackCheckStatus;
@@ -272,9 +271,40 @@ export interface LawfulTrackGeneralizedCertificateGate {
     subdivisionPassed: boolean;
     affineHeightPassed: boolean;
     actualDirectedLinksPassed: boolean;
+    primitiveIntegralCharacter: boolean;
+    finiteHeightBandPi1SurjectionPassed: boolean;
+    /** Optional stronger geometric evidence; never a Track A promotion gate. */
     asphericityPassed: boolean;
   };
   replay?: GeneralizedLawfulCertificateReplay;
+  statement: string;
+  errors: string[];
+}
+
+/**
+ * Finite-generation certificate for the kernel of the character on Y.
+ *
+ * The argument takes place in the cyclic cover Y_psi. A finite height band is
+ * finite because Y is finite and the PL height is discrete and equivariant.
+ * Connected nonempty ascending and descending links imply that the inclusion
+ * of that band surjects on pi_1(Y_psi). No asphericity hypothesis is used.
+ */
+export interface LawfulFiniteHeightBandCertificate {
+  status: LawfulTrackCheckStatus;
+  method: "bestvina-brady-finite-height-band-pi1-surjection";
+  certificationComplex: "rank-two-lawful" | "coface-closed-full";
+  checks: {
+    finiteConnectedQuotientComplex: boolean;
+    primitiveIntegralCharacter: boolean;
+    equivariantDiscretePlMorseFunction: boolean;
+    everyAscendingLinkNonemptyAndConnected: boolean;
+    everyDescendingLinkNonemptyAndConnected: boolean;
+    boundedBandFinite: boolean;
+    bandInclusionSurjectsOnCyclicCoverPi1: boolean;
+    cyclicCoverPi1IdentifiesCharacterKernel: boolean;
+    lawfulCharacterKernelFinitelyGenerated: boolean;
+  };
+  proof: string[];
   statement: string;
   errors: string[];
 }
@@ -285,7 +315,9 @@ export interface LawfulKernelTransferCertificate {
     primitiveEpimorphismHToZ: boolean;
     lawfulMorseKernelFinitelyGenerated: boolean;
     presentationSurjectionPi1YToH: boolean;
-    charactersCommuteOnPresentationGenerators: boolean;
+    rawCharactersCommuteOnPresentationGenerators: boolean;
+    rawCharacterFactorsThroughPrimitiveCharacter: boolean;
+    normalizedCharactersCommuteOnPresentationGenerators: boolean;
     restrictedKernelMapSurjective: boolean;
     finiteGenerationPassesToTargetKernel: boolean;
   };
@@ -294,7 +326,7 @@ export interface LawfulKernelTransferCertificate {
 }
 
 export interface LawfulSubcomplexFiberingCertificate {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "lawful-subcomplex-fibering-certificate";
   method: "jankiewicz-wise-lawful-subcomplex-first-track";
   status: "passed" | "failed" | "incomplete";
@@ -320,6 +352,7 @@ export interface LawfulSubcomplexFiberingCertificate {
   applicability: LawfulTrackApplicabilityGate;
   generalized: LawfulTrackGeneralizedCertificateGate;
   generalizedCertificate?: GeneralizedLawfulCertificate;
+  finiteHeightBand: LawfulFiniteHeightBandCertificate;
   kernelTransfer: LawfulKernelTransferCertificate;
   checks: LawfulTrackCheck[];
   conclusion: {
@@ -356,9 +389,9 @@ export interface LawfulSubcomplexFiberingInput {
 }
 
 /**
- * Certify the inexpensive lawful-subcomplex track without borrowing any
- * asphericity claim from the ambient Davis complex. The routine is bounded:
- * it performs finite incidence, presentation, cocycle, and graph checks only.
+ * Certify the inexpensive lawful-subcomplex track. Finite generation comes
+ * from a finite height band surjecting on the cyclic-cover fundamental group;
+ * CAT(0) and asphericity calculations are retained only as diagnostics.
  */
 export function buildLawfulSubcomplexFiberingCertificate(
   input: LawfulSubcomplexFiberingInput,
@@ -403,6 +436,13 @@ export function buildLawfulSubcomplexFiberingCertificate(
     cover.barX,
     lawfulSubcomplex,
   );
+  const primitiveEpimorphism =
+    primitiveHomomorphism.status === "passed" &&
+    primitiveHomomorphism.primitiveImage;
+  const primitiveLawfulCharacter =
+    primitiveEpimorphism &&
+    presentationSurjection.status === "passed" &&
+    wallHomomorphism.cocycle.closed;
   const generalized = evaluateGeneralizedCertificateGate({
     certificate: input.generalizedCertificate,
     sourceOracle: input.generalizedSourceOracle,
@@ -411,6 +451,7 @@ export function buildLawfulSubcomplexFiberingCertificate(
     wallSystem,
     coorientation,
     fullClosure: fullDavisClosure,
+    primitiveIntegralCharacter: primitiveLawfulCharacter,
   });
   const applicability = evaluateApplicabilityGate(
     input.applicability,
@@ -420,6 +461,13 @@ export function buildLawfulSubcomplexFiberingCertificate(
     npcAsphericity,
     morse.status === "passed",
     certificationComplex,
+  );
+  const finiteHeightBand = certifyFiniteHeightBandPi1Surjection(
+    certificationComplex,
+    morse,
+    generalized,
+    input.generalizedCertificate,
+    primitiveLawfulCharacter,
   );
 
   const actionEstablished =
@@ -434,10 +482,6 @@ export function buildLawfulSubcomplexFiberingCertificate(
       const direction = coorientation.edgeDirections[edge.id];
       return direction === 1 || direction === -1;
     });
-  const primitiveEpimorphism =
-    primitiveHomomorphism.status === "passed" &&
-    primitiveHomomorphism.primitiveImage;
-
   const checks: LawfulTrackCheck[] = [
     makeCheck(
       "finite-action",
@@ -535,29 +579,41 @@ export function buildLawfulSubcomplexFiberingCertificate(
     makeCheck(
       "lawful-applicability",
       certificationComplex === "rank-two-lawful"
-        ? "Asphericity and Morse-theorem applicability for Y"
-        : "Rank-two/external applicability diagnostic",
-      certificationComplex === "rank-two-lawful"
-        ? applicability.status
-        : applicability.status === "passed"
-          ? "passed"
-          : "not-established",
-      certificationComplex === "rank-two-lawful"
+        ? "Optional CAT(0)/asphericity evidence for Y"
+        : "Optional rank-two/external applicability evidence",
+      applicability.status === "passed" ? "passed" : "not-established",
+      applicability.status === "passed"
         ? applicability.statement
-        : "This legacy diagnostic is retained for comparison only. The generalized artifact supplies the theorem-facing subdivision, links, and asphericity checks.",
+        : "This stronger diagnostic was not established. It is not required by the finite-height-band pi_1-surjection argument.",
       applicability.errors,
     ),
     ...(certificationComplex === "coface-closed-full"
       ? [
           makeCheck(
             "generalized-lawful-certificate",
-            "Coface-closed full-cell Morse and asphericity certificate",
+            "Coface-closed full-cell PL Morse/link certificate",
             generalized.status,
             generalized.statement,
             generalized.errors,
           ),
+          makeCheck(
+            "generalized-asphericity-diagnostic",
+            "Optional CAT(0)/asphericity diagnostic",
+            generalized.checks.asphericityPassed ? "passed" : "not-established",
+            generalized.checks.asphericityPassed
+              ? "The inherited Moussong metric certifies a contractible universal cover."
+              : "The inherited-metric calculation does not establish asphericity; this does not block the F_1 conclusion.",
+            [],
+          ),
         ]
       : []),
+    makeCheck(
+      "finite-height-band",
+      "Finite height band surjects on cyclic-cover pi_1",
+      finiteHeightBand.status,
+      finiteHeightBand.statement,
+      finiteHeightBand.errors,
+    ),
     ...(input.fullCellPoset
       ? [
           makeCheck(
@@ -578,15 +634,35 @@ export function buildLawfulSubcomplexFiberingCertificate(
   ];
 
   const lawfulMorseKernelFinitelyGenerated =
-    certificationComplex === "rank-two-lawful"
-      ? morse.status === "passed" && applicability.status === "passed"
-      : generalized.status === "passed";
-  const charactersCommute =
+    finiteHeightBand.status === "passed";
+  const rawCharactersCommute =
     presentationSurjection.status === "passed" &&
     wallHomomorphism.cocycle.closed &&
-    primitiveEpimorphism;
+    presentationSurjection.generatorMap.length ===
+      presentationSurjection.domainPresentation.generators.length &&
+    presentationSurjection.generatorMap.every(
+      ({ domainGeneratorId, targetGeneratorId }) =>
+        domainGeneratorId === targetGeneratorId &&
+        primitiveHomomorphism.generatorValues.some(
+          ({ generatorId }) => generatorId === targetGeneratorId,
+        ),
+    );
+  const normalizationDivisor = primitiveHomomorphism.normalizationDivisor;
+  const rawCharacterFactorsThroughPrimitiveCharacter =
+    primitiveEpimorphism &&
+    normalizationDivisor !== null &&
+    Number.isSafeInteger(normalizationDivisor) &&
+    normalizationDivisor > 0 &&
+    primitiveHomomorphism.checks.normalizedValuesIntegral &&
+    primitiveHomomorphism.checks.periodGcdAgreesWithCellularCertificate &&
+    primitiveHomomorphism.generatorValues.every(
+      ({ rawWallValue, primitiveValue }) =>
+        rawWallValue === normalizationDivisor * primitiveValue,
+    );
+  const normalizedCharactersCommute =
+    rawCharactersCommute && rawCharacterFactorsThroughPrimitiveCharacter;
   const restrictedKernelMapSurjective =
-    presentationSurjection.status === "passed" && charactersCommute;
+    presentationSurjection.status === "passed" && normalizedCharactersCommute;
   const transferPassed =
     actionEstablished &&
     torsionFreeEstablished &&
@@ -597,9 +673,7 @@ export function buildLawfulSubcomplexFiberingCertificate(
     lawfulMorseKernelFinitelyGenerated &&
     restrictedKernelMapSurjective;
   const transferMissing =
-    (certificationComplex === "rank-two-lawful"
-      ? applicability.status === "not-established"
-      : generalized.status === "not-established") ||
+    finiteHeightBand.status === "not-established" ||
     !actionEstablished ||
     !torsionFreeEstablished;
   const kernelTransfer: LawfulKernelTransferCertificate = {
@@ -612,7 +686,10 @@ export function buildLawfulSubcomplexFiberingCertificate(
       primitiveEpimorphismHToZ: primitiveEpimorphism,
       lawfulMorseKernelFinitelyGenerated,
       presentationSurjectionPi1YToH: presentationSurjection.status === "passed",
-      charactersCommuteOnPresentationGenerators: charactersCommute,
+      rawCharactersCommuteOnPresentationGenerators: rawCharactersCommute,
+      rawCharacterFactorsThroughPrimitiveCharacter,
+      normalizedCharactersCommuteOnPresentationGenerators:
+        normalizedCharactersCommute,
       restrictedKernelMapSurjective,
       finiteGenerationPassesToTargetKernel: transferPassed,
     },
@@ -622,7 +699,8 @@ export function buildLawfulSubcomplexFiberingCertificate(
     proof: [
       "Y and the compressed target have the same connected 1-skeleton, while Y has a subset of the target relators.",
       "Hence the identity on cellular generators induces a surjection i_*: pi_1(Y) -> H.",
-      "The wall character on Y is psi = phi o i_* because both are evaluated by the same edge cocycle.",
+      "The raw wall characters satisfy hat(psi) = hat(chi) o i_* on every common presentation generator.",
+      "The certified positive period divisor d satisfies hat(chi)=d phi. Therefore psi=hat(psi)/d is an integral primitive character with psi=phi o i_*, and ker(hat(psi))=ker(psi).",
       "For h in ker(phi), choose a with i_*(a)=h; then psi(a)=0, so ker(psi) -> ker(phi) is onto.",
       "A quotient of a finitely generated group is finitely generated.",
     ],
@@ -639,7 +717,7 @@ export function buildLawfulSubcomplexFiberingCertificate(
       : "incomplete";
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: "lawful-subcomplex-fibering-certificate",
     method: "jankiewicz-wise-lawful-subcomplex-first-track",
     status,
@@ -666,6 +744,7 @@ export function buildLawfulSubcomplexFiberingCertificate(
     ...(input.generalizedCertificate
       ? { generalizedCertificate: input.generalizedCertificate }
       : {}),
+    finiteHeightBand,
     kernelTransfer,
     checks,
     conclusion: {
@@ -693,13 +772,13 @@ export function buildLawfulSubcomplexFiberingCertificate(
     ),
     sources: [
       "Jankiewicz--Wise, Incoherent Coxeter Groups, arXiv:1503.03102, Sections 2.4--2.5 and 3.3.",
-      "Bestvina--Brady, Morse theory and finiteness properties of groups, Invent. Math. 129 (1997), Theorem 4.1.",
+      "Bestvina--Brady, Morse theory and finiteness properties of groups, Invent. Math. 129 (1997), Corollary 2.6(3).",
       "Reidemeister--Schreier theorem for presentations of finite-index subgroups.",
     ],
     nonClaims: [
       "The ambient Davis complex does not by itself establish that the retained lawful subcomplex Y is aspherical.",
       "Retaining a higher cell because all of its 2-faces are lawful proves closure only; it does not prove an affine Morse extension or the full directed-link conditions.",
-      "A passed wall, cocycle, or directed-link computation does not replace either the exact metric-link certificate or other scope-matched applicability evidence for Y.",
+      "CAT(0) or asphericity evidence is optional stronger information; it is not required for the finite-generation conclusion proved by the height-band argument.",
       "This track does not certify a PL Morse function on the full Davis quotient.",
       "Finite presentability of the kernel, a manifold bundle, and geometric fibering are not asserted.",
       "Viewer coordinates and drawing offsets carry no proof content.",
@@ -1370,6 +1449,7 @@ interface GeneralizedCertificateGateInput {
   wallSystem: WallSystem;
   coorientation: WallCoorientation;
   fullClosure: FullDavisLawfulClosureCertificate;
+  primitiveIntegralCharacter: boolean;
 }
 
 /**
@@ -1400,6 +1480,8 @@ function evaluateGeneralizedCertificateGate(
     subdivisionPassed: false,
     affineHeightPassed: false,
     actualDirectedLinksPassed: false,
+    primitiveIntegralCharacter: false,
+    finiteHeightBandPi1SurjectionPassed: false,
     asphericityPassed: false,
   };
   if (!certificate) {
@@ -1642,27 +1724,6 @@ function evaluateGeneralizedCertificateGate(
     certificate.directedLinks.status === "passed" &&
     certificate.directedLinks.morseCondition === "passed";
   const asphericityPassed = certificate.asphericity.status === "passed";
-  const checks: LawfulTrackGeneralizedCertificateGate["checks"] = {
-    certificateSupplied: true,
-    supportedCertificateHeader,
-    storedArtifactHashValid,
-    streamedSourceBindingPresent,
-    sourceBindingHashValid,
-    sourceOracleMatchesCurrentAction,
-    sourceWallSystemMatches,
-    candidateCoorientationMatches,
-    retainedCountsMatchSourceOracle,
-    materializedClosureConsistentWhenSupplied,
-    stageDigestsLinked,
-    currentCandidateReconstructed,
-    actionRootedReplayPassed,
-    calculationCompleted,
-    retentionPassed,
-    subdivisionPassed,
-    affineHeightPassed,
-    actualDirectedLinksPassed,
-    asphericityPassed,
-  };
   const scopeMatches =
     supportedCertificateHeader &&
     storedArtifactHashValid &&
@@ -1682,11 +1743,35 @@ function evaluateGeneralizedCertificateGate(
     !affineHeightPassed ||
     certificate.directedLinks.status !== "passed" ||
     !actionRootedReplayPassed;
-  const passed =
+  const finiteHeightBandPi1SurjectionPassed =
     scopeMatches &&
     !calculationFailed &&
     actualDirectedLinksPassed &&
-    asphericityPassed;
+    input.primitiveIntegralCharacter;
+  const checks: LawfulTrackGeneralizedCertificateGate["checks"] = {
+    certificateSupplied: true,
+    supportedCertificateHeader,
+    storedArtifactHashValid,
+    streamedSourceBindingPresent,
+    sourceBindingHashValid,
+    sourceOracleMatchesCurrentAction,
+    sourceWallSystemMatches,
+    candidateCoorientationMatches,
+    retainedCountsMatchSourceOracle,
+    materializedClosureConsistentWhenSupplied,
+    stageDigestsLinked,
+    currentCandidateReconstructed,
+    actionRootedReplayPassed,
+    calculationCompleted,
+    retentionPassed,
+    subdivisionPassed,
+    affineHeightPassed,
+    actualDirectedLinksPassed,
+    primitiveIntegralCharacter: input.primitiveIntegralCharacter,
+    finiteHeightBandPi1SurjectionPassed,
+    asphericityPassed,
+  };
+  const passed = finiteHeightBandPi1SurjectionPassed;
   if (!calculationCompleted)
     errors.push("The generalized calculation did not complete.");
   if (!retentionPassed)
@@ -1699,11 +1784,10 @@ function evaluateGeneralizedCertificateGate(
     errors.push(
       "The actual ascending/descending links do not establish the Morse connectivity condition.",
     );
-  if (!asphericityPassed)
+  if (!input.primitiveIntegralCharacter)
     errors.push(
-      "Contractibility of the universal cover/asphericity is not established for the retained full-cell complex.",
+      "The scoped wall cocycle does not certify a primitive integral character on pi_1(Y).",
     );
-
   return {
     status: passed
       ? "passed"
@@ -1715,8 +1799,113 @@ function evaluateGeneralizedCertificateGate(
     checks,
     ...(replay ? { replay } : {}),
     statement: passed
-      ? "The scope-matched generalized certificate verifies the coface-closed cell set, compatible subdivision and affine height, every actual directed link, and asphericity."
-      : "The generalized calculation does not establish every theorem-facing full-cell hypothesis; rank-two diagnostics are not used as a substitute.",
+      ? asphericityPassed
+        ? "The scope-matched generalized certificate verifies the coface-closed cell set, compatible PL height, every actual directed link, and the optional CAT(0)/asphericity diagnostic."
+        : "The scope-matched generalized certificate verifies the coface-closed cell set, compatible PL height, and every actual directed link. Asphericity remains unestablished but is not needed for the height-band argument."
+      : "The generalized calculation does not establish every theorem-facing character, PL-Morse, and directed-link hypothesis; rank-two diagnostics are not used as a substitute.",
+    errors: uniqueSorted(errors),
+  };
+}
+
+function certifyFiniteHeightBandPi1Surjection(
+  certificationComplex: "rank-two-lawful" | "coface-closed-full",
+  morse: LawfulTrackMorseCertificate,
+  generalized: LawfulTrackGeneralizedCertificateGate,
+  generalizedCertificate: GeneralizedLawfulCertificate | undefined,
+  primitiveIntegralCharacter: boolean,
+): LawfulFiniteHeightBandCertificate {
+  const rankTwo = certificationComplex === "rank-two-lawful";
+  const finiteConnectedQuotientComplex = rankTwo
+    ? morse.checks.finiteConnectedComplex
+    : generalized.scopeMatches &&
+      generalized.checks.actionRootedReplayPassed &&
+      generalized.checks.retentionPassed &&
+      // This is source metadata stored alongside the optional metric result;
+      // it does not depend on the asphericity status.
+      generalizedCertificate?.asphericity.checks.finiteConnectedQuotient ===
+        true;
+  const equivariantDiscretePlMorseFunction = rankTwo
+    ? morse.checks.fullOneSkeletonRetained &&
+      morse.checks.everyEdgeHasNonzeroIntegralDirection &&
+      morse.checks.retainedCellsHaveOneSourceAndOneSink &&
+      morse.checks.wallCocycleClosesOnTarget &&
+      morse.checks.liftedVertexHeightsAreDiscrete
+    : generalized.scopeMatches &&
+      generalized.checks.actionRootedReplayPassed &&
+      generalized.checks.calculationCompleted &&
+      generalized.checks.retentionPassed &&
+      generalized.checks.subdivisionPassed &&
+      generalized.checks.affineHeightPassed;
+  const everyAscendingLinkNonemptyAndConnected = rankTwo
+    ? morse.checks.everyAscendingLinkNonemptyAndConnected
+    : generalized.checks.actionRootedReplayPassed &&
+      generalizedCertificate?.directedLinks.checks
+        .everyDeclaredSubdivisionVertexChecked === true &&
+      generalizedCertificate.directedLinks.checks.everyAscendingLinkNonempty &&
+      generalizedCertificate.directedLinks.checks.everyAscendingLinkConnected;
+  const everyDescendingLinkNonemptyAndConnected = rankTwo
+    ? morse.checks.everyDescendingLinkNonemptyAndConnected
+    : generalized.checks.actionRootedReplayPassed &&
+      generalizedCertificate?.directedLinks.checks
+        .everyDeclaredSubdivisionVertexChecked === true &&
+      generalizedCertificate.directedLinks.checks.everyDescendingLinkNonempty &&
+      generalizedCertificate.directedLinks.checks.everyDescendingLinkConnected;
+  const boundedBandFinite =
+    finiteConnectedQuotientComplex &&
+    primitiveIntegralCharacter &&
+    equivariantDiscretePlMorseFunction;
+  const bandInclusionSurjectsOnCyclicCoverPi1 =
+    boundedBandFinite &&
+    everyAscendingLinkNonemptyAndConnected &&
+    everyDescendingLinkNonemptyAndConnected;
+  const cyclicCoverPi1IdentifiesCharacterKernel =
+    primitiveIntegralCharacter && equivariantDiscretePlMorseFunction;
+  const lawfulCharacterKernelFinitelyGenerated =
+    bandInclusionSurjectsOnCyclicCoverPi1 &&
+    cyclicCoverPi1IdentifiesCharacterKernel;
+  const checks = {
+    finiteConnectedQuotientComplex,
+    primitiveIntegralCharacter,
+    equivariantDiscretePlMorseFunction,
+    everyAscendingLinkNonemptyAndConnected,
+    everyDescendingLinkNonemptyAndConnected,
+    boundedBandFinite,
+    bandInclusionSurjectsOnCyclicCoverPi1,
+    cyclicCoverPi1IdentifiesCharacterKernel,
+    lawfulCharacterKernelFinitelyGenerated,
+  };
+  const missingGeneralizedCertificate =
+    !rankTwo && !generalized.checks.certificateSupplied;
+  const status: LawfulTrackCheckStatus = Object.values(checks).every(Boolean)
+    ? "passed"
+    : missingGeneralizedCertificate
+      ? "not-established"
+      : "failed";
+  const errors = Object.entries(checks)
+    .filter(([, passed]) => !passed)
+    .map(([id]) => `Finite-height-band pi_1-surjection check failed: ${id}.`);
+  return {
+    status,
+    method: "bestvina-brady-finite-height-band-pi1-surjection",
+    certificationComplex,
+    checks,
+    proof: [
+      "The raw integral cellular cocycle on Y defines a circle map and lifts to a discrete equivariant PL height. Its nonzero image is dZ; division of closed-loop periods by the certified positive gcd d gives the primitive character psi with the same kernel.",
+      rankTwo
+        ? "The infinite cyclic cover Y_psi is the cover corresponding to this common kernel. On the lawful polygonal complex, the raw height (or its rescaling by 1/d) is the certified discrete equivariant PL Morse function."
+        : "The infinite cyclic cover Y_psi is the cover corresponding to this common kernel. On the coface-closed complex, the certified face-compatible quotient-periodic tie-break perturbation of the raw height is the discrete equivariant PL Morse function; it has the same equivariance character and kernel (and may be rescaled by 1/d).",
+      "Because Y has finitely many cells, a bounded band containing one deck period and every cell orbit meeting that period is a compact finite polyhedral/CW complex (after cutting cells at its boundary levels).",
+      "When a vertex is crossed, the PL Morse attachment is controlled by its ascending or descending link. Nonempty connected links make the induced map on pi_1 surjective.",
+      "Expanding the finite band in both height directions therefore gives a surjection from its finitely generated pi_1 onto pi_1(Y_psi).",
+      "Covering-space theory identifies pi_1(Y_psi) with the kernel of the character on pi_1(Y), so that kernel is finitely generated.",
+      "This argument does not require Y or Y_psi to be aspherical.",
+    ],
+    statement:
+      status === "passed"
+        ? "A finite height band surjects on the fundamental group of the cyclic cover, proving that the lawful character kernel is finitely generated without an asphericity hypothesis."
+        : status === "not-established"
+          ? "No scope-matched full-cell PL-Morse calculation was supplied, so the finite-height-band argument is not established."
+          : "The finite-height-band pi_1-surjection argument fails at one or more PL-Morse or directed-link checks.",
     errors: uniqueSorted(errors),
   };
 }

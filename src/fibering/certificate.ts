@@ -20,7 +20,7 @@ import type { WallHomomorphismFiniteCertificate } from "./types";
 import { certifyWallHomomorphismFiniteData } from "./wallHomomorphism";
 
 export interface VirtualAlgebraicFiberingCertificate {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "virtual-algebraic-fibering-certificate";
   method: "cooriented-walls-schreier-and-pl-morse";
   status: "passed" | "failed" | "incomplete";
@@ -129,12 +129,12 @@ export function buildVirtualAlgebraicFiberingCertificate(input: {
       .filter((diagnostic) => !diagnostic.passed)
       .map(
         (diagnostic) =>
-          `${diagnostic.label} (probabilistic-search diagnostic only): ${diagnostic.detail}`,
+          `${diagnostic.label} (${diagnostic.role === "optional-stronger-topology" ? "optional stronger topology diagnostic" : "probabilistic-search diagnostic only"}): ${diagnostic.detail}`,
       ),
   ];
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: "virtual-algebraic-fibering-certificate",
     method: "cooriented-walls-schreier-and-pl-morse",
     status:
@@ -172,7 +172,7 @@ export function buildVirtualAlgebraicFiberingCertificate(input: {
     warnings: [...new Set(warnings)].sort(),
     references: [
       "Jankiewicz--Wise, Incoherent Coxeter Groups, arXiv:1503.03102, Sections 2.1--2.5 and Theorem 3.1.",
-      "Bestvina--Brady, Morse theory and finiteness properties of groups, Invent. Math. 129 (1997), Theorem 4.1.",
+      "Bestvina--Brady, Morse theory and finiteness properties of groups, Invent. Math. 129 (1997), Corollary 2.6(3).",
     ],
   };
 }

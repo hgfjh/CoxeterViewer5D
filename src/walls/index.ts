@@ -5,5 +5,6 @@ export * from "./lawfulness";
 export * from "./morseLinks";
 export * from "./search";
 export * from "./searchClient";
+export * from "./preflight";
 export * from "./searchWorkerTypes";
 export * from "./searchClient";

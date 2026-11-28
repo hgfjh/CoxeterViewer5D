@@ -17,6 +17,7 @@ import {
 import { basename, dirname, join, resolve } from "node:path";
 
 import { parseCoxeterSystemInput } from "../../coxeter";
+import type { CoxeterSystemInput } from "../../types";
 import {
   prepareGenericStreamedH1,
   computeGenericStreamedH1PreparationDigest,
@@ -24,6 +25,8 @@ import {
 } from "../genericStreamedH1Preparation";
 import { scalableGenericActionH1SourceBindings } from "../scalableGenericActionH1";
 import { buildStreamedLawfulDavisOracle } from "../streamedLawfulDavis";
+import { parseCompactActionImport } from "../../torsionFree/compactActionImport";
+import { loadPackedGeneratorPermutationFiles } from "./packedActionFiles";
 import {
   certifyTorsionFreeAction,
   planSphericalSpecialSubgroups,
@@ -79,7 +82,10 @@ export interface GenericH1ExternalJobManifest {
   algorithmVersion: typeof JOB_ALGORITHM_VERSION;
   limits: ResolvedGenericH1ExternalJobLimits;
   source: {
-    actionInputContainer: "raw-candidate" | "candidate-wrapper";
+    actionInputContainer:
+      | "raw-candidate"
+      | "candidate-wrapper"
+      | "packed-files-manifest";
     suppliedWrapperCertificateIgnored: boolean;
     systemArtifactByteCount: number;
     systemArtifactSha256: string;
@@ -240,11 +246,29 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-function extractCandidate(raw: unknown): {
+function extractCandidate(
+  raw: unknown,
+  actionPath: string,
+  system: CoxeterSystemInput,
+): {
   candidate: TorsionFreeActionCandidate;
-  container: "raw-candidate" | "candidate-wrapper";
+  container: "raw-candidate" | "candidate-wrapper" | "packed-files-manifest";
   suppliedWrapperCertificateIgnored: boolean;
 } {
+  // Large actions arrive as a small manifest pinning flat uint32 row files.
+  // The manifest's own SHA-256 (the action input digest) transitively binds
+  // every row byte through the per-file digests it contains.
+  if (isRecord(raw) && raw.kind === "generator-permutation-files") {
+    const manifest = parseCompactActionImport(raw, system);
+    if (manifest.kind !== "generator-permutation-files") {
+      throw new Error("Unexpected action manifest kind.");
+    }
+    return {
+      candidate: loadPackedGeneratorPermutationFiles(manifest, actionPath),
+      container: "packed-files-manifest",
+      suppliedWrapperCertificateIgnored: false,
+    };
+  }
   if (!isRecord(raw)) {
     throw new Error(
       "The action input must be a candidate object or a candidate wrapper.",
@@ -494,7 +518,7 @@ export function prepareGenericH1ExternalJob(
     "Finite action",
   );
   const system = parseCoxeterSystemInput(systemArtifact.raw);
-  const extracted = extractCandidate(actionArtifact.raw);
+  const extracted = extractCandidate(actionArtifact.raw, actionPath, system);
   const sphericalPlan = planSphericalSpecialSubgroups(system, {
     maxRankForExhaustiveEnumeration: limits.maxRankForExhaustiveEnumeration,
     maxSubsetsToCheck: limits.maxSubsetsToCheck,

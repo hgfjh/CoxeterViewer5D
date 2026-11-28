@@ -2,10 +2,13 @@ import {
   buildSimpleReflectionMatrices,
   finiteCoxeterGramValue,
   identityMatrix,
-  multiplyMatrices,
   parseCoxeterSystemInput,
-  roundedMatrixKey,
 } from "../coxeter";
+import {
+  multiplyPackedMatrices,
+  packMatrix,
+  RoundedMatrixSet,
+} from "../coxeter/linearAlgebra";
 import type { CoxeterMatrixEntry, CoxeterSystemInput } from "../types";
 
 export interface PositiveDefiniteCheck {
@@ -241,20 +244,20 @@ function computeSphericalSubgroupOrder(
   }
 
   const subsetMatrix = finiteSubsetCoxeterMatrix(system, generators);
-  const reflections = buildSimpleReflectionMatrices(subsetMatrix);
-  const identity = identityMatrix(generators.length);
-  const seen = new Set([
-    roundedMatrixKey(identity, options.subgroupOrderPrecision),
-  ]);
+  const size = generators.length;
+  const reflections =
+    buildSimpleReflectionMatrices(subsetMatrix).map(packMatrix);
+  const identity = packMatrix(identityMatrix(size));
+  const seen = new RoundedMatrixSet(size, options.subgroupOrderPrecision);
+  seen.add(identity);
   const queue = [identity];
 
   for (let cursor = 0; cursor < queue.length; cursor += 1) {
     const matrix = queue[cursor];
 
     for (const reflection of reflections) {
-      const next = multiplyMatrices(matrix, reflection);
-      const key = roundedMatrixKey(next, options.subgroupOrderPrecision);
-      if (seen.has(key)) {
+      const next = multiplyPackedMatrices(matrix, reflection, size);
+      if (seen.has(next)) {
         continue;
       }
 
@@ -265,7 +268,7 @@ function computeSphericalSubgroupOrder(
         };
       }
 
-      seen.add(key);
+      seen.add(next);
       queue.push(next);
     }
   }

@@ -21,7 +21,7 @@ import {
   verifyCollapsibilityCertificate,
   type CollapsibilitySearchOptions,
 } from "../topology/collapsibility";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import { canonicalJsonSha256, canonicalSha256 } from "../utils/canonicalSha256";
 import {
   createWallCoorientation,
   findWallSystem,
@@ -751,23 +751,23 @@ export function certifyFullDavisVirtualAlgebraicFibration(
       : "This run does not certify a virtual algebraic fibration. The failed or missing finite checks are listed by stage.",
   };
 
-  const sourceSystemSha256 = canonicalSha256(jsonData(system));
+  const sourceSystemSha256 = canonicalJsonSha256(system);
   const hashes: FullDavisVirtualFiberingCertificate["hashes"] = {
     sourceSystemSha256,
     ...(subgroupAction ? { actionSha256: subgroupAction.actionHash } : {}),
     ...(coverCompression
-      ? { coverCompressionSha256: canonicalSha256(jsonData(coverCompression)) }
+      ? { coverCompressionSha256: canonicalJsonSha256(coverCompression) }
       : {}),
     ...(fullCellPoset ? { cellPoset: fullCellPoset.archiveHash } : {}),
     ...(wallSystem
-      ? { wallSystemSha256: canonicalSha256(jsonData(wallSystem)) }
+      ? { wallSystemSha256: canonicalJsonSha256(wallSystem) }
       : {}),
     ...(coorientation
-      ? { coorientationSha256: canonicalSha256(jsonData(coorientation)) }
+      ? { coorientationSha256: canonicalJsonSha256(coorientation) }
       : {}),
     ...(wallHomomorphism
       ? {
-          wallHomomorphismSha256: canonicalSha256(jsonData(wallHomomorphism)),
+          wallHomomorphismSha256: canonicalJsonSha256(wallHomomorphism),
         }
       : {}),
     ...(primitiveHomomorphism
@@ -991,8 +991,8 @@ export function verifyFullDavisVirtualFiberingCertificate(
     rebuilt: unknown,
     declaredHash?: string,
   ): void => {
-    const storedHash = canonicalSha256(jsonData(stored));
-    const rebuiltHash = canonicalSha256(jsonData(rebuilt));
+    const storedHash = canonicalJsonSha256(stored);
+    const rebuiltHash = canonicalJsonSha256(rebuilt);
     reconstructedHashes[label] = rebuiltHash;
     if (declaredHash) expectHash(label, declaredHash, storedHash);
     if (storedHash !== rebuiltHash) {
@@ -1019,7 +1019,7 @@ export function verifyFullDavisVirtualFiberingCertificate(
         "Legacy caller-supplied IMM23 booleans are not replayable evidence and are unsupported.",
       );
     }
-    const sourceHash = canonicalSha256(jsonData(system));
+    const sourceHash = canonicalJsonSha256(system);
     reconstructedHashes["source-system"] = sourceHash;
     expectHash(
       "source-system",
@@ -1050,8 +1050,8 @@ export function verifyFullDavisVirtualFiberingCertificate(
         };
       }
       if (
-        canonicalSha256(jsonData(certificate.subgroupAction.certificate)) !==
-        canonicalSha256(jsonData(actionCertificate))
+        canonicalJsonSha256(certificate.subgroupAction.certificate) !==
+        canonicalJsonSha256(actionCertificate)
       ) {
         errors.push("The embedded torsion-free action certificate is stale.");
       }
@@ -1144,8 +1144,8 @@ export function verifyFullDavisVirtualFiberingCertificate(
         errors.push("The full Davis cell poset carries a stale archive hash.");
       }
       if (
-        canonicalSha256(jsonData(certificate.fullCellPoset)) !==
-        canonicalSha256(jsonData(rebuiltPoset))
+        canonicalJsonSha256(certificate.fullCellPoset) !==
+        canonicalJsonSha256(rebuiltPoset)
       ) {
         errors.push(
           "The complete cell poset does not match the certified action.",

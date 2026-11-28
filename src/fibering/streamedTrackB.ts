@@ -12,7 +12,10 @@ import {
   type TorsionFreeActionCandidate,
   type TorsionFreeCandidateResult,
 } from "../torsionFree";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import {
+  canonicalSha256,
+  canonicalSha256WithRows,
+} from "../utils/canonicalSha256";
 import {
   buildStreamedLawfulDavisOracle,
   type StreamedDavisCell,
@@ -153,7 +156,19 @@ export interface StreamedTrackBLinksCertificate {
   scanMode: "exhaustive" | "stop-on-first-failure";
   scanOutcome: "exhaustive" | "counterexample-found" | "incomplete";
   checkedVertexCount: number;
+  /**
+   * Every per-vertex summary when the quotient has at most
+   * TRACK_B_RETAINED_SUMMARY_LIMIT vertices; empty above that, where
+   * vertexSummaryStream binds the same summaries by chunk digests instead of
+   * holding one object per vertex.
+   */
   vertexSummaries: StreamedTrackBLinkSummary[];
+  vertexSummaryStream?: {
+    method: "canonical-vertex-summary-chunk-stream";
+    chunkSize: number;
+    summaryCount: number;
+    chunkDigests: string[];
+  };
   witnesses: StreamedTrackBLinkWitness[];
   failureCounts: Record<StreamedTrackBLinkFailureKind, number>;
   checks: {
@@ -494,7 +509,7 @@ export function computeStreamedTrackBLinearTemplateSetDigest(options: {
 
 interface StaticEdgeData {
   neighbor: Uint32Array;
-  wallIndex: Uint16Array;
+  wallIndex: Uint32Array;
   coefficient: Int8Array;
 }
 
@@ -517,7 +532,7 @@ interface PreparedTrackBSource {
   candidate: StreamedWallSignCandidate;
   wallSigns: Int8Array;
   generalizedCompression: GeneralizedCompressionCertificate;
-  generatorImages: number[][];
+  generatorImages: Uint32Array[];
   staticData: StaticTrackBData;
   source: StreamedTrackBSource;
   sourceHash: string;
@@ -581,7 +596,7 @@ const CANONICAL_ORACLE_CACHE = new WeakMap<
 >();
 const GENERATOR_IMAGES_CACHE = new WeakMap<
   StreamedLawfulDavisOracle,
-  number[][]
+  Uint32Array[]
 >();
 const COMPRESSION_REPLAY_CACHE = new WeakMap<
   GeneralizedCompressionCertificate,
@@ -654,12 +669,16 @@ function extendedGcd(
   };
 }
 
-function hashCanonicalActionRows(generatorImages: readonly number[][]): string {
-  return canonicalSha256({
-    schemaVersion: 1,
-    index: generatorImages[0]?.length ?? 0,
+function hashCanonicalActionRows(
+  generatorImages: readonly ArrayLike<number>[],
+): string {
+  // Streamed: identical to canonicalSha256 of the same record, without one
+  // string holding every image (which fails past ~7e6 points).
+  return canonicalSha256WithRows(
+    { schemaVersion: 1, index: generatorImages[0]?.length ?? 0 },
+    "generatorImages",
     generatorImages,
-  });
+  );
 }
 
 function normalizeCandidate(
@@ -1086,19 +1105,13 @@ function buildStaticTrackBData(
   }
 
   const wallIds = oracle.walls.walls.map((wall) => wall.id);
-  if (!oracle.walls.twoSided) {
-    throw new Error("Track B requires every quotient wall to be two-sided.");
-  }
   const wallIndexById = new Map(
     wallIds.map((wallId, wallIndex) => [wallId, wallIndex]),
   );
-  if (wallIds.length > 0xffff) {
-    throw new Error("The streamed Track B wall index exceeds Uint16 capacity.");
-  }
 
   const directedEdgeCount = oracle.degree * oracle.generatorCount;
   const neighbor = new Uint32Array(directedEdgeCount);
-  const wallIndex = new Uint16Array(directedEdgeCount);
+  const wallIndex = new Uint32Array(directedEdgeCount);
   const coefficient = new Int8Array(directedEdgeCount);
   for (let point = 0; point < oracle.degree; point += 1) {
     for (let generator = 0; generator < oracle.generatorCount; generator += 1) {
@@ -1266,7 +1279,7 @@ function buildStaticTrackBData(
 function replayGeneralizedCompression(
   options: StreamedTrackBOptions,
   oracle: StreamedLawfulDavisOracle,
-  generatorImages: number[][],
+  generatorImages: Uint32Array[],
 ): string[] {
   const replayOptions = options.generalizedCompressionReplayOptions ?? {};
   const cacheKey =
@@ -1323,23 +1336,21 @@ function replayGeneralizedCompression(
 
 function prepareTrackBSource(
   options: StreamedTrackBOptions,
+  sourceMode: "wall-character" | "intrinsic-h1" = "wall-character",
 ): PreparedTrackBSource {
   const suppliedOracle = options.oracle;
   let generatorImages = GENERATOR_IMAGES_CACHE.get(suppliedOracle);
   if (!generatorImages) {
-    generatorImages = Array.from(
-      { length: suppliedOracle.generatorCount },
-      (_unused, generator) =>
-        Array.from({ length: suppliedOracle.degree }, (_entry, point) =>
-          suppliedOracle.neighbor(point, generator),
-        ),
-    );
+    // A typed copy of the supplied action (4 bytes per entry, one memcpy per
+    // generator) instead of a boxed number[][] built point by point.
+    generatorImages = suppliedOracle.copyActionRows();
     GENERATOR_IMAGES_CACHE.set(suppliedOracle, generatorImages);
   }
-  const replayKey = canonicalSha256({
-    system: suppliedOracle.system,
+  const replayKey = canonicalSha256WithRows(
+    { system: suppliedOracle.system },
+    "generatorImages",
     generatorImages,
-  });
+  );
   const cachedByKey = CANONICAL_ORACLE_CACHE.get(suppliedOracle);
   let oracle = cachedByKey?.get(replayKey);
   if (!oracle) {
@@ -1362,6 +1373,11 @@ function prepareTrackBSource(
   }
   const generalizedCompression = options.generalizedCompression;
   const errors: string[] = [];
+  if (sourceMode === "wall-character" && !oracle.walls.twoSided) {
+    errors.push(
+      "Track B wall characters require every quotient wall to be two-sided.",
+    );
+  }
   if (oracle.structureHash !== suppliedOracle.structureHash) {
     errors.push(
       "The supplied oracle callbacks do not replay its structure hash.",
@@ -2337,6 +2353,15 @@ function evaluatePointTopology(
   );
 }
 
+/**
+ * Above this many quotient vertices Track B streams vertex summaries into
+ * chunk digests rather than retaining them (one object per vertex does not
+ * fit in memory at 10^7..10^8 vertices).  Below it, certificates are
+ * unchanged, so existing artifacts keep verifying.
+ */
+export const TRACK_B_RETAINED_SUMMARY_LIMIT = 1 << 20;
+const TRACK_B_SUMMARY_CHUNK = 4_096;
+
 function buildLinksCertificate(
   source: PreparedTrackBSource,
   pulling: StreamedTrackBPullingCertificate,
@@ -2344,7 +2369,22 @@ function buildLinksCertificate(
   scanMode: "exhaustive" | "stop-on-first-failure",
   maxWitnesses: number,
 ): StreamedTrackBLinksCertificate {
+  const retainSummaries =
+    source.oracle.degree <= TRACK_B_RETAINED_SUMMARY_LIMIT;
   const vertexSummaries: StreamedTrackBLinkSummary[] = [];
+  const summaryChunkDigests: string[] = [];
+  let summaryChunk: StreamedTrackBLinkSummary[] = [];
+  let summaryCount = 0;
+  const flushSummaries = () => {
+    if (summaryChunk.length === 0) return;
+    summaryChunkDigests.push(
+      canonicalSha256({
+        chunkIndex: summaryChunkDigests.length,
+        summaries: summaryChunk,
+      }),
+    );
+    summaryChunk = [];
+  };
   const witnesses: StreamedTrackBLinkWitness[] = [];
   const failureCounts: Record<StreamedTrackBLinkFailureKind, number> = {
     "ascending-empty": 0,
@@ -2365,7 +2405,13 @@ function buildLinksCertificate(
       errors.push(error instanceof Error ? error.message : String(error));
       break;
     }
-    vertexSummaries.push(evaluated.summary);
+    summaryCount += 1;
+    if (retainSummaries) {
+      vertexSummaries.push(evaluated.summary);
+    } else {
+      summaryChunk.push(evaluated.summary);
+      if (summaryChunk.length === TRACK_B_SUMMARY_CHUNK) flushSummaries();
+    }
     for (const kind of evaluated.failures) {
       failureCounts[kind] += 1;
       counterexampleFound = true;
@@ -2381,8 +2427,8 @@ function buildLinksCertificate(
     }
     if (counterexampleFound && scanMode === "stop-on-first-failure") break;
   }
-  const everyQuotientVertexChecked =
-    vertexSummaries.length === source.oracle.degree;
+  flushSummaries();
+  const everyQuotientVertexChecked = summaryCount === source.oracle.degree;
   const sourcePullingAndHeightPassed =
     source.errors.length === 0 &&
     height.status === "passed" &&
@@ -2417,8 +2463,18 @@ function buildLinksCertificate(
     method: "full-k-pulling-link-one-skeleton" as const,
     scanMode,
     scanOutcome: scanOutcome as StreamedTrackBLinksCertificate["scanOutcome"],
-    checkedVertexCount: vertexSummaries.length,
+    checkedVertexCount: summaryCount,
     vertexSummaries,
+    ...(retainSummaries
+      ? {}
+      : {
+          vertexSummaryStream: {
+            method: "canonical-vertex-summary-chunk-stream" as const,
+            chunkSize: TRACK_B_SUMMARY_CHUNK,
+            summaryCount,
+            chunkDigests: summaryChunkDigests,
+          },
+        }),
     witnesses,
     failureCounts,
     checks,
@@ -2640,23 +2696,26 @@ export function prepareStreamedTrackBLinearLinkTemplateStreamer(
   const wallSigns = Object.fromEntries(
     options.oracle.walls.walls.map((wall) => [wall.id, 1 as const]),
   );
-  const source = prepareTrackBSource({
-    oracle: options.oracle,
-    candidate: {
-      id: "track-b-linear-template-source",
-      wallSigns,
+  const source = prepareTrackBSource(
+    {
+      oracle: options.oracle,
+      candidate: {
+        id: "track-b-linear-template-source",
+        wallSigns,
+      },
+      generalizedCompression: options.generalizedCompression,
+      ...(options.generalizedCompressionReplayOptions
+        ? {
+            generalizedCompressionReplayOptions:
+              options.generalizedCompressionReplayOptions,
+          }
+        : {}),
+      offsetPolarity: 1,
+      linkScan: "stop-on-first-failure",
+      maxLinkWitnesses: 0,
     },
-    generalizedCompression: options.generalizedCompression,
-    ...(options.generalizedCompressionReplayOptions
-      ? {
-          generalizedCompressionReplayOptions:
-            options.generalizedCompressionReplayOptions,
-        }
-      : {}),
-    offsetPolarity: 1,
-    linkScan: "stop-on-first-failure",
-    maxLinkWitnesses: 0,
-  });
+    "intrinsic-h1",
+  );
   const cocycleBasis = packIntegralCocycleBasis(
     source.oracle,
     options.cocycleBasis,

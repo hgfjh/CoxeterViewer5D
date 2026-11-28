@@ -403,6 +403,13 @@ export function planSphericalSpecialSubgroups(
       DEFAULT_PARTIAL_SUBSET_RANK,
     ),
   );
+  // An explicit rank limit asks for the old partial plan unless extension is requested.
+  const extend =
+    limits.extendAboveRankLimit ??
+    limits.maxRankForExhaustiveEnumeration === undefined;
+  if (system.rank > maxRank && extend) {
+    return planBySphericalExtension(system, maxSubsets);
+  }
   const rankLimited = system.rank > maxRank;
   const maxSubsetRank = rankLimited ? partialRank : system.rank;
   const enumeration = enumerateGeneratorSubsets(
@@ -439,6 +446,68 @@ export function planSphericalSpecialSubgroups(
         ? { omittedReason: "subset-cap" as const }
         : {}),
     warnings,
+  };
+}
+
+/**
+ * Complete plan for large rank.  Every subset of a spherical set is spherical,
+ * so the spherical sets are found by extending spherical sets with a larger
+ * generator that has finite labels to all of them.  The work is proportional
+ * to the nerve rather than to 2^rank; `cap` bounds the candidates checked.
+ */
+function planBySphericalExtension(
+  system: CoxeterSystemInput,
+  cap: number,
+): SphericalSubsetPlan {
+  const finite = (i: number, j: number) => {
+    const m = system.coxeterMatrix[i][j];
+    return typeof m === "number" && Number.isFinite(m);
+  };
+  const sphericalSubgroups: SphericalSpecialSubgroupPlan[] = [];
+  let frontier: number[][] = [];
+  let checked = 0;
+  let capped = false;
+  for (let g = 0; g < system.rank; g += 1) {
+    const plan = classifySphericalSubset(system, [g]);
+    checked += 1;
+    if (plan) {
+      sphericalSubgroups.push(plan);
+      frontier.push([g]);
+    }
+  }
+  while (frontier.length > 0 && !capped) {
+    const next: number[][] = [];
+    for (const set of frontier) {
+      for (let g = set[set.length - 1] + 1; g < system.rank; g += 1) {
+        if (!set.every((h) => finite(h, g))) continue;
+        if (checked >= cap) {
+          capped = true;
+          break;
+        }
+        checked += 1;
+        const candidate = [...set, g];
+        const plan = classifySphericalSubset(system, candidate);
+        if (plan) {
+          sphericalSubgroups.push(plan);
+          next.push(candidate);
+        }
+      }
+      if (capped) break;
+    }
+    frontier = next;
+  }
+  return {
+    status: capped ? "incomplete" : "complete",
+    rank: system.rank,
+    candidateSubsetCount: toExactIntegerValue(2n ** BigInt(system.rank) - 1n),
+    checkedSubsetCount: checked,
+    sphericalSubgroups,
+    ...(capped ? { omittedReason: "subset-cap" as const } : {}),
+    warnings: capped
+      ? [`Spherical planning stopped at the ${cap} candidate-subset cap.`]
+      : [
+          `Rank ${system.rank} planned by spherical extension: subsets of spherical sets are spherical, so the search is complete.`,
+        ],
   };
 }
 

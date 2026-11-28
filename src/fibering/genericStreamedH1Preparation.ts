@@ -1,8 +1,34 @@
-import { canonicalSha256 } from "../utils/canonicalSha256";
-import type {
-  StreamedGeometricEdge,
-  StreamedLawfulDavisOracle,
+import {
+  canonicalSha256,
+  createSha256Stream,
+  sha256Hex,
+} from "../utils/canonicalSha256";
+import {
+  allocShared,
+  runOrdered,
+  toShared,
+  type KernelPool,
+} from "../parallel/kernelPool";
+import {
+  runKernel,
+  type KernelArgs,
+  type KernelName,
+  type KernelResult,
+} from "../parallel/kernels";
+import {
+  type BoundaryRowInput,
+  type BoundaryRowResult,
+  type BoundaryRowSegment,
+  type BoundaryRowTables,
+} from "./boundaryRowKernel";
+import {
+  edgeStableId,
+  StreamedLawfulDavisError,
+  type PackedRankTwoCell,
+  type RankTwoWalkTables,
+  type StreamedLawfulDavisOracle,
 } from "./streamedLawfulDavis";
+import { popcount32 } from "./wallUnionKernel";
 
 const HASH_CHUNK_SIZE = 4_096;
 const UINT32_SENTINEL = 0xffff_ffff;
@@ -195,28 +221,84 @@ interface WallScan {
   wallVectorDigest: string;
 }
 
-function abs(value: bigint): bigint {
-  return value < 0n ? -value : value;
-}
-
 function assertSafeNonnegativeInteger(value: number, name: string): void {
   if (!Number.isSafeInteger(value) || value < 0) {
     throw new RangeError(`${name} must be a nonnegative safe integer.`);
   }
 }
 
-function geometricEdgeRecordEqual(
-  left: StreamedGeometricEdge,
-  rightGenerator: number,
-  rightSource: number,
-  rightTarget: number,
-): boolean {
-  return (
-    left.generator === rightGenerator &&
-    left.sourcePoint === rightSource &&
-    left.targetPoint === rightTarget
-  );
+/**
+ * The preparation is written as a coroutine that yields batches of kernel
+ * jobs and resumes with their results in job order.  runSync executes the
+ * jobs inline; runOnPool spreads them over worker threads.  Every digest is
+ * folded on the calling thread in job order, so both give the same
+ * preparation.
+ */
+type KernelBatch = {
+  [K in KernelName]: { name: K; jobs: Iterable<KernelArgs<K>> };
+}[KernelName];
+type PreparationSteps<T> = Generator<KernelBatch, T, unknown[]>;
+
+function* runBatch<K extends KernelName>(
+  name: K,
+  jobs: Iterable<KernelArgs<K>>,
+): PreparationSteps<KernelResult<K>[]> {
+  const results = yield { name, jobs } as KernelBatch;
+  return results as KernelResult<K>[];
 }
+
+function runSync<T>(steps: PreparationSteps<T>): T {
+  let step = steps.next();
+  while (!step.done) {
+    const batch = step.value;
+    const results: unknown[] = [];
+    for (const job of batch.jobs) {
+      results.push(runKernel(batch.name, job as never));
+    }
+    step = steps.next(results);
+  }
+  return step.value;
+}
+
+async function runOnPool<T>(
+  steps: PreparationSteps<T>,
+  pool: KernelPool,
+): Promise<T> {
+  let step = steps.next();
+  while (!step.done) {
+    const batch = step.value;
+    const results: unknown[] = [];
+    await runOrdered(
+      pool,
+      batch.jobs as Iterable<never>,
+      (job) => pool.run(batch.name, job),
+      (result) => results.push(result),
+    );
+    step = steps.next(results);
+  }
+  return step.value;
+}
+
+/** Records per hashing job: 64 chunks. */
+const RECORD_JOB_SIZE = HASH_CHUNK_SIZE * 64;
+
+/** [start, end) ranges of RECORD_JOB_SIZE records, chunk-aligned. */
+function* recordRanges(count: number): Generator<[number, number]> {
+  for (let start = 0; start < count; start += RECORD_JOB_SIZE) {
+    yield [start, Math.min(count, start + RECORD_JOB_SIZE)];
+  }
+}
+
+/** Typed arrays handed to kernels: shared on the pool path, as is inline. */
+type Share = <T extends Uint32Array | Int32Array | Int8Array | Uint8Array>(
+  array: T,
+) => T;
+const keep: Share = (array) => array;
+
+// Chunk digests below are SHA-256 of literal canonical JSON (keys in sorted
+// order, integers in decimal, coefficient strings quoted).  They equal
+// canonicalSha256 of the corresponding record objects, which these passes
+// used to build for every vertex, edge and 2-cell.
 
 function packGeometricEdges(
   oracle: StreamedLawfulDavisOracle,
@@ -226,47 +308,42 @@ function packGeometricEdges(
       `A streamed H^1 quotient may have at most ${UINT32_SENTINEL} vertices.`,
     );
   }
-  const generator = new Uint32Array(oracle.geometricEdgeCount);
-  const source = new Uint32Array(oracle.geometricEdgeCount);
-  const target = new Uint32Array(oracle.geometricEdgeCount);
+  const { generator, source, target } = oracle.packedEdgeTables();
+  if (generator.length !== oracle.geometricEdgeCount) {
+    throw new Error("The packed edge table does not match the edge count.");
+  }
+  // Every directed generator step must land on an edge whose generator and
+  // endpoints agree with the table: the same stability check as before,
+  // without building an edge record per step.
   const occurrenceCount = new Uint8Array(oracle.geometricEdgeCount);
-
   for (let point = 0; point < oracle.degree; point += 1) {
     for (
       let currentGenerator = 0;
       currentGenerator < oracle.generatorCount;
       currentGenerator += 1
     ) {
-      const edge = oracle.geometricEdge(point, currentGenerator);
+      const edgeIndex = oracle.edgeIndexAt(point, currentGenerator);
       if (
-        !Number.isSafeInteger(edge.edgeIndex) ||
-        edge.edgeIndex < 0 ||
-        edge.edgeIndex >= oracle.geometricEdgeCount
+        !Number.isSafeInteger(edgeIndex) ||
+        edgeIndex < 0 ||
+        edgeIndex >= oracle.geometricEdgeCount
       ) {
         throw new Error(
-          `Geometric edge index ${edge.edgeIndex} is outside the advertised edge stream.`,
+          `Geometric edge index ${edgeIndex} is outside the advertised edge stream.`,
         );
       }
-      if (occurrenceCount[edge.edgeIndex] === 0) {
-        generator[edge.edgeIndex] = edge.generator;
-        source[edge.edgeIndex] = edge.sourcePoint;
-        target[edge.edgeIndex] = edge.targetPoint;
-      } else if (
-        !geometricEdgeRecordEqual(
-          edge,
-          generator[edge.edgeIndex],
-          source[edge.edgeIndex],
-          target[edge.edgeIndex],
-        )
+      if (
+        generator[edgeIndex] !== currentGenerator ||
+        (source[edgeIndex] !== point && target[edgeIndex] !== point)
       ) {
-        throw new Error(`Geometric edge ${edge.edgeIndex} is not stable.`);
+        throw new Error(`Geometric edge ${edgeIndex} is not stable.`);
       }
-      if (occurrenceCount[edge.edgeIndex] === 0xff) {
+      if (occurrenceCount[edgeIndex] === 0xff) {
         throw new Error(
-          `Geometric edge ${edge.edgeIndex} has more than 255 directed occurrences.`,
+          `Geometric edge ${edgeIndex} has more than 255 directed occurrences.`,
         );
       }
-      occurrenceCount[edge.edgeIndex] += 1;
+      occurrenceCount[edgeIndex] += 1;
     }
   }
 
@@ -279,13 +356,19 @@ function packGeometricEdges(
   };
 }
 
-function buildTreeGauge(oracle: StreamedLawfulDavisOracle): TreeGauge {
-  const parent = new Uint32Array(oracle.degree);
+function chunkRecordsDigest(chunkIndex: number, recordsJson: string): string {
+  return sha256Hex(`{"chunkIndex":${chunkIndex},"records":[${recordsJson}]}`);
+}
+
+function* buildTreeGauge(
+  oracle: StreamedLawfulDavisOracle,
+): PreparationSteps<TreeGauge> {
+  const parent = allocShared(Uint32Array, oracle.degree);
   parent.fill(UINT32_SENTINEL);
-  const parentGenerator = new Int32Array(oracle.degree);
+  const parentGenerator = allocShared(Int32Array, oracle.degree);
   parentGenerator.fill(-1);
   const treeEdge = new Uint8Array(oracle.geometricEdgeCount);
-  const queue = new Uint32Array(oracle.degree);
+  const queue = allocShared(Uint32Array, oracle.degree);
   if (oracle.degree === 0) {
     throw new Error("A quotient action must contain a root vertex.");
   }
@@ -301,25 +384,25 @@ function buildTreeGauge(oracle: StreamedLawfulDavisOracle): TreeGauge {
       if (parent[target] !== UINT32_SENTINEL) continue;
       parent[target] = point;
       parentGenerator[target] = generator;
-      const edgeIndex = oracle.geometricEdge(point, generator).edgeIndex;
-      treeEdge[edgeIndex] = 1;
+      treeEdge[oracle.edgeIndexAt(point, generator)] = 1;
       treeEdgeCount += 1;
       queue[tail++] = target;
     }
   }
 
-  const chunks: string[] = [];
-  let records: Array<[number, number, number]> = [];
-  for (let point = 0; point < oracle.degree; point += 1) {
-    records.push([point, parent[point], parentGenerator[point]]);
-    if (records.length === HASH_CHUNK_SIZE) {
-      chunks.push(canonicalSha256({ chunkIndex: chunks.length, records }));
-      records = [];
+  // Records [point, parent, parentGenerator] in point order.
+  const treeJobs = function* () {
+    for (const [start, end] of recordRanges(oracle.degree)) {
+      yield {
+        parent,
+        parentGenerator,
+        firstPoint: start,
+        pointCount: end - start,
+        chunkSize: HASH_CHUNK_SIZE,
+      };
     }
-  }
-  if (records.length > 0) {
-    chunks.push(canonicalSha256({ chunkIndex: chunks.length, records }));
-  }
+  };
+  const chunks = (yield* runBatch("treeRecordChunks", treeJobs())).flat();
   return {
     parent,
     parentGenerator,
@@ -339,35 +422,27 @@ function buildTreeGauge(oracle: StreamedLawfulDavisOracle): TreeGauge {
   };
 }
 
-function makeCotreeColumns(input: {
+function* makeCotreeColumns(input: {
   oracle: StreamedLawfulDavisOracle;
   packedEdges: PackedGeometricEdges;
   tree: TreeGauge;
-}): {
+  share: Share;
+}): PreparationSteps<{
   cotreeColumnByEdge: Int32Array;
   edgeIndexByCotreeColumn: Uint32Array;
   chunkDigests: string[];
   digest: string;
-} {
-  const { oracle, packedEdges, tree } = input;
+}> {
+  const { oracle, packedEdges, tree, share } = input;
   const cotreeCount = oracle.geometricEdgeCount - tree.treeEdgeCount;
   if (cotreeCount > 0x7fff_ffff) {
     throw new RangeError(
       "The JavaScript streamed H^1 bridge supports at most 2^31-1 cotree columns.",
     );
   }
-  const cotreeColumnByEdge = new Int32Array(oracle.geometricEdgeCount);
+  const cotreeColumnByEdge = allocShared(Int32Array, oracle.geometricEdgeCount);
   cotreeColumnByEdge.fill(-1);
-  const edgeIndexByCotreeColumn = new Uint32Array(cotreeCount);
-  const chunkDigests: string[] = [];
-  let records: Array<{
-    column: number;
-    edgeIndex: number;
-    edgeId: string;
-    generator: number;
-    sourcePoint: number;
-    targetPoint: number;
-  }> = [];
+  const edgeIndexByCotreeColumn = allocShared(Uint32Array, cotreeCount);
   let column = 0;
   for (
     let edgeIndex = 0;
@@ -377,34 +452,31 @@ function makeCotreeColumns(input: {
     if (tree.treeEdge[edgeIndex] !== 0) continue;
     cotreeColumnByEdge[edgeIndex] = column;
     edgeIndexByCotreeColumn[column] = edgeIndex;
-    const geometric = oracle.geometricEdge(
-      packedEdges.source[edgeIndex],
-      packedEdges.generator[edgeIndex],
-    );
-    records.push({
-      column,
-      edgeIndex,
-      edgeId: geometric.id,
-      generator: packedEdges.generator[edgeIndex],
-      sourcePoint: packedEdges.source[edgeIndex],
-      targetPoint: packedEdges.target[edgeIndex],
-    });
-    if (records.length === HASH_CHUNK_SIZE) {
-      chunkDigests.push(
-        canonicalSha256({ chunkIndex: chunkDigests.length, records }),
-      );
-      records = [];
-    }
     column += 1;
-  }
-  if (records.length > 0) {
-    chunkDigests.push(
-      canonicalSha256({ chunkIndex: chunkDigests.length, records }),
-    );
   }
   if (column !== cotreeCount) {
     throw new Error(`Built ${column}/${cotreeCount} cotree columns.`);
   }
+  const generator = share(packedEdges.generator);
+  const source = share(packedEdges.source);
+  const target = share(packedEdges.target);
+  const columnJobs = function* () {
+    for (const [start, end] of recordRanges(cotreeCount)) {
+      yield {
+        // A window: posting the whole table would copy it for every job.
+        edgeIndexByColumn: edgeIndexByCotreeColumn.slice(start, end),
+        firstColumn: start,
+        chunkSize: HASH_CHUNK_SIZE,
+        generator,
+        source,
+        target,
+      };
+    }
+  };
+  const chunkDigests = (yield* runBatch(
+    "cotreeColumnChunks",
+    columnJobs(),
+  )).flat();
   return {
     cotreeColumnByEdge,
     edgeIndexByCotreeColumn,
@@ -421,189 +493,343 @@ function makeCotreeColumns(input: {
   };
 }
 
-function canonicalBoundaryEntries(
+/**
+ * Sparse boundary row of a 2-cell in the cotree gauge: summed traversal
+ * signs per cotree column, nonzero only, columns increasing.  Fills the
+ * scratch arrays and returns the entry count (at most the boundary length).
+ */
+function packedBoundaryEntries(
+  cell: PackedRankTwoCell,
   cotreeColumnByEdge: Int32Array,
-  boundary: readonly {
-    edgeIndex: number;
-    traversal: 1 | -1;
-  }[],
-): Array<[number, bigint]> {
-  const sums = new Map<number, bigint>();
-  for (const occurrence of boundary) {
-    const column = cotreeColumnByEdge[occurrence.edgeIndex];
+  columns: Int32Array,
+  coefficients: Int32Array,
+): number {
+  let count = 0;
+  for (let step = 0; step < cell.length; step += 1) {
+    const column = cotreeColumnByEdge[cell.edgeIndex[step]];
     if (column < 0) continue;
-    sums.set(column, (sums.get(column) ?? 0n) + BigInt(occurrence.traversal));
+    let slot = 0;
+    while (slot < count && columns[slot] !== column) slot += 1;
+    if (slot === count) {
+      columns[count] = column;
+      coefficients[count] = 0;
+      count += 1;
+    }
+    coefficients[slot] += cell.traversal[step];
   }
-  return [...sums.entries()]
-    .filter(([, coefficient]) => coefficient !== 0n)
-    .sort(([left], [right]) => left - right);
+  // Drop zero coefficients, then insertion-sort by column (<= 2m entries).
+  let kept = 0;
+  for (let slot = 0; slot < count; slot += 1) {
+    if (coefficients[slot] === 0) continue;
+    columns[kept] = columns[slot];
+    coefficients[kept] = coefficients[slot];
+    kept += 1;
+  }
+  for (let index = 1; index < kept; index += 1) {
+    const column = columns[index];
+    const coefficient = coefficients[index];
+    let cursor = index - 1;
+    while (cursor >= 0 && columns[cursor] > column) {
+      columns[cursor + 1] = columns[cursor];
+      coefficients[cursor + 1] = coefficients[cursor];
+      cursor -= 1;
+    }
+    columns[cursor + 1] = column;
+    coefficients[cursor + 1] = coefficient;
+  }
+  return kept;
 }
 
-function scanBoundary(input: {
+/** Visits boundary rows in canonical order with reused scratch buffers. */
+function forEachPackedBoundaryRow(
+  oracle: StreamedLawfulDavisOracle,
+  cotreeColumnByEdge: Int32Array,
+  visit: (
+    row: number,
+    cell: PackedRankTwoCell,
+    columns: Int32Array,
+    coefficients: Int32Array,
+    count: number,
+  ) => void,
+): number {
+  let columns = new Int32Array(8);
+  let coefficients = new Int32Array(8);
+  let row = 0;
+  oracle.forEachRankTwoCellPacked((cell) => {
+    if (columns.length < cell.length) {
+      columns = new Int32Array(cell.length);
+      coefficients = new Int32Array(cell.length);
+    }
+    const count = packedBoundaryEntries(
+      cell,
+      cotreeColumnByEdge,
+      columns,
+      coefficients,
+    );
+    visit(row, cell, columns, coefficients, count);
+    row += 1;
+  });
+  return row;
+}
+
+/** Boundary rows per kernel call: 64 hash chunks. */
+const BOUNDARY_JOB_ROWS = HASH_CHUNK_SIZE * 64;
+
+/**
+ * Split the boundary rows into chunk-aligned ranges, in row order.  Each
+ * range lists the rank-two types it covers as root-bitset windows, so a
+ * kernel can walk exactly its rows without the rest of the oracle.
+ */
+export function* boundaryRowJobs(
+  walk: RankTwoWalkTables,
+  tables: BoundaryRowTables,
+  /** Rows per job; a multiple of chunkSize except in planner tests. */
+  jobRows = BOUNDARY_JOB_ROWS,
+): Generator<BoundaryRowInput> {
+  let segments: BoundaryRowSegment[] = [];
+  let firstRow = 0;
+  let rowsInJob = 0;
+  const emit = (): BoundaryRowInput => {
+    const job = {
+      ...tables,
+      firstRow,
+      chunkSize: HASH_CHUNK_SIZE,
+      segments,
+    };
+    firstRow += rowsInJob;
+    rowsInJob = 0;
+    segments = [];
+    return job;
+  };
+  for (const type of walk.types) {
+    const bits = type.rootBits;
+    const segment = (start: number, end: number, skip: number, take: number) =>
+      segments.push({
+        typeId: type.typeId,
+        idPrefix: type.idPrefix,
+        left: type.left,
+        right: type.right,
+        relation: type.relation,
+        rootBits: bits.slice(start, end),
+        firstWord: start,
+        skip,
+        take,
+      });
+    let start = 0;
+    let skip = 0;
+    let take = 0;
+    let consumedInWord = 0;
+    for (let word = 0; word < bits.length; ) {
+      const available = popcount32(bits[word]) - consumedInWord;
+      const need = jobRows - rowsInJob;
+      if (available <= need) {
+        take += available;
+        rowsInJob += available;
+        word += 1;
+        consumedInWord = 0;
+        if (rowsInJob === jobRows) {
+          if (take > 0) segment(start, word, skip, take);
+          yield emit();
+          start = word;
+          skip = 0;
+          take = 0;
+        }
+      } else {
+        take += need;
+        rowsInJob += need;
+        consumedInWord += need;
+        segment(start, word + 1, skip, take);
+        yield emit();
+        start = word;
+        skip = consumedInWord;
+        take = 0;
+      }
+    }
+    if (take > 0) segment(start, bits.length, skip, take);
+  }
+  if (rowsInJob > 0) yield emit();
+}
+
+/** Folds kernel results, in row order, into the boundary scan. */
+function createBoundaryAccumulator(input: {
   oracle: StreamedLawfulDavisOracle;
-  cotreeColumnByEdge: Int32Array;
   columnCount: number;
-  twoSidedWallIds: ReadonlySet<string>;
-}): BoundaryScan {
-  const { oracle, cotreeColumnByEdge, columnCount, twoSidedWallIds } = input;
+}) {
   let rowCount = 0;
   let nonzeroCount = 0;
-  let maximumAbsoluteCoefficient = 0n;
+  let maximumAbsoluteCoefficient = 0;
   let duplicateBoundaryEdgeRowCount = 0;
   let everySignedBoundaryClosesInC0 = true;
   let everyTwoSidedWallCocycleCloses = true;
   const rowChunkDigests: string[] = [];
   const genericSparseRowChunkDigests: string[] = [];
-  let records: Array<{
-    row: number;
-    cellId: string;
-    entries: Array<[number, string]>;
-  }> = [];
-
-  oracle.forEachRankTwoCell((cell) => {
-    const vertexBoundary = new Map<number, bigint>();
-    const wallBoundary = new Map<string, bigint>();
-    for (const occurrence of cell.boundary) {
-      vertexBoundary.set(
-        occurrence.sourcePoint,
-        (vertexBoundary.get(occurrence.sourcePoint) ?? 0n) - 1n,
-      );
-      vertexBoundary.set(
-        occurrence.targetPoint,
-        (vertexBoundary.get(occurrence.targetPoint) ?? 0n) + 1n,
-      );
-      const binding = oracle.wallBinding(
-        occurrence.sourcePoint,
-        occurrence.generator,
-      );
-      if (binding.edgeIndex !== occurrence.edgeIndex) {
-        throw new Error(
-          `Wall binding and cellular boundary disagree on edge ${occurrence.edgeIndex}.`,
-        );
-      }
-      if (twoSidedWallIds.has(binding.wallId)) {
-        wallBoundary.set(
-          binding.wallId,
-          (wallBoundary.get(binding.wallId) ?? 0n) +
-            BigInt(binding.edgeParity * occurrence.traversal),
-        );
-      }
-    }
-    everySignedBoundaryClosesInC0 &&= [...vertexBoundary.values()].every(
-      (value) => value === 0n,
-    );
-    everyTwoSidedWallCocycleCloses &&= [...wallBoundary.values()].every(
-      (value) => value === 0n,
-    );
-    if (
-      new Set(cell.boundary.map((occurrence) => occurrence.edgeIndex)).size !==
-      cell.boundary.length
-    ) {
-      duplicateBoundaryEdgeRowCount += 1;
-    }
-    const entries = canonicalBoundaryEntries(cotreeColumnByEdge, cell.boundary);
-    nonzeroCount += entries.length;
-    assertSafeNonnegativeInteger(nonzeroCount, "Boundary nonzero count");
-    for (const [, coefficient] of entries) {
-      maximumAbsoluteCoefficient =
-        abs(coefficient) > maximumAbsoluteCoefficient
-          ? abs(coefficient)
-          : maximumAbsoluteCoefficient;
-    }
-    records.push({
-      row: rowCount,
-      cellId: oracle.cellId(cell.cell),
-      entries: entries.map(([column, coefficient]) => [
-        column,
-        coefficient.toString(),
-      ]),
-    });
-    if (records.length === HASH_CHUNK_SIZE) {
-      genericSparseRowChunkDigests.push(
-        canonicalSha256({
-          schemaVersion: 1,
-          method: "canonical-explicit-sparse-integer-matrix-row-chunk",
-          chunkIndex: genericSparseRowChunkDigests.length,
-          firstRow: records[0].row,
-          rows: records.map(({ row, entries }) => ({ row, entries })),
-        }),
-      );
-      rowChunkDigests.push(
-        canonicalSha256({ chunkIndex: rowChunkDigests.length, records }),
-      );
-      records = [];
-    }
-    rowCount += 1;
-  });
-  if (records.length > 0) {
-    genericSparseRowChunkDigests.push(
-      canonicalSha256({
-        schemaVersion: 1,
-        method: "canonical-explicit-sparse-integer-matrix-row-chunk",
-        chunkIndex: genericSparseRowChunkDigests.length,
-        firstRow: records[0].row,
-        rows: records.map(({ row, entries }) => ({ row, entries })),
-      }),
-    );
-    rowChunkDigests.push(
-      canonicalSha256({ chunkIndex: rowChunkDigests.length, records }),
-    );
-  }
-  const sparseBoundaryDigest = canonicalSha256({
-    schemaVersion: 1,
-    method: "tree-gauged-rank-two-boundary-chunk-stream",
-    oracleStructureHash: oracle.structureHash,
-    rowCount,
-    columnCount,
-    nonzeroCount,
-    maximumAbsoluteCoefficient: maximumAbsoluteCoefficient.toString(),
-    chunkSize: HASH_CHUNK_SIZE,
-    chunks: rowChunkDigests,
-  });
-  const genericSparseMatrixDigest = canonicalSha256({
-    schemaVersion: 1,
-    method: "chunked-canonical-explicit-sparse-integer-matrix-v1",
-    rowCount,
-    columnCount,
-    nonzeroCount,
-    maximumAbsoluteCoefficient: maximumAbsoluteCoefficient.toString(),
-    chunkRowCount: HASH_CHUNK_SIZE,
-    chunkDigests: genericSparseRowChunkDigests,
-  });
   return {
-    rowCount,
-    nonzeroCount,
-    maximumAbsoluteCoefficient,
-    duplicateBoundaryEdgeRowCount,
-    everySignedBoundaryClosesInC0,
-    rowChunkDigests,
-    sparseBoundaryDigest,
-    genericSparseMatrixDigest,
-    everyTwoSidedWallCocycleCloses,
+    add(result: BoundaryRowResult) {
+      if (!result.ok) {
+        throw new StreamedLawfulDavisError(result.title, result.details);
+      }
+      rowCount += result.rowCount;
+      nonzeroCount += result.nonzeroCount;
+      assertSafeNonnegativeInteger(nonzeroCount, "Boundary nonzero count");
+      maximumAbsoluteCoefficient = Math.max(
+        maximumAbsoluteCoefficient,
+        result.maximumAbsoluteCoefficient,
+      );
+      duplicateBoundaryEdgeRowCount += result.duplicateBoundaryEdgeRowCount;
+      everySignedBoundaryClosesInC0 &&= result.everySignedBoundaryClosesInC0;
+      everyTwoSidedWallCocycleCloses &&= result.everyTwoSidedWallCocycleCloses;
+      for (const digest of result.recordChunkDigests) {
+        rowChunkDigests.push(digest);
+      }
+      for (const digest of result.genericChunkDigests) {
+        genericSparseRowChunkDigests.push(digest);
+      }
+    },
+    finish(): BoundaryScan {
+      const maximum = BigInt(maximumAbsoluteCoefficient);
+      const sparseBoundaryDigest = canonicalSha256({
+        schemaVersion: 1,
+        method: "tree-gauged-rank-two-boundary-chunk-stream",
+        oracleStructureHash: input.oracle.structureHash,
+        rowCount,
+        columnCount: input.columnCount,
+        nonzeroCount,
+        maximumAbsoluteCoefficient: maximum.toString(),
+        chunkSize: HASH_CHUNK_SIZE,
+        chunks: rowChunkDigests,
+      });
+      const genericSparseMatrixDigest = canonicalSha256({
+        schemaVersion: 1,
+        method: "chunked-canonical-explicit-sparse-integer-matrix-v1",
+        rowCount,
+        columnCount: input.columnCount,
+        nonzeroCount,
+        maximumAbsoluteCoefficient: maximum.toString(),
+        chunkRowCount: HASH_CHUNK_SIZE,
+        chunkDigests: genericSparseRowChunkDigests,
+      });
+      return {
+        rowCount,
+        nonzeroCount,
+        maximumAbsoluteCoefficient: maximum,
+        duplicateBoundaryEdgeRowCount,
+        everySignedBoundaryClosesInC0,
+        rowChunkDigests,
+        sparseBoundaryDigest,
+        genericSparseMatrixDigest,
+        everyTwoSidedWallCocycleCloses,
+      };
+    },
   };
+}
+
+interface BoundaryScanInput {
+  oracle: StreamedLawfulDavisOracle;
+  cotreeColumnByEdge: Int32Array;
+  columnCount: number;
+  wallTables: { edgeToWall: Uint32Array; edgeParity: Int8Array };
+  twoSidedWallIndex: Uint8Array;
+}
+
+function boundaryTables(
+  input: BoundaryScanInput,
+  walk: RankTwoWalkTables,
+): BoundaryRowTables {
+  return {
+    ...walk.tables,
+    cotreeColumnByEdge: input.cotreeColumnByEdge,
+    edgeToWall: input.wallTables.edgeToWall,
+    edgeParity: input.wallTables.edgeParity,
+    twoSidedWallIndex: input.twoSidedWallIndex,
+  };
+}
+
+function* scanBoundary(
+  input: BoundaryScanInput,
+  share: Share,
+): PreparationSteps<BoundaryScan> {
+  const walk = input.oracle.rankTwoWalkTables();
+  const shared: RankTwoWalkTables = {
+    ...walk,
+    tables: {
+      ...walk.tables,
+      rows: walk.tables.rows.map(share),
+      minimumBits: walk.tables.minimumBits.map(share),
+      wordRank: walk.tables.wordRank.map(share),
+      sourceBits: walk.tables.sourceBits.map(share),
+    },
+  };
+  const tables = boundaryTables(
+    {
+      ...input,
+      wallTables: {
+        edgeToWall: share(input.wallTables.edgeToWall),
+        edgeParity: share(input.wallTables.edgeParity),
+      },
+    },
+    shared,
+  );
+  const accumulator = createBoundaryAccumulator(input);
+  for (const result of yield* runBatch(
+    "boundaryRows",
+    boundaryRowJobs(shared, tables),
+  )) {
+    accumulator.add(result);
+  }
+  return accumulator.finish();
 }
 
 function compareStrings(left: string, right: string): number {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
-function directedWallCrossing(
-  oracle: StreamedLawfulDavisOracle,
-  point: number,
-  generator: number,
-): { wallId: string; coefficient: number } {
-  const geometric = oracle.geometricEdge(point, generator);
-  const traversal = geometric.sourcePoint === point ? 1 : -1;
-  const binding = oracle.wallBinding(point, generator);
-  if (binding.edgeIndex !== geometric.edgeIndex) {
-    throw new Error(
-      `Wall binding and geometric edge disagree at q${point}s${generator}.`,
-    );
+/**
+ * Wall crossings along the BFS tree and along each cotree column, as
+ * (wall index, signed coefficient) arrays.  Every wall vector is then plain
+ * typed-array arithmetic instead of an edge-record lookup per step.
+ */
+interface WallCrossingTables {
+  treeStepWall: Uint32Array;
+  treeStepCoefficient: Int8Array;
+  columnWall: Uint32Array;
+  columnCoefficient: Int8Array;
+}
+
+function buildWallCrossingTables(input: {
+  oracle: StreamedLawfulDavisOracle;
+  packedEdges: PackedGeometricEdges;
+  tree: TreeGauge;
+  edgeIndexByCotreeColumn: Uint32Array;
+  wallTables: { edgeToWall: Uint32Array; edgeParity: Int8Array };
+}): WallCrossingTables {
+  const { oracle, packedEdges, tree, edgeIndexByCotreeColumn, wallTables } =
+    input;
+  const treeStepWall = allocShared(Uint32Array, oracle.degree);
+  const treeStepCoefficient = allocShared(Int8Array, oracle.degree);
+  for (let order = 1; order < tree.reachedVertexCount; order += 1) {
+    const point = tree.bfsOrder[order];
+    const parent = tree.parent[point];
+    const generator = tree.parentGenerator[point];
+    if (parent === UINT32_SENTINEL || generator < 0) {
+      throw new Error(`Missing BFS-tree parent for q${point}.`);
+    }
+    const edgeIndex = oracle.edgeIndexAt(parent, generator);
+    const traversal = packedEdges.source[edgeIndex] === parent ? 1 : -1;
+    treeStepWall[point] = wallTables.edgeToWall[edgeIndex];
+    treeStepCoefficient[point] = wallTables.edgeParity[edgeIndex] * traversal;
   }
-  return {
-    wallId: binding.wallId,
-    coefficient: binding.edgeParity * traversal,
-  };
+  const columnWall = allocShared(Uint32Array, edgeIndexByCotreeColumn.length);
+  const columnCoefficient = allocShared(
+    Int8Array,
+    edgeIndexByCotreeColumn.length,
+  );
+  for (let column = 0; column < edgeIndexByCotreeColumn.length; column += 1) {
+    const edgeIndex = edgeIndexByCotreeColumn[column];
+    // Crossing taken from the stored source, i.e. traversal +1.
+    columnWall[column] = wallTables.edgeToWall[edgeIndex];
+    columnCoefficient[column] = wallTables.edgeParity[edgeIndex];
+  }
+  return { treeStepWall, treeStepCoefficient, columnWall, columnCoefficient };
 }
 
 function buildWallVector(input: {
@@ -612,33 +838,42 @@ function buildWallVector(input: {
   tree: TreeGauge;
   cotreeDigest: string;
   edgeIndexByCotreeColumn: Uint32Array;
+  crossings: WallCrossingTables;
+  potential: Float64Array;
   wall: number;
   wallId: string;
-}): GenericStreamedH1WallVector {
+  oracleWallIndex: number;
+  /**
+   * Keep the sparse entries (export path).  The certificate scan needs only
+   * the digest and count; at 10^7..10^8 cotree columns retaining every
+   * entry exhausts the JavaScript heap.
+   */
+  retainEntries?: boolean;
+}): GenericStreamedH1WallVector & { nonzeroCount: number } {
   const {
     oracle,
     packedEdges,
     tree,
     cotreeDigest,
     edgeIndexByCotreeColumn,
+    crossings,
+    potential,
     wall,
     wallId,
+    oracleWallIndex,
   } = input;
-  // One potential vector is reused per wall. This keeps peak memory O(V+E)
+  const retainEntries = input.retainEntries ?? true;
+  // One potential vector is reused across walls. This keeps peak memory O(V+E)
   // instead of allocating the dense wall-by-vertex table used by the small
   // exact backend.
-  const potential = new Float64Array(oracle.degree);
+  potential[0] = 0;
   for (let order = 1; order < tree.reachedVertexCount; order += 1) {
     const point = tree.bfsOrder[order];
-    const parent = tree.parent[point];
-    const generator = tree.parentGenerator[point];
-    if (parent === UINT32_SENTINEL || generator < 0) {
-      throw new Error(`Missing BFS-tree parent for q${point}.`);
-    }
-    const crossing = directedWallCrossing(oracle, parent, generator);
     const value =
-      potential[parent] +
-      (crossing.wallId === wallId ? crossing.coefficient : 0);
+      potential[tree.parent[point]] +
+      (crossings.treeStepWall[point] === oracleWallIndex
+        ? crossings.treeStepCoefficient[point]
+        : 0);
     if (!Number.isSafeInteger(value)) {
       throw new Error(
         `The tree potential for ${wallId} is not a safe integer.`,
@@ -648,45 +883,57 @@ function buildWallVector(input: {
   }
 
   const entries: Array<[number, string]> = [];
+  // Literal canonical JSON of the vector record, hashed incrementally so the
+  // text never has to exist as one string.
+  const digest = createSha256Stream();
+  digest.update(`{"cotreeDigest":${JSON.stringify(cotreeDigest)},"entries":[`);
+  let pending = "";
+  let nonzeroCount = 0;
   for (let column = 0; column < edgeIndexByCotreeColumn.length; column += 1) {
     const edgeIndex = edgeIndexByCotreeColumn[column];
-    const sourcePoint = packedEdges.source[edgeIndex];
-    const targetPoint = packedEdges.target[edgeIndex];
-    const generator = packedEdges.generator[edgeIndex];
-    const crossing = directedWallCrossing(oracle, sourcePoint, generator);
     const value =
-      potential[sourcePoint] -
-      potential[targetPoint] +
-      (crossing.wallId === wallId ? crossing.coefficient : 0);
+      potential[packedEdges.source[edgeIndex]] -
+      potential[packedEdges.target[edgeIndex]] +
+      (crossings.columnWall[column] === oracleWallIndex
+        ? crossings.columnCoefficient[column]
+        : 0);
     if (!Number.isSafeInteger(value)) {
       throw new Error(`The cotree period for ${wallId} is not a safe integer.`);
     }
-    if (value !== 0) entries.push([column, BigInt(value).toString()]);
+    if (value !== 0) {
+      const coefficient = String(value);
+      pending += `${nonzeroCount === 0 ? "" : ","}[${column},"${coefficient}"]`;
+      nonzeroCount += 1;
+      if (pending.length > 1 << 16) {
+        digest.update(pending);
+        pending = "";
+      }
+      if (retainEntries) entries.push([column, coefficient]);
+    }
   }
+  digest.update(pending);
+  digest.update(
+    `],"method":"lazy-tree-gauged-two-sided-wall-vector","oracleStructureHash":${JSON.stringify(oracle.structureHash)},"schemaVersion":1,"treeDigest":${JSON.stringify(tree.treeDigest)},"wall":${wall},"wallId":${JSON.stringify(wallId)}}`,
+  );
   return {
     wall,
     wallId,
     entries,
-    vectorDigest: canonicalSha256({
-      schemaVersion: 1,
-      method: "lazy-tree-gauged-two-sided-wall-vector",
-      oracleStructureHash: oracle.structureHash,
-      treeDigest: tree.treeDigest,
-      cotreeDigest,
-      wall,
-      wallId,
-      entries,
-    }),
+    nonzeroCount,
+    vectorDigest: digest.digestHex(),
   };
 }
 
-function scanWalls(input: {
+function* scanWalls(input: {
   oracle: StreamedLawfulDavisOracle;
   packedEdges: PackedGeometricEdges;
   tree: TreeGauge;
   cotreeDigest: string;
   edgeIndexByCotreeColumn: Uint32Array;
-}): WallScan {
+  crossings: WallCrossingTables;
+  oracleWallIndexById: ReadonlyMap<string, number>;
+  share: Share;
+}): PreparationSteps<WallScan> {
   const { oracle } = input;
   const twoSidedWallIds = oracle.walls.walls
     .filter((wall) => wall.twoSided)
@@ -698,36 +945,51 @@ function scanWalls(input: {
     .sort(compareStrings);
   let nonzeroCount = 0;
   const vectorChunkDigests: string[] = [];
-  let records: Array<{
-    wall: number;
-    wallId: string;
-    nonzeroCount: number;
-    vectorDigest: string;
-  }> = [];
+  let records = "";
+  let inChunk = 0;
+  const { tree, crossings, share } = input;
+  const source = share(input.packedEdges.source);
+  const target = share(input.packedEdges.target);
+  // One job per two-sided wall; each builds its own tree potential.
+  const vectors = yield* runBatch(
+    "wallVector",
+    twoSidedWallIds.map((wallId, wall) => ({
+      degree: oracle.degree,
+      reachedVertexCount: tree.reachedVertexCount,
+      bfsOrder: tree.bfsOrder,
+      parent: tree.parent,
+      treeStepWall: crossings.treeStepWall,
+      treeStepCoefficient: crossings.treeStepCoefficient,
+      columnWall: crossings.columnWall,
+      columnCoefficient: crossings.columnCoefficient,
+      edgeIndexByCotreeColumn: input.edgeIndexByCotreeColumn,
+      source,
+      target,
+      oracleWallIndex: input.oracleWallIndexById.get(wallId)!,
+      wall,
+      wallId,
+      cotreeDigest: input.cotreeDigest,
+      oracleStructureHash: oracle.structureHash,
+      treeDigest: tree.treeDigest,
+    })),
+  );
   for (let wall = 0; wall < twoSidedWallIds.length; wall += 1) {
-    const vector = buildWallVector({
-      ...input,
-      wall,
-      wallId: twoSidedWallIds[wall],
-    });
-    nonzeroCount += vector.entries.length;
+    const vector = { ...vectors[wall], wallId: twoSidedWallIds[wall] };
+    nonzeroCount += vector.nonzeroCount;
     assertSafeNonnegativeInteger(nonzeroCount, "Wall-vector nonzero count");
-    records.push({
-      wall,
-      wallId: vector.wallId,
-      nonzeroCount: vector.entries.length,
-      vectorDigest: vector.vectorDigest,
-    });
-    if (records.length === HASH_CHUNK_SIZE) {
+    records += `${inChunk === 0 ? "" : ","}{"nonzeroCount":${vector.nonzeroCount},"vectorDigest":${JSON.stringify(vector.vectorDigest)},"wall":${wall},"wallId":${JSON.stringify(vector.wallId)}}`;
+    inChunk += 1;
+    if (inChunk === HASH_CHUNK_SIZE) {
       vectorChunkDigests.push(
-        canonicalSha256({ chunkIndex: vectorChunkDigests.length, records }),
+        chunkRecordsDigest(vectorChunkDigests.length, records),
       );
-      records = [];
+      records = "";
+      inChunk = 0;
     }
   }
-  if (records.length > 0) {
+  if (inChunk > 0) {
     vectorChunkDigests.push(
-      canonicalSha256({ chunkIndex: vectorChunkDigests.length, records }),
+      chunkRecordsDigest(vectorChunkDigests.length, records),
     );
   }
   return {
@@ -774,9 +1036,54 @@ function sameCanonicalValue(left: unknown, right: unknown): boolean {
  * 2-complex. Tree edges are killed by an integral spanning-tree gauge; no
  * dense row-by-column matrix is materialized.
  */
+export interface GenericStreamedH1PreparationProgress {
+  phase:
+    | "pack-edges"
+    | "tree-gauge"
+    | "cotree-columns"
+    | "boundary"
+    | "wall-crossings"
+    | "wall-vectors";
+  elapsedMs: number;
+}
+
+export interface PrepareGenericStreamedH1Options {
+  /** Called after each phase, e.g. for progress display. */
+  onProgress?: (event: GenericStreamedH1PreparationProgress) => void;
+}
+
 export function prepareGenericStreamedH1(
   oracle: StreamedLawfulDavisOracle,
+  options: PrepareGenericStreamedH1Options = {},
 ): GenericStreamedH1Preparation {
+  return runSync(preparationSteps(oracle, options, keep));
+}
+
+/**
+ * prepareGenericStreamedH1 with its hashing and scanning phases (tree and
+ * cotree records, boundary rows, wall vectors) on a kernel pool.  The
+ * preparation, and every digest in it, is identical.
+ */
+export async function prepareGenericStreamedH1Parallel(
+  oracle: StreamedLawfulDavisOracle,
+  pool: KernelPool,
+  options: PrepareGenericStreamedH1Options = {},
+): Promise<GenericStreamedH1Preparation> {
+  if (pool.kind === "inline") return prepareGenericStreamedH1(oracle, options);
+  return runOnPool(preparationSteps(oracle, options, toShared), pool);
+}
+
+function* preparationSteps(
+  oracle: StreamedLawfulDavisOracle,
+  options: PrepareGenericStreamedH1Options,
+  share: Share,
+): PreparationSteps<GenericStreamedH1Preparation> {
+  let phaseStart = performance.now();
+  const report = (phase: GenericStreamedH1PreparationProgress["phase"]) => {
+    const now = performance.now();
+    options.onProgress?.({ phase, elapsedMs: now - phaseStart });
+    phaseStart = now;
+  };
   assertSafeNonnegativeInteger(oracle.degree, "Quotient degree");
   assertSafeNonnegativeInteger(
     oracle.geometricEdgeCount,
@@ -784,29 +1091,58 @@ export function prepareGenericStreamedH1(
   );
   assertSafeNonnegativeInteger(oracle.rankTwoCellCount, "Rank-two cell count");
   const packedEdges = packGeometricEdges(oracle);
-  const tree = buildTreeGauge(oracle);
+  report("pack-edges");
+  const tree = yield* buildTreeGauge(oracle);
+  report("tree-gauge");
   if (tree.reachedVertexCount !== oracle.degree) {
     throw new Error(
       `The canonical BFS reaches ${tree.reachedVertexCount}/${oracle.degree} quotient vertices.`,
     );
   }
-  const cotree = makeCotreeColumns({ oracle, packedEdges, tree });
-  const twoSidedWallIds = new Set(
-    oracle.walls.walls.filter((wall) => wall.twoSided).map((wall) => wall.id),
-  );
-  const boundary = scanBoundary({
+  const cotree = yield* makeCotreeColumns({
     oracle,
-    cotreeColumnByEdge: cotree.cotreeColumnByEdge,
-    columnCount: cotree.edgeIndexByCotreeColumn.length,
-    twoSidedWallIds,
+    packedEdges,
+    tree,
+    share,
   });
-  const walls = scanWalls({
+  report("cotree-columns");
+  const wallTables = oracle.packedWallTables();
+  const twoSidedWallIndex = new Uint8Array(oracle.walls.wallCount);
+  const oracleWallIndexById = new Map<string, number>();
+  for (const wall of oracle.walls.walls) {
+    oracleWallIndexById.set(wall.id, wall.wallIndex);
+    if (wall.twoSided) twoSidedWallIndex[wall.wallIndex] = 1;
+  }
+  const boundary = yield* scanBoundary(
+    {
+      oracle,
+      cotreeColumnByEdge: cotree.cotreeColumnByEdge,
+      columnCount: cotree.edgeIndexByCotreeColumn.length,
+      wallTables,
+      twoSidedWallIndex,
+    },
+    share,
+  );
+  report("boundary");
+  const crossings = buildWallCrossingTables({
+    oracle,
+    packedEdges,
+    tree,
+    edgeIndexByCotreeColumn: cotree.edgeIndexByCotreeColumn,
+    wallTables,
+  });
+  report("wall-crossings");
+  const walls = yield* scanWalls({
     oracle,
     packedEdges,
     tree,
     cotreeDigest: cotree.digest,
     edgeIndexByCotreeColumn: cotree.edgeIndexByCotreeColumn,
+    crossings,
+    oracleWallIndexById,
+    share,
   });
+  report("wall-vectors");
   const accountedWallIds = [...walls.twoSidedWallIds, ...walls.oneSidedWallIds];
   const checks = {
     quotientGraphConnected: tree.reachedVertexCount === oracle.degree,
@@ -954,14 +1290,14 @@ export function prepareGenericStreamedH1(
       column += 1
     ) {
       const edgeIndex = cotree.edgeIndexByCotreeColumn[column];
-      const geometric = oracle.geometricEdge(
-        packedEdges.source[edgeIndex],
-        packedEdges.generator[edgeIndex],
-      );
       visitor({
         column,
         edgeIndex,
-        edgeId: geometric.id,
+        edgeId: edgeStableId(
+          packedEdges.generator[edgeIndex],
+          packedEdges.source[edgeIndex],
+          packedEdges.target[edgeIndex],
+        ),
         generator: packedEdges.generator[edgeIndex],
         sourcePoint: packedEdges.source[edgeIndex],
         targetPoint: packedEdges.target[edgeIndex],
@@ -971,18 +1307,17 @@ export function prepareGenericStreamedH1(
   const forEachBoundaryRow = (
     visitor: (row: GenericStreamedH1BoundaryRow) => void,
   ): void => {
-    let row = 0;
-    oracle.forEachRankTwoCell((cell) => {
-      visitor({
-        row,
-        cellId: oracle.cellId(cell.cell),
-        entries: canonicalBoundaryEntries(
-          cotree.cotreeColumnByEdge,
-          cell.boundary,
-        ).map(([column, coefficient]) => [column, coefficient.toString()]),
-      });
-      row += 1;
-    });
+    const row = forEachPackedBoundaryRow(
+      oracle,
+      cotree.cotreeColumnByEdge,
+      (rowIndex, cell, columns, coefficients, count) => {
+        const entries: Array<[number, string]> = [];
+        for (let index = 0; index < count; index += 1) {
+          entries.push([columns[index], String(coefficients[index])]);
+        }
+        visitor({ row: rowIndex, cellId: cell.cellId, entries });
+      },
+    );
     if (row !== certificate.boundary.rowCount) {
       throw new Error(
         `Re-streamed ${row}/${certificate.boundary.rowCount} boundary rows.`,
@@ -1021,21 +1356,22 @@ export function prepareGenericStreamedH1(
       visitor(
         `${certificate.boundary.rowCount} ${certificate.boundary.columnCount} S`,
       );
-      forEachBoundaryRow((row) => {
-        visitor(
-          [
-            String(row.entries.length),
-            ...row.entries.flatMap(([column, coefficient]) => [
-              String(column),
-              coefficient,
-            ]),
-          ].join(" "),
-        );
-      });
+      forEachPackedBoundaryRow(
+        oracle,
+        cotree.cotreeColumnByEdge,
+        (_row, _cell, columns, coefficients, count) => {
+          let line = String(count);
+          for (let index = 0; index < count; index += 1) {
+            line += ` ${columns[index]} ${coefficients[index]}`;
+          }
+          visitor(line);
+        },
+      );
     },
     forEachTwoSidedWallVector: (
       visitor: (vector: GenericStreamedH1WallVector) => void,
     ): void => {
+      const potential = new Float64Array(oracle.degree);
       for (let wall = 0; wall < walls.twoSidedWallIds.length; wall += 1) {
         visitor(
           buildWallVector({
@@ -1044,8 +1380,13 @@ export function prepareGenericStreamedH1(
             tree,
             cotreeDigest: cotree.digest,
             edgeIndexByCotreeColumn: cotree.edgeIndexByCotreeColumn,
+            crossings,
+            potential,
             wall,
             wallId: walls.twoSidedWallIds[wall],
+            oracleWallIndex: oracleWallIndexById.get(
+              walls.twoSidedWallIds[wall],
+            )!,
           }),
         );
       }

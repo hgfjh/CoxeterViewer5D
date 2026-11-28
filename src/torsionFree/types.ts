@@ -40,6 +40,12 @@ export interface SphericalEnumerationLimits {
   maxRankForExhaustiveEnumeration?: number;
   maxSubsetsToCheck?: number;
   maxSubsetRankWhenIncomplete?: number;
+  /**
+   * Above the exhaustive rank limit, plan by spherical extension (complete,
+   * proportional to the nerve).  Defaults to true unless
+   * maxRankForExhaustiveEnumeration is given, which keeps the partial plan.
+   */
+  extendAboveRankLimit?: boolean;
 }
 
 /**
@@ -63,6 +69,14 @@ export interface TorsionFreeIndexLowerBound {
 }
 
 /**
+ * One generator's images in a permutation action.  Large actions are held as
+ * Uint32Array rows (4 bytes per entry, no per-entry boxing); small hand-written
+ * fixtures may stay plain arrays.  Consumers must only index rows and read
+ * `length` -- array methods such as `map` or `join` are not available on both.
+ */
+export type ActionRow = number[] | Uint32Array;
+
+/**
  * A candidate is a complete finite right action on points 0,...,index-1.
  * `generatorImages[g][p]` is the endpoint of the generator-g edge from p.
  */
@@ -70,7 +84,7 @@ export interface TorsionFreeActionCandidate {
   id: string;
   name?: string;
   index: number;
-  generatorImages: number[][];
+  generatorImages: ActionRow[];
   pointLabels?: string[];
   representativeWords?: number[][];
   backend?: string;

@@ -8,3 +8,10 @@
 *.pdf binary
 *.msi binary
 *.exe binary
+
+# Byte-pinned research fixtures whose recorded sha256 covers CRLF line endings.
+scripts/certificates/portfolio/makarov_p0_p1_small_prime_structural_screen.json -text
+scripts/certificates/portfolio/makarov_p2_section5_generalized_track_a_attempt.json -text
+scripts/certificates/torsion-free/makarov_h4_projection_obstruction.json -text
+scripts/certificates/torsion-free/makarov_p0_p1_prime5_structural_obstruction.json -text
+scripts/certificates/torsion-free/tumarkin_06_15_shallow_split_target_screen.json -text

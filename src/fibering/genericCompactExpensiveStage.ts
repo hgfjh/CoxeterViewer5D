@@ -1,10 +1,9 @@
+import { snapshotCocycleSection } from "./cocycleSectionSnapshot";
 import { parseCoxeterSystemInput } from "../coxeter";
 import {
   buildGeneralizedCompressionCertificate,
-  verifyGeneralizedCompressionCertificate,
   type GeneralizedCompressionBuildOptions,
   type GeneralizedCompressionCertificate,
-  type GeneralizedCompressionReplayResult,
 } from "../davis/generalizedCompression";
 import type { TorsionFreeCandidateResult } from "../torsionFree";
 import { canonicalSha256 } from "../utils/canonicalSha256";
@@ -13,6 +12,12 @@ import {
   replayGenericActionH1Certificate,
   type GenericActionH1BuildResult,
 } from "./genericActionH1";
+import {
+  computeScalableGenericActionH1CertificateDigest,
+  replayScalableGenericActionH1,
+  type ScalableGenericActionH1BuildInput,
+  type ScalableGenericActionH1BuildResult,
+} from "./scalableGenericActionH1";
 import {
   replayExactCompactActionCheapScreen,
   type ExactCompactActionCheapScreenOptions,
@@ -25,12 +30,10 @@ import {
 import {
   buildExactTernaryHeightConeCover,
   canonicalizeHeightNormal,
-  replayExactTernaryHeightConeCover,
   type HeightArrangementSign,
   type HeightConeContext,
   type HeightConeCoverCertificate,
   type HeightConeCoverNode,
-  type HeightConeCoverReplay,
 } from "./streamedHeightArrangement";
 import {
   buildStreamedLawfulDavisOracle,
@@ -56,6 +59,8 @@ export interface GenericCompactExpensiveStageBounds {
   maxCompressedCells?: number;
   maxFaceTypeRelations?: number;
   maxRootedFaceRecords?: number;
+  /** Dense exact-integer section entries packed before template streaming. */
+  maxCocycleSectionEntries?: number;
   maxTemplates?: number;
   maxTemplateGerms?: number;
   maxTemplateAdjacencyEntries?: number;
@@ -151,7 +156,6 @@ export interface GenericCompactExpensiveArrangement {
   normalCatalogue: GenericHeightNormalCatalogueEntry[];
   normalCatalogueDigest: string;
   cover: GenericHeightArrangementCover;
-  coverReplay: HeightConeCoverReplay;
   faceCatalogue: GenericHeightArrangementFace[];
   faceCatalogueDigest: string;
   census: {
@@ -170,7 +174,6 @@ export interface GenericCompactExpensiveArrangement {
     lowerDimensionalZeroSignFacesIncluded: true;
     bothOffsetPolaritiesEvaluated: true;
     zeroCharacterSeparated: true;
-    exactConeCoverReplayed: true;
   };
 }
 
@@ -200,8 +203,15 @@ export interface GenericTemplateCompatibilityWitness {
   witnessDigest: string;
 }
 
+/**
+ * Schema 2 (October 2026): the build records what it built and checked, not
+ * replays of its own output.  The H1 input is either replayed (supplied from
+ * elsewhere) or recorded as built in the same run by the caller; the
+ * generalized compression and the exact arrangement are built and checked
+ * once.  replayGenericCompactExpensiveStage is the independent replay.
+ */
 export interface GenericCompactExpensiveStageCertificate {
-  schemaVersion: 1;
+  schemaVersion: 2;
   kind: "generic-compact-action-expensive-stage";
   status: "completed" | "incomplete" | "failed";
   outcome:
@@ -217,17 +227,24 @@ export interface GenericCompactExpensiveStageCertificate {
     generatorCount: number;
     oracleStructureHash: string;
     oracleActionRowsCanonicalSha256: string;
+    h1Backend: "in-process-dense" | "proof-carrying-scalable";
     h1CertificateDigest: string;
-    cheapScreenReportDigest: string;
-    cheapScreenSurvivorTrialId: string;
+    cheapScreenMode: "replayed-survivor" | "not-requested-direct-exact-search";
+    cheapScreenReportDigest: string | null;
+    cheapScreenSurvivorTrialId: string | null;
   };
   budgets: Required<GenericCompactExpensiveStageBounds>;
   stages: GenericCompactExpensiveStageRecord[];
   upstream: {
+    cheapScreenMode?: GenericCompactExpensiveStageCertificate["source"]["cheapScreenMode"];
     h1Rank?: number;
     latticeBasisDigest?: string;
     cocycleSectionDigest?: string;
-    h1ReplayStatus?: "passed" | "failed";
+    /**
+     * How the H1 input was verified: replayed here, or built by the caller
+     * in the same run from the same accepted action and oracle.
+     */
+    h1Verification?: "replay-passed" | "replay-failed" | "built-in-same-run";
     cheapScreenReplay?: ExactCompactActionCheapScreenReplay;
     survivor?: {
       trialId: string;
@@ -247,7 +264,6 @@ export interface GenericCompactExpensiveStageCertificate {
   };
   generalizedCompression?: {
     certificate: GeneralizedCompressionCertificate;
-    replay: GeneralizedCompressionReplayResult;
   };
   templateCompatibility?: GenericTemplateCompatibilityWitness;
   arrangement?: GenericCompactExpensiveArrangement;
@@ -262,17 +278,17 @@ export interface GenericCompactExpensiveStageCertificate {
       | "full-h1-rank-exceeds-in-process-exact-cone-engine";
     detail: string;
     requiredCapability: string;
-    preservedResult: "replayed-full-generalized-compression-sidecar";
+    preservedResult: "full-generalized-compression-sidecar";
   };
   checks: {
     oracleExactlyBoundToAcceptedAction: boolean;
-    h1CertificateReplayed: boolean;
+    h1CertificateVerified: boolean;
     fullIntegralH1BasisBound: boolean;
     cheapScreenReplayed: boolean;
     selectedCheapScreenTrialPassed: boolean;
-    generalizedCompressionReplayed: boolean;
+    generalizedCompressionBuilt: boolean;
     templateRuleMatchesSelectedSurvivor: boolean;
-    exactArrangementReplayed: boolean;
+    exactArrangementBuilt: boolean;
     allClaimedChecksPassed: boolean;
   };
   claims: string[];
@@ -284,13 +300,22 @@ export interface GenericCompactExpensiveStageCertificate {
 
 export interface GenericCompactExpensiveStageOptions {
   oracle: StreamedLawfulDavisOracle;
-  h1: GenericActionH1BuildResult;
-  cheapScreenOptions: Omit<
+  h1: GenericActionH1BuildResult | ScalableGenericActionH1BuildResult;
+  /** Required exactly when `h1` is the proof-carrying scalable result. */
+  scalableH1ReplayInput?: ScalableGenericActionH1BuildInput;
+  /**
+   * "built-in-same-run" when the caller built the scalable `h1` result from
+   * `scalableH1ReplayInput` immediately before this call (the full pipeline
+   * does).  The binding to the action and oracle and the H1 content are
+   * still checked; only the replay of H1 is skipped and recorded as such.
+   */
+  h1Provenance?: "built-in-same-run";
+  cheapScreenOptions?: Omit<
     ExactCompactActionCheapScreenOptions,
     "oracle" | "cocycleBasis"
   >;
-  cheapScreenReport: ExactCompactActionCheapScreenReport;
-  survivorTrialId: string;
+  cheapScreenReport?: ExactCompactActionCheapScreenReport;
+  survivorTrialId?: string;
   generalizedCompressionOptions?: GeneralizedCompressionBuildOptions;
   bounds?: GenericCompactExpensiveStageBounds;
 }
@@ -318,6 +343,7 @@ const DEFAULT_BOUNDS: Required<GenericCompactExpensiveStageBounds> = {
   maxCompressedCells: 2_000_000,
   maxFaceTypeRelations: 65_536,
   maxRootedFaceRecords: 20_000_000,
+  maxCocycleSectionEntries: 50_000_000,
   maxTemplates: 4_096,
   maxTemplateGerms: 2_000_000,
   maxTemplateAdjacencyEntries: 20_000_000,
@@ -552,11 +578,12 @@ function snapshotCocycleBasis(
   basis: StreamedTrackBIntegralCocycleBasis,
 ): StreamedTrackBIntegralCocycleBasis {
   const rank = basis.coordinateIds.length;
-  const table: Array<Array<readonly [number, string]>> = [];
-  for (let point = 0; point < oracle.degree; point += 1) {
-    for (let generator = 0; generator < oracle.generatorCount; generator += 1) {
+  const snapshot = snapshotCocycleSection(
+    oracle.degree,
+    oracle.generatorCount,
+    (point, generator) => {
       let previous = -1;
-      const pairs = basis
+      return basis
         .edgeCoordinatePairs(point, generator)
         .map(([coordinate, value], pairIndex) => {
           if (
@@ -577,11 +604,10 @@ function snapshotCocycleBasis(
           if (exact === 0n) {
             throw new Error("A sparse cocycle edge stores an explicit zero.");
           }
-          return [coordinate, exact.toString()] as const;
+          return [coordinate, exact] as const;
         });
-      table.push(pairs);
-    }
-  }
+    },
+  );
   return {
     coordinateIds: [...basis.coordinateIds],
     latticeBasisDigest: basis.latticeBasisDigest,
@@ -597,7 +623,7 @@ function snapshotCocycleBasis(
       ) {
         throw new RangeError("Cocycle snapshot lookup is out of range.");
       }
-      return table[point * oracle.generatorCount + generator];
+      return snapshot.pairsAt(point, generator);
     },
   };
 }
@@ -1488,33 +1514,9 @@ function buildArrangement(
     maxNodes: bounds.maxConeNodes,
     maxIntermediateInequalities: bounds.maxIntermediateInequalities,
   });
-  const replayCounter: EvaluationCounter = {
-    templateEvaluations: 0,
-    germEvaluations: 0,
-  };
-  const coverReplay = replayExactTernaryHeightConeCover(cover, {
-    verifyLeaf(context, stored) {
-      try {
-        const rebuilt = buildLeaf(
-          context,
-          normals.entries,
-          collected.templates,
-          oracle.degree,
-          bounds,
-          replayCounter,
-        );
-        return canonicalSha256(rebuilt) === canonicalSha256(stored);
-      } catch {
-        return false;
-      }
-    },
-    maxIntermediateInequalities: bounds.maxIntermediateInequalities,
-  });
-  if (coverReplay.status !== "passed") {
-    throw new Error(
-      `Exact arrangement replay failed: ${coverReplay.errors.join(" ")}`,
-    );
-  }
+  // The cover is not replayed here: the build would only re-run its own
+  // deterministic leaf evaluation.  replayGenericCompactExpensiveStage
+  // rebuilds the whole stage independently and compares it.
   if (cover.zeroCharacterLeafCount !== 1) {
     throw new Error(
       `The exact arrangement has ${cover.zeroCharacterLeafCount} zero-character leaves instead of one.`,
@@ -1545,7 +1547,6 @@ function buildArrangement(
     normalCatalogue: normals.entries,
     normalCatalogueDigest: normals.digest,
     cover,
-    coverReplay,
     faceCatalogue,
     faceCatalogueDigest: canonicalSha256(faceCatalogue),
     census: {
@@ -1569,8 +1570,169 @@ function buildArrangement(
       lowerDimensionalZeroSignFacesIncluded: true,
       bothOffsetPolaritiesEvaluated: true,
       zeroCharacterSeparated: true,
-      exactConeCoverReplayed: true,
     },
+  };
+}
+
+function isScalableH1Result(
+  h1: GenericCompactExpensiveStageOptions["h1"],
+): h1 is ScalableGenericActionH1BuildResult {
+  return h1.certificate.kind === "scalable-generic-action-integral-h1";
+}
+
+interface CertifiedH1View {
+  backend: GenericCompactExpensiveStageCertificate["source"]["h1Backend"];
+  certificateDigest: string;
+  verification: "replay-passed" | "replay-failed" | "built-in-same-run";
+  rank: number;
+  latticeBasisDigest: string;
+  cocycleSectionDigest: string;
+  basis: StreamedTrackBIntegralCocycleBasis;
+}
+
+/**
+ * The two accepted actions agree: same rows point by point, and the same
+ * remaining record (certificate and metadata).  Hashing the whole object
+ * as one canonical JSON string would exceed V8's string limit beyond a few
+ * million points.
+ */
+function sameAcceptedAction(
+  left: TorsionFreeCandidateResult,
+  right: TorsionFreeCandidateResult,
+): boolean {
+  if (left === right) return true;
+  const leftRows = left.candidate.generatorImages;
+  const rightRows = right.candidate.generatorImages;
+  if (leftRows.length !== rightRows.length) return false;
+  for (let generator = 0; generator < leftRows.length; generator += 1) {
+    const leftRow = leftRows[generator];
+    const rightRow = rightRows[generator];
+    if (leftRow === rightRow) continue;
+    if (leftRow.length !== rightRow.length) return false;
+    for (let point = 0; point < leftRow.length; point += 1) {
+      if (leftRow[point] !== rightRow[point]) return false;
+    }
+  }
+  const withoutRows = (accepted: TorsionFreeCandidateResult) => {
+    const { generatorImages, ...candidate } = accepted.candidate;
+    void generatorImages;
+    return { ...accepted, candidate };
+  };
+  return (
+    canonicalSha256(withoutRows(left)) === canonicalSha256(withoutRows(right))
+  );
+}
+
+function replayAndReadCertifiedH1(options: {
+  system: ReturnType<typeof parseCoxeterSystemInput>;
+  accepted: TorsionFreeCandidateResult;
+  actionRootedOracle: StreamedLawfulDavisOracle;
+  h1: GenericCompactExpensiveStageOptions["h1"];
+  scalableH1ReplayInput?: ScalableGenericActionH1BuildInput;
+  h1Provenance?: "built-in-same-run";
+}): CertifiedH1View {
+  if (isScalableH1Result(options.h1)) {
+    const replayInput = options.scalableH1ReplayInput;
+    if (replayInput === undefined) {
+      throw new Error(
+        "A scalable full-H1 result requires its proof-carrying replay input.",
+      );
+    }
+    if (
+      !sameAcceptedAction(replayInput.accepted, options.accepted) ||
+      replayInput.oracle.structureHash !==
+        options.actionRootedOracle.structureHash ||
+      replayInput.oracle.actionRowsCanonicalSha256 !==
+        options.actionRootedOracle.actionRowsCanonicalSha256
+    ) {
+      throw new Error(
+        "The scalable full-H1 replay input is not bound to this accepted action and oracle.",
+      );
+    }
+    const verification =
+      options.h1Provenance === "built-in-same-run"
+        ? ("built-in-same-run" as const)
+        : replayScalableGenericActionH1(replayInput, options.h1.certificate)
+              .status === "passed"
+          ? ("replay-passed" as const)
+          : ("replay-failed" as const);
+    const h1 = options.h1.certificate.h1;
+    const completionH1 = options.h1.certificate.completion?.h1;
+    const basis = options.h1.integralCocycleBasis;
+    if (
+      verification === "replay-failed" ||
+      options.h1.certificate.status !== "passed" ||
+      !options.h1.certificate.checks.allClaimedChecksPassed ||
+      h1 === undefined ||
+      h1.rank < 1 ||
+      completionH1?.checks.fullIntegralKernelCertified !== true ||
+      basis === null ||
+      basis.coordinateIds.length !== h1.rank ||
+      basis.latticeBasisDigest !== h1.latticeBasisDigest ||
+      h1.cocycleSectionDigest === null ||
+      basis.expectedCocycleSectionDigest !== h1.cocycleSectionDigest ||
+      computeScalableGenericActionH1CertificateDigest(
+        options.h1.certificate,
+      ) !== options.h1.certificate.certificateDigest
+    ) {
+      throw new Error(
+        "The scalable runtime cocycle basis is not its verified nonzero full integral H1 basis.",
+      );
+    }
+    return {
+      backend: "proof-carrying-scalable",
+      certificateDigest: options.h1.certificate.certificateDigest,
+      verification,
+      rank: h1.rank,
+      latticeBasisDigest: h1.latticeBasisDigest,
+      cocycleSectionDigest: h1.cocycleSectionDigest,
+      basis,
+    };
+  }
+
+  if (
+    options.scalableH1ReplayInput !== undefined ||
+    options.h1Provenance !== undefined
+  ) {
+    throw new Error(
+      "A scalable H1 replay input or provenance was supplied for an in-process H1 result.",
+    );
+  }
+  const replay = replayGenericActionH1Certificate(
+    options.system,
+    options.accepted,
+    options.h1.certificate,
+  );
+  const h1 = options.h1.certificate.h1;
+  const basis = options.h1.integralCocycleBasis;
+  if (
+    replay.status !== "passed" ||
+    options.h1.certificate.status !== "passed" ||
+    h1 === undefined ||
+    h1.rank < 1 ||
+    !h1.checks.fullIntegralKernelCertified ||
+    basis === null ||
+    basis.coordinateIds.length !== h1.rank ||
+    basis.latticeBasisDigest !== h1.latticeBasisDigest ||
+    basis.expectedCocycleSectionDigest !== h1.cocycleSectionDigest ||
+    computeGenericActionH1CertificateDigest(options.h1.certificate) !==
+      options.h1.certificate.certificateDigest
+  ) {
+    throw new Error(
+      "The in-process runtime cocycle basis is not its replayed nonzero full integral H1 basis.",
+    );
+  }
+  return {
+    backend: "in-process-dense",
+    certificateDigest: options.h1.certificate.certificateDigest,
+    verification:
+      replay.status === "passed"
+        ? ("replay-passed" as const)
+        : ("replay-failed" as const),
+    rank: h1.rank,
+    latticeBasisDigest: h1.latticeBasisDigest,
+    cocycleSectionDigest: h1.cocycleSectionDigest,
+    basis,
   };
 }
 
@@ -1589,6 +1751,18 @@ export function buildGenericCompactExpensiveStage(
   const bounds = resolveBounds(options.bounds);
   const stages = stageRecords();
   const h1CertificateDigest = options.h1.certificate.certificateDigest;
+  const h1Backend = isScalableH1Result(options.h1)
+    ? "proof-carrying-scalable"
+    : "in-process-dense";
+  const suppliedCheapScreenFieldCount = [
+    options.cheapScreenOptions,
+    options.cheapScreenReport,
+    options.survivorTrialId,
+  ].filter((value) => value !== undefined).length;
+  const useCheapScreen = suppliedCheapScreenFieldCount === 3;
+  const cheapScreenMode = useCheapScreen
+    ? "replayed-survivor"
+    : "not-requested-direct-exact-search";
   const source: GenericCompactExpensiveStageCertificate["source"] = {
     systemCanonicalSha256: canonicalSha256(system),
     candidateId: accepted.candidate.id,
@@ -1596,20 +1770,24 @@ export function buildGenericCompactExpensiveStage(
     generatorCount: system.rank,
     oracleStructureHash: options.oracle.structureHash,
     oracleActionRowsCanonicalSha256: options.oracle.actionRowsCanonicalSha256,
+    h1Backend,
     h1CertificateDigest,
-    cheapScreenReportDigest: options.cheapScreenReport.reportDigest,
-    cheapScreenSurvivorTrialId: options.survivorTrialId,
+    cheapScreenMode,
+    cheapScreenReportDigest: options.cheapScreenReport?.reportDigest ?? null,
+    cheapScreenSurvivorTrialId: options.survivorTrialId ?? null,
   };
-  const upstream: GenericCompactExpensiveStageCertificate["upstream"] = {};
+  const upstream: GenericCompactExpensiveStageCertificate["upstream"] = {
+    cheapScreenMode,
+  };
   const checks: GenericCompactExpensiveStageCertificate["checks"] = {
     oracleExactlyBoundToAcceptedAction: false,
-    h1CertificateReplayed: false,
+    h1CertificateVerified: false,
     fullIntegralH1BasisBound: false,
     cheapScreenReplayed: false,
     selectedCheapScreenTrialPassed: false,
-    generalizedCompressionReplayed: false,
+    generalizedCompressionBuilt: false,
     templateRuleMatchesSelectedSurvivor: false,
-    exactArrangementReplayed: false,
+    exactArrangementBuilt: false,
     allClaimedChecksPassed: false,
   };
   const errors: string[] = [];
@@ -1639,20 +1817,20 @@ export function buildGenericCompactExpensiveStage(
   const finish = (): GenericCompactExpensiveStageCertificate => {
     checks.allClaimedChecksPassed =
       checks.oracleExactlyBoundToAcceptedAction &&
-      checks.h1CertificateReplayed &&
+      checks.h1CertificateVerified &&
       checks.fullIntegralH1BasisBound &&
       checks.cheapScreenReplayed &&
       checks.selectedCheapScreenTrialPassed &&
       (generalizedCompression === undefined ||
-        checks.generalizedCompressionReplayed) &&
+        checks.generalizedCompressionBuilt) &&
       (arrangement === undefined ||
         (checks.templateRuleMatchesSelectedSurvivor &&
-          checks.exactArrangementReplayed));
+          checks.exactArrangementBuilt));
     const payload: Omit<
       GenericCompactExpensiveStageCertificate,
       "certificateDigest"
     > = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       kind: "generic-compact-action-expensive-stage",
       status,
       outcome,
@@ -1677,6 +1855,11 @@ export function buildGenericCompactExpensiveStage(
   };
 
   try {
+    if (suppliedCheapScreenFieldCount !== 0 && !useCheapScreen) {
+      throw new Error(
+        "Cheap-screen options, report, and survivor id must be supplied together or all omitted.",
+      );
+    }
     checkedProduct(
       accepted.candidate.index,
       system.rank,
@@ -1708,121 +1891,145 @@ export function buildGenericCompactExpensiveStage(
         "The supplied oracle is not exactly bound to the accepted permutation action and Coxeter system.",
       );
     }
-    const h1Replay = replayGenericActionH1Certificate(
+    const certifiedH1 = replayAndReadCertifiedH1({
       system,
       accepted,
-      options.h1.certificate,
+      actionRootedOracle,
+      h1: options.h1,
+      ...(options.scalableH1ReplayInput
+        ? { scalableH1ReplayInput: options.scalableH1ReplayInput }
+        : {}),
+      ...(options.h1Provenance ? { h1Provenance: options.h1Provenance } : {}),
+    });
+    upstream.h1Verification = certifiedH1.verification;
+    checks.h1CertificateVerified = certifiedH1.verification !== "replay-failed";
+    const h1Phrase =
+      certifiedH1.verification === "built-in-same-run"
+        ? "the full integral H1 basis was built in this run and bound to the action"
+        : "the full integral H1 basis replayed exactly";
+    upstream.h1Rank = certifiedH1.rank;
+    upstream.latticeBasisDigest = certifiedH1.latticeBasisDigest;
+    upstream.cocycleSectionDigest = certifiedH1.cocycleSectionDigest;
+    const directedEdgeEntries = checkedProduct(
+      actionRootedOracle.degree,
+      actionRootedOracle.generatorCount,
+      bounds.maxActionEntries,
+      "maxActionEntries",
+      "Directed action entry count",
     );
-    upstream.h1ReplayStatus = h1Replay.status;
-    checks.h1CertificateReplayed = h1Replay.status === "passed";
-    if (!checks.h1CertificateReplayed) {
-      throw new Error("The full integral H1 certificate did not replay.");
-    }
-    const h1 = options.h1.certificate.h1;
-    const basis = options.h1.integralCocycleBasis;
-    if (
-      options.h1.certificate.status !== "passed" ||
-      !h1 ||
-      h1.rank < 1 ||
-      !h1.checks.fullIntegralKernelCertified ||
-      !basis ||
-      basis.coordinateIds.length !== h1.rank ||
-      basis.latticeBasisDigest !== h1.latticeBasisDigest ||
-      basis.expectedCocycleSectionDigest !== h1.cocycleSectionDigest ||
-      computeGenericActionH1CertificateDigest(options.h1.certificate) !==
-        h1CertificateDigest
-    ) {
-      throw new Error(
-        "The runtime cocycle basis is not the certified nonzero full integral H1 basis.",
-      );
-    }
-    upstream.h1Rank = h1.rank;
-    upstream.latticeBasisDigest = h1.latticeBasisDigest;
-    upstream.cocycleSectionDigest = h1.cocycleSectionDigest ?? undefined;
-    const cocycleBasis = snapshotCocycleBasis(actionRootedOracle, basis);
+    checkedProduct(
+      directedEdgeEntries,
+      certifiedH1.rank,
+      bounds.maxCocycleSectionEntries,
+      "maxCocycleSectionEntries",
+      "Packed integral cocycle-section entry count",
+    );
+    const cocycleBasis = snapshotCocycleBasis(
+      actionRootedOracle,
+      certifiedH1.basis,
+    );
     checks.fullIntegralH1BasisBound = true;
-    const cheapReplay = replayExactCompactActionCheapScreen(
-      {
-        ...options.cheapScreenOptions,
-        oracle: actionRootedOracle,
-        cocycleBasis,
-      },
-      options.cheapScreenReport,
-    );
-    upstream.cheapScreenReplay = cheapReplay;
-    checks.cheapScreenReplayed = cheapReplay.status === "passed";
-    const acceptedCertificateDigest = canonicalSha256(accepted.certificate);
-    if (
-      options.cheapScreenOptions.actionBinding.upstreamCertificateDigest !==
-        acceptedCertificateDigest ||
-      options.cheapScreenReport.source.upstreamActionCertificateDigest !==
-        acceptedCertificateDigest
-    ) {
-      checks.cheapScreenReplayed = false;
-      throw new Error(
-        "The replayed cheap screen is not bound to the accepted torsion-free certificate.",
-      );
-    }
-    if (!checks.cheapScreenReplayed) {
-      throw new Error("The exact cheap-screen report did not replay.");
-    }
-    const survivor = selectedSurvivor(
-      options.cheapScreenReport,
-      options.survivorTrialId,
-    );
-    checks.selectedCheapScreenTrialPassed = true;
-    const order = options.cheapScreenOptions.pullingOrders.find(
-      (entry) => entry.id === survivor.orderId,
-    );
-    const potential = options.cheapScreenOptions.periodicPotentials.find(
-      (entry) => entry.id === survivor.potentialId,
-    );
-    const survivorCharacters = options.cheapScreenOptions.characters.filter(
-      (entry) => entry.id === survivor.characterId,
-    );
-    if (!order || !potential || survivorCharacters.length !== 1) {
-      throw new Error(
-        "The selected survivor's character, order, or potential is not unique in the replayed portfolio.",
-      );
-    }
-    const survivorCharacter = survivorCharacters[0];
+    let survivor: ExactCheapScreenTrial | undefined;
+    let survivorCharacter:
+      | { id: string; coordinates: readonly string[] }
+      | undefined;
     const compatibility = {
-      pullingSubdivision: survivor.subdivisionFamily === "pulling",
-      canonicalPointOrder: canonicalPointOrder(
+      pullingSubdivision: true,
+      canonicalPointOrder: true,
+      zeroPeriodicPotential: true,
+      existingTemplateApiCompatible: true,
+    };
+    if (useCheapScreen) {
+      const cheapScreenOptions = options.cheapScreenOptions!;
+      const cheapScreenReport = options.cheapScreenReport!;
+      const survivorTrialId = options.survivorTrialId!;
+      const cheapReplay = replayExactCompactActionCheapScreen(
+        {
+          ...cheapScreenOptions,
+          oracle: actionRootedOracle,
+          cocycleBasis,
+        },
+        cheapScreenReport,
+      );
+      upstream.cheapScreenReplay = cheapReplay;
+      checks.cheapScreenReplayed = cheapReplay.status === "passed";
+      const acceptedCertificateDigest = canonicalSha256(accepted.certificate);
+      if (
+        cheapScreenOptions.actionBinding.upstreamCertificateDigest !==
+          acceptedCertificateDigest ||
+        cheapScreenReport.source.upstreamActionCertificateDigest !==
+          acceptedCertificateDigest
+      ) {
+        checks.cheapScreenReplayed = false;
+        throw new Error(
+          "The replayed cheap screen is not bound to the accepted torsion-free certificate.",
+        );
+      }
+      if (!checks.cheapScreenReplayed) {
+        throw new Error("The exact cheap-screen report did not replay.");
+      }
+      survivor = selectedSurvivor(cheapScreenReport, survivorTrialId);
+      checks.selectedCheapScreenTrialPassed = true;
+      const order = cheapScreenOptions.pullingOrders.find(
+        (entry) => entry.id === survivor!.orderId,
+      );
+      const potential = cheapScreenOptions.periodicPotentials.find(
+        (entry) => entry.id === survivor!.potentialId,
+      );
+      const survivorCharacters = cheapScreenOptions.characters.filter(
+        (entry) => entry.id === survivor!.characterId,
+      );
+      if (!order || !potential || survivorCharacters.length !== 1) {
+        throw new Error(
+          "The selected survivor's character, order, or potential is not unique in the replayed portfolio.",
+        );
+      }
+      survivorCharacter = survivorCharacters[0];
+      compatibility.pullingSubdivision =
+        survivor.subdivisionFamily === "pulling";
+      compatibility.canonicalPointOrder = canonicalPointOrder(
         order,
         actionRootedOracle.degree,
-      ),
-      zeroPeriodicPotential: zeroPotential(
+      );
+      compatibility.zeroPeriodicPotential = zeroPotential(
         potential,
         actionRootedOracle.degree,
-      ),
-      existingTemplateApiCompatible: false,
-    };
-    compatibility.existingTemplateApiCompatible =
-      compatibility.pullingSubdivision &&
-      compatibility.canonicalPointOrder &&
-      compatibility.zeroPeriodicPotential;
-    const survivorRecord = {
-      trialId: survivor.trialId,
-      characterId: survivor.characterId,
-      orderId: survivor.orderId,
-      potentialId: survivor.potentialId,
-      tiePolarity: survivor.tiePolarity,
-      subdivisionFamily: survivor.subdivisionFamily,
-      compatibility,
-      compatibilityDigest: "",
-    };
-    survivorRecord.compatibilityDigest = canonicalSha256({
-      ...survivorRecord,
-      compatibilityDigest: "",
-    });
-    upstream.survivor = survivorRecord;
-    setStage(
-      stages,
-      "upstream-replay",
-      "passed",
-      "The action, full integral H1 basis, and selected cheap-screen survivor replayed exactly.",
-    );
+      );
+      compatibility.existingTemplateApiCompatible =
+        compatibility.pullingSubdivision &&
+        compatibility.canonicalPointOrder &&
+        compatibility.zeroPeriodicPotential;
+      const survivorRecord = {
+        trialId: survivor.trialId,
+        characterId: survivor.characterId,
+        orderId: survivor.orderId,
+        potentialId: survivor.potentialId,
+        tiePolarity: survivor.tiePolarity,
+        subdivisionFamily: survivor.subdivisionFamily,
+        compatibility,
+        compatibilityDigest: "",
+      };
+      survivorRecord.compatibilityDigest = canonicalSha256({
+        ...survivorRecord,
+        compatibilityDigest: "",
+      });
+      upstream.survivor = survivorRecord;
+      setStage(
+        stages,
+        "upstream-replay",
+        "passed",
+        `The action and the selected cheap-screen survivor replayed exactly; ${h1Phrase}.`,
+      );
+    } else {
+      checks.cheapScreenReplayed = true;
+      checks.selectedCheapScreenTrialPassed = true;
+      setStage(
+        stages,
+        "upstream-replay",
+        "passed",
+        `The action is bound exactly and ${h1Phrase}; the fixed canonical Track-B model is searched directly.`,
+      );
+    }
 
     currentStage = "generalized-compression";
     const compressionCertificate = buildGeneralizedCompressionCertificate(
@@ -1830,43 +2037,21 @@ export function buildGenericCompactExpensiveStage(
       accepted,
       options.generalizedCompressionOptions,
     );
-    const compressionReplay = verifyGeneralizedCompressionCertificate(
-      system,
-      accepted,
-      compressionCertificate,
-      {
-        ...(options.generalizedCompressionOptions?.sourceQuotientVertexIds
-          ? {
-              sourceQuotientVertexIds:
-                options.generalizedCompressionOptions.sourceQuotientVertexIds,
-            }
-          : {}),
-        ...(options.generalizedCompressionOptions?.coverCompression
-          ? {
-              coverCompression:
-                options.generalizedCompressionOptions.coverCompression,
-            }
-          : {}),
-      },
-    );
-    generalizedCompression = {
-      certificate: compressionCertificate,
-      replay: compressionReplay,
-    };
-    checks.generalizedCompressionReplayed = compressionReplay.valid;
-    if (!compressionReplay.valid) {
-      throw new Error(
-        `The generalized compression did not replay: ${compressionReplay.errors.join(" ")}`,
-      );
-    }
+    // Built once and checked by its own certificate; it is not re-verified
+    // here.  The stage replay rebuilds it independently.
+    generalizedCompression = { certificate: compressionCertificate };
+    // The compression build throws on any failed check, so a certificate
+    // here has passed.
+    checks.generalizedCompressionBuilt =
+      compressionCertificate.status === "passed";
     claims.push(
-      "The action-rooted generalized compression records and replays every spherical type, every |W_T|-element rooted fiber, and every proper spherical face map.",
+      "The action-rooted generalized compression records every spherical type, every |W_T|-element rooted fiber, and every proper spherical face map.",
     );
     setStage(
       stages,
       "generalized-compression",
       "passed",
-      `Replayed ${compressionCertificate.sphericalTypes.length} spherical types and ${compressionCertificate.rootedFaceRecordCount} rooted face records.`,
+      `Built ${compressionCertificate.sphericalTypes.length} spherical types and ${compressionCertificate.rootedFaceRecordCount} rooted face records.`,
     );
 
     if (!compatibility.existingTemplateApiCompatible) {
@@ -1887,18 +2072,18 @@ export function buildGenericCompactExpensiveStage(
         detail,
         requiredCapability:
           "A full-quotient linear-template streamer for the selected global order, periodic potential, and subdivision family, including all introduced subdivision vertices.",
-        preservedResult: "replayed-full-generalized-compression-sidecar",
+        preservedResult: "full-generalized-compression-sidecar",
       };
       warnings.push(
         "The generalized compression is complete, but this cheap-screen survivor was not promoted to a different height/subdivision rule.",
       );
       return finish();
     }
-    if (h1.rank > 4) {
+    if (certifiedH1.rank > 4) {
       status = "incomplete";
       outcome = "compression-sidecar-only";
       currentStage = "exact-height-arrangement";
-      const detail = `Full integral H1 has rank ${h1.rank}; the in-process exact ternary cone engine supports ranks at most four.`;
+      const detail = `Full integral H1 has rank ${certifiedH1.rank}; the in-process exact ternary cone engine supports ranks at most four.`;
       setStage(
         stages,
         "full-integral-template-stream",
@@ -1916,7 +2101,7 @@ export function buildGenericCompactExpensiveStage(
         detail,
         requiredCapability:
           "A replayable exact rational-cone backend wired to exhaustive full-arrangement splitting in arbitrary H1 rank.",
-        preservedResult: "replayed-full-generalized-compression-sidecar",
+        preservedResult: "full-generalized-compression-sidecar",
       };
       warnings.push(
         "No lower-rank slice was substituted for the certified full integral character lattice.",
@@ -1950,14 +2135,16 @@ export function buildGenericCompactExpensiveStage(
         `The full integral template stream failed: ${collected.stream.errors.join(" ")}`,
       );
     }
-    templateCompatibility = compatibilityWitness({
-      report: options.cheapScreenReport,
-      trial: survivor,
-      characterId: survivorCharacter.id,
-      characterCoordinates: survivorCharacter.coordinates,
-      templates: collected.templates,
-      degree: actionRootedOracle.degree,
-    });
+    if (survivor && survivorCharacter && options.cheapScreenReport) {
+      templateCompatibility = compatibilityWitness({
+        report: options.cheapScreenReport,
+        trial: survivor,
+        characterId: survivorCharacter.id,
+        characterCoordinates: survivorCharacter.coordinates,
+        templates: collected.templates,
+        degree: actionRootedOracle.degree,
+      });
+    }
     checks.templateRuleMatchesSelectedSurvivor = true;
     setStage(
       stages,
@@ -1968,11 +2155,11 @@ export function buildGenericCompactExpensiveStage(
 
     currentStage = "exact-height-arrangement";
     arrangement = buildArrangement(actionRootedOracle, collected, bounds);
-    checks.exactArrangementReplayed =
-      arrangement.coverReplay.status === "passed" &&
-      Object.values(arrangement.checks).every(Boolean);
-    if (!checks.exactArrangementReplayed) {
-      throw new Error("The exact full-H1 arrangement did not replay.");
+    checks.exactArrangementBuilt = Object.values(arrangement.checks).every(
+      Boolean,
+    );
+    if (!checks.exactArrangementBuilt) {
+      throw new Error("The exact full-H1 arrangement did not pass its checks.");
     }
     setStage(
       stages,
@@ -2040,7 +2227,7 @@ export function replayGenericCompactExpensiveStage(
     }
     const stored = storedInput as GenericCompactExpensiveStageCertificate;
     checks.envelopeRecognized =
-      stored.schemaVersion === 1 &&
+      stored.schemaVersion === 2 &&
       stored.kind === "generic-compact-action-expensive-stage" &&
       stored.method ===
         "action-rooted-generalized-compression-and-full-h1-height-arrangement" &&

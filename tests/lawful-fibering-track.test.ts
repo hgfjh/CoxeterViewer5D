@@ -117,13 +117,25 @@ describe("lawful-subcomplex-first fibering certificate", () => {
     ]);
     expect(certificate.morse.status).toBe("passed");
     expect(certificate.applicability.status).toBe("passed");
+    expect(certificate.finiteHeightBand).toMatchObject({
+      status: "passed",
+      method: "bestvina-brady-finite-height-band-pi1-surjection",
+      checks: {
+        boundedBandFinite: true,
+        bandInclusionSurjectsOnCyclicCoverPi1: true,
+        cyclicCoverPi1IdentifiesCharacterKernel: true,
+        lawfulCharacterKernelFinitelyGenerated: true,
+      },
+    });
     expect(certificate.kernelTransfer).toMatchObject({
       status: "passed",
       checks: {
         primitiveEpimorphismHToZ: true,
         lawfulMorseKernelFinitelyGenerated: true,
         presentationSurjectionPi1YToH: true,
-        charactersCommuteOnPresentationGenerators: true,
+        rawCharactersCommuteOnPresentationGenerators: true,
+        rawCharacterFactorsThroughPrimitiveCharacter: true,
+        normalizedCharactersCommuteOnPresentationGenerators: true,
         restrictedKernelMapSurjective: true,
         finiteGenerationPassesToTargetKernel: true,
       },
@@ -136,7 +148,7 @@ describe("lawful-subcomplex-first fibering certificate", () => {
     });
   });
 
-  it("uses an exact metric-link check rather than ambient Davis asphericity", () => {
+  it("retains exact metric-link asphericity as stronger optional evidence", () => {
     const quotient = infiniteDihedralIndexTwoCover();
     const cover = buildCoverCompression(quotient);
     const wallSystem = findWallSystem(cover.barX);
@@ -160,6 +172,7 @@ describe("lawful-subcomplex-first fibering certificate", () => {
       morseTheoremApplicabilityEstablished: true,
     });
     expect(certificate.npcAsphericity.status).toBe("passed");
+    expect(certificate.finiteHeightBand.status).toBe("passed");
     expect(certificate.kernelTransfer.status).toBe("passed");
     expect(certificate.conclusion.lawfulKernelFinitelyGenerated).toBe(true);
     expect(certificate.conclusion.targetKernelFinitelyGenerated).toBe(true);
@@ -168,7 +181,7 @@ describe("lawful-subcomplex-first fibering certificate", () => {
     );
   });
 
-  it("rejects applicability evidence scoped to another retained-cell set", () => {
+  it("does not let stale optional asphericity evidence block the height-band theorem", () => {
     const quotient = infiniteDihedralIndexTwoCover();
     const cover = buildCoverCompression(quotient);
     const wallSystem = findWallSystem(cover.barX);
@@ -191,11 +204,12 @@ describe("lawful-subcomplex-first fibering certificate", () => {
       applicability: stale,
     });
 
-    expect(certificate.status).toBe("failed");
+    expect(certificate.status).toBe("passed");
     expect(certificate.applicability.scopeMatches).toBe(false);
     expect(
       certificate.kernelTransfer.checks.finiteGenerationPassesToTargetKernel,
-    ).toBe(false);
+    ).toBe(true);
+    expect(certificate.finiteHeightBand.status).toBe("passed");
     expect(certificate.applicability.errors.join(" ")).toContain(
       "different complex or retained-cell set",
     );

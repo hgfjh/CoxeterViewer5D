@@ -1,4 +1,5 @@
 import {
+  CircleQuestionMark,
   Download,
   Expand,
   FileJson,
@@ -18,10 +19,7 @@ import {
 import { Panel } from "../components/Panel";
 import { Stat } from "../components/Stat";
 import { Toggle } from "../components/Toggle";
-import {
-  buildCoverCompression,
-  type CoverCompressionResult,
-} from "../compression";
+import type { CoverCompressionResult } from "../compression";
 import {
   parseQuotientComplex,
   QuotientValidationCancelledError,
@@ -33,26 +31,24 @@ import {
   type SceneEdge,
   type SceneGenerator,
   type SceneNode,
-  type SceneRenderStats,
 } from "../render/SceneView";
 import type { GeneratedCayleyBall, HyperbolicProjection } from "../types";
 import {
   FullDavisCertificationClient,
   LawfulCertificationClient,
-  buildSchreierPresentationFromQuotient,
-  buildVirtualAlgebraicFiberingCertificate,
   type FullDavisCoorientationSearchResult,
   type LawfulCoorientationSearchResult,
-  type VirtualAlgebraicFiberingCertificate,
 } from "../fibering";
-import { buildIdealHyperbolic3CubeS4Cover } from "../torsionFree";
+import {
+  buildC44Psl27Cover,
+  buildIdealHyperbolic3CubeS4Cover,
+} from "../torsionFree";
 import type {
   DesktopBridge,
   DesktopExportRequest,
   DesktopMenuCommand,
 } from "../desktop/bridge";
 import {
-  createWallCoorientation,
   deriveMorseLinks,
   evaluateLawfulSubcomplex,
   findWallSystem,
@@ -74,17 +70,42 @@ import {
 import { CoversWallsPanel } from "./CoversWallsPanel";
 import { buildDefiningGraphScene } from "./definingGraphScene";
 import { bundledExampleById, bundledExamples } from "./exampleRegistry";
-import { createGenerationClient } from "./generationClient";
+import {
+  createGenerationClient,
+  GenerationSupersededError,
+} from "./generationClient";
 import {
   modelExplanations,
   startHereActions,
   type StartHereActionId,
   type TopLevelModelId,
 } from "./orientation";
+import { GuidedTour, type TourCloseReason } from "./onboarding/GuidedTour";
+import { localGraphDistances } from "./localFocus";
+import { projectionAvailability } from "./sourceComplexScene";
+import {
+  describeStatus,
+  describeTerminationReason,
+  pluralize,
+} from "./statusText";
+import { tourSteps, type AppTourStep } from "./onboarding/tourSteps";
+import { shouldAutoStartTour, writeTourRecord } from "./onboarding/tourStorage";
 import { ResearchInspector, type InspectorSummary } from "./ResearchInspector";
-import { buildSourceComplexScene } from "./sourceComplexScene";
+import { compactResearchCatalogueNotices } from "./researchUi";
+import {
+  buildSourceComplexBase,
+  SOURCE_SELECTED_NODE_SCALE,
+  withSourceSelection,
+} from "./sourceComplexScene";
 import { buildWallScene, wallLabel } from "./wallScene";
 import { createQuotientValidationClient } from "./quotientValidationClient";
+import { CoverAnalysisClient } from "./coverAnalysisClient";
+import { useCoverAnalysis } from "./useCoverAnalysis";
+import { measure } from "./perfMarks";
+import {
+  createRenderStatsStore,
+  type RenderStatsStore,
+} from "./renderStatsStore";
 import {
   buildAutomaticCoverSearchPlan,
   certifyAutomaticCoverArtifact,
@@ -115,11 +136,22 @@ interface RenderScene {
 }
 
 const DEFAULT_COVER = parseQuotientComplex(I2_5IdentityQuotient);
+// Stable reference: a fresh [0, 0, 0] per render re-ran the renderer update.
+const SCENE_ORIGIN: [number, number, number] = [0, 0, 0];
 const IDEAL_3_CUBE_EXAMPLE_ID = "ideal_hyperbolic_3_cube_m3";
+const C44_TETRAHEDRON_EXAMPLE_ID = "compact_3_tetrahedron_c44_2233";
 const COLOR_SCHEME_KEY = "coxeter-viewer:color-scheme";
 
 let desktopBridgePromise: Promise<DesktopBridge> | undefined;
 let ideal3CubeS4Cover: QuotientComplex | undefined;
+let c44Psl27Cover: QuotientComplex | undefined;
+
+function getC44Psl27Cover(): QuotientComplex {
+  c44Psl27Cover ??= buildC44Psl27Cover(
+    bundledExampleById(C44_TETRAHEDRON_EXAMPLE_ID).system,
+  );
+  return c44Psl27Cover;
+}
 
 function getIdeal3CubeS4Cover(): QuotientComplex {
   ideal3CubeS4Cover ??= buildIdealHyperbolic3CubeS4Cover(
@@ -150,11 +182,14 @@ export function App() {
   const [uiMode, setUiMode] = useState<UiMode>("teaching");
   const [colorScheme, setColorScheme] = useState<ColorScheme>(readColorScheme);
   const [viewerOnly, setViewerOnly] = useState(false);
+  const [tourOpen, setTourOpen] = useState(shouldAutoStartTour);
   const [exampleId, setExampleId] = useState("I2_5");
   const [model, setModel] = useState<TopLevelModelId>("bar-x");
   const [radius, setRadius] = useState(5);
   const [projection, setProjection] =
-    useState<HyperbolicProjection>("poincare-axes");
+    // Klein is the default: hyperbolic geodesics are straight segments there,
+    // so the drawn edges between chambers are true geodesics.
+    useState<HyperbolicProjection>("klein-axes");
   const [coverSource, setCoverSource] = useState<QuotientComplex | undefined>(
     DEFAULT_COVER,
   );
@@ -169,6 +204,7 @@ export function App() {
     });
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
   const [selectedCellId, setSelectedCellId] = useState<string>();
+  const [selectedEdgeId, setSelectedEdgeId] = useState<string>();
   const [selectedWallId, setSelectedWallId] = useState<string>();
   const [barRelationFamily, setBarRelationFamily] =
     useState<BarXRelationFamilyId>("shared-complex");
@@ -183,6 +219,7 @@ export function App() {
   const [showDiscardedCells, setShowDiscardedCells] = useState(true);
   const [showNodeLabels, setShowNodeLabels] = useState(true);
   const [showEdgeLabels, setShowEdgeLabels] = useState(true);
+  const [focusOnSelection, setFocusOnSelection] = useState(false);
   const [linkLens, setLinkLens] = useState<"none" | "ascending" | "descending">(
     "none",
   );
@@ -199,7 +236,7 @@ export function App() {
     pending: true,
     requestId: 0,
   });
-  const [renderStats, setRenderStats] = useState<SceneRenderStats>();
+  const renderStatsStore = useMemo(() => createRenderStatsStore(), []);
   const [sceneLayoutVersion, setSceneLayoutVersion] = useState(0);
   const [desktopMessage, setDesktopMessage] = useState<string>();
   const capturePngRef = useRef<(() => Promise<string>) | undefined>(undefined);
@@ -207,6 +244,12 @@ export function App() {
     () => undefined,
   );
   const coverDiscoveryRunRef = useRef(0);
+  const handleCapturePngReady = useCallback(
+    (capture: (() => Promise<string>) | undefined) => {
+      capturePngRef.current = capture;
+    },
+    [],
+  );
   const generationClient = useMemo(() => createGenerationClient(), []);
   const wallSearchClient = useMemo(() => new WallSearchClient(), []);
   const fullDavisCertificationClient = useMemo(
@@ -221,6 +264,7 @@ export function App() {
     () => createQuotientValidationClient(),
     [],
   );
+  const coverAnalysisClient = useMemo(() => new CoverAnalysisClient(), []);
   const quotientImportProgress = useSyncExternalStore(
     quotientValidationClient.subscribe,
     quotientValidationClient.getSnapshot,
@@ -234,14 +278,30 @@ export function App() {
   // catalogue example.
   const system = coverSource?.sourceSystem ?? example.system;
   const coverDiscoveryPlan = useMemo(
-    () => buildAutomaticCoverSearchPlan(system, coverDiscoveryOptions),
+    () =>
+      measure("cover-discovery-plan", () =>
+        buildAutomaticCoverSearchPlan(system, coverDiscoveryOptions),
+      ),
     [coverDiscoveryOptions, system],
   );
 
   useEffect(() => {
     document.documentElement.dataset.theme = colorScheme;
-    localStorage.setItem(COLOR_SCHEME_KEY, colorScheme);
   }, [colorScheme]);
+
+  // Only an explicit toggle is remembered. Writing on every render would store
+  // the OS default on the first visit and stop following later OS changes.
+  const toggleColorScheme = useCallback(() => {
+    setColorScheme((current) => {
+      const next = current === "dark" ? "light" : "dark";
+      try {
+        localStorage.setItem(COLOR_SCHEME_KEY, next);
+      } catch {
+        // Storage blocked: the theme still applies for this visit.
+      }
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -250,8 +310,10 @@ export function App() {
       lawfulCertificationClient.dispose();
       fullDavisCertificationClient.dispose();
       quotientValidationClient.dispose();
+      coverAnalysisClient.dispose();
     };
   }, [
+    coverAnalysisClient,
     fullDavisCertificationClient,
     generationClient,
     lawfulCertificationClient,
@@ -260,6 +322,8 @@ export function App() {
   ]);
 
   useEffect(() => {
+    // The bridge chunk only matters inside the desktop shell; browsers skip it.
+    if (!hasNativeDesktopRuntime()) return;
     let disposed = false;
     let unlisten: (() => void) | undefined;
     void loadDesktopBridge()
@@ -309,7 +373,7 @@ export function App() {
         });
       })
       .catch((error) => {
-        if (!active) return;
+        if (!active || error instanceof GenerationSupersededError) return;
         setGeneration((current) => ({
           ...current,
           pending: false,
@@ -321,20 +385,27 @@ export function App() {
     };
   }, [example.id, generationClient, radius, system]);
 
-  const coverBuild = useMemo(() => {
-    if (!coverSource)
-      return {} as { result?: CoverCompressionResult; error?: string };
-    try {
-      return { result: buildCoverCompression(coverSource) };
-    } catch (error) {
-      return {
-        error: error instanceof Error ? error.message : String(error),
-      };
-    }
-  }, [coverSource]);
-  const cover = coverBuild.result;
+  const coverState = useCoverAnalysis(
+    coverSource,
+    wallSigns,
+    coverAnalysisClient,
+  );
+  const cover = coverState.cover;
+  // Shown where a cover view would be: the build error, the import error,
+  // or a note that a large cover is still being analysed.
+  const coverMessage =
+    coverState.coverError ??
+    coverImportError ??
+    (coverState.analysisPending
+      ? "Building the cover, walls and Schreier presentation in a background worker..."
+      : undefined);
   const barRelationFamilies = useMemo(
-    () => (cover ? listBarXRelationFamilies(cover) : []),
+    () =>
+      cover
+        ? measure("bar-relation-families", () =>
+            listBarXRelationFamilies(cover),
+          )
+        : [],
     [cover],
   );
   const activeBarRelationFamily: BarXRelationFamilyId =
@@ -348,10 +419,7 @@ export function App() {
     [activeBarRelationFamily],
   );
   const spreadBarRelationCells = activeBarRelationFamily !== "shared-complex";
-  const wallSystem = useMemo(
-    () => (cover ? findWallSystem(cover.barX) : undefined),
-    [cover],
-  );
+  const wallSystem = coverState.wallSystem;
   const activeSelectedWallId = wallSystem?.walls.some(
     (wall) => wall.id === selectedWallId,
   )
@@ -363,136 +431,143 @@ export function App() {
     ? selectedNodeId
     : cover?.barX.vertices[0]?.id;
 
-  const coorientation = useMemo(
-    () =>
-      wallSystem ? createWallCoorientation(wallSystem, wallSigns) : undefined,
-    [wallSigns, wallSystem],
-  );
-  const lawfulSubcomplex = useMemo(
-    () =>
-      cover && coorientation
-        ? evaluateLawfulSubcomplex(cover.barX, coorientation)
-        : undefined,
-    [coorientation, cover],
-  );
-  const morseLinks = useMemo(
-    () =>
-      cover && coorientation && lawfulSubcomplex
-        ? deriveMorseLinks(cover.barX, coorientation, lawfulSubcomplex)
-        : undefined,
-    [coorientation, cover, lawfulSubcomplex],
-  );
-  const schreierPresentation = useMemo(() => {
-    if (!coverSource) return undefined;
-    try {
-      return buildSchreierPresentationFromQuotient(coverSource);
-    } catch {
-      // The certificate builder records the full presentation error. Keeping
-      // this cache optional lets malformed imports reach that diagnostic path.
-      return undefined;
-    }
-  }, [coverSource]);
-  const virtualFiberingCertificate = useMemo<
-    VirtualAlgebraicFiberingCertificate | undefined
-  >(() => {
-    if (
-      !coverSource ||
-      !cover ||
-      !wallSystem ||
-      !coorientation ||
-      !lawfulSubcomplex ||
-      !morseLinks
-    ) {
-      return undefined;
-    }
-    return buildVirtualAlgebraicFiberingCertificate({
-      quotient: coverSource,
-      cover,
-      wallSystem,
-      coorientation,
-      lawfulSubcomplex,
-      morseLinks,
-      schreierPresentation,
-    });
-  }, [
+  const {
     coorientation,
-    cover,
-    coverSource,
     lawfulSubcomplex,
     morseLinks,
-    schreierPresentation,
-    wallSystem,
-  ]);
+    virtualFiberingCertificate,
+  } = coverState;
 
-  const sourceScene = useMemo(
+  // Each model's scene is built only while that model is shown; a click in
+  // the Davis view must not rebuild hidden cover scenes, and vice versa.
+  const sourceModelActive = model === "davis" || model === "projection";
+  const geometricSource = model === "projection";
+  // Projection needs validated reflection data. Without it the button is
+  // disabled instead of drawing a layout inside a ball it does not live in.
+  const projectionStatus = useMemo(
+    () => projectionAvailability(system),
+    [system],
+  );
+  // Short on-canvas reminders of what the picture is. The full caveats stay in
+  // the Caveats panel; these name the two that most change how to read it.
+  const viewerBadges = useMemo(() => {
+    const badges: string[] = [];
+    const dimension = system.geometry?.dimension;
+    if (model === "projection" && system.geometry) {
+      const modelName = projection.startsWith("klein")
+        ? "Klein model"
+        : "Poincaré ball";
+      const axes = projection.endsWith("pca") ? "PCA" : "coordinate axes";
+      badges.push(
+        dimension && dimension > 3
+          ? `${modelName}, ${axes}: projected from H^${dimension} to 3D`
+          : `${modelName}, ${axes}`,
+      );
+    }
+    if (model === "projection" && !projectionStatus.ok) {
+      badges.push("No reflection data: showing the Davis drawing instead");
+    }
+    if (model === "davis" && system.geometry) {
+      badges.push("Positions from the hyperbolic reflection orbit (a drawing)");
+    } else if (model === "davis") {
+      badges.push("Positions are a drawing; incidence is exact");
+    }
+    if (
+      sourceModelActive &&
+      generation.ball?.metadata.deduplication === "rounded-matrix"
+    ) {
+      badges.push("Elements identified by rounded matrices (approximate)");
+    }
+    return badges;
+  }, [
+    model,
+    projection,
+    projectionStatus.ok,
+    sourceModelActive,
+    system.geometry,
+    generation.ball,
+  ]);
+  // Placement and labels depend only on (system, ball, projection).  The
+  // selected node is highlighted by the renderer, so clicks reuse this base.
+  const sourceBase = useMemo(
     () =>
-      generation.ball
-        ? buildSourceComplexScene(system, generation.ball, {
-            selectedNodeId,
-            selectedCellId,
-            geometric: model === "projection",
-            projection,
-          })
-        : emptyScene(generation.error),
+      !sourceModelActive
+        ? undefined
+        : generation.ball
+          ? measure("source-scene", () =>
+              buildSourceComplexBase(system, generation.ball!, {
+                geometric: geometricSource,
+                projection,
+              }),
+            )
+          : emptyScene(generation.error),
     [
       generation.ball,
       generation.error,
-      model,
+      geometricSource,
       projection,
-      selectedCellId,
-      selectedNodeId,
+      sourceModelActive,
       system,
     ],
   );
-  const gammaScene = useMemo(() => buildDefiningGraphScene(system), [system]);
+  const sourceScene = useMemo(
+    () =>
+      sourceBase ? withSourceSelection(sourceBase, selectedCellId) : undefined,
+    [selectedCellId, sourceBase],
+  );
+  const gammaScene = useMemo(
+    () => (model === "gamma" ? buildDefiningGraphScene(system) : undefined),
+    [model, system],
+  );
   const hatScene = useMemo(
     () =>
-      cover
-        ? buildHatXScene(cover.hatX, {
-            selectedVertexId: selectedNodeId,
-            selectedCellId,
-            showRelationCells: showCells,
-          })
-        : emptyScene(coverBuild.error ?? coverImportError),
-    [
-      cover,
-      coverBuild.error,
-      coverImportError,
-      selectedCellId,
-      selectedNodeId,
-      showCells,
-    ],
+      model !== "hat-x"
+        ? undefined
+        : cover
+          ? measure("hat-scene", () =>
+              buildHatXScene(cover.hatX, {
+                selectedVertexId: selectedNodeId,
+                selectedCellId,
+                showRelationCells: showCells,
+              }),
+            )
+          : emptyScene(coverMessage),
+    [cover, coverMessage, model, selectedCellId, selectedNodeId, showCells],
   );
   const barScene = useMemo(
     () =>
-      cover && wallSystem
-        ? buildWallScene(cover.barX, wallSystem, {
-            selectedWallId: activeSelectedWallId,
-            selectedCellId,
-            relationFamily: activeBarRelationPair,
-            spreadRelationCells: spreadBarRelationCells,
-            showWalls,
-            focusSelectedWall: wallDisplayMode === "selected",
-            showInducedDirections,
-            colorEdgesByWall,
-            showRelationCells: showCells,
-            showDiscardedCells,
-            coorientation,
-            lawfulSubcomplex,
-            selectedVertexId: activeBarVertexId,
-            linkLens,
-          })
-        : emptyScene(coverBuild.error ?? coverImportError),
+      model !== "bar-x"
+        ? undefined
+        : cover && wallSystem
+          ? measure("bar-scene", () =>
+              buildWallScene(cover.barX, wallSystem, {
+                selectedWallId: activeSelectedWallId,
+                selectedCellId,
+                relationFamily: activeBarRelationPair,
+                spreadRelationCells: spreadBarRelationCells,
+                showWalls,
+                focusSelectedWall: wallDisplayMode === "selected",
+                showInducedDirections,
+                colorEdgesByWall,
+                showRelationCells: showCells,
+                showDiscardedCells,
+                coorientation,
+                lawfulSubcomplex,
+                selectedVertexId: activeBarVertexId,
+                linkLens,
+              }),
+            )
+          : emptyScene(coverMessage),
     [
       coorientation,
       cover,
-      coverBuild.error,
-      coverImportError,
+      coverMessage,
       lawfulSubcomplex,
       activeBarVertexId,
       activeBarRelationPair,
       spreadBarRelationCells,
       linkLens,
+      model,
       selectedCellId,
       activeSelectedWallId,
       colorEdgesByWall,
@@ -505,7 +580,7 @@ export function App() {
     ],
   );
   const scene = useMemo<RenderScene>(() => {
-    if (model === "gamma") {
+    if (gammaScene) {
       return {
         nodes: gammaScene.nodes,
         edges: gammaScene.edges,
@@ -517,31 +592,48 @@ export function App() {
         warnings: gammaScene.warnings,
       };
     }
-    if (model === "hat-x") return hatScene;
-    if (model === "bar-x") return barScene;
-    return sourceScene;
-  }, [barScene, gammaScene, hatScene, model, sourceScene, system.generators]);
+    return hatScene ?? barScene ?? sourceScene ?? emptyScene();
+  }, [barScene, gammaScene, hatScene, sourceScene, system.generators]);
+
+  const focusActive = focusOnSelection && Boolean(selectedNodeId);
+  const displayScene = useMemo<RenderScene>(() => {
+    if (!focusActive) return scene;
+    const distances = localGraphDistances(selectedNodeId, scene.edges);
+    // Vertices outside the drawn component get a large distance so they fade.
+    const far = Number.MAX_SAFE_INTEGER;
+    return {
+      ...scene,
+      nodes: scene.nodes.map((node) => ({
+        ...node,
+        localDistance: distances.get(node.id) ?? far,
+      })),
+    };
+  }, [focusActive, scene, selectedNodeId]);
 
   const currentModel = modelExplanations[model];
   const inspectorSummary = useMemo(
     () =>
-      buildInspectorSummary({
-        model,
-        systemName: system.name,
-        scene,
-        selectedNodeId,
-        selectedCellId,
-        selectedWallId: activeSelectedWallId,
-        cover,
-        wallSystem,
-        lawfulSubcomplex,
-        morseLinks,
-        linkLens,
-        selectedBarVertexId: activeBarVertexId,
-      }),
+      measure("inspector-summary", () =>
+        buildInspectorSummary({
+          model,
+          systemName: system.name,
+          scene,
+          selectedNodeId,
+          selectedCellId,
+          selectedEdgeId,
+          selectedWallId: activeSelectedWallId,
+          cover,
+          wallSystem,
+          lawfulSubcomplex,
+          morseLinks,
+          linkLens,
+          selectedBarVertexId: activeBarVertexId,
+        }),
+      ),
     [
       activeBarVertexId,
       activeSelectedWallId,
+      selectedEdgeId,
       cover,
       lawfulSubcomplex,
       linkLens,
@@ -560,14 +652,14 @@ export function App() {
         model,
         sceneWarnings: scene.warnings,
         cover,
-        coverError: coverBuild.error ?? coverImportError,
+        coverError: coverState.coverError ?? coverImportError,
         wallSystem,
         searchError,
         isCompact: example.role === "compact",
       }),
     [
       cover,
-      coverBuild.error,
+      coverState.coverError,
       coverImportError,
       example.role,
       model,
@@ -577,16 +669,37 @@ export function App() {
     ],
   );
 
+  // The renderer rebuilds edge geometry (arrowheads, wall colouring, ghosting,
+  // projected positions) only when this key changes. Everything that alters
+  // an edge's direction, colour or position must therefore appear here, or the
+  // canvas keeps showing a stale coorientation while the panels report the new
+  // one.
+  const coorientationKey = coorientation
+    ? Object.entries(coorientation.wallSigns)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([id, sign]) => `${id}:${sign}`)
+        .join(",")
+    : "";
   const structureVersion = [
-    "scene-v2",
+    "scene-v3",
     model,
     example.id,
     radius,
+    projection,
     generation.requestId,
     cover?.hatX.vertices.length ?? 0,
     cover?.barX.geometricEdges.length ?? 0,
     activeBarRelationFamily,
     showWalls ? 1 : 0,
+    coorientationKey,
+    wallDisplayMode,
+    wallDisplayMode === "selected" ? (activeSelectedWallId ?? "") : "",
+    showInducedDirections ? 1 : 0,
+    colorEdgesByWall ? 1 : 0,
+    linkLens,
+    linkLens === "none" ? "" : (activeBarVertexId ?? ""),
+    // Edge fading in focus mode is built with the edges.
+    focusActive ? `focus:${selectedNodeId}` : "",
   ].join(":");
   const appearanceVersion = [
     selectedNodeId ?? "",
@@ -611,6 +724,12 @@ export function App() {
     (nextExampleId: string) => {
       coverDiscoveryRunRef.current += 1;
       setExampleId(nextExampleId);
+      // Hyperbolic balls grow exponentially and are now drawn by their
+      // reflection orbit; radius 3 keeps the 1-skeleton and its labels
+      // readable. Finite groups keep the larger radius.
+      if (bundledExampleById(nextExampleId).system.geometry) {
+        setRadius((current) => Math.min(current, 3));
+      }
       setSelectedNodeId(undefined);
       setSelectedCellId(undefined);
       setSelectedWallId(undefined);
@@ -650,6 +769,18 @@ export function App() {
           status: "found",
           message:
             "The bundled exact map t_ij -> (ij) has torsion-free kernel of index 24. Every spherical A1/A2 restriction was checked in-repo.",
+        });
+      } else if (nextExampleId === C44_TETRAHEDRON_EXAMPLE_ID) {
+        setCoverSource(getC44Psl27Cover());
+        setShowCells(true);
+        setShowWalls(false);
+        setShowInducedDirections(false);
+        setColorEdgesByWall(false);
+        setCoverImportError(undefined);
+        setCoverDiscovery({
+          status: "found",
+          message:
+            "The bundled exact map s_i -> (r_i, 1) into PSL(2,7) x C2 has torsion-free kernel of index 336, a closed orientable hyperbolic 3-manifold. Every spherical B3 restriction was checked in-repo.",
         });
       } else {
         setCoverSource(undefined);
@@ -1366,7 +1497,7 @@ export function App() {
     setExampleId("I2_5");
     setModel("bar-x");
     setRadius(5);
-    setProjection("poincare-axes");
+    setProjection("klein-axes");
     setCoverSource(DEFAULT_COVER);
     setCoverImportError(undefined);
     setSelectedNodeId(undefined);
@@ -1613,18 +1744,117 @@ export function App() {
     }
     return [0, -radius * 2.25, radius * 1.3];
   }, [model, scene.cells, scene.nodes]);
+  // Stable handlers keep the memoized research panel from re-rendering on
+  // unrelated App updates.
+  const handleDiscoverCoverClick = useCallback(() => {
+    void handleDiscoverCover();
+  }, [handleDiscoverCover]);
+  const handleExportDiscoveryRequestClick = useCallback(() => {
+    void handleExportDiscoveryRequest();
+  }, [handleExportDiscoveryRequest]);
+  const handleExportVirtualFiberingClick = useCallback(() => {
+    void handleExportVirtualFibering();
+  }, [handleExportVirtualFibering]);
+  const handleCancelImport = useCallback(() => {
+    quotientValidationClient.cancel();
+  }, [quotientValidationClient]);
+  // Scene clicks select exactly one kind of element; the renderer reports a
+  // vertex first, then an edge, then a cell.
+  const handleSceneSelectNode = useCallback((nodeId?: string) => {
+    setSelectedEdgeId(undefined);
+    setSelectedNodeId(nodeId);
+  }, []);
+  const handleSceneSelectCell = useCallback((cellId?: string) => {
+    setSelectedEdgeId(undefined);
+    setSelectedCellId(cellId);
+  }, []);
+  const handleSceneSelectEdge = useCallback((edgeId: string) => {
+    setSelectedNodeId(undefined);
+    setSelectedCellId(undefined);
+    setSelectedEdgeId(edgeId);
+  }, []);
+
+  const handleSelectBarVertex = useCallback((vertexId: string) => {
+    setSelectedNodeId(vertexId);
+    setSelectedCellId(undefined);
+  }, []);
+
+  // Tour steps reuse the handlers behind the visible controls, so the tour
+  // shows exactly what a click on that control would. The example is only
+  // reloaded when it changes: handleExampleChange clears selections and wall
+  // flips, which would undo what the reader did on the previous step.
+  const handleTourStepEnter = useCallback(
+    (step: AppTourStep) => {
+      const action = step.action;
+      if (!action) return;
+      if (action.example && action.example !== exampleId) {
+        handleExampleChange(action.example);
+      }
+      if (action.relationFamily) {
+        handleBarRelationFamilyChange(action.relationFamily);
+      }
+      if (action.model) setModel(action.model);
+      if (action.radius !== undefined && action.radius !== radius) {
+        handleRadiusChange(action.radius);
+      }
+      if (action.selectNode) {
+        setSelectedNodeId(action.selectNode);
+        setSelectedCellId(undefined);
+      }
+      if (action.wallDisplayMode) {
+        setShowWalls(true);
+        setWallDisplayMode(action.wallDisplayMode);
+      }
+      if (action.linkLens) setLinkLens(action.linkLens);
+      const detailsSelector = action.openDetails;
+      if (detailsSelector) {
+        // The details element mounts only after the state above renders.
+        let attempts = 0;
+        const open = () => {
+          const details =
+            document.querySelector<HTMLDetailsElement>(detailsSelector);
+          if (details) details.open = true;
+          else if (attempts++ < 60) requestAnimationFrame(open);
+        };
+        requestAnimationFrame(open);
+      }
+    },
+    [
+      exampleId,
+      radius,
+      handleExampleChange,
+      handleBarRelationFamilyChange,
+      handleRadiusChange,
+    ],
+  );
+
+  const handleTourClose = useCallback((reason: TourCloseReason) => {
+    writeTourRecord(reason);
+    setTourOpen(false);
+  }, []);
+
+  const startTour = useCallback(() => {
+    setViewerOnly(false);
+    setTourOpen(true);
+  }, []);
+
   const searchStatus = searchResult
     ? searchResult.certificate.optimalityProven
-      ? `Proven optimum: ${searchResult.objectiveValue ?? 0} lawful cells.`
-      : `Best found: ${searchResult.objectiveValue ?? 0} lawful cells; gap ${formatGap(searchResult.certificate.absoluteGap)}.`
+      ? `Proven optimum: ${pluralize(searchResult.objectiveValue ?? 0, "lawful cell")}.`
+      : `Best found: ${pluralize(searchResult.objectiveValue ?? 0, "lawful cell")}; gap ${formatGap(searchResult.certificate.absoluteGap)}.`
     : searchError;
+  const lawfulCertificationLabel =
+    lawfulFiberingSearchResult?.certificate?.lawful.certificationComplex ===
+    "coface-closed-full"
+      ? "coface-closed lawful complex"
+      : "lawful 2-complex";
   const fiberingSearchStatus = fiberingSearchRunning
     ? lawfulFiberingSearchResult
       ? "The lawful track did not certify; checking the complete Davis quotient."
-      : "Checking the lawful 2-complex first."
+      : "Checking Track A first."
     : lawfulFiberingSearchResult?.status === "found" &&
         lawfulFiberingSearchResult.certificate?.status === "passed"
-      ? `The lawful 2-complex certified after ${lawfulFiberingSearchResult.candidatesEvaluated} coorientations; the full Davis check is optional.`
+      ? `The ${lawfulCertificationLabel} certified after ${lawfulFiberingSearchResult.candidatesEvaluated} coorientations by the finite-height-band argument; the full Davis check is optional.`
       : fiberingSearchResult
         ? fiberingSearchResult.status === "found"
           ? lawfulFiberingSearchResult
@@ -1632,9 +1862,9 @@ export function App() {
             : `Found a coorientation passing the full subdivided-Davis link checks after ${fiberingSearchResult.candidatesEvaluated} candidates.`
           : fiberingSearchResult.status === "not-found"
             ? "Both exact sign-space searches finished without a certificate for this quotient."
-            : `The fallback is ${fiberingSearchResult.status}; ${fiberingSearchResult.terminationReason.replaceAll("-", " ")}.`
+            : `Track B (full Davis quotient) is ${describeStatus(fiberingSearchResult.status)}; ${describeTerminationReason(fiberingSearchResult.terminationReason)}.`
         : lawfulFiberingSearchResult
-          ? `The lawful track is ${lawfulFiberingSearchResult.status}; ${lawfulFiberingSearchResult.terminationReason.replaceAll("-", " ")}.`
+          ? `Track A (lawful complex) is ${describeStatus(lawfulFiberingSearchResult.status)}; ${describeTerminationReason(lawfulFiberingSearchResult.terminationReason)}.`
           : fiberingSearchError;
 
   return (
@@ -1644,9 +1874,7 @@ export function App() {
       data-theme={colorScheme}
     >
       <aside className="sidebar" aria-label="Viewer controls">
-        <Panel
-          title={uiMode === "teaching" ? "Choose Example" : "Choose / Load"}
-        >
+        <Panel title={uiMode === "teaching" ? "Choose Example" : "Source"}>
           <label className="field" htmlFor="example-select">
             <span>Source Coxeter system</span>
             <select
@@ -1656,7 +1884,11 @@ export function App() {
             >
               <optgroup label="Core and featured examples">
                 {bundledExamples
-                  .filter((entry) => entry.role !== "catalogue")
+                  .filter(
+                    (entry) =>
+                      entry.role !== "catalogue" &&
+                      entry.role !== "nine-facet-catalogue",
+                  )
                   .map((entry) => (
                     <option key={entry.id} value={entry.id}>
                       {entry.label}
@@ -1672,12 +1904,37 @@ export function App() {
                     </option>
                   ))}
               </optgroup>
+              <optgroup label="Certified nine-facet catalogue (Ma-Zheng)">
+                {bundledExamples
+                  .filter((entry) => entry.role === "nine-facet-catalogue")
+                  .map((entry) => (
+                    <option key={entry.id} value={entry.id}>
+                      {entry.label}
+                    </option>
+                  ))}
+              </optgroup>
             </select>
           </label>
           <p className="field-help" data-testid="active-source-system">
             Active source: <strong>{system.name}</strong>
             {coverSource ? " (from the finite action)" : ""}
           </p>
+          {uiMode === "research" ? (
+            <details
+              className="advanced-details compact-details"
+              data-testid="compact-research-campaigns"
+            >
+              <summary>Compact H5 campaign status</summary>
+              <ul className="compact-status-list">
+                {compactResearchCatalogueNotices.map((notice) => (
+                  <li key={notice.id}>
+                    <strong>{notice.label}</strong>: {notice.status}.{" "}
+                    {notice.summary}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null}
           {(model === "davis" || model === "projection") && (
             <label className="field" htmlFor="radius-input">
               <span>Ball radius: {radius}</span>
@@ -1703,14 +1960,34 @@ export function App() {
                   setProjection(event.target.value as HyperbolicProjection)
                 }
               >
-                <option value="poincare-axes">Poincare axes</option>
-                <option value="poincare-pca">Poincare PCA</option>
-                <option value="klein-axes">Klein axes</option>
-                <option value="klein-pca">Klein PCA</option>
+                <option value="klein-axes">Klein model, coordinate axes</option>
+                <option value="klein-pca">Klein model, PCA</option>
+                <option value="poincare-axes">
+                  Poincaré ball, coordinate axes
+                </option>
+                <option value="poincare-pca">Poincaré ball, PCA</option>
               </select>
             </label>
           ) : null}
         </Panel>
+
+        {uiMode === "teaching" ? (
+          <Panel title="Start Here">
+            <div className="start-here-list">
+              {startHereActions.map((action) => (
+                <button
+                  key={action.id}
+                  type="button"
+                  className="start-here-action"
+                  onClick={() => handleStartHere(action.id)}
+                >
+                  <strong>{action.label}</strong>
+                  <span>{action.summary}</span>
+                </button>
+              ))}
+            </div>
+          </Panel>
+        ) : null}
 
         <Panel title="View">
           <div
@@ -1724,6 +2001,13 @@ export function App() {
                 type="button"
                 className="button"
                 aria-pressed={model === modelId}
+                data-tour={`model-${modelId}`}
+                disabled={modelId === "projection" && !projectionStatus.ok}
+                title={
+                  modelId === "projection" && !projectionStatus.ok
+                    ? projectionStatus.reason
+                    : undefined
+                }
                 onClick={() => setModel(modelId)}
               >
                 {modelExplanations[modelId].teachingLabel}
@@ -1734,8 +2018,9 @@ export function App() {
         </Panel>
 
         <CoversWallsPanel
+          uiMode={uiMode}
           cover={cover}
-          coverError={coverBuild.error ?? coverImportError}
+          coverError={coverState.coverError ?? coverImportError}
           sourceName={coverSource?.name}
           wallSystem={wallSystem}
           coorientation={coorientation}
@@ -1763,24 +2048,21 @@ export function App() {
           discoveryOptions={coverDiscoveryOptions}
           discoveryState={coverDiscovery}
           onDiscoveryOptionsChange={handleCoverDiscoveryOptionsChange}
-          onDiscoverCover={() => void handleDiscoverCover()}
-          onExportDiscoveryRequest={() => void handleExportDiscoveryRequest()}
+          onDiscoverCover={handleDiscoverCoverClick}
+          onExportDiscoveryRequest={handleExportDiscoveryRequestClick}
           onImportDiscoveryArtifact={handleImportDiscoveryArtifact}
           onImportCover={handleImportCover}
           importProgress={quotientImportProgress}
-          onCancelImport={() => quotientValidationClient.cancel()}
+          onCancelImport={handleCancelImport}
           onSelectWall={setSelectedWallId}
-          onSelectVertex={(vertexId) => {
-            setSelectedNodeId(vertexId);
-            setSelectedCellId(undefined);
-          }}
+          onSelectVertex={handleSelectBarVertex}
           onRelationFamilyChange={handleBarRelationFamilyChange}
           onLinkLensChange={setLinkLens}
           onFlipWall={handleFlipWall}
           onOptimize={handleOptimize}
           onFindVirtualFibering={handleFindVirtualFibering}
           onFindFullDavisFibering={handleFindFullDavisFibering}
-          onExportVirtualFibering={() => void handleExportVirtualFibering()}
+          onExportVirtualFibering={handleExportVirtualFiberingClick}
           onShowWallsChange={setShowWalls}
           onWallDisplayModeChange={setWallDisplayMode}
           onShowInducedDirectionsChange={setShowInducedDirections}
@@ -1788,24 +2070,6 @@ export function App() {
           onShowCellsChange={setShowCells}
           onShowDiscardedCellsChange={setShowDiscardedCells}
         />
-
-        {uiMode === "teaching" ? (
-          <Panel title="Start Here">
-            <div className="start-here-list">
-              {startHereActions.map((action) => (
-                <button
-                  key={action.id}
-                  type="button"
-                  className="start-here-action"
-                  onClick={() => handleStartHere(action.id)}
-                >
-                  <strong>{action.label}</strong>
-                  <span>{action.summary}</span>
-                </button>
-              ))}
-            </div>
-          </Panel>
-        ) : null}
 
         <Panel title="Labels">
           <Toggle
@@ -1818,6 +2082,12 @@ export function App() {
             label="Show edge labels"
             onChange={setShowEdgeLabels}
           />
+          <Toggle
+            checked={focusOnSelection}
+            label="Fade far from the selected vertex"
+            title="Dims everything more than one edge away from the selected vertex"
+            onChange={setFocusOnSelection}
+          />
         </Panel>
       </aside>
 
@@ -1825,9 +2095,6 @@ export function App() {
         <header className="top-strip">
           <div className="app-title">
             <h1>CoxeterViewer5D</h1>
-            <p>
-              {currentModel.teachingLabel}: {currentModel.shortDescription}
-            </p>
           </div>
           <div className="stats-row">
             <Stat label="Vertices" value={semanticNodeCount} />
@@ -1841,17 +2108,22 @@ export function App() {
             <button
               className="icon-button"
               type="button"
+              title="Guided tour"
+              aria-label="Start guided tour"
+              onClick={startTour}
+            >
+              <CircleQuestionMark size={17} />
+            </button>
+            <button
+              className="icon-button"
+              type="button"
               title={
                 colorScheme === "dark" ? "Use light theme" : "Use dark theme"
               }
               aria-label={
                 colorScheme === "dark" ? "Use light theme" : "Use dark theme"
               }
-              onClick={() =>
-                setColorScheme((current) =>
-                  current === "dark" ? "light" : "dark",
-                )
-              }
+              onClick={toggleColorScheme}
             >
               {colorScheme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
             </button>
@@ -1881,14 +2153,17 @@ export function App() {
 
         <div className="viewer-frame">
           <SceneView
-            nodes={scene.nodes}
-            edges={scene.edges}
-            cells={scene.cells}
+            nodes={displayScene.nodes}
+            edges={displayScene.edges}
+            cells={displayScene.cells}
             generators={scene.generators}
             structureVersion={structureVersion}
             appearanceVersion={appearanceVersion}
             layoutVersion={sceneLayoutVersion}
             selectedNodeId={selectedNodeId}
+            selectedNodeScale={
+              sourceModelActive ? SOURCE_SELECTED_NODE_SCALE : 1
+            }
             selectedCellId={selectedCellId}
             showCells={showCells}
             showNodeLabels={showNodeLabels}
@@ -1901,33 +2176,68 @@ export function App() {
             localCellRenderMode="in-graph"
             cellOpacity={model === "bar-x" ? 0.16 : 0.24}
             topologyMode={model === "hat-x" || model === "bar-x"}
-            cameraFocusTarget={coverCameraOffset ? [0, 0, 0] : undefined}
+            cameraFocusTarget={coverCameraOffset ? SCENE_ORIGIN : undefined}
             cameraFocusOffset={coverCameraOffset}
             cameraPreset="global"
+            occlusionMode={focusActive ? "fade-far" : "hide-far"}
             semanticLabelsOnly={
               model === "hat-x" || model === "bar-x" || model === "gamma"
             }
             colorScheme={colorScheme}
             sceneLabel={`${currentModel.teachingLabel} viewer`}
             workerGenerationMs={generation.generationMs}
-            onCapturePngReady={(capture) => {
-              capturePngRef.current = capture;
-            }}
-            onRenderStats={setRenderStats}
-            onSelectNode={setSelectedNodeId}
-            onSelectCell={setSelectedCellId}
+            onCapturePngReady={handleCapturePngReady}
+            onRenderStats={renderStatsStore.publish}
+            onSelectNode={handleSceneSelectNode}
+            onSelectCell={handleSceneSelectCell}
+            onSelectEdge={handleSceneSelectEdge}
+            // Edge colours mean walls, not generators, in this mode.
+            showGeneratorLegend={
+              !(
+                (model === "hat-x" || model === "bar-x") &&
+                showWalls &&
+                colorEdgesByWall
+              )
+            }
           />
+          {viewerOnly ? (
+            <button
+              type="button"
+              className="viewer-ui-toggle"
+              aria-keyshortcuts="U"
+              onClick={() => {
+                setViewerOnly(false);
+                setSceneLayoutVersion((current) => current + 1);
+              }}
+            >
+              <Minimize2 size={15} /> Show controls (U)
+            </button>
+          ) : null}
+          {viewerBadges.length > 0 && !sceneEmpty ? (
+            <ul className="viewer-badges" aria-label="Drawing status">
+              {viewerBadges.map((badge) => (
+                <li key={badge}>{badge}</li>
+              ))}
+            </ul>
+          ) : null}
           {sceneEmpty ? (
             <div className="viewer-empty-overlay">
               <strong>No {currentModel.teachingLabel} data is loaded.</strong>
-              <span>
-                {coverBuild.error ?? coverImportError ?? generation.error}
-              </span>
+              <span>{coverMessage ?? generation.error}</span>
             </div>
           ) : null}
           {generation.pending &&
           (model === "davis" || model === "projection") ? (
-            <div className="viewer-progress">Generating radius {radius}...</div>
+            <div className="viewer-progress">Generating radius {radius}…</div>
+          ) : null}
+          {coverState.analysisPending ? (
+            <div className="viewer-progress">
+              Analyzing the imported cover in a background worker…
+            </div>
+          ) : coverState.coorientationPending ? (
+            <div className="viewer-progress">
+              Updating lawful cells and directed links…
+            </div>
           ) : null}
         </div>
       </main>
@@ -1976,10 +2286,7 @@ export function App() {
                     wallSystem ? wallDiagnosticLabel(wallSystem) : "not run"
                   }
                 />
-                <StatusRow
-                  label="Render calls"
-                  value={renderStats?.drawCalls ?? "-"}
-                />
+                <RenderCallsRow store={renderStatsStore} />
               </dl>
               {desktopMessage ? (
                 <p className="field-help" role="status">
@@ -2032,6 +2339,13 @@ export function App() {
           </div>
         </Panel>
       </aside>
+      {tourOpen ? (
+        <GuidedTour
+          steps={tourSteps}
+          onStepEnter={handleTourStepEnter}
+          onClose={handleTourClose}
+        />
+      ) : null}
     </div>
   );
 }
@@ -2052,6 +2366,7 @@ function buildInspectorSummary(args: {
   scene: RenderScene;
   selectedNodeId?: string;
   selectedCellId?: string;
+  selectedEdgeId?: string;
   selectedWallId?: string;
   cover?: CoverCompressionResult;
   wallSystem?: ReturnType<typeof findWallSystem>;
@@ -2066,6 +2381,37 @@ function buildInspectorSummary(args: {
   const selectedCell = args.scene.cells.find(
     (cell) => cell.id === args.selectedCellId,
   );
+  const selectedEdge = args.selectedEdgeId
+    ? args.scene.edges.find((edge) => edge.id === args.selectedEdgeId)
+    : undefined;
+  if (selectedEdge) {
+    const nodeLabel = (id: string) => {
+      const node = args.scene.nodes.find((candidate) => candidate.id === id);
+      return node?.label ?? id;
+    };
+    const generator =
+      selectedEdge.semanticLabelKind === "coxeter-order"
+        ? undefined
+        : args.scene.generators[selectedEdge.generator];
+    const endpoints = `${nodeLabel(selectedEdge.source)} and ${nodeLabel(selectedEdge.target)}`;
+    return {
+      selected: generator
+        ? `An edge labelled ${generator.label}, joining ${endpoints}.`
+        : `An edge of ${modelExplanations[args.model].teachingLabel}, joining ${endpoints}.`,
+      reason:
+        args.model === "gamma"
+          ? "Gamma has an edge for each pair of generators with finite m."
+          : generator
+            ? `With right multiplication, w and w·${generator.label} are joined by an edge labelled ${generator.label}.`
+            : "It is one of the edges of the current complex.",
+      status:
+        "The edge and its label are data; where it is drawn is a drawing convention.",
+      details: [
+        { label: "Edge", value: selectedEdge.id },
+        { label: "Endpoints", value: endpoints },
+      ],
+    };
+  }
   if (
     args.model === "bar-x" &&
     args.linkLens !== "none" &&
@@ -2232,15 +2578,25 @@ function activeWarnings(args: {
     if (!args.wallSystem.diagnostics.selfOsculationFree)
       warnings.push("At least one wall self-osculates at a vertex link.");
     warnings.push(
-      "A large lawful subcomplex is a combinatorial result. Applying the paper's incoherence or Morse conclusions also requires its stated hypotheses.",
+      "A large lawful subcomplex alone is combinatorial evidence. Track A promotion additionally requires a primitive wall character, nonempty connected directed links, the finite-height-band π₁ certificate, and kernel transfer.",
     );
   }
   if (args.isCompact) {
     warnings.push(
-      "Compact 5-dimensional examples need not satisfy the paper's two-dimensional/asphericity hypotheses; wall calculations remain diagnostics unless those hypotheses are checked separately.",
+      "For compact 5-dimensional examples, use the coface-closed lawful complex and its actual subdivided links. CAT(0)/asphericity is useful stronger evidence but is not required for Track A finite-generation promotion.",
     );
   }
   return [...new Set(warnings.filter(Boolean))];
+}
+
+/** Subscribes to the renderer's draw-call count only. */
+function RenderCallsRow({ store }: { store: RenderStatsStore }) {
+  const drawCalls = useSyncExternalStore(
+    store.subscribe,
+    store.drawCalls,
+    store.drawCalls,
+  );
+  return <StatusRow label="Render calls" value={drawCalls ?? "-"} />;
 }
 
 function StatusRow({
@@ -2273,8 +2629,15 @@ function wallDiagnosticLabel(
 
 function readColorScheme(): ColorScheme {
   if (typeof window === "undefined") return "light";
-  const stored = localStorage.getItem(COLOR_SCHEME_KEY);
-  return stored === "dark" ? "dark" : "light";
+  try {
+    const stored = localStorage.getItem(COLOR_SCHEME_KEY);
+    if (stored === "dark" || stored === "light") return stored;
+  } catch {
+    // Storage blocked; fall through to the OS preference.
+  }
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
 function isTypingTarget(target: EventTarget | null): boolean {

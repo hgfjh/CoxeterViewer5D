@@ -1205,7 +1205,7 @@ describe("release orientation documentation", () => {
       "Davis cell",
       "`hat X`",
       "`bar X`",
-      "Wall Coorientation",
+      "Wall Orientation (Coorientation)",
       "Lawful Cell",
       "Gamma",
       "Geometric Projection",
@@ -1224,11 +1224,11 @@ describe("release orientation documentation", () => {
     }
     for (const region of [
       "Model switch",
-      "Start Here + Focus controls",
+      "Start Here",
       "Inspector",
       "Caveats drawer",
       "Research tools",
-      "Export + notebook",
+      "Notebook + Export",
     ]) {
       expect(uiMap).toContain(region);
     }

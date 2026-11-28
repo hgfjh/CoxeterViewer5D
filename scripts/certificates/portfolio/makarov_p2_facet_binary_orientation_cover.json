@@ -1,0 +1,1095 @@
+{
+  "artifactSha256": "8ef7d0c905483500cfcf3c79c2519bc7cccb2a90c1b21d09c9c0e102379e2899",
+  "comparison": {
+    "assessment": "exact existence benchmark, not a scalable Track-A target",
+    "currentActionDegree": 4792320000,
+    "refinedActionDegreeDecimal": "78097026000858274887567981131824249190161384098665116901188708785999908723854670110214551303618560000",
+    "relativeBinaryCoverIndexDecimal": "16296287810675888690147565507275025288411747149327490005089123594835050398106693649467179008",
+    "relativeBinaryCoverIndexPowerOfTwoExponent": 303
+  },
+  "coxeterVoltageActionAudit": {
+    "actionProjectsToCurrentCover": true,
+    "closedLoopVoltageRank": 312,
+    "currentClosedLoopProjectionRank": 9,
+    "edgeVoltages": {
+      "generator5": "lambda_a=(u_1(a),...,u_312(a)), where a=V0*q^-1",
+      "generator6": "fixed vector supported on color coordinates 0 and 1",
+      "generators0Through4": "zero; q maps to q*g_j"
+    },
+    "finiteRelationChecks": {
+      "commutingPairsJ5ForJ0Through3": "V0*g_j=V0, so lambda_a occurs twice",
+      "commutingPairsJ6ForJ0Through4": "the generator-6 voltage is constant",
+      "generator5Involution": "q is fixed and lambda_a occurs twice",
+      "pair45Octagon": "labels alternate a,b,a,b, so each voltage occurs twice",
+      "pair56": "infinite Coxeter exponent; no relation imposed"
+    },
+    "reachabilityProof": "for every facet a, a side word w with cell_label(w)=a makes w*s5*w^-1 a closed Q-loop of voltage lambda_a; column rank equals row rank 312",
+    "refinedActionDegreeDecimal": "78097026000858274887567981131824249190161384098665116901188708785999908723854670110214551303618560000",
+    "relativeClosedLoopKernelRank": 303,
+    "relativeIndexDecimal": "16296287810675888690147565507275025288411747149327490005089123594835050398106693649467179008",
+    "relativeIndexPowerOfTwoExponent": 303,
+    "simple45MovedLabelEdge": [
+      0,
+      2
+    ],
+    "simpleFixedLabelChecks": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "stateSpace": "F2^312 x Q",
+    "torsionFree": true,
+    "torsionFreeReason": "the refined stabilizer is a subgroup of the certified current stabilizer"
+  },
+  "fullWallCoorientation": {
+    "directedLinksRun": false,
+    "explicitSignOracles": {
+      "type0Through4": "at state (t,q), for a type-i edge let beta=r_i*q^-1 and [beta] be its projective root; multiply the canonical sign of beta by (-1)^ell_[beta](t), where ell_[beta] is the sheet functional represented by z_[beta]",
+      "type5": "at label a, use (-1)^(the color(a) coordinate of t)",
+      "type6": "use (-1)^(color-coordinate 0 of t)"
+    },
+    "lawfulClosureRun": false,
+    "proved": true,
+    "reasonForNoRun": "the exact relative cover index 2^303 is far beyond the factored global-scan budget",
+    "transportChecks": {
+      "side5Commuting": "beta negates while ell_[beta](lambda_a)=z_[beta](a)=0",
+      "side5Octagon": "beta keeps its sign while ell_[beta](lambda_a+lambda_b)=z_[beta](a)+z_[beta](b)=1",
+      "side6": "beta negates and every root-cut functional annihilates the base lift",
+      "sideSide": "the 26 exact opposite-root checks negate beta and side edges add no sheet voltage",
+      "type5": "edge reversal changes its color coordinate; every neighbor voltage has another color",
+      "type6": "edge reversal adds the base lift, whose color-0 coordinate is one"
+    },
+    "type0Through4": "signed F5 side roots corrected by their root-cut sheet functionals",
+    "type5": "the independent selected-color coordinate separates a facet from all neighbors",
+    "type6": "a color coordinate evaluates one on the fixed base voltage and side transports add no sheet voltage"
+  },
+  "identityRankTwoAnchor": {
+    "ascendingLink": {
+      "components": [
+        [
+          4,
+          6
+        ],
+        [
+          5
+        ]
+      ],
+      "connected": false,
+      "generatorVertices": [
+        4,
+        5,
+        6
+      ],
+      "kind": "ascending",
+      "lawfulRankTwoEdges": [
+        [
+          4,
+          6
+        ]
+      ],
+      "nonempty": true
+    },
+    "descendingLink": {
+      "components": [
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "connected": true,
+      "generatorVertices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "kind": "descending",
+      "lawfulRankTwoEdges": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "nonempty": true
+    },
+    "globalCalculationRun": false,
+    "identityGeneratorSigns": [
+      -1,
+      -1,
+      -1,
+      -1,
+      1,
+      1,
+      1
+    ],
+    "identitySignWord": "----+++",
+    "nonClaim": "flipping wall-component orientations changes this anchor; this is not an obstruction to every coorientation on the rank-312 cover",
+    "rootedFiniteRankTwoPolygonCount": 20,
+    "rootedRankTwoPolygons": [
+      {
+        "generators": [
+          0,
+          1
+        ],
+        "lawful": false,
+        "m": 5,
+        "signWord": "-+-+-+-+-+",
+        "transitionCount": 10
+      },
+      {
+        "generators": [
+          0,
+          2
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "--++",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          0,
+          3
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "--++",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          0,
+          4
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          0,
+          5
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          0,
+          6
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          1,
+          2
+        ],
+        "lawful": true,
+        "m": 3,
+        "signWord": "---+++",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          1,
+          3
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "--++",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          1,
+          4
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          1,
+          5
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          1,
+          6
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          2,
+          3
+        ],
+        "lawful": true,
+        "m": 3,
+        "signWord": "---+++",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          2,
+          4
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          2,
+          5
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          2,
+          6
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          3,
+          4
+        ],
+        "lawful": true,
+        "m": 3,
+        "signWord": "--+++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          3,
+          5
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          3,
+          6
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "-++-",
+        "transitionCount": 2
+      },
+      {
+        "generators": [
+          4,
+          5
+        ],
+        "lawful": false,
+        "m": 4,
+        "signWord": "++-+--+-",
+        "transitionCount": 6
+      },
+      {
+        "generators": [
+          4,
+          6
+        ],
+        "lawful": true,
+        "m": 2,
+        "signWord": "++--",
+        "transitionCount": 2
+      }
+    ],
+    "scope": "fixed lexicographic sign section at the refined identity; rank-two lawful link only",
+    "status": "failed-ascending-link-disconnected"
+  },
+  "kind": "makarov-p2-facet-specific-binary-wall-orientation-cover",
+  "nonClaims": [
+    "The rank-312 construction is not claimed minimal.",
+    "The rank-15 problem remains open; UNKNOWN is not evidence for infeasibility.",
+    "The rank-14 obstruction does not allow added side-generator voltage or a nonabelian deck action.",
+    "No global lawful-cell closure or subdivided all-vertex directed-link calculation is claimed for this enormous refinement; only the fixed identity rank-two anchor is replayed.",
+    "This certificate does not compare the exact degree with H intersect ker(rho_3), whose stabilizer image is unresolved."
+  ],
+  "rank14Impossibility": {
+    "facetVariableMultiplicityCensus": {
+      "2": 9
+    },
+    "leftHandSideXor": 0,
+    "localColorOnlyObstructions": [
+      {
+        "colorPotentialXor": 0,
+        "cycleLength": 3,
+        "extraFacetBitCoefficientForcedToOne": true,
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "rightHandSideXor": 1
+      },
+      {
+        "colorPotentialXor": 0,
+        "cycleLength": 3,
+        "extraFacetBitCoefficientForcedToOne": true,
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "rightHandSideXor": 1
+      },
+      {
+        "colorPotentialXor": 0,
+        "cycleLength": 3,
+        "extraFacetBitCoefficientForcedToOne": true,
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          4
+        ],
+        "rightHandSideXor": 1
+      }
+    ],
+    "minimumRelativeIndexInScope": 64,
+    "minimumTotalSheetRankInScope": 15,
+    "oneExtraFacetBitPossible": false,
+    "rightHandSideXor": 1,
+    "rootColorVariableMultiplicityCensus": {
+      "2": 9
+    },
+    "scope": "thirteen independent color coordinates plus one global facet function f; zero added voltage on generators 0,...,4 and no use of generator 6 in (4,5) transport",
+    "sideEquation": "f(a)+f(b)+alpha_r(color(a))+alpha_r(color(b))=1",
+    "witness": [
+      {
+        "colorPair": [
+          3,
+          1
+        ],
+        "facetPair": [
+          68,
+          70
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "colorPair": [
+          4,
+          3
+        ],
+        "facetPair": [
+          88,
+          90
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "colorPair": [
+          1,
+          4
+        ],
+        "facetPair": [
+          144,
+          146
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "colorPair": [
+          4,
+          3
+        ],
+        "facetPair": [
+          66,
+          68
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "colorPair": [
+          1,
+          4
+        ],
+        "facetPair": [
+          86,
+          88
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "colorPair": [
+          3,
+          1
+        ],
+        "facetPair": [
+          142,
+          144
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "colorPair": [
+          4,
+          1
+        ],
+        "facetPair": [
+          66,
+          70
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          4
+        ]
+      },
+      {
+        "colorPair": [
+          1,
+          3
+        ],
+        "facetPair": [
+          86,
+          90
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          4
+        ]
+      },
+      {
+        "colorPair": [
+          3,
+          4
+        ],
+        "facetPair": [
+          142,
+          146
+        ],
+        "projectiveRoot": [
+          0,
+          0,
+          0,
+          1,
+          4
+        ]
+      }
+    ],
+    "witnessEquationCount": 9
+  },
+  "rank15BoundedSearch": {
+    "branches": 1291233,
+    "conflicts": 63508,
+    "initialBooleanVariables": 161800,
+    "initialConstraints": 195328,
+    "mathematicalInference": "none",
+    "model": "two facet bits, one nonzero F2^2 functional per side root, and thirteen color potentials per root",
+    "observedPeakPythonWorkingSetMiB": 2544.9,
+    "presolvedBooleanVariables": 158128,
+    "presolvedConstraints": 193228,
+    "propagations": 333955013,
+    "recordKind": "unreplayed bounded-search receipt; not a proof object",
+    "result": "UNKNOWN: neither a model nor an unsatisfiability proof was produced",
+    "solver": "OR-Tools CP-SAT 9.15.6755",
+    "status": "unknown",
+    "timeLimitSeconds": 300.0,
+    "workers": 8
+  },
+  "schemaVersion": 1,
+  "signedSideRootAudit": {
+    "canonicalSignSection": "eta(beta)=+1 iff the F5 coefficient tuple beta is lexicographically smaller than -beta; otherwise eta(beta)=-1",
+    "field": "F5",
+    "finiteSideSideRelations": [
+      {
+        "generators": [
+          0,
+          1
+        ],
+        "m": 5
+      },
+      {
+        "generators": [
+          0,
+          2
+        ],
+        "m": 2
+      },
+      {
+        "generators": [
+          0,
+          3
+        ],
+        "m": 2
+      },
+      {
+        "generators": [
+          0,
+          4
+        ],
+        "m": 2
+      },
+      {
+        "generators": [
+          1,
+          2
+        ],
+        "m": 3
+      },
+      {
+        "generators": [
+          1,
+          3
+        ],
+        "m": 2
+      },
+      {
+        "generators": [
+          1,
+          4
+        ],
+        "m": 2
+      },
+      {
+        "generators": [
+          2,
+          3
+        ],
+        "m": 3
+      },
+      {
+        "generators": [
+          2,
+          4
+        ],
+        "m": 2
+      },
+      {
+        "generators": [
+          3,
+          4
+        ],
+        "m": 3
+      }
+    ],
+    "normalizedSimpleRoots": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        3,
+        3,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        1,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    ],
+    "normalizingScalars": [
+      1,
+      3,
+      1,
+      1,
+      1
+    ],
+    "oppositeRule": "at q the type-i signed root is r_i*q^-1",
+    "oppositeSignedRootChecks": 26,
+    "projectiveOrbitEqualsAllSideMatchings": true,
+    "projectiveRootOrbitSize": 300,
+    "quadraticFormDiagonal": [
+      1,
+      1,
+      1,
+      1,
+      3
+    ],
+    "side5TransportRule": "in a commuting half-square j<=3 the signed root negates; its lambda_a sheet transport evaluates to zero under z_r because <a,r>=0; the (4,5) half-octagon leaves the projective root sign unchanged but has z_r voltage one",
+    "signedRootOrbitSize": 600
+  },
+  "sourceBindings": {
+    "colorClassObstruction": {
+      "artifactSha256": "5445d8a09e27c15cc16e52abb27d80649a1ab4f00f9f204d0f92b601fd995c42",
+      "bytesSha256": "ac94a123c2987c69f8378028fed829c3f6c378c1039a7acf6b49733cec37c4bc",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_color_class_wall_orientation.json"
+    },
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826",
+    "section5Coloring": {
+      "artifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+      "bytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+      "path": "scripts/data/makarov_p2_section5_coloring.json"
+    },
+    "section5Import": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    }
+  },
+  "status": "valid-rank312-cover-rank15-unresolved",
+  "voltageSpaceAudit": {
+    "allRootCutsAnnihilateBaseLift": true,
+    "baseVoltageLiftCoordinateSupport": [
+      0,
+      1
+    ],
+    "baseVoltageProjectsTo": [
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "colorIndicatorRank": 13,
+    "colorRootCutIntersectionDimension": 0,
+    "combinedSheetRank": 312,
+    "rootCutCoordinateWeightCensus": {
+      "1": 299,
+      "103": 1
+    },
+    "rootCutCount": 300,
+    "rootCutNegationCheck": "z_r(v)+z_r(s_r v)=1 on all 300*130 moved pairs",
+    "rootCutRank": 299,
+    "rootCutRule": "z_r(v)=1 iff <v,r> is 3 or 4 in F5",
+    "rowSpaceTranscript": {
+      "allRootCutsSha256": "2bc9ea54c5235c0974b80ae854a25fc5dc158db59f64bc7faf70d4615847b93b",
+      "colorRowsHex": [
+        "3000000000c08400c000800000080000080100c00000000000200008080020000c0000080000060602000000900030000018100c008040000000000001000002020000000020000080040000d00000c0201",
+        "8000000080100c000e00010000100024000c00080c0c00000400000000000040400000800000000030020100001300000000300804c000010002400001000020c00000004800400000000010030002",
+        "20090200000222300000008000001010000002000000000820005002009001080242600000001008000040000000000020000000220011000a8000000040400240808000220000000000000900044",
+        "44402080014000000000000408000002200000020100000000c800420090000022001100000000000800002020000004900240140000400900044000000000400000000000040000110424000002009020",
+        "200110004005000401400100a00098000000400000004000001000000800040022804014100100282001141200184008000001010011000048000020200000808",
+        "a20404140020082808041420021800404000001000000400000200000008000110200005004001400400a0010006100000000000000000000000000000000000010000100800480002200000084000010",
+        "40200110100400000a00042000002008018018080000000201004000000202808001000080200400000001008001000220001000000000200042000900808080040000041000081004040000080",
+        "102000000000800500020000204010100000000008022001000110100401200080100020000020300300010000400000000100080a0210020000000001200010080024020220000000010100801000000",
+        "4002020800000000000205410004000c0801080000000040300000000402000080001080281004000010008080000000000080040000040a08010000420004101010000000002200040200500000400",
+        "2000140200100200010000000000180810000240000401028020000400080000000000008040008000020040c02004800040200000000014040000000280080a0004008284100000000002802008000000",
+        "100800080001240000000090000200800800400020020001200000002020001200040200002008000480040000108000200408000200800000480c00000810000200002000480000021008400000202000",
+        "90090000000040001080010000240000002020024000200800400800000044040000100009000080080080004008004c0000000012000010002000814040000002100000002110080100001000404000",
+        "800100100004002000041008004000204008000040100010010008004001040000800040010010001004000402000220000081000400080008020004080002001040000401008004800800008020000100"
+      ],
+      "selectedRootIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298
+      ]
+    },
+    "type5NeighborCount": 120,
+    "type5SeparatorCount": 650,
+    "type5SeparatorRule": "the indicator of y's selected 13-color class",
+    "voltageFunctionSpace": "F2-valued functions on the 650 small-facet labels"
+  }
+}

@@ -1,0 +1,2884 @@
+{
+  "artifactSha256": "9d0e5d475e12f88fc3a35735ac7e55da327272ece4a1e997e5af53514c1dc752",
+  "boundedAttempt": {
+    "certifiedZeroFourierCellLinkRows": 0,
+    "completeGlobalTranscript": false,
+    "constantFourierTemplatesReplayedSeparately": true,
+    "deadlineChecksActive": true,
+    "partialZeroFourierTranscriptRetained": false,
+    "stopLocation": "before expansion of the next zero-Fourier maximal-cell orbit",
+    "terminalError": "The maximal type-5 scan reached its 15-minute cap.",
+    "wallSecondsCap": 900
+  },
+  "certifiedResult": {
+    "constantFourierStage": {
+      "candidateEliminations": 48,
+      "candidateSurvivors": 32,
+      "complete": true,
+      "mathematicalDisposition": "32-candidate-survivor-frontier",
+      "survivorCandidateIndices": [
+        7,
+        11,
+        19,
+        21,
+        22,
+        25,
+        26,
+        28,
+        35,
+        37,
+        38,
+        41,
+        42,
+        44,
+        52,
+        56,
+        71,
+        75,
+        83,
+        85,
+        86,
+        89,
+        90,
+        92,
+        99,
+        101,
+        102,
+        105,
+        106,
+        108,
+        116,
+        120
+      ],
+      "survivorEquivalenceClassCount": 8
+    },
+    "globalMaximalType5ScreenComplete": false,
+    "overallDisposition": "constant-stage-frontier-only",
+    "zeroFourierStage": {
+      "candidateEliminations": 0,
+      "candidateSurvivors": 0,
+      "complete": false,
+      "mathematicalDisposition": "none"
+    }
+  },
+  "exactPreflight": {
+    "chamberScreenSurvivorCount": 112,
+    "constantFourierCellOrbitCount": 2616,
+    "constantFourierTemplateScreen": {
+      "candidates": [
+        {
+          "candidateIndex": 3,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 24472,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 10,
+            "descendingFaceCount": 10,
+            "equivalenceClassMembers": [
+              3,
+              60,
+              67,
+              124
+            ],
+            "equivalenceClassRepresentative": 3,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 4,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 24362,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 40,
+            "descendingFaceCount": 120,
+            "equivalenceClassMembers": [
+              4,
+              59,
+              68,
+              123
+            ],
+            "equivalenceClassRepresentative": 4,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 5,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 24362,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 40,
+            "descendingFaceCount": 120,
+            "equivalenceClassMembers": [
+              5,
+              58,
+              69,
+              122
+            ],
+            "equivalenceClassRepresentative": 5,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 6,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 5066,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 8,
+            "descendingFaceCount": 24,
+            "equivalenceClassMembers": [
+              6,
+              57,
+              70,
+              121
+            ],
+            "equivalenceClassRepresentative": 6,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 7,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 8,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 23442,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 80,
+            "descendingFaceCount": 1040,
+            "equivalenceClassMembers": [
+              8,
+              55,
+              72,
+              119
+            ],
+            "equivalenceClassRepresentative": 8,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 9,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 23442,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 80,
+            "descendingFaceCount": 1040,
+            "equivalenceClassMembers": [
+              9,
+              54,
+              73,
+              118
+            ],
+            "equivalenceClassRepresentative": 9,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 10,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 4874,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 24,
+            "descendingFaceCount": 216,
+            "equivalenceClassMembers": [
+              10,
+              53,
+              74,
+              117
+            ],
+            "equivalenceClassRepresentative": 10,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 11,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 12,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 2960,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 6,
+            "descendingFaceCount": 126,
+            "equivalenceClassMembers": [
+              12,
+              51,
+              76,
+              115
+            ],
+            "equivalenceClassRepresentative": 12,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 19,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 20,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 2330,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 12,
+            "descendingFaceCount": 756,
+            "equivalenceClassMembers": [
+              20,
+              43,
+              84,
+              107
+            ],
+            "equivalenceClassRepresentative": 20,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 21,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 22,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 23,
+          "firstFailure": {
+            "ascendingComponentCount": 4,
+            "ascendingFaceCount": 4356,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 1814,
+            "equivalenceClassMembers": [
+              23,
+              40,
+              87,
+              104
+            ],
+            "equivalenceClassRepresentative": 23,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 24,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 4718,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 4,
+            "descendingFaceCount": 1452,
+            "equivalenceClassMembers": [
+              24,
+              39,
+              88,
+              103
+            ],
+            "equivalenceClassRepresentative": 24,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 25,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 26,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 27,
+          "firstFailure": {
+            "ascendingComponentCount": 8,
+            "ascendingFaceCount": 2184,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 902,
+            "equivalenceClassMembers": [
+              27,
+              36,
+              91,
+              100
+            ],
+            "equivalenceClassRepresentative": 27,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 28,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 35,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 36,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 902,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 8,
+            "descendingFaceCount": 2184,
+            "equivalenceClassMembers": [
+              27,
+              36,
+              91,
+              100
+            ],
+            "equivalenceClassRepresentative": 27,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 37,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 38,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 39,
+          "firstFailure": {
+            "ascendingComponentCount": 4,
+            "ascendingFaceCount": 1452,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 4718,
+            "equivalenceClassMembers": [
+              24,
+              39,
+              88,
+              103
+            ],
+            "equivalenceClassRepresentative": 24,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 40,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 1814,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 4,
+            "descendingFaceCount": 4356,
+            "equivalenceClassMembers": [
+              23,
+              40,
+              87,
+              104
+            ],
+            "equivalenceClassRepresentative": 23,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 41,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 42,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 43,
+          "firstFailure": {
+            "ascendingComponentCount": 12,
+            "ascendingFaceCount": 756,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 2330,
+            "equivalenceClassMembers": [
+              20,
+              43,
+              84,
+              107
+            ],
+            "equivalenceClassRepresentative": 20,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 44,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 51,
+          "firstFailure": {
+            "ascendingComponentCount": 6,
+            "ascendingFaceCount": 126,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 2960,
+            "equivalenceClassMembers": [
+              12,
+              51,
+              76,
+              115
+            ],
+            "equivalenceClassRepresentative": 12,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 52,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 53,
+          "firstFailure": {
+            "ascendingComponentCount": 24,
+            "ascendingFaceCount": 216,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 4874,
+            "equivalenceClassMembers": [
+              10,
+              53,
+              74,
+              117
+            ],
+            "equivalenceClassRepresentative": 10,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 54,
+          "firstFailure": {
+            "ascendingComponentCount": 80,
+            "ascendingFaceCount": 1040,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 23442,
+            "equivalenceClassMembers": [
+              9,
+              54,
+              73,
+              118
+            ],
+            "equivalenceClassRepresentative": 9,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 55,
+          "firstFailure": {
+            "ascendingComponentCount": 80,
+            "ascendingFaceCount": 1040,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 23442,
+            "equivalenceClassMembers": [
+              8,
+              55,
+              72,
+              119
+            ],
+            "equivalenceClassRepresentative": 8,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 56,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 57,
+          "firstFailure": {
+            "ascendingComponentCount": 8,
+            "ascendingFaceCount": 24,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 5066,
+            "equivalenceClassMembers": [
+              6,
+              57,
+              70,
+              121
+            ],
+            "equivalenceClassRepresentative": 6,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 58,
+          "firstFailure": {
+            "ascendingComponentCount": 40,
+            "ascendingFaceCount": 120,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 24362,
+            "equivalenceClassMembers": [
+              5,
+              58,
+              69,
+              122
+            ],
+            "equivalenceClassRepresentative": 5,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 59,
+          "firstFailure": {
+            "ascendingComponentCount": 40,
+            "ascendingFaceCount": 120,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 24362,
+            "equivalenceClassMembers": [
+              4,
+              59,
+              68,
+              123
+            ],
+            "equivalenceClassRepresentative": 4,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 60,
+          "firstFailure": {
+            "ascendingComponentCount": 10,
+            "ascendingFaceCount": 10,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 24472,
+            "equivalenceClassMembers": [
+              3,
+              60,
+              67,
+              124
+            ],
+            "equivalenceClassRepresentative": 3,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 67,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 24472,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 10,
+            "descendingFaceCount": 10,
+            "equivalenceClassMembers": [
+              3,
+              60,
+              67,
+              124
+            ],
+            "equivalenceClassRepresentative": 3,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 68,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 24362,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 40,
+            "descendingFaceCount": 120,
+            "equivalenceClassMembers": [
+              4,
+              59,
+              68,
+              123
+            ],
+            "equivalenceClassRepresentative": 4,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 69,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 24362,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 40,
+            "descendingFaceCount": 120,
+            "equivalenceClassMembers": [
+              5,
+              58,
+              69,
+              122
+            ],
+            "equivalenceClassRepresentative": 5,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 70,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 5066,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 8,
+            "descendingFaceCount": 24,
+            "equivalenceClassMembers": [
+              6,
+              57,
+              70,
+              121
+            ],
+            "equivalenceClassRepresentative": 6,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 71,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 72,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 23442,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 80,
+            "descendingFaceCount": 1040,
+            "equivalenceClassMembers": [
+              8,
+              55,
+              72,
+              119
+            ],
+            "equivalenceClassRepresentative": 8,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 73,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 23442,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 80,
+            "descendingFaceCount": 1040,
+            "equivalenceClassMembers": [
+              9,
+              54,
+              73,
+              118
+            ],
+            "equivalenceClassRepresentative": 9,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 74,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 4874,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 24,
+            "descendingFaceCount": 216,
+            "equivalenceClassMembers": [
+              10,
+              53,
+              74,
+              117
+            ],
+            "equivalenceClassRepresentative": 10,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 75,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 76,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 2960,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 6,
+            "descendingFaceCount": 126,
+            "equivalenceClassMembers": [
+              12,
+              51,
+              76,
+              115
+            ],
+            "equivalenceClassRepresentative": 12,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 83,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 84,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 2330,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 12,
+            "descendingFaceCount": 756,
+            "equivalenceClassMembers": [
+              20,
+              43,
+              84,
+              107
+            ],
+            "equivalenceClassRepresentative": 20,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 85,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 86,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 87,
+          "firstFailure": {
+            "ascendingComponentCount": 4,
+            "ascendingFaceCount": 4356,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 1814,
+            "equivalenceClassMembers": [
+              23,
+              40,
+              87,
+              104
+            ],
+            "equivalenceClassRepresentative": 23,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 88,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 4718,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 4,
+            "descendingFaceCount": 1452,
+            "equivalenceClassMembers": [
+              24,
+              39,
+              88,
+              103
+            ],
+            "equivalenceClassRepresentative": 24,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 89,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 90,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 91,
+          "firstFailure": {
+            "ascendingComponentCount": 8,
+            "ascendingFaceCount": 2184,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 902,
+            "equivalenceClassMembers": [
+              27,
+              36,
+              91,
+              100
+            ],
+            "equivalenceClassRepresentative": 27,
+            "equivalenceTransform": "same-restricted-type-potential",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 92,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 99,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 100,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 902,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 8,
+            "descendingFaceCount": 2184,
+            "equivalenceClassMembers": [
+              27,
+              36,
+              91,
+              100
+            ],
+            "equivalenceClassRepresentative": 27,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 101,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 102,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 103,
+          "firstFailure": {
+            "ascendingComponentCount": 4,
+            "ascendingFaceCount": 1452,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 4718,
+            "equivalenceClassMembers": [
+              24,
+              39,
+              88,
+              103
+            ],
+            "equivalenceClassRepresentative": 24,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 104,
+          "firstFailure": {
+            "ascendingComponentCount": 1,
+            "ascendingFaceCount": 1814,
+            "cellOrbitIndexWithinType": 3,
+            "certifiedCellOrbitCount": 360,
+            "descendingComponentCount": 4,
+            "descendingFaceCount": 4356,
+            "equivalenceClassMembers": [
+              23,
+              40,
+              87,
+              104
+            ],
+            "equivalenceClassRepresentative": 23,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "descending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              2,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 240,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 19,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 105,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 106,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 107,
+          "firstFailure": {
+            "ascendingComponentCount": 12,
+            "ascendingFaceCount": 756,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 2330,
+            "equivalenceClassMembers": [
+              20,
+              43,
+              84,
+              107
+            ],
+            "equivalenceClassRepresentative": 20,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 108,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 115,
+          "firstFailure": {
+            "ascendingComponentCount": 6,
+            "ascendingFaceCount": 126,
+            "cellOrbitIndexWithinType": 9,
+            "certifiedCellOrbitCount": 1048,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 2960,
+            "equivalenceClassMembers": [
+              12,
+              51,
+              76,
+              115
+            ],
+            "equivalenceClassRepresentative": 12,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              1,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 60,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 89,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 116,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 117,
+          "firstFailure": {
+            "ascendingComponentCount": 24,
+            "ascendingFaceCount": 216,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 4874,
+            "equivalenceClassMembers": [
+              10,
+              53,
+              74,
+              117
+            ],
+            "equivalenceClassRepresentative": 10,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 118,
+          "firstFailure": {
+            "ascendingComponentCount": 80,
+            "ascendingFaceCount": 1040,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 23442,
+            "equivalenceClassMembers": [
+              9,
+              54,
+              73,
+              118
+            ],
+            "equivalenceClassRepresentative": 9,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 119,
+          "firstFailure": {
+            "ascendingComponentCount": 80,
+            "ascendingFaceCount": 1040,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 23442,
+            "equivalenceClassMembers": [
+              8,
+              55,
+              72,
+              119
+            ],
+            "equivalenceClassRepresentative": 8,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 120,
+          "firstFailure": null,
+          "status": "constant-Fourier-template-survivor"
+        },
+        {
+          "candidateIndex": 121,
+          "firstFailure": {
+            "ascendingComponentCount": 8,
+            "ascendingFaceCount": 24,
+            "cellOrbitIndexWithinType": 23,
+            "certifiedCellOrbitCount": 920,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 5066,
+            "equivalenceClassMembers": [
+              6,
+              57,
+              70,
+              121
+            ],
+            "equivalenceClassRepresentative": 6,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              0,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 48,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 282,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 122,
+          "firstFailure": {
+            "ascendingComponentCount": 40,
+            "ascendingFaceCount": 120,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 24362,
+            "equivalenceClassMembers": [
+              5,
+              58,
+              69,
+              122
+            ],
+            "equivalenceClassRepresentative": 5,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 123,
+          "firstFailure": {
+            "ascendingComponentCount": 40,
+            "ascendingFaceCount": 120,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 24362,
+            "equivalenceClassMembers": [
+              4,
+              59,
+              68,
+              123
+            ],
+            "equivalenceClassRepresentative": 4,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        },
+        {
+          "candidateIndex": 124,
+          "firstFailure": {
+            "ascendingComponentCount": 10,
+            "ascendingFaceCount": 10,
+            "cellOrbitIndexWithinType": 20,
+            "certifiedCellOrbitCount": 248,
+            "descendingComponentCount": 1,
+            "descendingFaceCount": 24472,
+            "equivalenceClassMembers": [
+              3,
+              60,
+              67,
+              124
+            ],
+            "equivalenceClassRepresentative": 3,
+            "equivalenceTransform": "negated-restricted-type-potential-swaps-ascending-and-descending",
+            "failures": [
+              "ascending-disconnected"
+            ],
+            "fullCellFourierClass": 1,
+            "maximalType": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "quotientRootComponentSize": 120,
+            "representativeEpsilon": 1,
+            "representativeFrameId": 466,
+            "stage": "constant-full-cell-Fourier-template"
+          },
+          "status": "eliminated"
+        }
+      ],
+      "complete": true,
+      "connectivityFormula": "each connected type-comparability component C contributes |W_T|/|W_union(C)| actual face-coset components",
+      "constantFourierCellOrbitCount": 2616,
+      "eliminatedCount": 48,
+      "equivalenceClassChecks": 66,
+      "inputCandidateCount": 80,
+      "inputEquivalenceClassCount": 20,
+      "survivorCandidateIndices": [
+        7,
+        11,
+        19,
+        21,
+        22,
+        25,
+        26,
+        28,
+        35,
+        37,
+        38,
+        41,
+        42,
+        44,
+        52,
+        56,
+        71,
+        75,
+        83,
+        85,
+        86,
+        89,
+        90,
+        92,
+        99,
+        101,
+        102,
+        105,
+        106,
+        108,
+        116,
+        120
+      ],
+      "survivorCount": 32,
+      "survivorEquivalenceClassCount": 8,
+      "survivorEquivalenceClasses": [
+        [
+          7,
+          56,
+          71,
+          120
+        ],
+        [
+          11,
+          52,
+          75,
+          116
+        ],
+        [
+          19,
+          44,
+          83,
+          108
+        ],
+        [
+          28,
+          35,
+          92,
+          99
+        ],
+        [
+          21,
+          42,
+          85,
+          106
+        ],
+        [
+          26,
+          37,
+          90,
+          101
+        ],
+        [
+          25,
+          38,
+          89,
+          102
+        ],
+        [
+          22,
+          41,
+          86,
+          105
+        ]
+      ],
+      "types": [
+        {
+          "candidateEliminations": 20,
+          "constantFourierCellOrbitCount": 248,
+          "equivalenceClassChecks": 20,
+          "maximalType": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "candidateEliminations": 8,
+          "constantFourierCellOrbitCount": 920,
+          "equivalenceClassChecks": 15,
+          "maximalType": [
+            0,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "candidateEliminations": 12,
+          "constantFourierCellOrbitCount": 1048,
+          "equivalenceClassChecks": 13,
+          "maximalType": [
+            0,
+            1,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "candidateEliminations": 8,
+          "constantFourierCellOrbitCount": 360,
+          "equivalenceClassChecks": 10,
+          "maximalType": [
+            0,
+            1,
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "candidateEliminations": 0,
+          "constantFourierCellOrbitCount": 40,
+          "equivalenceClassChecks": 8,
+          "maximalType": [
+            0,
+            1,
+            2,
+            3,
+            5
+          ]
+        }
+      ]
+    },
+    "identityAnchorSurvivorCount": 80,
+    "intersectionCandidateCount": 80,
+    "intersectionCandidateIndices": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124
+    ],
+    "maximalCellOrbitCensus": [
+      {
+        "abstractToReducedFiberSizeCensus": {
+          "16": 500,
+          "32": 248
+        },
+        "cellOrbitCount": 748,
+        "cellSymmetryStabilizerOrderCensus": {
+          "16": 500,
+          "32": 248
+        },
+        "firstRepresentatives": [
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 0,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 1,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 10,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 20,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 40,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 60,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 70,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 100,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 135,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 16,
+            "cellSymmetryStabilizerOrder": 16,
+            "epsilon": 1,
+            "frameId": 149,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 240
+          }
+        ],
+        "fullCellFourierClassCensus": {
+          "-1": 124,
+          "0": 500,
+          "1": 124
+        },
+        "maximalType": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "quotientChamberRootCount": 149760,
+        "quotientRootComponentSizeCensus": {
+          "120": 248,
+          "240": 500
+        },
+        "representativeTranscriptSha256": "614e9cad71cf97eda4f526be8928cfdcb35f65f5875e9c36139864cfee7715a2"
+      },
+      {
+        "abstractToReducedFiberSizeCensus": {
+          "16": 920,
+          "8": 1100
+        },
+        "cellOrbitCount": 2020,
+        "cellSymmetryStabilizerOrderCensus": {
+          "16": 920,
+          "8": 1100
+        },
+        "firstRepresentatives": [
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 0,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 2,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 6,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 14,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 24,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 30,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 46,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 50,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 66,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 74,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 96
+          }
+        ],
+        "fullCellFourierClassCensus": {
+          "-1": 460,
+          "0": 1100,
+          "1": 460
+        },
+        "maximalType": [
+          0,
+          2,
+          3,
+          4,
+          5
+        ],
+        "quotientChamberRootCount": 149760,
+        "quotientRootComponentSizeCensus": {
+          "48": 920,
+          "96": 1100
+        },
+        "representativeTranscriptSha256": "7195f59240f59f52d96a15078cf23b469c4238dae93432fc8be464ecae6f3c6b"
+      },
+      {
+        "abstractToReducedFiberSizeCensus": {
+          "4": 724,
+          "8": 1048
+        },
+        "cellOrbitCount": 1772,
+        "cellSymmetryStabilizerOrderCensus": {
+          "4": 724,
+          "8": 1048
+        },
+        "firstRepresentatives": [
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 0,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 3,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 11,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 17,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 21,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 37,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 49,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 57,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 71,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 120
+          },
+          {
+            "abstractToReducedFiberSize": 8,
+            "cellSymmetryStabilizerOrder": 8,
+            "epsilon": 1,
+            "frameId": 89,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 60
+          }
+        ],
+        "fullCellFourierClassCensus": {
+          "-1": 524,
+          "0": 724,
+          "1": 524
+        },
+        "maximalType": [
+          0,
+          1,
+          3,
+          4,
+          5
+        ],
+        "quotientChamberRootCount": 149760,
+        "quotientRootComponentSizeCensus": {
+          "120": 724,
+          "60": 1048
+        },
+        "representativeTranscriptSha256": "128bb653d9e83704240f08bf43ec0e84668f60bf73110d517a2044ed2649b4e7"
+      },
+      {
+        "abstractToReducedFiberSizeCensus": {
+          "2": 132,
+          "4": 360
+        },
+        "cellOrbitCount": 492,
+        "cellSymmetryStabilizerOrderCensus": {
+          "2": 132,
+          "4": 360
+        },
+        "firstRepresentatives": [
+          {
+            "abstractToReducedFiberSize": 2,
+            "cellSymmetryStabilizerOrder": 2,
+            "epsilon": 1,
+            "frameId": 0,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 480
+          },
+          {
+            "abstractToReducedFiberSize": 2,
+            "cellSymmetryStabilizerOrder": 2,
+            "epsilon": 1,
+            "frameId": 4,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 480
+          },
+          {
+            "abstractToReducedFiberSize": 2,
+            "cellSymmetryStabilizerOrder": 2,
+            "epsilon": 1,
+            "frameId": 15,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 480
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 19,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 2,
+            "cellSymmetryStabilizerOrder": 2,
+            "epsilon": 1,
+            "frameId": 35,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 480
+          },
+          {
+            "abstractToReducedFiberSize": 2,
+            "cellSymmetryStabilizerOrder": 2,
+            "epsilon": 1,
+            "frameId": 45,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 480
+          },
+          {
+            "abstractToReducedFiberSize": 2,
+            "cellSymmetryStabilizerOrder": 2,
+            "epsilon": 1,
+            "frameId": 55,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 480
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 85,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 240
+          },
+          {
+            "abstractToReducedFiberSize": 2,
+            "cellSymmetryStabilizerOrder": 2,
+            "epsilon": 1,
+            "frameId": 102,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 480
+          },
+          {
+            "abstractToReducedFiberSize": 4,
+            "cellSymmetryStabilizerOrder": 4,
+            "epsilon": 1,
+            "frameId": 120,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 240
+          }
+        ],
+        "fullCellFourierClassCensus": {
+          "-1": 180,
+          "0": 132,
+          "1": 180
+        },
+        "maximalType": [
+          0,
+          1,
+          2,
+          4,
+          5
+        ],
+        "quotientChamberRootCount": 149760,
+        "quotientRootComponentSizeCensus": {
+          "240": 360,
+          "480": 132
+        },
+        "representativeTranscriptSha256": "4e0122508a31f16da7d52bbd78da3242e78dbe3841815d70c29996cd232f9735"
+      },
+      {
+        "abstractToReducedFiberSizeCensus": {
+          "10": 40,
+          "5": 6
+        },
+        "cellOrbitCount": 46,
+        "cellSymmetryStabilizerOrderCensus": {
+          "10": 40,
+          "5": 6
+        },
+        "firstRepresentatives": [
+          {
+            "abstractToReducedFiberSize": 5,
+            "cellSymmetryStabilizerOrder": 5,
+            "epsilon": 1,
+            "frameId": 0,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 5760
+          },
+          {
+            "abstractToReducedFiberSize": 10,
+            "cellSymmetryStabilizerOrder": 10,
+            "epsilon": 1,
+            "frameId": 5,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 2880
+          },
+          {
+            "abstractToReducedFiberSize": 10,
+            "cellSymmetryStabilizerOrder": 10,
+            "epsilon": 1,
+            "frameId": 18,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 2880
+          },
+          {
+            "abstractToReducedFiberSize": 5,
+            "cellSymmetryStabilizerOrder": 5,
+            "epsilon": 1,
+            "frameId": 44,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 5760
+          },
+          {
+            "abstractToReducedFiberSize": 10,
+            "cellSymmetryStabilizerOrder": 10,
+            "epsilon": 1,
+            "frameId": 84,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 2880
+          },
+          {
+            "abstractToReducedFiberSize": 10,
+            "cellSymmetryStabilizerOrder": 10,
+            "epsilon": 1,
+            "frameId": 119,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 2880
+          },
+          {
+            "abstractToReducedFiberSize": 10,
+            "cellSymmetryStabilizerOrder": 10,
+            "epsilon": 1,
+            "frameId": 262,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 2880
+          },
+          {
+            "abstractToReducedFiberSize": 5,
+            "cellSymmetryStabilizerOrder": 5,
+            "epsilon": 1,
+            "frameId": 346,
+            "fullCellFourierClass": 0,
+            "quotientRootComponentSize": 5760
+          },
+          {
+            "abstractToReducedFiberSize": 10,
+            "cellSymmetryStabilizerOrder": 10,
+            "epsilon": 1,
+            "frameId": 505,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 2880
+          },
+          {
+            "abstractToReducedFiberSize": 10,
+            "cellSymmetryStabilizerOrder": 10,
+            "epsilon": 1,
+            "frameId": 626,
+            "fullCellFourierClass": 1,
+            "quotientRootComponentSize": 2880
+          }
+        ],
+        "fullCellFourierClassCensus": {
+          "-1": 20,
+          "0": 6,
+          "1": 20
+        },
+        "maximalType": [
+          0,
+          1,
+          2,
+          3,
+          5
+        ],
+        "quotientChamberRootCount": 149760,
+        "quotientRootComponentSizeCensus": {
+          "2880": 40,
+          "5760": 6
+        },
+        "representativeTranscriptSha256": "c3211d142057fac47b38e32f14fb1f52d9b6d2549993b73bab3a6f5397d4403b"
+      }
+    ],
+    "maximalCellOrbitCount": 5078,
+    "maximalType5CandidateEquivalenceClassCount": 20,
+    "maximalType5CandidateEquivalenceClasses": [
+      [
+        8,
+        55,
+        72,
+        119
+      ],
+      [
+        23,
+        40,
+        87,
+        104
+      ],
+      [
+        24,
+        39,
+        88,
+        103
+      ],
+      [
+        7,
+        56,
+        71,
+        120
+      ],
+      [
+        4,
+        59,
+        68,
+        123
+      ],
+      [
+        27,
+        36,
+        91,
+        100
+      ],
+      [
+        20,
+        43,
+        84,
+        107
+      ],
+      [
+        11,
+        52,
+        75,
+        116
+      ],
+      [
+        12,
+        51,
+        76,
+        115
+      ],
+      [
+        19,
+        44,
+        83,
+        108
+      ],
+      [
+        28,
+        35,
+        92,
+        99
+      ],
+      [
+        3,
+        60,
+        67,
+        124
+      ],
+      [
+        10,
+        53,
+        74,
+        117
+      ],
+      [
+        21,
+        42,
+        85,
+        106
+      ],
+      [
+        26,
+        37,
+        90,
+        101
+      ],
+      [
+        5,
+        58,
+        69,
+        122
+      ],
+      [
+        6,
+        57,
+        70,
+        121
+      ],
+      [
+        25,
+        38,
+        89,
+        102
+      ],
+      [
+        22,
+        41,
+        86,
+        105
+      ],
+      [
+        9,
+        54,
+        73,
+        118
+      ]
+    ],
+    "zeroFourierCellOrbitCount": 2462
+  },
+  "kind": "makarov-p2-type6-maximal-type5-global-timeout-receipt",
+  "nextGate": "do not rerun the same Python expansion; add a checkpointed compiled connectivity backend or a further exact local obstruction first",
+  "nonClaims": [
+    "The 32 constant-stage survivors have not passed any zero-Fourier maximal-cell orbit globally.",
+    "Zero zero-Fourier survivors does not mean that no candidate survives that unfinished stage.",
+    "Zero zero-Fourier eliminations does not undo the exact constant-stage eliminations.",
+    "The uncheckpointed partial execution supports no global maximal-cell conclusion.",
+    "No global Track-B or fibering claim is made."
+  ],
+  "producer": {
+    "script": "scripts/makarov_p2_type6_maximal_type5_anchor.py",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "barycentricReduction": {
+      "artifactSha256": "2aecf892261082a4ade2db0b23f2a66a50be5c6fa27296e3138c02f41400d6ac",
+      "bytesSha256": "0ae39c0aada47faccf7de49326ff6006687624245bc05cce7f8fee014acb6c15",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_barycentric_reduction.json"
+    },
+    "historicalIdentityAnchor": {
+      "artifactSha256": "f7cc605291cdedb982185e4a90d1de5eb479c1b56f83b08514e8e51db8fb29d7",
+      "bytesSha256": "aed2e8a47e7ce1e7d7578b2d84747b8c5c0d2a3addc6d2adfeec8c74908ca9aa",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_maximal_type5_anchor.json",
+      "usedFields": [
+        "screen.survivorCandidateIndices",
+        "screen.eliminatedCount"
+      ]
+    },
+    "lqSchreierTable": {
+      "artifactSha256": "40fe34044f718a50908318098309590697d4acdef10a4e47bdcc1c804fb81d97",
+      "bytesSha256": "5f9056b711d3be7fff2d5a71fb43d8ac725f88ec50a33ae81054ac7943e2908f",
+      "path": "scripts/certificates/portfolio/makarov_p2_lq_schreier_table.json"
+    },
+    "schreierChamberScreen": {
+      "artifactSha256": "482b93bd67c6ddfd040447f1307ac55c491ec98009d3911058d1ff6a2a99fea7",
+      "bytesSha256": "fad654adf97785be0a63010eea9d28306b8d1c4d3184797ffdd7644e110ddd5e",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_fourier_schreier_chamber_screen.json"
+    },
+    "section5Import": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    },
+    "type6Character": {
+      "artifactSha256": "501125fa7150a4d0c208cd4b40cd6a5132f7e04424820e71fd5f3219b165a16d",
+      "bytesSha256": "864f8b39407b45a6d101e139e9a8f8e5511fadbba1b26dcb5f42c741b28a227b",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_wall_track_b.json"
+    }
+  },
+  "status": "incomplete-wall-time-no-global-mathematical-result"
+}

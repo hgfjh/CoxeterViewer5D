@@ -1,0 +1,188 @@
+{
+  "artifactSha256": "2aecf892261082a4ade2db0b23f2a66a50be5c6fa27296e3138c02f41400d6ac",
+  "canonicalBarycentricModel": {
+    "candidateComparison": "lexicographic (B(C), U(C), p(T)), equivalently an exact raw-dominant integer scaling after clearing the finite denominators",
+    "characterKernelUnchangedByPeriodicTerms": true,
+    "doubledRawCellHeight": "B(C)=(2/|W_T|) sum_{v in C} h(v); B is even when 6 is absent and odd when 6 is present",
+    "faceCompatibility": true,
+    "fourierCellPotential": "U(C)=(1/|W_T|) sum_{(t,q) in C} (-1)^t0",
+    "newVertex": "one barycenter b_C for every Coxeter cell C=xW_T",
+    "subdivision": "canonical barycentric subdivision of the full Coxeter-cell compression"
+  },
+  "conclusion": "The primitive type-6 character has an exact 32,000-element certified symmetry, reducing original chamber roots to 149,760. Canonical type-only infinitesimal tie breakers are globally obstructed.  The first-sheet Fourier potential escapes that proof but is frame-dependent, so neither the old identity pass nor a 124-template scan is a global Track-B result.",
+  "exactOrbitCompleteScanner": {
+    "completenessBoundary": "149,760 is exact only for original chamber vertices; a complete Track-B result requires the cell action/catalogue and every new link",
+    "status": "specified-not-completed",
+    "step1": "construct Q=<s0,...,s4> on the 650 Section-5 vertices and the exact 74,880-point right-coset action on L\\Q",
+    "step2": "lift each frame to the two t0 signs; s0,...,s4 use the Schreier rows, s5 toggles t0 by the first bit of its merged color, and s6 toggles t0",
+    "step3": "use the reduced chamber action together with the 31 L\\Q/W_U component catalogues and stabilizer multiplicities to enumerate cell orbits and compute the exact rational U(C)",
+    "step4": "for one representative of every reduced cell orbit, expand the actual lower W_T/W_R face cosets and unique spherical cofaces; quotient-type connectivity alone is insufficient",
+    "step5": "test nonempty connected ascending and descending comparability graphs at every cell barycenter, including all subdivision vertices"
+  },
+  "fixedCharacterSymmetry": {
+    "actionFreeOnChambers": true,
+    "colorSubgroupAudit": {
+      "generatorCount": 2,
+      "order": 125,
+      "pointColorPreservationChecks": 81250,
+      "preservesEachMergedColorClass": true
+    },
+    "declaredProductAction": "(a,l).(t,q)=(t+a,lq), with a in F2^9 and l in Chen's color subgroup L",
+    "fixedProductSymmetryOrder": 32000,
+    "fixedSheetTranslationOrder": 256,
+    "freenessReason": "a fixed chamber forces a=0 in the sheet coordinate and l=1 in the left-regular Q coordinate",
+    "fullSheetTranslationOutsideStabilizer": "a translation with a0=1 negates both c6 and the first-sheet Fourier character",
+    "originalChamberOrbitCount": 149760,
+    "qFrameOrbitCount": 74880,
+    "sheetTranslationCriterion": "a fixes c6 exactly iff a0=0"
+  },
+  "fourierFrameDependence": {
+    "cellType": [
+      5
+    ],
+    "consequence": "the Fourier potential cannot be scanned by the 124 type-only templates; the colored L\\Q frame is part of a complete key",
+    "records": [
+      {
+        "averageDenominator": 2,
+        "averageNumerator": 0,
+        "firstColorBit": 1,
+        "frame": "identity-frame",
+        "mergedColor": 0,
+        "rootStateId": "t000:q1000001000001000001000001",
+        "sheetCharacterValues": [
+          1,
+          -1
+        ],
+        "smallFacetLabel": 0,
+        "type5TargetStateId": "t001:q1000001000001000001000001"
+      },
+      {
+        "averageDenominator": 2,
+        "averageNumerator": 2,
+        "firstColorBit": 0,
+        "frame": "right-s4-frame",
+        "mergedColor": 2,
+        "rootStateId": "t000:q1000001000001000003200012",
+        "sheetCharacterValues": [
+          1,
+          1
+        ],
+        "smallFacetLabel": 2,
+        "type5TargetStateId": "t004:q1000001000001000003200012"
+      }
+    ],
+    "sameSphericalTypeDifferentFrameAverage": true
+  },
+  "kind": "makarov-p2-type6-barycentric-orbit-reduction",
+  "nonClaims": [
+    "Track B has not passed globally for P2.",
+    "The 149,760 chamber-root count is not a count of all barycentric vertices.",
+    "The type-only obstruction does not cover arbitrary-amplitude type potentials.",
+    "No Fourier candidate is promoted without all higher-cell barycentric links.",
+    "The certified product symmetry is not claimed to be the full automorphism stabilizer of the character."
+  ],
+  "primitiveCharacter": {
+    "closed": true,
+    "formula": "c6(t,q)=(-1)^t0 on generator 6 and zero on generators 0,...,5",
+    "primitive": true,
+    "sourceArtifactSha256": "501125fa7150a4d0c208cd4b40cd6a5132f7e04424820e71fd5f3219b165a16d"
+  },
+  "producer": {
+    "script": "scripts/makarov_p2_type6_barycentric_reduction.py",
+    "version": "1.0.0"
+  },
+  "rawDominantTypeOnlyNoGo": {
+    "canonicalDimensionTieFailures": {
+      "+dimension": {
+        "unreducedWitnessCount": 2396160000,
+        "witness": "at a t0=0 chamber barycenter, all coface barycenters are higher, so the descending link is empty"
+      },
+      "-dimension": {
+        "maximalType5Types": [
+          [
+            0,
+            1,
+            2,
+            3,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            3,
+            4,
+            5
+          ],
+          [
+            0,
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        ],
+        "unreducedWitnessCount": 22630400,
+        "witness": "at any maximal type-5 cell barycenter, every proper face is higher and there is no coface, so the descending link is empty"
+      }
+    },
+    "hypotheses": {
+      "genericOnRawTies": "p(S) != p(T) whenever comparable types S,T have equal raw average",
+      "rawDominance": "on every incidence where the doubled raw averages differ by one, the sign of that raw difference is preserved",
+      "typeOnly": "p(C)=p(T) for every cell C of spherical type T"
+    },
+    "nonClaim": "This is not an obstruction to arbitrary-amplitude type potentials: such a potential may reverse a nonzero raw comparison.",
+    "proof": [
+      "Choose a p-minimal spherical type T among the 62 types not containing generator 6.",
+      "Use a type-T cell represented by a chamber with t0=0.",
+      "Every proper lower face and every coface avoiding generator 6 has equal raw average and strictly larger p by minimality and genericity.",
+      "If T contains generator 5, it has no generator-6 coface because {5,6} is nonspherical.",
+      "Otherwise every generator-6 coface has larger doubled raw average by one, and raw dominance keeps it larger after p is added.",
+      "Hence every comparable barycentric vertex is higher and the descending link is empty."
+    ],
+    "scope": "generic cell-type-only p(T) in the raw-dominant infinitesimal tie-breaking regime",
+    "status": "obstructed"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "section5Import": {
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_import.json"
+    },
+    "type6Character": {
+      "artifactSha256": "501125fa7150a4d0c208cd4b40cd6a5132f7e04424820e71fd5f3219b165a16d",
+      "bytesSha256": "864f8b39407b45a6d101e139e9a8f8e5511fadbba1b26dcb5f42c741b28a227b",
+      "path": "scripts/certificates/portfolio/makarov_p2_type6_wall_track_b.json"
+    }
+  },
+  "status": "exact-reduction-global-fourier-links-not-yet-run",
+  "typeTemplateAudit": {
+    "neitherBaseTypeCount": 31,
+    "sphericalTypeCountIncludingEmpty": 93,
+    "templateDerivation": "types avoiding both bases occur with the two type-6 edge signs; a type-5 cell has no type-6 coface; a type-6 cell contains both raw-height layers and needs no separate sign template",
+    "type5TypeCount": 31,
+    "type6TypeCount": 31,
+    "typeOnlyLocalTemplateCount": 124
+  },
+  "workload": {
+    "exactCellOrbitCountRequires": "the 31 colored double-coset/component catalogues and their sheet lifts",
+    "fixedSymmetryCellBarycenterOrbitLowerBound": 1806033,
+    "lowerBoundDerivation": "ceil(57,793,049,600 / 32,000)",
+    "unreducedCoxeterCellBarycenters": 57793049600,
+    "whyOnlyALowerBound": "nontrivial fixed-character symmetries can stabilize a Coxeter cell even though they act freely on its chambers"
+  }
+}

@@ -5,3 +5,4 @@ export * from "./gramFactorization";
 export * from "./basepoint";
 export * from "./pca";
 export * from "./projections";
+export * from "./orbitLayout";

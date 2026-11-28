@@ -1,0 +1,116 @@
+{
+  "artifactSha256": "0e7c158f6e5d5a1c25452152319adca6a7330acd95b8cfeb979f29c0ad83515d",
+  "blockingGate": {
+    "effect": "lawfulness, coface closure, subdivision height, and directed links are undefined for strict wall Track A",
+    "gate": "two-sided-wall-coorientation",
+    "result": "failed-for-every-generator-5-wall"
+  },
+  "canonicalBarycentricHeightRule": {
+    "checks": {
+      "AIntegral": true,
+      "comparableCellHeightsDistinct": true,
+      "nonzeroAverageDifferenceDominatesDimensionTieBreak": true,
+      "subdivisionCanonicalAndFaceCompatible": true
+    },
+    "introducedVertex": "one vertex b_C for every retained original cell C",
+    "perturbedInteger": "H_sigma(C)=6*A(C)+sigma*dim(C), sigma in {+1,-1}",
+    "rawInteger": "A(C)=(57600/|W_T|)*sum_{v in C} h(v)",
+    "subdivision": "barycentric subdivision of the retained regular cell complex"
+  },
+  "colorClassOnlyOrientationCoverAudit": {
+    "anyColorClassOnlyVoltageExtensionCanHaveFullWallCoorientation": false,
+    "extensionDefinition": "augment the thirteen generator-5 characteristic columns by vectors indexed only by color class, with zero added voltage on generators 0,...,4 and 6",
+    "independentType5SignSheetTranslationStabilizerOrder": 1,
+    "minimalType5RepairHasFullWallCoorientation": false,
+    "minimalType5RepairIndex": 16,
+    "projectedSideWallConflictCount": 300,
+    "reason": "the bound exact audit finds a color-triangle parity conflict in every projected side-wall class; independently, the thirteen type-5 dual coordinates separate every nonzero F2^13 translation",
+    "sheetTranslationInvariantStreamApplicableAsStated": false,
+    "sourceArtifactSha256": "5445d8a09e27c15cc16e52abb27d80649a1ab4f00f9f204d0f92b601fd995c42",
+    "status": "color-class-only-orientation-covers-obstructed"
+  },
+  "conditionalAlgorithm": [
+    "enumerate symmetry-orbit representatives of the 20 finite rank-two cell types",
+    "retain exactly sign cycles with two cyclic transitions",
+    "propagate every unlawful rank-two orbit through its complete coface upset",
+    "barycentrically subdivide the retained downward-closed cell poset",
+    "integrate the signed edge cocycle in each cell and assign H_sigma to every cell barycenter",
+    "for each retained-cell orbit, build the ascending and descending comparability graphs of its proper retained faces and cofaces",
+    "check nonemptiness and connectivity for every orbit, expanding orbit multiplicities in the certificate",
+    "before finite-height-band promotion, certify a nonzero integral period and normalize the period gcd to one"
+  ],
+  "conditionalSheetTranslationInvariantStream": {
+    "cellTemplateCountByDimension": {
+      "0": 9360000,
+      "1": 42120000,
+      "2": 66456000,
+      "3": 45396000,
+      "4": 12636650,
+      "5": 937300
+    },
+    "condition": "the direction oracle and chosen height model are invariant under every F2^9 sheet translation",
+    "derivation": "a type-T cell orbit is Q/W_{T intersect {0,...,4}}; a rooted face/coface flag is indexed by the projected face subgroup",
+    "immediateFaceCofaceFlagCount": 752545300,
+    "rankTwoCellTemplateCount": 66456000,
+    "rankTwoToHigherCofaceFlagCount": 1048320000,
+    "strictFaceCofaceFlagCount": 3810457300,
+    "totalCellTemplateCount": 176905950,
+    "vertexTemplateCount": 9360000
+  },
+  "kind": "makarov-p2-conditional-factored-global-lawful-cost",
+  "nonClaims": [
+    "No strict wall-lawful cell was classified on the current P2 cover.",
+    "The F2^9 and L reductions are conditional on invariance of the entire direction and height model, not merely invariance of the underlying action.",
+    "These workload counts do not construct an orientation cover or a direct cellular cocycle.",
+    "Connected directed links alone would not promote a zero or nonprimitive cochain to the finite-height-band conclusion.",
+    "The bound extension obstruction does not cover refinements that add generator-0,...,4 or generator-6 voltage, or facet-specific rather than color-class-only coordinates."
+  ],
+  "optionalColorSymmetryBounds": {
+    "cellOrbitCountLowerBound": 1415248,
+    "cellOrbitCountUpperBound": 176905950,
+    "condition": "the direction oracle, potential, and subdivision are also invariant under Chen's order-125 color subgroup L",
+    "exactCellCountsRequire": "the 31 double-coset counts |L backslash Q / W_U| for proper U subset {0,...,4}",
+    "rankTwoOrbitCountLowerBound": 531648,
+    "rankTwoOrbitCountUpperBound": 66456000,
+    "strictIncidenceOrbitCountLowerBound": 30483659,
+    "strictIncidenceOrbitCountUpperBound": 3810457300,
+    "vertexOrbitCount": 74880
+  },
+  "promotionGates": {
+    "finiteHeightBandPi1Surjection": "also requires a nonzero character and a primitive integral normalization certificate",
+    "lawfulClosureAndDirectedLinks": "conditional on a complete factored direction oracle",
+    "runOnCurrentCover": false
+  },
+  "schemaVersion": 1,
+  "sourceBinding": {
+    "colorClassWallOrientationObstruction": {
+      "artifactSha256": "5445d8a09e27c15cc16e52abb27d80649a1ab4f00f9f204d0f92b601fd995c42",
+      "bytesSha256": "ac94a123c2987c69f8378028fed829c3f6c378c1039a7acf6b49733cec37c4bc",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_color_class_wall_orientation.json"
+    },
+    "wallCoorientationObstruction": {
+      "artifactSha256": "1adb8e9449e0b2cba37aa4d502877f07b7961092e8cec51e6b6369d20f1f5bfe",
+      "bytesSha256": "6db74185b74dfae335837d7957fa0388279c0b1bb8319520ab2db901f268e1af",
+      "path": "scripts/certificates/portfolio/makarov_p2_section5_wall_coorientation_obstruction.json"
+    }
+  },
+  "sphericalCatalogue": {
+    "finiteRankTwoTypeCount": 20,
+    "maximumSphericalFiberOrder": 28800,
+    "sphericalOrderLcm": 57600,
+    "typeCount": 93
+  },
+  "status": "downstream-not-run-no-wall-coorientation-on-current-cover",
+  "unreducedCurrentCover": {
+    "actionDegree": 4792320000,
+    "cellCountByDimension": {
+      "0": 4792320000,
+      "1": 16773120000,
+      "2": 21445632000,
+      "3": 11980800000,
+      "4": 2658572800,
+      "5": 142604800
+    },
+    "totalCellCount": 57793049600
+  }
+}

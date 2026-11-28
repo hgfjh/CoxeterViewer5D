@@ -8,6 +8,13 @@ import {
 } from "../src/fibering";
 import type { QuotientComplex } from "../src/quotient";
 import {
+  acceptedActionToQuotientComplex,
+  certifyTorsionFreeAction,
+  planSphericalSpecialSubgroups,
+  type TorsionFreeActionCandidate,
+} from "../src/torsionFree";
+import type { CoxeterSystemInput } from "../src/types";
+import {
   createWallCoorientation,
   deriveMorseLinks,
   evaluateLawfulSubcomplex,
@@ -44,6 +51,7 @@ describe("virtual algebraic fibering certificate", () => {
       morseLinks,
     });
 
+    expect(certificate.schemaVersion).toBe(2);
     expect(certificate.status).toBe("passed");
     expect(certificate.result).toEqual({
       explicitEpimorphismToZ: true,
@@ -72,10 +80,10 @@ describe("virtual algebraic fibering certificate", () => {
     expect(certificate.plMorse.missingEvidenceCheckIds).toEqual([]);
     expect(certificate.plMorse.checks.map((check) => check.id)).toEqual(
       expect.arrayContaining([
-        "aspherical-npc-setting",
         "circle-valued-map",
         "affine-morse-cells",
         "discrete-lifted-heights",
+        "finite-height-band-pi1-surjection",
         "lawful-to-subgroup-surjection",
       ]),
     );
@@ -98,6 +106,46 @@ describe("virtual algebraic fibering certificate", () => {
       },
       errors: [],
     });
+
+    const legacyHeaderValidation = validateVirtualAlgebraicFiberingCertificate({
+      ...certificate,
+      schemaVersion: 1,
+    });
+    expect(legacyHeaderValidation.valid).toBe(false);
+    expect(legacyHeaderValidation.errors).toContain(
+      "Unsupported virtual-fibering certificate schema, kind, or method.",
+    );
+
+    const alteredBand = structuredClone(certificate);
+    const finiteBandCheck = alteredBand.plMorse.checks.find(
+      (check) => check.id === "finite-height-band-pi1-surjection",
+    );
+    expect(finiteBandCheck).toBeDefined();
+    finiteBandCheck!.status = "failed";
+    alteredBand.plMorse.failedCheckIds.push(finiteBandCheck!.id);
+    alteredBand.plMorse.status = "failed";
+    alteredBand.status = "failed";
+    alteredBand.plMorse.conclusion.virtualAlgebraicFibrationCertified = false;
+    alteredBand.result.finitelyGeneratedKernel = false;
+    alteredBand.result.virtualAlgebraicFibration = false;
+    const alteredBandValidation =
+      validateVirtualAlgebraicFiberingCertificate(alteredBand);
+    expect(alteredBandValidation.valid).toBe(false);
+    expect(alteredBandValidation.errors).toContain(
+      "The finite-height-band pi_1-surjection check disagrees with its recorded prerequisites.",
+    );
+
+    const missingMandatoryRow = structuredClone(certificate);
+    missingMandatoryRow.plMorse.checks =
+      missingMandatoryRow.plMorse.checks.filter(
+        ({ id }) => id !== "lawful-to-subgroup-surjection",
+      );
+    const missingMandatoryValidation =
+      validateVirtualAlgebraicFiberingCertificate(missingMandatoryRow);
+    expect(missingMandatoryValidation.valid).toBe(false);
+    expect(missingMandatoryValidation.errors).toContain(
+      "The mandatory PL-Morse check set is incomplete, duplicated, or unsupported.",
+    );
 
     const altered = structuredClone(certificate);
     altered.primitiveHomomorphism.generatorValues[0].primitiveValue *= 2;
@@ -131,6 +179,72 @@ describe("virtual algebraic fibering certificate", () => {
       expect.objectContaining({ generators: [0, 1, 2], passed: false }),
     ]);
     expect(check.failedTriples[0].reciprocalSum).toBeCloseTo(7 / 6, 12);
+  });
+
+  it("uses dimension and NPC only as optional diagnostics", () => {
+    const quotient = rankFiveProductCover();
+    const cover = buildCoverCompression(quotient);
+    const wallSystem = findWallSystem(cover.barX);
+    const wallSigns = Object.fromEntries(
+      wallSystem.walls.map((wall) => {
+        const edge = cover.barX.geometricEdges.find(
+          (candidate) => candidate.id === wall.canonicalEdgeId,
+        );
+        if (!edge)
+          throw new Error(`Missing canonical edge ${wall.canonicalEdgeId}.`);
+        return [wall.id, edge.generator === 4 ? -1 : 1] as const;
+      }),
+    );
+    const coorientation = createWallCoorientation(wallSystem, wallSigns);
+    const lawfulSubcomplex = evaluateLawfulSubcomplex(
+      cover.barX,
+      coorientation,
+    );
+    const morseLinks = deriveMorseLinks(
+      cover.barX,
+      coorientation,
+      lawfulSubcomplex,
+    );
+    const certificate = buildVirtualAlgebraicFiberingCertificate({
+      quotient,
+      cover,
+      wallSystem,
+      coorientation,
+      lawfulSubcomplex,
+      morseLinks,
+    });
+
+    expect(certificate.plMorse.dimensionTwo.passed).toBe(false);
+    expect(certificate.plMorse.checks.map((check) => check.id)).not.toContain(
+      "aspherical-npc-setting",
+    );
+    expect(certificate.plMorse.checks.map((check) => check.id)).not.toContain(
+      "dimension-at-most-two",
+    );
+    expect(certificate.plMorse.auxiliaryDiagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "dimension-at-most-two",
+          passed: false,
+          role: "optional-stronger-topology",
+        }),
+        expect.objectContaining({
+          id: "aspherical-npc-setting",
+          passed: false,
+          role: "optional-stronger-topology",
+        }),
+      ]),
+    );
+    expect(
+      certificate.plMorse.checks.find(
+        (check) => check.id === "finite-height-band-pi1-surjection",
+      )?.status,
+    ).toBe("passed");
+    expect(certificate.status, certificate.errors.join("\n")).toBe("passed");
+    expect(certificate.result.virtualAlgebraicFibration).toBe(true);
+    expect(validateVirtualAlgebraicFiberingCertificate(certificate).valid).toBe(
+      true,
+    );
   });
 
   it("does not use embeddedness or self-osculation as deterministic Morse gates", () => {
@@ -283,4 +397,44 @@ function infiniteDihedralIndexTwoCover(): QuotientComplex {
       warnings: [],
     },
   };
+}
+
+const RANK_FIVE_PRODUCT_SYSTEM: CoxeterSystemInput = {
+  schemaVersion: 1,
+  name: "C2 cubed times infinite dihedral",
+  rank: 5,
+  generators: Array.from({ length: 5 }, (_, generator) => ({
+    id: `s${generator}`,
+    label: `s${generator}`,
+  })),
+  coxeterMatrix: Array.from({ length: 5 }, (_, left) =>
+    Array.from({ length: 5 }, (_, right) => {
+      if (left === right) return 1;
+      return (left === 3 && right === 4) || (left === 4 && right === 3)
+        ? "inf"
+        : 2;
+    }),
+  ),
+};
+
+function rankFiveProductCover(): QuotientComplex {
+  const index = 16;
+  const candidate: TorsionFreeActionCandidate = {
+    id: "rank-five-product-virtual-fibering-test",
+    index,
+    generatorImages: [0, 1, 2, 3, 3].map((bit) =>
+      Array.from({ length: index }, (_, point) => point ^ (1 << bit)),
+    ),
+    backend: "exact-test-action",
+  };
+  const certificate = certifyTorsionFreeAction(
+    RANK_FIVE_PRODUCT_SYSTEM,
+    candidate,
+    planSphericalSpecialSubgroups(RANK_FIVE_PRODUCT_SYSTEM),
+  );
+  expect(certificate.status, certificate.errors.join("\n")).toBe("passed");
+  return acceptedActionToQuotientComplex(RANK_FIVE_PRODUCT_SYSTEM, {
+    candidate,
+    certificate,
+  });
 }

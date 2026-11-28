@@ -1,4 +1,9 @@
-import type { ChangeEvent } from "react";
+import {
+  memo,
+  type ChangeEvent,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import type { QuotientImportProgressSnapshot } from "./quotientValidationClient";
 import type { CoverCompressionResult } from "../compression/types";
 import type {
@@ -28,8 +33,20 @@ import {
   summarizeAutomaticCoverAvailability,
   summarizeAutomaticSymbolicKernel,
 } from "./torsionFreeCoverDiscovery";
+import {
+  describeDegreeOutcome,
+  describeStatus,
+  describeStrategy,
+  pluralize,
+} from "./statusText";
 
 export interface CoversWallsPanelProps {
+  /**
+   * Teaching mode collapses long diagnostic grids and ledgers into closed
+   * <details> so a first reading sees the workflow and the main actions.
+   * Every control stays reachable in both modes.
+   */
+  uiMode?: "teaching" | "research";
   cover?: CoverCompressionResult;
   coverError?: string;
   sourceName?: string;
@@ -82,7 +99,15 @@ export interface CoversWallsPanelProps {
   onShowDiscardedCellsChange: (value: boolean) => void;
 }
 
-export function CoversWallsPanel({
+const ONE_SIDED_REASON_ID = "covers-walls-one-sided-reason";
+const KERNEL_DOWNSTREAM_REASON_ID = "covers-walls-kernel-downstream-reason";
+
+/**
+ * Memoized: App re-renders on every scene and import tick, but this panel only
+ * needs to update when its own props change.
+ */
+export const CoversWallsPanel = memo(function CoversWallsPanel({
+  uiMode = "research",
   cover,
   coverError,
   sourceName,
@@ -134,6 +159,7 @@ export function CoversWallsPanel({
   onShowCellsChange,
   onShowDiscardedCellsChange,
 }: CoversWallsPanelProps) {
+  const teaching = uiMode === "teaching";
   const lawfulCount = lawfulSubcomplex?.retainedCellIds.length ?? 0;
   const cellCount = cover?.barX.relationCells.length ?? 0;
   const linkFailures = morseLinks
@@ -149,6 +175,21 @@ export function CoversWallsPanel({
     (entry) => entry.vertexId === selectedVertexId,
   );
   const lawfulTrack = lawfulFiberingCertificate?.lawful;
+  const lawfulCertificationLabel =
+    lawfulTrack?.certificationComplex === "coface-closed-full"
+      ? "coface-closed lawful complex"
+      : "lawful 2-complex";
+  const optionalAsphericityPassed = lawfulTrack
+    ? lawfulTrack.certificationComplex === "coface-closed-full"
+      ? lawfulTrack.generalized.checks.asphericityPassed
+      : lawfulTrack.npcAsphericity.status === "passed"
+    : false;
+  const lawfulDirectedLinksPassed = lawfulTrack
+    ? lawfulTrack.certificationComplex === "coface-closed-full"
+      ? lawfulTrack.generalized.checks.actualDirectedLinksPassed
+      : lawfulTrack.morse.checks.everyAscendingLinkNonemptyAndConnected &&
+        lawfulTrack.morse.checks.everyDescendingLinkNonemptyAndConnected
+    : false;
   const fiberingStatus =
     lawfulFiberingCertificate?.status === "passed"
       ? "passed"
@@ -205,15 +246,93 @@ export function CoversWallsPanel({
     relationPolygonKinds.size === 1
       ? (relationFamilies[0]?.polygonName ?? "polygons")
       : "polygons";
+  const wallsReadable =
+    selectedRelationFamily === "shared-complex" &&
+    wallSystem !== undefined &&
+    wallSystem.walls.length > 0;
+  const oneSidedWalls = wallSystem ? !wallSystem.diagnostics.twoSided : false;
+
+  const workflowSteps: Array<{
+    title: string;
+    detail: string;
+    complete: boolean;
+  }> = [
+    {
+      title: "1. Certify a torsion-free subgroup",
+      detail: coverAvailability.torsionFreeCoverSummary,
+      complete: coverAvailability.torsionFreeCoverCertified,
+    },
+    {
+      title: "2. Materialize a manageable finite cover",
+      detail: cover
+        ? `${sourceName ?? cover.hatX.name}: index ${cover.hatX.vertices.length}`
+        : coverAvailability.manageableCoverSummary,
+      complete: Boolean(cover),
+    },
+    {
+      title: "3. Compress to bar X",
+      detail: cover
+        ? `${pluralize(cover.barX.geometricEdges.length, "edge")}, ${pluralize(cover.barX.relationCells.length, "relation cell")}`
+        : "Waiting for a cover",
+      complete: cover?.certificate.status === "passed",
+    },
+    {
+      title: "4. Find walls",
+      detail: wallSystem
+        ? pluralize(
+            wallSystem.walls.length,
+            "opposite-edge class",
+            "opposite-edge classes",
+          )
+        : "Waiting for bar X",
+      complete: Boolean(wallSystem),
+    },
+    {
+      title: "5. Coorient walls",
+      detail: coorientation?.valid ? "Coherent directions" : "Not ready",
+      complete: coorientation?.valid === true,
+    },
+    {
+      title: "6. Keep lawful cells",
+      detail: cover ? `${lawfulCount} of ${cellCount} retained` : "Not ready",
+      complete: lawfulSubcomplex?.valid === true,
+    },
+    {
+      title: "7. Certify a primitive map to ℤ",
+      detail: virtualFiberingCertificate
+        ? virtualFiberingCertificate.result.statement
+        : "Waiting for a cover and coorientation",
+      complete:
+        virtualFiberingCertificate?.result.virtualAlgebraicFibration === true,
+    },
+  ];
 
   return (
     <Panel title="Covers + Walls">
       <p className="field-help">
-        Find a finite-index torsion-free subgroup, build
-        <strong> hat X</strong>, then compress it to <strong>bar X</strong> for
-        the wall workflow. A congruence kernel may certify that a cover exists
-        even when its finite action is too large to build here.
+        Find a torsion-free subgroup H of finite index, build its cover
+        <strong> hat X</strong>, and compress it to <strong>bar X</strong>. The
+        steps below then follow walls, lawful cells, and a map H → ℤ.
       </p>
+
+      <ol className="workflow-list" aria-label="Cover and wall workflow">
+        {workflowSteps.map((step) => (
+          <li key={step.title} data-complete={step.complete}>
+            <strong>
+              {step.title}
+              {step.complete ? (
+                <span className="workflow-check" aria-hidden="true">
+                  {" ✓"}
+                </span>
+              ) : null}
+              <span style={visuallyHidden}>
+                {step.complete ? " (done)" : " (pending)"}
+              </span>
+            </strong>
+            <span>{step.detail}</span>
+          </li>
+        ))}
+      </ol>
 
       <section
         className="cover-discovery-card"
@@ -222,7 +341,7 @@ export function CoversWallsPanel({
         <div className="panel-section-heading">
           <strong>Find a torsion-free cover</strong>
           <span className={`status-pill status-${discoveryState.status}`}>
-            {discoveryState.status}
+            {describeStatus(discoveryState.status)}
           </span>
         </div>
         <div className="button-row">
@@ -266,7 +385,7 @@ export function CoversWallsPanel({
               type="button"
               className="button"
               disabled={discoveryRunning}
-              title="Proper subgroups of the certified O8-(2) factor first contribute degrees divisible by 17 x 5,760."
+              title="Proper subgroups of the certified O8-(2) factor first contribute degrees divisible by 17 × 5,760."
               onClick={() =>
                 onDiscoveryOptionsChange({
                   ...discoveryOptions,
@@ -288,72 +407,21 @@ export function CoversWallsPanel({
         </div>
         {nativeCoverDiscovery ? (
           <p className="field-help">
-            Automatic mode builds exact finite congruence images first, searches
-            their coset actions, combines complementary modules when useful, and
-            keeps GAP low-index enumeration as a small-index fallback. Every
-            result is checked again before hat X is built.
+            Searches exact finite congruence images first, then combined
+            modules, then small-index GAP enumeration. Every result is checked
+            again before hat X is built.
           </p>
         ) : (
           <p className="field-help">
             Automatic GAP/Sage discovery requires the desktop app or the CLI.
-            Open “Search bounds and fallback import” to export a search request
-            or import an action for the viewer to check.
+            Here, use “Search bounds and fallback import” to export a search
+            request or import a result.
           </p>
         )}
-        <div className="compact-grid cover-discovery-summary">
-          <StatusDatum
-            label="Spherical catalogue"
-            value={`${discoveryPlan.sphericalPlan.sphericalSubgroups.length} (${discoveryPlan.sphericalPlan.status})`}
-          />
-          <StatusDatum
-            label="Necessary index divisor"
-            value={lowerBound.decimal}
-          />
-          <StatusDatum
-            label="Search through index"
-            value={discoveryOptions.maxIndex}
-          />
-          <StatusDatum
-            label="Strategy"
-            value={
-              discoveryOptions.backend === "auto"
-                ? "finite image -> composite -> small GAP fallback"
-                : discoveryOptions.backend === "gap"
-                  ? "small-index GAP + composite"
-                  : "Sage finite-image search"
-            }
-          />
-          <StatusDatum
-            label="Torsion-free cover"
-            value={
-              coverAvailability.torsionFreeCoverCertified
-                ? "certified"
-                : "not certified"
-            }
-          />
-          <StatusDatum
-            label="Exact cover index"
-            value={
-              coverAvailability.exactIndexCertified
-                ? "certified"
-                : coverAvailability.torsionFreeCoverCertified
-                  ? "not yet known"
-                  : "not certified"
-            }
-          />
-          <StatusDatum
-            label="Usable finite cover"
-            value={
-              coverAvailability.manageableCoverMaterialized
-                ? `materialized (${cover?.hatX.vertices.length ?? 0})`
-                : "not found"
-            }
-          />
-        </div>
         {searchBelowLowerBound ? (
           <p className="warning-inline">
-            No permitted search rung can return an action as large as the
-            necessary divisor {lowerBound.decimal}.
+            Every action the current bounds allow is smaller than the necessary
+            index divisor {lowerBound.decimal}. Raise the bounds to search.
           </p>
         ) : null}
         <p className="field-help" aria-live="polite">
@@ -364,6 +432,58 @@ export function CoversWallsPanel({
             {coverAvailability.torsionFreeCoverSummary}
           </p>
         ) : null}
+        <Disclosure collapsed={teaching} summary="Search summary">
+          <div className="compact-grid cover-discovery-summary">
+            <StatusDatum
+              label="Spherical catalogue"
+              value={`${discoveryPlan.sphericalPlan.sphericalSubgroups.length} (${describeStatus(discoveryPlan.sphericalPlan.status)})`}
+            />
+            <StatusDatum
+              label="Necessary index divisor"
+              value={lowerBound.decimal}
+            />
+            <StatusDatum
+              label="Search through index"
+              value={discoveryOptions.maxIndex}
+            />
+            <StatusDatum
+              label="Search strategy"
+              value={
+                discoveryOptions.backend === "auto"
+                  ? "finite image → composite → small GAP fallback"
+                  : discoveryOptions.backend === "gap"
+                    ? "small-index GAP + composite"
+                    : "Sage finite-image search"
+              }
+            />
+            <StatusDatum
+              label="Torsion-free cover"
+              value={
+                coverAvailability.torsionFreeCoverCertified
+                  ? "certified"
+                  : "not certified"
+              }
+            />
+            <StatusDatum
+              label="Exact cover index"
+              value={
+                coverAvailability.exactIndexCertified
+                  ? "certified"
+                  : coverAvailability.torsionFreeCoverCertified
+                    ? "not yet known"
+                    : "not certified"
+              }
+            />
+            <StatusDatum
+              label="Usable finite cover"
+              value={
+                coverAvailability.manageableCoverMaterialized
+                  ? `materialized (${cover?.hatX.vertices.length ?? 0})`
+                  : "not found"
+              }
+            />
+          </div>
+        </Disclosure>
         {unmaterializedCertifiedKernel ? (
           <section
             className="warning-inline"
@@ -372,12 +492,26 @@ export function CoversWallsPanel({
             <strong>Torsion-free existence is certified.</strong>{" "}
             {coverAvailability.manageableCoverSummary}
             <br />
-            {coverAvailability.downstreamReason}
+            <span id={KERNEL_DOWNSTREAM_REASON_ID}>
+              {coverAvailability.downstreamReason}
+            </span>
             <div className="button-row">
-              <button type="button" className="button" disabled>
+              <button
+                type="button"
+                className="button"
+                disabled
+                title="Needs a materialized finite action, which this kernel does not have."
+                aria-describedby={KERNEL_DOWNSTREAM_REASON_ID}
+              >
                 Build quotient and walls
               </button>
-              <button type="button" className="button" disabled>
+              <button
+                type="button"
+                className="button"
+                disabled
+                title="Needs a materialized finite action, which this kernel does not have."
+                aria-describedby={KERNEL_DOWNSTREAM_REASON_ID}
+              >
                 Run fibering pipeline
               </button>
             </div>
@@ -402,7 +536,7 @@ export function CoversWallsPanel({
                   label={
                     entry.rank === 0 ? "Vertices" : `Rank-${entry.rank} cells`
                   }
-                  value={`${entry.cellCount} across ${entry.sphericalTypeCount} spherical type${entry.sphericalTypeCount === 1 ? "" : "s"}`}
+                  value={`${entry.cellCount} across ${pluralize(entry.sphericalTypeCount, "spherical type")}`}
                 />
               ))}
             </div>
@@ -418,24 +552,29 @@ export function CoversWallsPanel({
           <p className="field-help">Artifact: {discoveryState.artifactPath}</p>
         ) : null}
         {discoveryState.artifact?.strategyAttempts?.length ? (
-          <ol className="compact-status-list" aria-label="Strategy attempts">
-            {discoveryState.artifact.strategyAttempts.map((attempt) => (
-              <li key={attempt.strategy}>
-                <strong>{attempt.strategy}</strong>: {attempt.status}
-                {attempt.candidateDegree
-                  ? ` (degree ${attempt.candidateDegree})`
-                  : ""}
-              </li>
-            ))}
-          </ol>
+          <Disclosure
+            collapsed={teaching}
+            summary={`Strategy attempts (${discoveryState.artifact.strategyAttempts.length})`}
+          >
+            <ol className="compact-status-list" aria-label="Strategy attempts">
+              {discoveryState.artifact.strategyAttempts.map((attempt) => (
+                <li key={attempt.strategy} title={attempt.message}>
+                  <strong>{describeStrategy(attempt.strategy)}</strong>:{" "}
+                  {describeStatus(attempt.status)}
+                  {attempt.candidateDegree
+                    ? ` (degree ${attempt.candidateDegree.toLocaleString()})`
+                    : ""}
+                </li>
+              ))}
+            </ol>
+          </Disclosure>
         ) : null}
         {discoveryState.artifact?.finiteImageReports?.length ? (
           <details className="advanced-details compact-details">
             <summary>Bounded finite-image degree report</summary>
             <p className="field-help">
-              Every listed degree is tied to one finite image. An unresolved
-              subgroup family stays open even when the necessary index sieve has
-              finished.
+              Each degree is tied to one finite image. An unresolved subgroup
+              family stays open even after the necessary index sieve finishes.
             </p>
             {discoveryState.artifact.finiteImageReports.map((report) => (
               <section
@@ -462,7 +601,7 @@ export function CoversWallsPanel({
                   {report.degreeLedger.map((decision) => (
                     <li key={decision.degree} title={decision.reason}>
                       <strong>{decision.degree.toLocaleString()}</strong>:{" "}
-                      {decision.outcome}
+                      {describeDegreeOutcome(decision.outcome)}
                       {!decision.complete ? " (incomplete)" : ""}
                     </li>
                   ))}
@@ -474,7 +613,7 @@ export function CoversWallsPanel({
         <details className="advanced-details compact-details">
           <summary>Search bounds and fallback import</summary>
           <label className="field" htmlFor="cover-search-backend">
-            <span>Strategy ladder</span>
+            <span>Search strategy</span>
             <select
               id="cover-search-backend"
               value={discoveryOptions.backend}
@@ -487,7 +626,7 @@ export function CoversWallsPanel({
                 })
               }
             >
-              <option value="auto">Automatic ladder</option>
+              <option value="auto">Automatic (all strategies in order)</option>
               <option value="gap">Small-index GAP + composite</option>
               <option value="sage">Sage finite-image search only</option>
             </select>
@@ -722,136 +861,6 @@ export function CoversWallsPanel({
         </details>
       </section>
 
-      <ol className="workflow-list" aria-label="Cover and wall workflow">
-        <li data-complete={coverAvailability.torsionFreeCoverCertified}>
-          <strong>1. Certify a torsion-free subgroup</strong>
-          <span>{coverAvailability.torsionFreeCoverSummary}</span>
-        </li>
-        <li data-complete={Boolean(cover)}>
-          <strong>2. Materialize a manageable finite cover</strong>
-          <span>
-            {cover
-              ? `${sourceName ?? cover.hatX.name}: index ${cover.hatX.vertices.length}`
-              : coverAvailability.manageableCoverSummary}
-          </span>
-        </li>
-        <li data-complete={cover?.certificate.status === "passed"}>
-          <strong>3. Compress to bar X</strong>
-          <span>
-            {cover
-              ? `${cover.barX.geometricEdges.length} edges, ${cover.barX.relationCells.length} relation cells`
-              : "Waiting for a cover"}
-          </span>
-        </li>
-        <li data-complete={Boolean(wallSystem)}>
-          <strong>4. Find walls</strong>
-          <span>
-            {wallSystem
-              ? `${wallSystem.walls.length} opposite-edge classes`
-              : "Waiting for bar X"}
-          </span>
-        </li>
-        <li data-complete={coorientation?.valid === true}>
-          <strong>5. Coorient walls</strong>
-          <span>
-            {coorientation?.valid ? "Coherent directions" : "Not ready"}
-          </span>
-        </li>
-        <li data-complete={lawfulSubcomplex?.valid === true}>
-          <strong>6. Keep lawful cells</strong>
-          <span>
-            {cover ? `${lawfulCount} of ${cellCount} retained` : "Not ready"}
-          </span>
-        </li>
-        <li
-          data-complete={
-            virtualFiberingCertificate?.result.virtualAlgebraicFibration ===
-            true
-          }
-        >
-          <strong>7. Certify a primitive map to Z</strong>
-          <span>
-            {virtualFiberingCertificate
-              ? virtualFiberingCertificate.result.statement
-              : "Waiting for a cover and coorientation"}
-          </span>
-        </li>
-      </ol>
-
-      {cover && relationFamilies.length > 0 ? (
-        <section
-          className="relation-family-reader-card"
-          aria-label="bar X relation reader"
-        >
-          <div className="panel-section-heading">
-            <strong>Spread attached relation cells</strong>
-            <span className="status-pill status-passed">
-              {activeRelationFamily
-                ? `${activeRelationFamily.cellCount} of ${cover.barX.relationCells.length} cells`
-                : selectedRelationFamily === "all"
-                  ? `${cover.barX.relationCells.length} ${allRelationPolygonName}`
-                  : "compact gluing"}
-            </span>
-          </div>
-          <label className="field" htmlFor="bar-x-relation-family">
-            <span>Finite edge of Gamma</span>
-            <select
-              id="bar-x-relation-family"
-              aria-label="Relation family in bar X"
-              value={selectedRelationFamily}
-              onChange={(event) =>
-                onRelationFamilyChange(
-                  event.target.value as BarXRelationFamilyId,
-                )
-              }
-            >
-              <option value="all">
-                All families: {cover.barX.relationCells.length} attached{" "}
-                {allRelationPolygonName}
-              </option>
-              {relationFamilies.map((family) => (
-                <option key={family.id} value={family.id}>
-                  {family.generatorLabels[0]} - {family.generatorLabels[1]}: m=
-                  {family.m}, {family.cellCount} {family.polygonName}
-                </option>
-              ))}
-              <option value="shared-complex">
-                Compact gluing: no cell spread
-              </option>
-            </select>
-          </label>
-          {activeRelationFamily ? (
-            <p className="field-help" aria-live="polite">
-              The edge {activeRelationFamily.generatorLabels[0]} -{" "}
-              {activeRelationFamily.generatorLabels[1]} has m=
-              {activeRelationFamily.m}. Its {cover.barX.vertices.length}-sheet
-              cover contributes {cover.barX.vertices.length}/(2 x{" "}
-              {activeRelationFamily.m}) = {activeRelationFamily.cellCount}{" "}
-              {activeRelationFamily.polygonName}. These are the original cells
-              on the shared quotient 1-skeleton: the other generator edges stay
-              visible as faint gluing context, and no boundary is copied.
-            </p>
-          ) : selectedRelationFamily === "all" ? (
-            <p className="field-help" aria-live="polite">
-              All {cover.barX.relationCells.length} exact{" "}
-              {allRelationPolygonName} remain attached to the same{" "}
-              {cover.barX.vertices.length} vertices and{" "}
-              {cover.barX.geometricEdges.length} generator edges. Their
-              interiors fan outward in {relationFamilies.length} relation-family{" "}
-              {relationFamilies.length === 1 ? "lane" : "lanes"} so each disk
-              can be followed back to its attaching cycle; only this interior
-              bending is a drawing convention.
-            </p>
-          ) : (
-            <p className="field-help" aria-live="polite">
-              This is the same compressed complex with cell interiors left
-              compact. Use it for walls; choose a relation family or all
-              families to spread the same attached cells for reading.
-            </p>
-          )}
-        </section>
-      ) : null}
-
       {importProgress.stage !== "idle" ? (
         <div className="quotient-import-progress" aria-live="polite">
           <div className="quotient-import-progress-heading">
@@ -871,9 +880,88 @@ export function CoversWallsPanel({
       ) : null}
       {coverError ? <p className="warning-inline">{coverError}</p> : null}
 
-      {selectedRelationFamily === "shared-complex" &&
-      wallSystem &&
-      wallSystem.walls.length > 0 ? (
+      {cover && relationFamilies.length > 0 ? (
+        <section
+          className="relation-family-reader-card"
+          aria-label="bar X relation reader"
+        >
+          <div className="panel-section-heading">
+            <strong>Spread attached relation cells</strong>
+            <span className="status-pill">
+              {activeRelationFamily
+                ? `${activeRelationFamily.cellCount} of ${cover.barX.relationCells.length} cells`
+                : selectedRelationFamily === "all"
+                  ? `${cover.barX.relationCells.length} ${allRelationPolygonName}`
+                  : "compact gluing"}
+            </span>
+          </div>
+          <label className="field" htmlFor="bar-x-relation-family">
+            <span>Relation family in bar X</span>
+            <select
+              id="bar-x-relation-family"
+              aria-describedby="bar-x-relation-family-help"
+              value={selectedRelationFamily}
+              onChange={(event) =>
+                onRelationFamilyChange(
+                  event.target.value as BarXRelationFamilyId,
+                )
+              }
+            >
+              <option value="all">
+                All families: {cover.barX.relationCells.length} attached{" "}
+                {allRelationPolygonName}
+              </option>
+              {relationFamilies.map((family) => (
+                <option key={family.id} value={family.id}>
+                  {family.generatorLabels[0]}–{family.generatorLabels[1]}: m ={" "}
+                  {family.m}, {family.cellCount} {family.polygonName}
+                </option>
+              ))}
+              <option value="shared-complex">
+                Compact gluing: no cell spread
+              </option>
+            </select>
+          </label>
+          <p className="field-help" id="bar-x-relation-family-help">
+            Each family is one finite edge of Γ.
+          </p>
+          {activeRelationFamily ? (
+            <p className="field-help" aria-live="polite">
+              The edge {activeRelationFamily.generatorLabels[0]}–
+              {activeRelationFamily.generatorLabels[1]} has m ={" "}
+              {activeRelationFamily.m}, so the {cover.barX.vertices.length}
+              -sheet cover contributes {cover.barX.vertices.length}/(2 ×{" "}
+              {activeRelationFamily.m}) = {activeRelationFamily.cellCount}{" "}
+              {activeRelationFamily.polygonName}. The other generator edges stay
+              as faint gluing context; no boundary is copied.
+            </p>
+          ) : selectedRelationFamily === "all" ? (
+            <p className="field-help" aria-live="polite">
+              All {cover.barX.relationCells.length} exact{" "}
+              {allRelationPolygonName} remain attached to the same{" "}
+              {cover.barX.vertices.length} vertices and{" "}
+              {cover.barX.geometricEdges.length} generator edges. Each disk is
+              filled inside its own attaching cycle; only the vertex positions
+              are a drawing convention.
+            </p>
+          ) : (
+            <p className="field-help" aria-live="polite">
+              This is the same compressed complex with compact cell interiors.
+              Use it to read walls.
+            </p>
+          )}
+        </section>
+      ) : null}
+
+      {wallSystem &&
+      wallSystem.walls.length > 0 &&
+      selectedRelationFamily !== "shared-complex" ? (
+        <p className="field-help">
+          Choose “Compact gluing” above to select, flip, and optimise walls.
+        </p>
+      ) : null}
+
+      {wallsReadable ? (
         <>
           <label className="field" htmlFor="wall-selection">
             <span>Select a wall</span>
@@ -884,7 +972,8 @@ export function CoversWallsPanel({
             >
               {wallSystem.walls.map((wall) => (
                 <option key={wall.id} value={wall.id}>
-                  {wallLabel(wallSystem, wall.id)}: {wall.edgeIds.length} edges
+                  {wallLabel(wallSystem, wall.id)}:{" "}
+                  {pluralize(wall.edgeIds.length, "edge")}
                 </option>
               ))}
             </select>
@@ -892,8 +981,8 @@ export function CoversWallsPanel({
           <section className="wall-reader-card" aria-label="Wall reader">
             <div className="panel-section-heading">
               <strong>Read walls and induced directions</strong>
-              <span className="status-pill status-passed">
-                {coorientation?.valid ? "cooriented" : "not ready"}
+              <span className="status-pill">
+                {coorientation?.valid ? "cooriented" : "not cooriented"}
               </span>
             </div>
             <div className="segmented" role="group" aria-label="Wall display">
@@ -945,7 +1034,7 @@ export function CoversWallsPanel({
               </li>
               <li className="legend-item">
                 <span className="wall-arrow-key" aria-hidden="true">
-                  -&gt;
+                  →
                 </span>
                 <span>
                   Arrowheads show the direction induced on dual edges. Wall arcs
@@ -963,6 +1052,41 @@ export function CoversWallsPanel({
               </p>
             ) : null}
           </section>
+        </>
+      ) : null}
+
+      {wallSystem ? (
+        <Disclosure collapsed={teaching} summary="Wall diagnostics">
+          <div className="compact-grid wall-diagnostic-grid">
+            <StatusDatum
+              label="Embedded"
+              value={wallSystem.diagnostics.embedded ? "yes" : "no"}
+            />
+            <StatusDatum
+              label="Two-sided"
+              value={wallSystem.diagnostics.twoSided ? "yes" : "no"}
+            />
+            <StatusDatum
+              label="No self-osculation"
+              value={wallSystem.diagnostics.selfOsculationFree ? "yes" : "no"}
+            />
+            <StatusDatum
+              label="Vertices with failing directed links"
+              value={morseLinks ? linkFailures : "not checked"}
+            />
+          </div>
+        </Disclosure>
+      ) : null}
+
+      {oneSidedWalls ? (
+        <p className="warning-inline" id={ONE_SIDED_REASON_ID}>
+          Some walls are one-sided, so the walls admit no coorientation. The
+          lawful-subcomplex search and Track A (lawful complex) are unavailable.
+        </p>
+      ) : null}
+
+      {wallsReadable ? (
+        <>
           <div className="button-row">
             <button
               type="button"
@@ -975,7 +1099,9 @@ export function CoversWallsPanel({
             <button
               type="button"
               className="button primary"
-              disabled={searchRunning || !wallSystem.diagnostics.twoSided}
+              data-tour="find-lawful"
+              disabled={searchRunning || oneSidedWalls}
+              aria-describedby={oneSidedWalls ? ONE_SIDED_REASON_ID : undefined}
               onClick={onOptimize}
             >
               {searchRunning
@@ -987,305 +1113,17 @@ export function CoversWallsPanel({
         </>
       ) : null}
 
-      {cover &&
-      wallSystem &&
-      coorientation &&
-      lawfulSubcomplex &&
-      morseLinks ? (
-        <section
-          className="virtual-fibering-card"
-          aria-label="Virtual algebraic fibering certificate"
-        >
-          <div className="panel-section-heading">
-            <strong>Two-track virtual-fibering certificate</strong>
-            <span className={`status-pill status-${fiberingStatus}`}>
-              {fiberingStatus === "incomplete" &&
-              !lawfulFiberingCertificate &&
-              !fullDavisFiberingCertificate
-                ? "not checked"
-                : fiberingStatus}
-            </span>
-          </div>
-          <p className="field-help">
-            First test the smaller lawful 2-complex and its exact metric and
-            Morse links. If that does not certify, build every spherical cell of
-            H\Sigma and check the complete subdivided Davis quotient.
-          </p>
-          <div className="button-row">
-            <button
-              type="button"
-              className="button primary"
-              disabled={
-                fiberingSearchRunning || !wallSystem.diagnostics.twoSided
-              }
-              onClick={onFindVirtualFibering}
-            >
-              {fiberingSearchRunning
-                ? "Checking certification tracks..."
-                : "Run lawful-first certification"}
-            </button>
-            <button
-              type="button"
-              className="button"
-              disabled={fiberingSearchRunning || !cover}
-              onClick={onFindFullDavisFibering}
-            >
-              Check full Davis quotient
-            </button>
-            <button
-              type="button"
-              className="button"
-              disabled={
-                !fullDavisFiberingCertificate &&
-                !virtualFiberingCertificate &&
-                !lawfulFiberingCertificate
-              }
-              onClick={onExportVirtualFibering}
-            >
-              Export fibering certificate
-            </button>
-          </div>
-          {fiberingSearchStatus ? (
-            <p className="field-help" aria-live="polite">
-              {fiberingSearchStatus}
-            </p>
-          ) : null}
-          {lawfulTrack ? (
-            <>
-              <h4>Track A: lawful 2-complex</h4>
-              <div className="compact-grid wall-diagnostic-grid">
-                <StatusDatum
-                  label="Lawful relation cells"
-                  value={`${lawfulTrack.retainedCellIds.length}/${lawfulTrack.cells.length}`}
-                />
-                <StatusDatum
-                  label="Asphericity"
-                  value={
-                    lawfulTrack.npcAsphericity.status === "passed"
-                      ? "exact metric-link check"
-                      : "not established"
-                  }
-                />
-                <StatusDatum
-                  label="Primitive character"
-                  value={
-                    lawfulTrack.conclusion.explicitEpimorphismToZ
-                      ? "H -> Z"
-                      : "not proved"
-                  }
-                />
-                <StatusDatum
-                  label="Kernel transfer"
-                  value={
-                    lawfulTrack.kernelTransfer.status === "passed"
-                      ? "finite generation transferred to H"
-                      : "not established"
-                  }
-                />
-              </div>
-              <p
-                className={
-                  lawfulTrack.conclusion.virtualAlgebraicFibrationCertified
-                    ? "success-inline"
-                    : "warning-inline"
-                }
-              >
-                {lawfulTrack.conclusion.statement}
-              </p>
-              <details className="advanced-details compact-details">
-                <summary>Lawful-track evidence and limits</summary>
-                <p className="field-help">
-                  This track retains the complete 1-skeleton and exactly the
-                  lawful polygons. Its presentation map onto H and the induced
-                  kernel surjection are checked explicitly. It does not claim a
-                  Morse function on every higher Davis cell.
-                </p>
-                <p className="field-help">
-                  Artifact SHA-256:{" "}
-                  {lawfulFiberingCertificate.hashes.artifactSha256}
-                </p>
-              </details>
-            </>
-          ) : null}
-          {fullDavisFiberingCertificate ? (
-            <>
-              <h4>Track B: complete Davis quotient</h4>
-              <div className="compact-grid wall-diagnostic-grid">
-                <StatusDatum
-                  label="Subgroup H"
-                  value={`index ${fullDavisFiberingCertificate.source.subgroupIndex}`}
-                />
-                <StatusDatum
-                  label="Full quotient cells"
-                  value={
-                    fullDavisFiberingCertificate.fullCellPoset
-                      ? `${fullDavisFiberingCertificate.fullCellPoset.cells.length} through dimension ${fullDavisFiberingCertificate.fullCellPoset.dimension}`
-                      : "not built"
-                  }
-                />
-                <StatusDatum
-                  label="Primitive character"
-                  value={
-                    fullDavisFiberingCertificate.result
-                      .explicitPrimitiveEpimorphismToZ
-                      ? "H -> Z (Bezout verified)"
-                      : "not proved"
-                  }
-                />
-                <StatusDatum
-                  label="Rank-two sums"
-                  value={
-                    fullDavisFiberingCertificate.wallHomomorphism
-                      ? `${fullDavisFiberingCertificate.wallHomomorphism.cocycle.relationChecks.filter((check) => check.passed).length}/${fullDavisFiberingCertificate.wallHomomorphism.cocycle.relationChecks.length} zero`
-                      : "not checked"
-                  }
-                />
-                <StatusDatum
-                  label="Full directed links"
-                  value={
-                    fullDavisFiberingCertificate.result
-                      .allAscendingAndDescendingLinksNonemptyConnected
-                      ? "all nonempty and connected"
-                      : "not all pass"
-                  }
-                />
-                <StatusDatum
-                  label="Collapsibility"
-                  value={
-                    fullDavisFiberingCertificate.result
-                      .allDirectedLinksCollapsible
-                      ? "all replayable"
-                      : "failed or unknown"
-                  }
-                />
-              </div>
-              <p
-                className={
-                  fullDavisFiberingCertificate.result.virtualAlgebraicFibration
-                    ? "success-inline"
-                    : "warning-inline"
-                }
-              >
-                {fullDavisFiberingCertificate.result.statement}
-              </p>
-              <details className="advanced-details compact-details">
-                <summary>Certificate stages and evidence</summary>
-                <h4>Pipeline stages</h4>
-                <ul className="compact-status-list">
-                  {fullDavisFiberingCertificate.stages.map((entry) => (
-                    <li key={entry.id}>
-                      <strong>{entry.label}</strong>: {entry.status}.{" "}
-                      {entry.detail}
-                    </li>
-                  ))}
-                </ul>
-                <h4>Values of phi on Schreier generators</h4>
-                {fullDavisFiberingCertificate.primitiveHomomorphism
-                  ?.generatorValues.length ? (
-                  <div className="table-scroll">
-                    <table className="compact-table">
-                      <thead>
-                        <tr>
-                          <th>Generator</th>
-                          <th>Word in S</th>
-                          <th>Wall value</th>
-                          <th>phi</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {fullDavisFiberingCertificate.primitiveHomomorphism.generatorValues.map(
-                          (entry) => (
-                            <tr key={entry.generatorId}>
-                              <td>{entry.generatorId}</td>
-                              <td>
-                                {entry.subgroupWord.length > 0
-                                  ? entry.subgroupWord
-                                      .map(
-                                        (generator) =>
-                                          cover.barX.sourceSystem.generators[
-                                            generator
-                                          ]?.label ?? `s${generator}`,
-                                      )
-                                      .join(" ")
-                                  : "e"}
-                              </td>
-                              <td>{entry.rawWallValue}</td>
-                              <td>{entry.primitiveValue}</td>
-                            </tr>
-                          ),
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <p className="field-help">
-                    No Schreier values are available.
-                  </p>
-                )}
-                <h4>Claim boundary</h4>
-                <p className="field-help">
-                  Connected directed links certify finite generation of
-                  ker(phi). Collapsibility is recorded separately. A locally
-                  trivial or smooth bundle is not claimed without the additional
-                  compact-manifold and smoothing certificates.
-                </p>
-                <p className="field-help">
-                  Artifact SHA-256:{" "}
-                  {fullDavisFiberingCertificate.hashes.artifactSha256}
-                </p>
-              </details>
-            </>
-          ) : !lawfulFiberingCertificate && virtualFiberingCertificate ? (
-            <details className="advanced-details compact-details">
-              <summary>Two-dimensional compression diagnostic</summary>
-              <p className="field-help">
-                {virtualFiberingCertificate.result.statement} This older profile
-                checks the current in-memory compression but is not the new
-                action-rooted lawful replay or the complete Davis certificate.
-              </p>
-            </details>
-          ) : null}
-        </section>
-      ) : null}
-
-      <details className="advanced-details compact-details">
-        <summary>Drawing options</summary>
-        <Toggle
-          checked={showCells}
-          label="Show relation cells"
-          onChange={onShowCellsChange}
-        />
-        <Toggle
-          checked={showDiscardedCells}
-          label="Show nonlawful cells as context"
-          onChange={onShowDiscardedCellsChange}
-        />
-      </details>
-
-      {wallSystem ? (
-        <div className="compact-grid wall-diagnostic-grid">
-          <StatusDatum
-            label="Embedded"
-            value={wallSystem.diagnostics.embedded ? "yes" : "no"}
-          />
-          <StatusDatum
-            label="Two-sided"
-            value={wallSystem.diagnostics.twoSided ? "yes" : "no"}
-          />
-          <StatusDatum
-            label="No self-osculation"
-            value={wallSystem.diagnostics.selfOsculationFree ? "yes" : "no"}
-          />
-          <StatusDatum
-            label="Morse-link failures"
-            value={morseLinks ? linkFailures : "not checked"}
-          />
-        </div>
-      ) : null}
-
       {selectedRelationFamily === "shared-complex" && cover && morseLinks ? (
-        <details className="advanced-details compact-details">
+        <details
+          className="advanced-details compact-details"
+          data-tour="induced-orientation"
+        >
           <summary>Inspect induced orientation</summary>
+          <p className="field-help">
+            Directed links at a vertex of bar X: the ascending link collects the
+            incident edges pointing away from it, the descending link those
+            pointing toward it.
+          </p>
           <label className="field" htmlFor="morse-vertex-selection">
             <span>Vertex of bar X</span>
             <select
@@ -1331,17 +1169,357 @@ export function CoversWallsPanel({
             <div className="compact-grid wall-diagnostic-grid">
               <StatusDatum
                 label="Ascending link"
-                value={`${selectedLinks.ascending.vertices.length} vertices, ${selectedLinks.ascending.components.length} components`}
+                value={`${pluralize(selectedLinks.ascending.vertices.length, "vertex", "vertices")}, ${pluralize(selectedLinks.ascending.components.length, "component")}`}
               />
               <StatusDatum
                 label="Descending link"
-                value={`${selectedLinks.descending.vertices.length} vertices, ${selectedLinks.descending.components.length} components`}
+                value={`${pluralize(selectedLinks.descending.vertices.length, "vertex", "vertices")}, ${pluralize(selectedLinks.descending.components.length, "component")}`}
               />
             </div>
           ) : null}
         </details>
       ) : null}
+
+      {cover &&
+      wallSystem &&
+      coorientation &&
+      lawfulSubcomplex &&
+      morseLinks ? (
+        <section
+          className="virtual-fibering-card"
+          aria-label="Virtual algebraic fibering certificate"
+        >
+          <div className="panel-section-heading">
+            <strong>Two-track virtual-fibering certificate</strong>
+            <span className={`status-pill status-${fiberingStatus}`}>
+              {fiberingStatus === "incomplete" &&
+              !lawfulFiberingCertificate &&
+              !fullDavisFiberingCertificate
+                ? "not checked"
+                : describeStatus(fiberingStatus)}
+            </span>
+          </div>
+          <p className="field-help">
+            Track A (lawful complex) runs first. If it does not certify, Track B
+            (full Davis quotient) checks the complete subdivided quotient.
+            CAT(0) or asphericity is recorded as optional extra evidence.
+          </p>
+          <div className="button-row">
+            <button
+              type="button"
+              className="button primary"
+              disabled={fiberingSearchRunning || oneSidedWalls}
+              aria-describedby={oneSidedWalls ? ONE_SIDED_REASON_ID : undefined}
+              onClick={onFindVirtualFibering}
+            >
+              {fiberingSearchRunning
+                ? "Checking certification tracks..."
+                : "Run lawful-first certification"}
+            </button>
+            <button
+              type="button"
+              className="button"
+              disabled={fiberingSearchRunning || !cover}
+              onClick={onFindFullDavisFibering}
+            >
+              Check full Davis quotient
+            </button>
+            <button
+              type="button"
+              className="button"
+              disabled={
+                !fullDavisFiberingCertificate &&
+                !virtualFiberingCertificate &&
+                !lawfulFiberingCertificate
+              }
+              onClick={onExportVirtualFibering}
+            >
+              Export fibering certificate
+            </button>
+          </div>
+          {fiberingSearchStatus ? (
+            <p className="field-help" aria-live="polite">
+              {fiberingSearchStatus}
+            </p>
+          ) : null}
+          {lawfulTrack ? (
+            <>
+              <h3 className="track-heading">Track A (lawful complex)</h3>
+              <p className="field-help">
+                Checked on the {lawfulCertificationLabel}.
+              </p>
+              <p
+                className={
+                  lawfulTrack.conclusion.virtualAlgebraicFibrationCertified
+                    ? "success-inline"
+                    : "warning-inline"
+                }
+              >
+                {lawfulTrack.conclusion.statement}
+              </p>
+              <Disclosure collapsed={teaching} summary="Track A checks">
+                <div className="compact-grid wall-diagnostic-grid">
+                  <StatusDatum
+                    label="Lawful relation cells"
+                    value={`${lawfulTrack.retainedCellIds.length}/${lawfulTrack.cells.length}`}
+                  />
+                  <StatusDatum
+                    label="Directed links"
+                    value={
+                      lawfulDirectedLinksPassed
+                        ? "all nonempty and connected"
+                        : "not all pass"
+                    }
+                  />
+                  <StatusDatum
+                    label="Finite-height-band argument"
+                    value={
+                      lawfulTrack.finiteHeightBand.status === "passed"
+                        ? "π₁-surjection certified"
+                        : describeStatus(lawfulTrack.finiteHeightBand.status)
+                    }
+                  />
+                  <StatusDatum
+                    label="Primitive character"
+                    value={
+                      lawfulTrack.conclusion.explicitEpimorphismToZ
+                        ? "H → ℤ"
+                        : "not proved"
+                    }
+                  />
+                  <StatusDatum
+                    label="Kernel transfer"
+                    value={
+                      lawfulTrack.kernelTransfer.status === "passed"
+                        ? "finite generation transferred to H"
+                        : "not established"
+                    }
+                  />
+                  <StatusDatum
+                    label="CAT(0)/asphericity (optional)"
+                    value={
+                      optionalAsphericityPassed
+                        ? "stronger evidence established"
+                        : "not established; does not block promotion"
+                    }
+                  />
+                </div>
+              </Disclosure>
+              <details className="advanced-details compact-details">
+                <summary>Lawful-track evidence and limits</summary>
+                <p className="field-help">
+                  This track keeps the full 1-skeleton and the lawful cells.
+                  Nonempty connected directed links make a finite height band
+                  surject on π₁ of the cyclic cover, so the kernel is finitely
+                  generated without an asphericity hypothesis. The presentation
+                  map onto H and the induced kernel surjection are checked
+                  explicitly.
+                </p>
+                <p className="field-help">
+                  CAT(0), NPC, or asphericity evidence is a separate optional
+                  diagnostic. For the rank-two track, no Morse function on
+                  omitted higher Davis cells is claimed.
+                </p>
+                <p className="field-help">
+                  Artifact SHA-256:{" "}
+                  {lawfulFiberingCertificate.hashes.artifactSha256}
+                </p>
+              </details>
+            </>
+          ) : null}
+          {fullDavisFiberingCertificate ? (
+            <>
+              <h3 className="track-heading">Track B (full Davis quotient)</h3>
+              <p
+                className={
+                  fullDavisFiberingCertificate.result.virtualAlgebraicFibration
+                    ? "success-inline"
+                    : "warning-inline"
+                }
+              >
+                {fullDavisFiberingCertificate.result.statement}
+              </p>
+              <Disclosure collapsed={teaching} summary="Track B checks">
+                <div className="compact-grid wall-diagnostic-grid">
+                  <StatusDatum
+                    label="Subgroup H"
+                    value={`index ${fullDavisFiberingCertificate.source.subgroupIndex}`}
+                  />
+                  <StatusDatum
+                    label="Full quotient cells"
+                    value={
+                      fullDavisFiberingCertificate.fullCellPoset
+                        ? `${fullDavisFiberingCertificate.fullCellPoset.cells.length} through dimension ${fullDavisFiberingCertificate.fullCellPoset.dimension}`
+                        : "not built"
+                    }
+                  />
+                  <StatusDatum
+                    label="Primitive character"
+                    value={
+                      fullDavisFiberingCertificate.result
+                        .explicitPrimitiveEpimorphismToZ
+                        ? "H → ℤ (Bézout verified)"
+                        : "not proved"
+                    }
+                  />
+                  <StatusDatum
+                    label="Rank-two sums"
+                    value={
+                      fullDavisFiberingCertificate.wallHomomorphism
+                        ? `${fullDavisFiberingCertificate.wallHomomorphism.cocycle.relationChecks.filter((check) => check.passed).length}/${fullDavisFiberingCertificate.wallHomomorphism.cocycle.relationChecks.length} zero`
+                        : "not checked"
+                    }
+                  />
+                  <StatusDatum
+                    label="Full directed links"
+                    value={
+                      fullDavisFiberingCertificate.result
+                        .allAscendingAndDescendingLinksNonemptyConnected
+                        ? "all nonempty and connected"
+                        : "not all pass"
+                    }
+                  />
+                  <StatusDatum
+                    label="Collapsibility"
+                    value={
+                      fullDavisFiberingCertificate.result
+                        .allDirectedLinksCollapsible
+                        ? "all replayable"
+                        : "failed or unknown"
+                    }
+                  />
+                </div>
+              </Disclosure>
+              <details className="advanced-details compact-details">
+                <summary>Certificate stages and evidence</summary>
+                <h4>Pipeline stages</h4>
+                <ul className="compact-status-list">
+                  {fullDavisFiberingCertificate.stages.map((entry) => (
+                    <li key={entry.id}>
+                      <strong>{entry.label}</strong>:{" "}
+                      {describeStatus(entry.status)}. {entry.detail}
+                    </li>
+                  ))}
+                </ul>
+                <h4>Values of φ on Schreier generators</h4>
+                {fullDavisFiberingCertificate.primitiveHomomorphism
+                  ?.generatorValues.length ? (
+                  <div className="table-scroll">
+                    <table className="compact-table">
+                      <thead>
+                        <tr>
+                          <th>Generator</th>
+                          <th>Word in S</th>
+                          <th>Wall value</th>
+                          <th>φ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {fullDavisFiberingCertificate.primitiveHomomorphism.generatorValues.map(
+                          (entry) => (
+                            <tr key={entry.generatorId}>
+                              <td>{entry.generatorId}</td>
+                              <td>
+                                {entry.subgroupWord.length > 0
+                                  ? entry.subgroupWord
+                                      .map(
+                                        (generator) =>
+                                          cover.barX.sourceSystem.generators[
+                                            generator
+                                          ]?.label ?? `s${generator}`,
+                                      )
+                                      .join(" ")
+                                  : "e"}
+                              </td>
+                              <td>{entry.rawWallValue}</td>
+                              <td>{entry.primitiveValue}</td>
+                            </tr>
+                          ),
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="field-help">
+                    No Schreier values are available.
+                  </p>
+                )}
+                <h4>Claim boundary</h4>
+                <p className="field-help">
+                  Connected directed links certify that ker φ is finitely
+                  generated. Collapsibility is recorded separately. A locally
+                  trivial or smooth bundle is not claimed without additional
+                  compact-manifold and smoothing certificates.
+                </p>
+                <p className="field-help">
+                  Artifact SHA-256:{" "}
+                  {fullDavisFiberingCertificate.hashes.artifactSha256}
+                </p>
+              </details>
+            </>
+          ) : !lawfulFiberingCertificate && virtualFiberingCertificate ? (
+            <details className="advanced-details compact-details">
+              <summary>Two-dimensional compression diagnostic</summary>
+              <p className="field-help">
+                {virtualFiberingCertificate.result.statement} This older check
+                uses only the current in-memory compression; it is neither Track
+                A nor Track B.
+              </p>
+            </details>
+          ) : null}
+        </section>
+      ) : null}
+
+      <details className="advanced-details compact-details">
+        <summary>Drawing options</summary>
+        <Toggle
+          checked={showCells}
+          label="Show relation cells"
+          onChange={onShowCellsChange}
+        />
+        <Toggle
+          checked={showDiscardedCells}
+          label="Show non-lawful cells faintly"
+          onChange={onShowDiscardedCellsChange}
+        />
+      </details>
     </Panel>
+  );
+});
+
+// Keeps text available to screen readers without drawing it. Inline because
+// the shared stylesheet has no utility class for this yet.
+const visuallyHidden: CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+};
+
+/**
+ * Renders children directly, or inside a closed <details> when `collapsed`.
+ * Teaching mode uses this for long grids so the panel opens short.
+ */
+function Disclosure({
+  collapsed,
+  summary,
+  children,
+}: {
+  collapsed: boolean;
+  summary: string;
+  children: ReactNode;
+}) {
+  if (!collapsed) return <>{children}</>;
+  return (
+    <details className="advanced-details compact-details">
+      <summary>{summary}</summary>
+      {children}
+    </details>
   );
 }
 

@@ -7,6 +7,7 @@ import type {
   BarXGeometricEdge,
   BoundaryOccurrence,
   CompressionCertificate,
+  CompressionValidationResult,
   CompressionMap,
   CoverCompressionResult,
   CoverConstructionProvenance,
@@ -16,6 +17,13 @@ import type {
   HatXLiftedRelationCell,
 } from "./types";
 import { validateBarX, validateHatX } from "./validation";
+
+/**
+ * Same order as String.prototype.localeCompare with the default locale and
+ * options (both use the default Intl collation), but one collator is built
+ * once instead of per comparison, which dominated large compressions.
+ */
+const compareText = new Intl.Collator().compare;
 
 interface FinitePair {
   pair: [number, number];
@@ -179,7 +187,7 @@ function finitePairOrbit(
       }
     }
   }
-  return [...seen].sort((left, right) => left.localeCompare(right));
+  return [...seen].sort((left, right) => compareText(left, right));
 }
 
 function prepareQuotient(quotient: QuotientComplex): PreparedQuotient {
@@ -210,7 +218,7 @@ function prepareQuotient(quotient: QuotientComplex): PreparedQuotient {
 
   const vertexIds = quotient.vertices
     .map((vertex) => vertex.id)
-    .sort((left, right) => left.localeCompare(right));
+    .sort((left, right) => compareText(left, right));
   const vertexIdSet = new Set(vertexIds);
   if (vertexIds.length === 0) {
     errors.push("The quotient action must contain at least one vertex.");
@@ -373,10 +381,11 @@ export function buildHatXFromQuotient(
   quotient: QuotientComplex,
 ): HatXCoverComplex {
   const prepared = prepareQuotient(quotient);
+  const quotientVertexById = new Map(
+    quotient.vertices.map((vertex) => [vertex.id, vertex]),
+  );
   const vertices = prepared.vertexIds.map((sourceVertexId) => {
-    const source = quotient.vertices.find(
-      (vertex) => vertex.id === sourceVertexId,
-    );
+    const source = quotientVertexById.get(sourceVertexId);
     return {
       id: hatVertexId(sourceVertexId),
       sourceQuotientVertexId: sourceVertexId,
@@ -491,7 +500,7 @@ export function buildHatXFromQuotient(
     vertices,
     directedLiftEdges,
     generatorBigonCells: generatorBigonCells.sort((left, right) =>
-      left.id.localeCompare(right.id),
+      compareText(left.id, right.id),
     ),
     liftedRelationCells,
     provenance: prepared.provenance,
@@ -529,15 +538,35 @@ function canonicalSignedCycle(boundary: BoundaryOccurrence[]): string {
       );
     }
   }
-  return candidates.sort((left, right) => left.localeCompare(right))[0] ?? "";
+  let minimum = candidates[0] ?? "";
+  for (let index = 1; index < candidates.length; index += 1) {
+    if (compareText(candidates[index], minimum) < 0)
+      minimum = candidates[index];
+  }
+  return minimum;
+}
+
+function cachedCycle(
+  cache: Map<string, string>,
+  id: string,
+  boundary: BoundaryOccurrence[],
+): string {
+  let cycle = cache.get(id);
+  if (cycle === undefined) {
+    cycle = canonicalSignedCycle(boundary);
+    cache.set(id, cycle);
+  }
+  return cycle;
 }
 
 function makeCertificate(
   hatX: HatXCoverComplex,
   barX: BarXCompressedComplex,
   compressionMap: CompressionMap,
+  /** validateHatX(hatX), when the caller has just computed it. */
+  knownHatValidation?: CompressionValidationResult,
 ): CompressionCertificate {
-  const hatValidation = validateHatX(hatX);
+  const hatValidation = knownHatValidation ?? validateHatX(hatX);
   const barValidation = validateBarX(barX);
   const d = hatX.vertices.length;
   const r = hatX.sourceSystem.rank;
@@ -566,6 +595,9 @@ function makeCertificate(
     barX.relationCells.map((cell) => [cell.id, cell]),
   );
   let signedRelationBoundariesAgree = true;
+  // Each bar relation cell is the image of 2m lifted cells; its canonical
+  // signed cycle is computed once.
+  const canonicalBarCycle = new Map<string, string>();
   for (const cell of hatX.liftedRelationCells) {
     const imageId = compressionMap.liftedRelationCellImages[cell.id];
     const image = barRelationById.get(imageId);
@@ -606,7 +638,7 @@ function makeCertificate(
     if (
       mapped.length !== cell.boundaryOccurrences.length ||
       canonicalSignedCycle(mapped) !==
-        canonicalSignedCycle(image.boundaryOccurrences)
+        cachedCycle(canonicalBarCycle, image.id, image.boundaryOccurrences)
     ) {
       signedRelationBoundariesAgree = false;
     }
@@ -717,7 +749,7 @@ export function compressHatX(hatX: HatXCoverComplex): {
   }
 
   const sortedHatVertices = [...hatX.vertices].sort((left, right) =>
-    left.sourceQuotientVertexId.localeCompare(right.sourceQuotientVertexId),
+    compareText(left.sourceQuotientVertexId, right.sourceQuotientVertexId),
   );
   const vertexImages: Record<string, string> = {};
   const vertices = sortedHatVertices.map((vertex) => {
@@ -731,6 +763,7 @@ export function compressHatX(hatX: HatXCoverComplex): {
     };
   });
 
+  const barVertexById = new Map(vertices.map((vertex) => [vertex.id, vertex]));
   const directedEdgeImages: Record<string, string> = {};
   const generatorBigonImages: Record<string, string> = {};
   const geometricEdges: BarXGeometricEdge[] = [];
@@ -743,7 +776,7 @@ export function compressHatX(hatX: HatXCoverComplex): {
   for (const bigon of hatX.generatorBigonCells) {
     const first = bigon.boundaryOccurrences[0];
     const orbitVertices = [first.sourceVertexId, first.targetVertexId].sort(
-      (left, right) => left.localeCompare(right),
+      (left, right) => compareText(left, right),
     );
     const key = `${bigon.generator}\u0000${orbitVertices.join("\u0001")}`;
     const bucket = bigonsByGeneratorOrbit.get(key) ?? [];
@@ -751,11 +784,11 @@ export function compressHatX(hatX: HatXCoverComplex): {
     bigonsByGeneratorOrbit.set(key, bucket);
   }
   const sortedBigonOrbits = [...bigonsByGeneratorOrbit.entries()].sort(
-    ([left], [right]) => left.localeCompare(right),
+    ([left], [right]) => compareText(left, right),
   );
   for (const [, orbitBigonsUnsorted] of sortedBigonOrbits) {
     const orbitBigons = [...orbitBigonsUnsorted].sort((left, right) =>
-      left.id.localeCompare(right.id),
+      compareText(left.id, right.id),
     );
     if (orbitBigons.length !== 2) {
       throw new CoverCompressionError("Cannot compress generator bigons", [
@@ -767,10 +800,9 @@ export function compressHatX(hatX: HatXCoverComplex): {
     const endpointIds = [
       vertexImages[boundary[0].sourceVertexId],
       vertexImages[boundary[0].targetVertexId],
-    ].sort((left, right) => left.localeCompare(right)) as [string, string];
+    ].sort((left, right) => compareText(left, right)) as [string, string];
     const sourceNames = endpointIds.map(
-      (id) =>
-        vertices.find((vertex) => vertex.id === id)!.sourceQuotientVertexId,
+      (id) => barVertexById.get(id)!.sourceQuotientVertexId,
     );
     const id = `bar:e:g${bigon.generator}:${encodeId(sourceNames[0])}:${encodeId(sourceNames[1])}`;
     const hatDirectedEdgeIds = [
@@ -779,7 +811,7 @@ export function compressHatX(hatX: HatXCoverComplex): {
           cell.boundaryOccurrences.map((occurrence) => occurrence.edgeId),
         ),
       ),
-    ].sort((left, right) => left.localeCompare(right)) as [string, string];
+    ].sort((left, right) => compareText(left, right)) as [string, string];
     if (hatDirectedEdgeIds.length !== 2) {
       throw new CoverCompressionError("Cannot compress generator bigons", [
         `Bigon orbit for generator ${bigon.generator} uses ${hatDirectedEdgeIds.length} directed lifts; expected 2.`,
@@ -806,7 +838,7 @@ export function compressHatX(hatX: HatXCoverComplex): {
     edgeFibers.push({ barEdgeId: id, hatDirectedEdgeIds });
     bigonFibers.push({ barEdgeId: id, hatBigonCellIds });
   }
-  geometricEdges.sort((left, right) => left.id.localeCompare(right.id));
+  geometricEdges.sort((left, right) => compareText(left.id, right.id));
 
   const hatEdgeBySourceGenerator = new Map(
     hatX.directedLiftEdges.map((edge) => [
@@ -828,15 +860,23 @@ export function compressHatX(hatX: HatXCoverComplex): {
     actions.set(edge.generator, action);
   }
 
+  const hatIdsInOrder = sortedHatVertices
+    .map((vertex) => vertex.id)
+    .sort((left, right) => compareText(left, right));
+  const hatVertexById = new Map(
+    sortedHatVertices.map((vertex) => [vertex.id, vertex]),
+  );
   const liftedRelationCellImages: Record<string, string> = {};
   const relationCells: BarXCompressedComplex["relationCells"] = [];
   const relationFibers: CompressionMap["relationFibers"] = [];
   for (const { pair, m } of finitePairs(hatX.sourceSystem)) {
-    const unvisited = new Set(sortedHatVertices.map((vertex) => vertex.id));
+    // Orbits are started from the least unvisited hat vertex id; scanning
+    // the ids sorted once replaces re-sorting the unvisited set per orbit.
+    const unvisited = new Set(hatIdsInOrder);
+    let nextStart = 0;
     while (unvisited.size > 0) {
-      const start = [...unvisited].sort((left, right) =>
-        left.localeCompare(right),
-      )[0];
+      while (!unvisited.has(hatIdsInOrder[nextStart])) nextStart += 1;
+      const start = hatIdsInOrder[nextStart];
       const orbit = new Set([start]);
       const queue = [start];
       for (let cursor = 0; cursor < queue.length; cursor += 1) {
@@ -853,11 +893,10 @@ export function compressHatX(hatX: HatXCoverComplex): {
         unvisited.delete(vertexId);
       }
       const canonicalBase = [...orbit].sort((left, right) =>
-        left.localeCompare(right),
+        compareText(left, right),
       )[0];
-      const sourceQuotientVertexId = sortedHatVertices.find(
-        (vertex) => vertex.id === canonicalBase,
-      )!.sourceQuotientVertexId;
+      const sourceQuotientVertexId =
+        hatVertexById.get(canonicalBase)!.sourceQuotientVertexId;
       const id = `bar:r:g${pair[0]}-g${pair[1]}:${encodeId(sourceQuotientVertexId)}`;
       let current = canonicalBase;
       const boundaryOccurrences: BoundaryOccurrence[] = [];
@@ -890,7 +929,7 @@ export function compressHatX(hatX: HatXCoverComplex): {
           (vertexId) =>
             relationByPairBase.get(`${pairKey(pair)}\u0000${vertexId}`)!.id,
         )
-        .sort((left, right) => left.localeCompare(right));
+        .sort((left, right) => compareText(left, right));
       relationCells.push({
         id,
         generatorPair: pair,
@@ -909,9 +948,9 @@ export function compressHatX(hatX: HatXCoverComplex): {
       });
     }
   }
-  relationCells.sort((left, right) => left.id.localeCompare(right.id));
+  relationCells.sort((left, right) => compareText(left.id, right.id));
   relationFibers.sort((left, right) =>
-    left.barRelationCellId.localeCompare(right.barRelationCellId),
+    compareText(left.barRelationCellId, right.barRelationCellId),
   );
 
   const compressionMap: CompressionMap = {
@@ -938,7 +977,12 @@ export function compressHatX(hatX: HatXCoverComplex): {
     },
     warnings: [...hatX.warnings],
   };
-  const certificate = makeCertificate(hatX, barX, compressionMap);
+  const certificate = makeCertificate(
+    hatX,
+    barX,
+    compressionMap,
+    hatValidation,
+  );
   if (certificate.status !== "passed") {
     throw new CoverCompressionError(
       "Constructed bar X failed compression certification",

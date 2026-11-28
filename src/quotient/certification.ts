@@ -75,9 +75,10 @@ function isBijection(
   vertexIds: string[],
 ): boolean {
   const seen = new Set<string>();
+  const domain = new Set(vertexIds);
   for (const vertexId of vertexIds) {
     const image = actionImage(action, vertexId);
-    if (image === undefined || !vertexIds.includes(image)) {
+    if (image === undefined || !domain.has(image)) {
       return false;
     }
     seen.add(image);

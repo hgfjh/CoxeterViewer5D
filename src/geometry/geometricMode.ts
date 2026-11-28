@@ -228,6 +228,78 @@ export function hyperbolicPointForWord(
   return matVec(wordMatrix, basepoint);
 }
 
+export interface HyperbolicOrbitResult {
+  ok: boolean;
+  /** Full R^{d,1} point rho(w) x0 for every node that could be placed. */
+  points: Map<string, Vector>;
+  basepoint?: Vector;
+  warnings: string[];
+}
+
+/**
+ * Computes the hyperbolic orbit points rho(w) x0 without projecting them.
+ *
+ * Same right-multiplication convention as hyperbolicPointForWord. Word
+ * matrices are memoised by prefix, so a ball costs one matrix product per
+ * node instead of one per letter.
+ */
+export function computeHyperbolicOrbitPoints(
+  system: CoxeterSystemInput,
+  nodes: CayleyNode[],
+  options: Pick<HyperbolicGeometryOptions, "tolerance"> = {},
+): HyperbolicOrbitResult {
+  const tolerance = options.tolerance ?? DEFAULT_GEOMETRY_TOLERANCE;
+  const reflectionResult = buildHyperbolicReflectionData(system, options);
+  if (!reflectionResult.ok || reflectionResult.data === undefined) {
+    return {
+      ok: false,
+      points: new Map(),
+      warnings: reflectionResult.warnings,
+    };
+  }
+
+  const { basepoint, reflectionMatrices } = reflectionResult.data;
+  const warnings = [...reflectionResult.warnings];
+  const matrixByWord = new Map<string, Matrix>([
+    ["", identityMatrix(basepoint.length)],
+  ]);
+  const wordMatrix = (word: number[]): Matrix => {
+    const key = word.join(".");
+    const cached = matrixByWord.get(key);
+    if (cached !== undefined) return cached;
+    const generator = word[word.length - 1];
+    const reflection = reflectionMatrices[generator];
+    if (reflection === undefined || !Number.isInteger(generator)) {
+      throw new Error(`Word contains invalid generator index ${generator}.`);
+    }
+    const matrix = matMul(wordMatrix(word.slice(0, -1)), reflection);
+    matrixByWord.set(key, matrix);
+    return matrix;
+  };
+
+  const points = new Map<string, Vector>();
+  for (const node of nodes) {
+    try {
+      const point = matVec(wordMatrix(node.word), basepoint);
+      validateHyperbolicPoint(node.id, point, tolerance, warnings);
+      points.set(node.id, point);
+    } catch (error) {
+      warnings.push(
+        `Could not compute a hyperbolic point for node ${node.id}: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
+  }
+
+  return {
+    ok: points.size === nodes.length,
+    points,
+    basepoint,
+    warnings,
+  };
+}
+
 /**
  * Places Cayley nodes by applying the reflection representation to a basepoint.
  *

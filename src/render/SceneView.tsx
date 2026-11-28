@@ -1,7 +1,8 @@
 import { RotateCcw } from "lucide-react";
-import { memo, useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import {
   AmbientLight,
+  BackSide,
   BufferAttribute,
   BufferGeometry,
   CanvasTexture,
@@ -41,12 +42,29 @@ import {
   gpuPickIdToColor,
 } from "./gpuPicking";
 import {
+  applyDenseLabelCap,
+  blendOver,
   compactLabelText,
+  denseLabelPinLimit,
+  ensureTextContrast,
+  type LabelDensityBudget,
+  labelDensityBudget,
+  parseHexColor,
   type PickedLabelEntry,
+  rgbToHex,
   selectLabelBudget,
   selectSegmentLabelBudget,
   semanticEdgeLabelText,
 } from "./labels";
+import { triangulateCellBoundary } from "./cellPolygon";
+import {
+  dashPattern,
+  medianLength,
+  polylinePointAt,
+  pushPolylineSegments,
+  quadraticBezierPoints,
+  type SceneLineStyle,
+} from "./edgePath";
 import {
   intersectPickingCandidateTriangles,
   PickingSpatialIndex,
@@ -61,6 +79,13 @@ import {
   type SdfTextBatch,
   type SdfTextLabel,
 } from "./sdfTextBatch";
+import {
+  fallbackGeneratorColor,
+  type SceneColorScheme,
+  selectionColor,
+  selectionNeighborColor,
+  shellColor,
+} from "./scenePalette";
 
 export type LabelScope = "off" | "focused" | "budgeted";
 export type LocalCellRenderMode =
@@ -69,6 +94,7 @@ export type LocalCellRenderMode =
   | "petals"
   | "outline-only";
 export type OcclusionMode = "hide-far" | "fade-far" | "x-ray";
+export type { SceneLineStyle } from "./edgePath";
 
 export interface SceneNode {
   id: string;
@@ -85,6 +111,11 @@ export interface SceneNode {
   labelPriority?: number;
   /** Drawing-only size multiplier for labels that must remain legible at a wide camera frame. */
   labelScale?: number;
+  /**
+   * Colour this vertex as generator `generatorColorIndex` (e.g. a Gamma
+   * vertex is a generator) when it has no colorHint.
+   */
+  generatorColorIndex?: number;
   ghost?: boolean;
   hidden?: boolean;
   drawingOnly?: boolean;
@@ -109,6 +140,20 @@ export interface SceneEdge {
   labelScale?: number;
   suppressSemanticLabel?: boolean;
   emphasis?: "readable-boundary";
+  /**
+   * Why an edge is emphasised: "relation-boundary" (on a shown relation
+   * cell's attaching cycle) or "wall-dual" (crossed by the selected wall).
+   * Wall-dual edges are drawn in their own colorHint with a heavier dashed
+   * stroke, never with the black readable-boundary stroke.
+   */
+  emphasisRole?: "relation-boundary" | "wall-dual";
+  /** Dash cue paired with colour (walls, Gamma Coxeter orders). */
+  lineStyle?: SceneLineStyle;
+  /**
+   * Quadratic Bézier control point; the edge is drawn as a curve pulled
+   * toward it. Arrowheads, labels and picking follow the curve.
+   */
+  drawingControlPoint?: [number, number, number];
   selectedHighlight?: "color" | "outline";
   ghost?: boolean;
   directed?: boolean;
@@ -180,6 +225,8 @@ export interface SceneRenderStats {
   renderedNodeLabels: number;
   renderedEdgeLabels: number;
   renderedLabelLeaders: number;
+  /** Zoom level of the dense label rule at the last label rebuild. */
+  labelZoomLevel?: number;
   labelRenderer: "sprite" | "sdf-batch";
   labelRendererFallbackReason?: string;
   drawCalls: number;
@@ -200,6 +247,8 @@ export interface SceneRenderStats {
     outOfState: number;
   };
   omittedTransparentFills: number;
+  /** Cells drawn as outline only because their drawn boundary crosses itself. */
+  unfillableCells?: number;
   picking: SpatialPickPrefilterStats;
   workerGenerationMs?: number;
   revisions?: SceneRevisionSet;
@@ -235,6 +284,11 @@ export interface SceneViewProps {
    */
   layoutVersion?: string | number;
   selectedNodeId?: string;
+  /**
+   * Extra scale for the selected node.  Lets scene builders keep node arrays
+   * independent of selection, so a click is an appearance-only update.
+   */
+  selectedNodeScale?: number;
   selectedCellId?: string;
   showCells: boolean;
   showNodeLabels?: boolean;
@@ -261,6 +315,16 @@ export interface SceneViewProps {
   workerGenerationMs?: number;
   colorScheme?: SceneColorScheme;
   sceneLabel?: string;
+  /**
+   * Show the generator colour key. Hide it when edge colours mean something
+   * else (e.g. edges coloured by wall).
+   */
+  showGeneratorLegend?: boolean;
+  /**
+   * Optional edge picking: called with the id of the edge nearest the click
+   * (screen-space tolerance) when no vertex was hit.
+   */
+  onSelectEdge?: (edgeId: string) => void;
   onCapturePngReady?: (capture: (() => Promise<string>) | undefined) => void;
   onRenderStats?: (stats: SceneRenderStats) => void;
   onHoverCell?: (cellId: string | undefined) => void;
@@ -268,22 +332,10 @@ export interface SceneViewProps {
   onSelectCell: (cellId: string) => void;
 }
 
-const shellPalette = [
-  "#1f6feb",
-  "#2da44e",
-  "#bf8700",
-  "#cf222e",
-  "#8250df",
-  "#0969da",
-];
-const fallbackGeneratorColors = [
-  "#2f81f7",
-  "#3fb950",
-  "#d29922",
-  "#f85149",
-  "#a371f7",
-  "#56d4dd",
-];
+const sceneBackgroundColor: Record<SceneColorScheme, string> = {
+  light: "#f6f7f9",
+  dark: "#0d1117",
+};
 const defaultMaxNodeLabels = 80;
 const defaultMaxEdgeLabels = 120;
 const gpuPickingEntryThreshold = 2_500;
@@ -301,7 +353,6 @@ const cameraMoveDirectionalScale = {
   strafe: 0.28,
   vertical: 0.42,
 };
-type SceneColorScheme = "light" | "dark";
 
 export interface CameraMovementIntent {
   forward: number;
@@ -332,6 +383,7 @@ function SceneViewComponent({
   revisionSet,
   layoutVersion = 0,
   selectedNodeId,
+  selectedNodeScale = 1,
   selectedCellId,
   showCells,
   showNodeLabels = false,
@@ -358,6 +410,8 @@ function SceneViewComponent({
   workerGenerationMs,
   colorScheme = "light",
   sceneLabel = "Coxeter viewer scene",
+  showGeneratorLegend = true,
+  onSelectEdge,
   onCapturePngReady,
   onRenderStats,
   onHoverCell,
@@ -420,6 +474,7 @@ function SceneViewComponent({
       revisionSet,
       layoutVersion: String(layoutVersion),
       selectedNodeId,
+      selectedNodeScale,
       selectedCellId,
       showCells,
       showNodeLabels,
@@ -450,6 +505,7 @@ function SceneViewComponent({
       nodePositions,
       onSelectNode,
       onSelectCell,
+      onSelectEdge,
     });
   }, [
     appearanceVersion,
@@ -460,6 +516,7 @@ function SceneViewComponent({
     nodePositions,
     nodes,
     onSelectCell,
+    onSelectEdge,
     onSelectNode,
     maxEdgeLabels,
     maxNodeLabels,
@@ -468,6 +525,7 @@ function SceneViewComponent({
     pickingEnabled,
     selectedCellId,
     selectedNodeId,
+    selectedNodeScale,
     colorScheme,
     showReferenceBall,
     referenceBallRadius,
@@ -511,7 +569,116 @@ function SceneViewComponent({
       >
         <RotateCcw size={18} aria-hidden="true" />
       </button>
+      {showGeneratorLegend ? (
+        <GeneratorLegend generators={generators} colorScheme={colorScheme} />
+      ) : null}
     </section>
+  );
+}
+
+const legendTheme: Record<
+  SceneColorScheme,
+  { background: string; border: string; text: string; muted: string }
+> = {
+  light: {
+    background: "rgba(255, 255, 255, 0.92)",
+    border: "rgba(36, 41, 47, 0.18)",
+    text: "#1f2328",
+    muted: "#57606a",
+  },
+  dark: {
+    background: "rgba(17, 24, 39, 0.9)",
+    border: "rgba(148, 163, 184, 0.35)",
+    text: "#e6edf3",
+    muted: "#9ba7b4",
+  },
+};
+
+/**
+ * Collapsible key from generator colour to generator label. Labels are
+ * listed next to every swatch, so the key does not rely on colour alone.
+ */
+function GeneratorLegend({
+  generators,
+  colorScheme,
+}: {
+  generators: SceneGenerator[];
+  colorScheme: SceneColorScheme;
+}) {
+  const [open, setOpen] = useState(true);
+  if (generators.length === 0) {
+    return null;
+  }
+  const theme = legendTheme[colorScheme];
+  return (
+    <div
+      className="scene-generator-legend"
+      data-testid="scene-generator-legend"
+      style={{
+        position: "absolute",
+        left: 12,
+        bottom: 12,
+        zIndex: 2,
+        maxWidth: "min(46%, 260px)",
+        maxHeight: "40%",
+        overflowY: "auto",
+        padding: "6px 8px",
+        borderRadius: 8,
+        border: `1px solid ${theme.border}`,
+        background: theme.background,
+        color: theme.text,
+        font: "500 12px/1.3 system-ui, sans-serif",
+      }}
+    >
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls="scene-generator-legend-list"
+        onClick={() => setOpen((value) => !value)}
+        style={{
+          all: "unset",
+          cursor: "pointer",
+          display: "block",
+          color: theme.muted,
+          fontWeight: 600,
+        }}
+      >
+        {open ? "Generators ▾" : "Generators ▸"}
+      </button>
+      {open ? (
+        <ul
+          id="scene-generator-legend-list"
+          aria-label="Generator colors"
+          style={{
+            listStyle: "none",
+            margin: "4px 0 0",
+            padding: 0,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "3px 10px",
+          }}
+        >
+          {generators.map((generator, index) => (
+            <li
+              key={`${index}:${generator.label}`}
+              style={{ display: "flex", alignItems: "center", gap: 5 }}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  display: "inline-block",
+                  width: 14,
+                  height: 4,
+                  borderRadius: 2,
+                  background: generatorColor(generators, index, colorScheme),
+                }}
+              />
+              <span>{generator.label}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
   );
 }
 
@@ -531,6 +698,7 @@ interface GraphUpdate {
   revisionSet?: SceneRevisionSet;
   layoutVersion: string;
   selectedNodeId?: string;
+  selectedNodeScale: number;
   selectedCellId?: string;
   showCells: boolean;
   showNodeLabels: boolean;
@@ -561,6 +729,7 @@ interface GraphUpdate {
   nodePositions: Map<string, Vector3>;
   onSelectNode: (nodeId: string) => void;
   onSelectCell: (cellId: string) => void;
+  onSelectEdge?: (edgeId: string) => void;
 }
 
 interface CellVisualBucket {
@@ -581,6 +750,17 @@ interface ArrowHeadBucket {
 interface NodeMeshBucket {
   mesh: InstancedMesh;
   nodeIds: string[];
+}
+
+interface LabelFadeEntry {
+  anchor: Vector3;
+  /** Selection context labels never fade. */
+  pinned: boolean;
+  sprite?: Sprite;
+  sdfId?: string;
+  opacity: number;
+  /** Extra factor, e.g. for labels outside the "fade-far" focus. */
+  scale?: number;
 }
 
 interface GpuPickRecord {
@@ -634,6 +814,13 @@ class SceneRuntime {
   private animationFrame: number | undefined;
   private dampingFramesRemaining = 0;
   private framedGraphKey = "";
+  /** Camera-to-target distance chosen by the last automatic framing. */
+  private framedCameraDistance = 0;
+  /** Camera position of the last automatic framing (undefined until the first frame). */
+  private framedCameraPosition: Vector3 | undefined;
+  private labelZoomLevelBuilt = 0;
+  private labelZoomTimer: number | undefined;
+  private appliedLabelScreenScale = 1;
   private lastStructureKey = "";
   private lastAppearanceKey = "";
   private lastRevisionSet: SceneRevisionSet | undefined;
@@ -644,6 +831,8 @@ class SceneRuntime {
   private cellBuckets: CellVisualBucket[] = [];
   private cellGeometryCache = new Map<string, BufferGeometry>();
   private cellVerticesById = new Map<string, Vector3[]>();
+  /** Cells with a drawn hit area (see addCells); others are not pickable. */
+  private pickableCellIds = new Set<string>();
   private readonly cellPickingIndex = new PickingSpatialIndex<SceneCell>({
     leafSize: 8,
   });
@@ -659,6 +848,7 @@ class SceneRuntime {
   private readonly emptyNeighborIds = new Set<string>();
   private onSelectNode: (nodeId: string) => void = () => undefined;
   private onSelectCell: (cellId: string) => void = () => undefined;
+  private onSelectEdge: ((edgeId: string) => void) | undefined;
   private onHoverCell: ((cellId: string | undefined) => void) | undefined;
   private hoveredCellId: string | undefined;
   private pendingHoverPoint: { x: number; y: number } | undefined;
@@ -680,6 +870,13 @@ class SceneRuntime {
   private sdfTextAvailable = this.sdfTextCapability.supported;
   private sdfTextFallbackReason = this.sdfTextCapability.reason;
   private activeSdfBatch: SdfTextBatch | undefined;
+  /** Labels whose opacity follows their depth behind the orbit target. */
+  private labelFadeEntries: LabelFadeEntry[] = [];
+  private labelFadeCameraKey = "";
+  /** Radius of the last automatic framing, the depth scale of label fading. */
+  private framedSceneRadius = 1;
+  /** Median drawn edge length; dash patterns are measured in this unit. */
+  private edgeDashUnit = 1;
   private readonly sdfAtlasCache = new Map<string, SdfGlyphAtlas>();
   private sdfAtlasCacheBytes = 0;
 
@@ -697,6 +894,9 @@ class SceneRuntime {
     this.renderer.setPixelRatio(this.viewportPixelRatio);
     this.renderer.setSize(this.viewportWidth, this.viewportHeight);
     mount.appendChild(this.renderer.domElement);
+    // Shader error checking reads program info logs synchronously after every
+    // compile, stalling the GPU pipeline.  Keep it for development only.
+    this.renderer.debug.checkShaderErrors = import.meta.env.DEV;
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
@@ -746,10 +946,13 @@ class SceneRuntime {
     this.lastGraphUpdate = update;
     this.onSelectNode = update.onSelectNode;
     this.onSelectCell = update.onSelectCell;
+    this.onSelectEdge = update.onSelectEdge;
     this.onHoverCell = update.onHoverCell;
     this.onRenderStats = update.onRenderStats;
     this.pickingEnabled = update.pickingEnabled;
-    this.setColorScheme(update.colorScheme);
+    // Theme is not part of the revision keys, so a theme switch must force
+    // the node colors and label chips to be rebuilt here.
+    const themeChanged = this.setColorScheme(update.colorScheme);
     this.ensureSceneLookups(update);
     if (update.layoutVersion !== this.lastLayoutVersion) {
       this.lastLayoutVersion = update.layoutVersion;
@@ -760,6 +963,7 @@ class SceneRuntime {
     // The renderer is demand-driven. A stable structure/appearance pair means
     // React re-rendered controls, not the Three.js scene.
     if (
+      !themeChanged &&
       structureKey === this.lastStructureKey &&
       appearanceKey === this.lastAppearanceKey
     ) {
@@ -777,13 +981,18 @@ class SceneRuntime {
     }
 
     this.lastAppearanceKey = appearanceKey;
+    // Frame before building labels: edge-label collision checks project
+    // through the camera, and density caps read the framed distance.
+    this.frameGraph(update);
     const appearanceLayerChanged =
+      themeChanged ||
       structureChanged ||
       !update.revisionSet ||
       !previousRevisions ||
       update.revisionSet.appearanceVersion !==
         previousRevisions.appearanceVersion;
     const labelLayerChanged =
+      themeChanged ||
       structureChanged ||
       !update.revisionSet ||
       !previousRevisions ||
@@ -795,7 +1004,6 @@ class SceneRuntime {
       this.updateLabelAppearance(update);
     }
     this.lastRevisionSet = update.revisionSet;
-    this.frameGraph(update);
     this.handleCameraSignals(update);
     this.stats = {
       ...this.stats,
@@ -876,6 +1084,9 @@ class SceneRuntime {
     }
     if (this.hoverFrame !== undefined) {
       window.cancelAnimationFrame(this.hoverFrame);
+    }
+    if (this.labelZoomTimer !== undefined) {
+      window.clearTimeout(this.labelZoomTimer);
     }
     if (this.resizeFrame !== undefined) {
       window.cancelAnimationFrame(this.resizeFrame);
@@ -979,7 +1190,9 @@ class SceneRuntime {
     this.nodeMeshes = [];
     this.cellBuckets = [];
     this.cellVerticesById = new Map();
+    this.pickableCellIds = new Set();
 
+    this.edgeDashUnit = sceneDashUnit(update);
     this.addReferenceBall(update);
     const renderedCells = this.addCells(update);
     const renderedEdgeSegments = this.addEdges(update);
@@ -1046,7 +1259,11 @@ class SceneRuntime {
     if (update.showCells) {
       for (const cell of update.cells) {
         const vertices = this.cellVerticesById.get(cell.id);
-        if (!vertices || vertices.length < 3) {
+        if (
+          !vertices ||
+          vertices.length < 3 ||
+          !this.pickableCellIds.has(cell.id)
+        ) {
           continue;
         }
         const pickId = nextPickId++;
@@ -1085,6 +1302,7 @@ class SceneRuntime {
     this.updateNodeAppearance(update);
     clearGroup(this.edgeOverlayGroup);
     this.addEdgeOverlays(update);
+    this.addSelectionRing(update);
     this.updateCellAppearance(update);
     clearGroup(this.cellOverlayGroup);
     this.addCellSelectionOverlay(update);
@@ -1100,6 +1318,7 @@ class SceneRuntime {
       renderedNodeLabels: renderedLabels.nodes,
       renderedEdgeLabels: renderedLabels.edges,
       renderedLabelLeaders: renderedLabels.leaders,
+      labelZoomLevel: this.labelZoomLevelBuilt,
     };
   }
 
@@ -1131,7 +1350,10 @@ class SceneRuntime {
     nodes: SceneNode[],
     geometry: SphereGeometry,
   ): NodeMeshBucket {
-    const material = new MeshBasicMaterial({ vertexColors: true });
+    // Instance colors need no vertexColors flag. With vertexColors=true the
+    // shader also multiplies by the sphere's (absent) color attribute, which
+    // WebGL reads as black, so every vertex was drawn black in both themes.
+    const material = new MeshBasicMaterial();
     const mesh = new InstancedMesh(geometry, material, nodes.length);
     mesh.userData.kind = "nodes";
     return {
@@ -1171,20 +1393,37 @@ class SceneRuntime {
                 ? 0.72
                 : 1;
         temp.position.copy(position);
-        temp.scale.setScalar(scale * (node.nodeScale ?? 1));
+        temp.scale.setScalar(
+          scale *
+            (node.nodeScale ?? 1) *
+            (selected ? update.selectedNodeScale : 1),
+        );
         temp.updateMatrix();
         transform.copy(temp.matrix);
         bucket.mesh.setMatrixAt(index, transform);
+        const dark = update.colorScheme === "dark";
         color.set(
           node.stateRole
-            ? nodeColor(node, update.occlusionMode)
+            ? nodeColor(
+                node,
+                update.occlusionMode,
+                update.colorScheme,
+                update.generators,
+              )
             : selected
-              ? "#f85149"
+              ? selectionColor[update.colorScheme]
               : node.isRelationBoundary
-                ? "#b42318"
+                ? dark
+                  ? "#ff7b72"
+                  : "#b42318"
                 : neighbor
-                  ? "#0f6b5f"
-                  : nodeColor(node, update.occlusionMode),
+                  ? selectionNeighborColor[update.colorScheme]
+                  : nodeColor(
+                      node,
+                      update.occlusionMode,
+                      update.colorScheme,
+                      update.generators,
+                    ),
         );
         bucket.mesh.setColorAt(index, color);
       });
@@ -1213,6 +1452,13 @@ class SceneRuntime {
   private releaseLabelSprites() {
     this.activeSdfBatch?.dispose();
     this.activeSdfBatch = undefined;
+    for (const entry of this.labelFadeEntries) {
+      if (entry.sprite) {
+        entry.sprite.material.opacity = 1;
+      }
+    }
+    this.labelFadeEntries = [];
+    this.labelFadeCameraKey = "";
     for (const child of [...this.labelGroup.children]) {
       child.removeFromParent();
       if (child instanceof Sprite) {
@@ -1251,40 +1497,41 @@ class SceneRuntime {
         continue;
       }
       const color = edgeColor(edge, update);
-      const bucketKey = `${color}:${edge.ghost ? "ghost" : "main"}`;
+      const tier = edge.ghost
+        ? "ghost"
+        : this.edgeIsFar(edge, update)
+          ? "far"
+          : "main";
+      const bucketKey = `${color}:${tier}`;
       const bucket = edgeBuckets.get(bucketKey) ?? {
         color,
         coordinates: [],
       };
-      const [visualSource, visualTarget] = visualEdgeEndpoints(
-        edge,
-        source,
-        target,
-        update,
-      );
-      bucket.coordinates.push(
-        ...(visualSource.equals(visualTarget)
-          ? loopEdgeCoordinates(
-              visualSource,
-              edge.generator,
-              update.generators.length,
-            )
-          : [
-              visualSource.x,
-              visualSource.y,
-              visualSource.z,
-              visualTarget.x,
-              visualTarget.y,
-              visualTarget.z,
-            ]),
-      );
+      const path = edgePathPoints(edge, source, target, update);
+      if (path) {
+        pushPolylineSegments(
+          bucket.coordinates,
+          path,
+          dashPattern(edge.lineStyle),
+          this.edgeDashUnit,
+        );
+      } else {
+        bucket.coordinates.push(
+          ...loopEdgeCoordinates(
+            source,
+            edge.generator,
+            update.generators.length,
+          ),
+        );
+      }
       edgeBuckets.set(bucketKey, bucket);
       renderedEdgeSegments += 1;
 
-      if (edge.directed && !visualSource.equals(visualTarget)) {
+      const arrowChord = path ? arrowChordForPath(path) : undefined;
+      if (edge.directed && arrowChord) {
         const matrix = arrowHeadMatrix(
-          visualSource,
-          visualTarget,
+          arrowChord[0],
+          arrowChord[1],
           arrowDirection,
           arrowObject,
           edge.coorientationArrow ? 1.35 : 1,
@@ -1313,22 +1560,31 @@ class SceneRuntime {
         new BufferAttribute(new Float32Array(bucket.coordinates), 3),
       );
       const ghost = bucketKey.endsWith(":ghost");
+      const far = bucketKey.endsWith(":far");
       const material = new LineBasicMaterial({
         color: bucket.color,
         transparent: true,
-        opacity: ghost ? 0.14 : 0.72,
+        // Edges are the 1-skeleton and must stay legible over translucent
+        // cell fills, so they are drawn nearly opaque.
+        opacity: ghost ? 0.14 : far ? farEdgeOpacity : 0.92,
       });
       this.edgeGroup.add(createStableLineSegments(geometry, material));
     }
 
     for (const bucket of arrowBuckets.values()) {
-      const geometry = new ConeGeometry(0.055, 0.18, 12);
+      const geometry = new ConeGeometry(0.055, arrowConeHeight, 12);
+      // Depth tested, so arrows behind other geometry are hidden like the
+      // edges they belong to. The polygon offset pulls them slightly toward
+      // the camera so they win against the translucent cells they sit on.
       const material = new MeshBasicMaterial({
         color: bucket.color,
         transparent: true,
-        opacity: bucket.ghost ? 0.18 : 0.92,
-        depthTest: !bucket.coorientation,
+        opacity: bucket.ghost ? 0.18 : 0.95,
+        depthTest: true,
         depthWrite: false,
+        polygonOffset: true,
+        polygonOffsetFactor: -2,
+        polygonOffsetUnits: -2,
       });
       const mesh = new InstancedMesh(
         geometry,
@@ -1352,10 +1608,14 @@ class SceneRuntime {
   }
 
   private addEdgeOverlays(update: GraphUpdate): void {
-    const highlightCoordinates: number[] = [];
+    // Edges at the selected vertex keep their generator colour (the point of
+    // selecting a vertex is to read its generators); they are only redrawn
+    // opaque above the translucent cells.
+    const highlightByColor = new Map<string, number[]>();
     const outlineHighlightCoordinates: number[] = [];
     const boundaryCoordinates: number[] = [];
     const readableBoundaryCoordinates: number[] = [];
+    const wallDualOverlays = new Map<string, number[]>();
     const readabilityOverlays = new Map<
       string,
       { color: string; ghost: boolean; coordinates: number[] }
@@ -1367,13 +1627,41 @@ class SceneRuntime {
       if (!source || !target) {
         continue;
       }
-      const coordinates = edgeCoordinates(edge, source, target, update);
+      const coordinates = edgeCoordinates(
+        edge,
+        source,
+        target,
+        update,
+        this.edgeDashUnit,
+      );
+      // Gamma edges are relations drawn in a neutral colour with a dash cue
+      // for the order; the red/black relation-boundary strokes would hide
+      // that cue, so they are not applied to coxeter-order edges.
+      const relationOrderEdge = edge.semanticLabelKind === "coxeter-order";
+      const wallDual = edge.emphasisRole === "wall-dual";
 
-      if (edge.isRelationBoundary && !edge.colorHint) {
+      if (edge.isRelationBoundary && !edge.colorHint && !relationOrderEdge) {
         boundaryCoordinates.push(...coordinates);
       }
-      if (edge.emphasis === "readable-boundary") {
+      if (
+        edge.emphasis === "readable-boundary" &&
+        !relationOrderEdge &&
+        !wallDual
+      ) {
         readableBoundaryCoordinates.push(...coordinates);
+      }
+      if (wallDual) {
+        const color = edgeColor(edge, update);
+        const bucket = wallDualOverlays.get(color) ?? [];
+        pushWallDualCoordinates(
+          bucket,
+          edge,
+          source,
+          target,
+          update,
+          this.edgeDashUnit,
+        );
+        wallDualOverlays.set(color, bucket);
       }
       if (edge.readabilityOverlay) {
         const color = edgeColor(edge, update);
@@ -1395,7 +1683,10 @@ class SceneRuntime {
         if (edge.selectedHighlight === "outline") {
           outlineHighlightCoordinates.push(...coordinates);
         } else {
-          highlightCoordinates.push(...coordinates);
+          const color = edgeColor(edge, update);
+          const bucket = highlightByColor.get(color) ?? [];
+          bucket.push(...coordinates);
+          highlightByColor.set(color, bucket);
         }
       }
     }
@@ -1430,6 +1721,17 @@ class SceneRuntime {
       );
     }
 
+    for (const [color, coordinates] of wallDualOverlays) {
+      const geometry = new BufferGeometry();
+      geometry.setAttribute(
+        "position",
+        new BufferAttribute(new Float32Array(coordinates), 3),
+      );
+      this.edgeOverlayGroup.add(
+        createStableLineSegments(geometry, edgeOverlayMaterial(color, 1), 21),
+      );
+    }
+
     for (const bucket of readabilityOverlays.values()) {
       const geometry = new BufferGeometry();
       geometry.setAttribute(
@@ -1445,18 +1747,14 @@ class SceneRuntime {
       );
     }
 
-    if (highlightCoordinates.length > 0) {
+    for (const [color, coordinates] of highlightByColor) {
       const geometry = new BufferGeometry();
       geometry.setAttribute(
         "position",
-        new BufferAttribute(new Float32Array(highlightCoordinates), 3),
+        new BufferAttribute(new Float32Array(coordinates), 3),
       );
       this.edgeOverlayGroup.add(
-        createStableLineSegments(
-          geometry,
-          edgeOverlayMaterial("#0f6b5f", 0.95),
-          22,
-        ),
+        createStableLineSegments(geometry, edgeOverlayMaterial(color, 1), 22),
       );
     }
 
@@ -1476,19 +1774,89 @@ class SceneRuntime {
     }
   }
 
+  /**
+   * Shape cue for the selected vertex: a screen-facing amber ring, so the
+   * selection is recognisable without relying on colour alone.
+   */
+  private addSelectionRing(update: GraphUpdate) {
+    const nodeId = update.selectedNodeId;
+    const node = nodeId ? this.nodesById.get(nodeId) : undefined;
+    const position = nodeId ? update.nodePositions.get(nodeId) : undefined;
+    if (!node || node.hidden || !position) {
+      return;
+    }
+    const material = new SpriteMaterial({
+      map: selectionRingTexture(selectionColor[update.colorScheme]),
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+    });
+    const ring = new Sprite(material);
+    const diameter =
+      0.09 * 2 * 1.85 * 1.7 * (node.nodeScale ?? 1) * update.selectedNodeScale;
+    ring.scale.set(diameter, diameter, 1);
+    ring.position.copy(position);
+    ring.renderOrder = 30;
+    ring.userData.kind = "selection-ring";
+    this.edgeOverlayGroup.add(ring);
+  }
+
   private addReferenceBall(update: GraphUpdate) {
     if (!update.showReferenceBall) {
       return;
     }
 
-    const geometry = new SphereGeometry(update.referenceBallRadius, 48, 24);
-    const material = new MeshBasicMaterial({
-      color: "#6b7280",
-      transparent: true,
-      opacity: 0.16,
-      wireframe: true,
-    });
-    this.referenceGroup.add(new Mesh(geometry, material));
+    // The ideal boundary is drawn as a faint silhouette, not a wireframe: a
+    // dense lattice of meridians covered the projected chambers. The back
+    // faces of a nearly transparent sphere give a soft disk whose rim is the
+    // boundary sphere's outline from any viewpoint; one equator ring adds a
+    // depth cue while orbiting.
+    const radius = update.referenceBallRadius;
+    // One neutral grey reads on both canvases (theme changes do not rebuild it).
+    const referenceBallColor = "#7c8794";
+    const shell = new Mesh(
+      new SphereGeometry(radius, 48, 32),
+      new MeshBasicMaterial({
+        color: referenceBallColor,
+        transparent: true,
+        opacity: 0.065,
+        side: BackSide,
+        depthWrite: false,
+      }),
+    );
+    shell.renderOrder = -2;
+    this.referenceGroup.add(shell);
+    const equator: number[] = [];
+    const segments = 96;
+    for (let index = 0; index < segments; index += 1) {
+      const a = (2 * Math.PI * index) / segments;
+      const b = (2 * Math.PI * (index + 1)) / segments;
+      equator.push(
+        radius * Math.cos(a),
+        radius * Math.sin(a),
+        0,
+        radius * Math.cos(b),
+        radius * Math.sin(b),
+        0,
+      );
+    }
+    const ringGeometry = new BufferGeometry();
+    ringGeometry.setAttribute(
+      "position",
+      new BufferAttribute(new Float32Array(equator), 3),
+    );
+    this.referenceGroup.add(
+      createStableLineSegments(
+        ringGeometry,
+        new LineBasicMaterial({
+          color: referenceBallColor,
+          transparent: true,
+          opacity: 0.35,
+          depthWrite: false,
+        }),
+        -1,
+      ),
+    );
   }
 
   private addLabels(update: GraphUpdate): {
@@ -1496,8 +1864,16 @@ class SceneRuntime {
     edges: number;
     leaders: number;
   } {
-    const nodeEntries = this.nodeLabelEntries(update);
-    const edgeEntries = selectEdgeLabelCandidates(update);
+    // Bring the screen-size factor up to date first: dense label collision
+    // checks need the size the chips will actually be drawn at.
+    this.applyLabelScreenScale();
+    const density = this.labelDensity(update);
+    this.labelZoomLevelBuilt = density.zoomLevel;
+    const nodeEntries = this.nodeLabelEntries(update, density);
+    const edgeEntries = selectEdgeLabelCandidates(update, {
+      budget: density,
+      cameraPosition: this.camera.position,
+    });
     const sdfThreshold = update.semanticLabelsOnly
       ? semanticSdfLabelBatchThreshold
       : sdfLabelBatchThreshold;
@@ -1523,15 +1899,54 @@ class SceneRuntime {
     };
   }
 
+  private labelDensity(update: GraphUpdate): LabelDensityBudget {
+    let visibleNodeCount = 0;
+    for (const node of update.nodes) {
+      if (!node.hidden) {
+        visibleNodeCount += 1;
+      }
+    }
+    return labelDensityBudget({
+      visibleNodeCount,
+      maxNodeLabels: update.maxNodeLabels,
+      maxEdgeLabels: update.maxEdgeLabels,
+      zoomRatio: this.currentZoomRatio(),
+    });
+  }
+
+  /** framedDistance / currentDistance; above 1 once the user zooms in. */
+  private currentZoomRatio(): number {
+    const distance = this.camera.position.distanceTo(this.controls.target);
+    return this.framedCameraDistance > 0 && distance > 0
+      ? this.framedCameraDistance / distance
+      : 1;
+  }
+
   private nodeLabelEntries(
     update: GraphUpdate,
+    density = this.labelDensity(update),
   ): Array<PickedLabelEntry<SceneNode>> {
     const selectedNeighbors = this.neighborsFor(update.selectedNodeId);
-    return selectLabelBudget(
+    const cameraPosition = this.camera.position;
+    const pinned = (node: SceneNode) =>
+      node.alwaysLabel === true || node.isRelationBoundary === true;
+    // Some scene builders pin every label (alwaysLabel on all of hat X). Pins
+    // only bypass the dense cap while they are few enough to mean "this one".
+    const pinsExempt =
+      density.dense &&
+      countAtMost(update.nodes, pinned, denseLabelPinLimit) <=
+        denseLabelPinLimit;
+    const exempt = (node: SceneNode) =>
+      node.id === update.selectedNodeId ||
+      selectedNeighbors.has(node.id) ||
+      (pinsExempt && pinned(node));
+    const picked = selectLabelBudget(
       update.nodes.filter((node) => !node.hidden),
       {
         enabled: update.showNodeLabels && update.labelScope !== "off",
-        maxLabels: update.maxNodeLabels,
+        // Dense mode ranks every candidate: the collision check below may
+        // reject many, and the hard maximum is enforced after it.
+        maxLabels: density.dense ? update.nodes.length : update.maxNodeLabels,
         maxCharacters: 14,
         getLabel: (node) => {
           if (node.drawingOnly && !node.alwaysLabel) {
@@ -1556,12 +1971,51 @@ class SceneRuntime {
           }
           return node.compactLabel ?? node.label ?? node.id;
         },
-        getPriority: (node) =>
-          (node.labelPriority ?? 0) +
-          (node.alwaysLabel ? 80_000 : 0) +
-          (node.isRelationBoundary ? 15_000 : 0) +
-          (node.id === update.selectedNodeId ? 10_000 : 0) -
-          node.length,
+        getPriority: (node) => {
+          const base =
+            (node.labelPriority ?? 0) +
+            (node.alwaysLabel ? 80_000 : 0) +
+            (node.isRelationBoundary ? 15_000 : 0) +
+            (node.id === update.selectedNodeId ? 10_000 : 0);
+          if (!density.dense) {
+            return base - node.length;
+          }
+          // Dense scenes: label the selection's neighbours, then the vertices
+          // nearest the camera, which are the least likely to be hidden
+          // behind the rest of the ball.
+          const position = update.nodePositions.get(node.id);
+          return (
+            base +
+            (selectedNeighbors.has(node.id) ? 5_000 : 0) -
+            (position ? position.distanceTo(cameraPosition) : 1_000)
+          );
+        },
+      },
+    );
+    if (!density.dense) {
+      return picked;
+    }
+    // Dense balls put most candidates behind one another near the middle of
+    // the view. A screen-space occupancy check spreads the capped labels out
+    // instead of stacking them; selection context is always placed.
+    const occupancy = new ScreenLabelOccupancy(this.camera);
+    return applyDenseLabelCap(
+      picked,
+      density.nodeCap,
+      update.maxNodeLabels,
+      (entry) => exempt(entry.item),
+      (entry, isExempt) => {
+        const position = update.nodePositions.get(entry.item.id);
+        return position
+          ? occupancy.reserve(position, entry.label, {
+              force: isExempt,
+              onScreenOnly: true,
+              chip: nodeLabelChipSize(
+                entry.label,
+                (entry.item.labelScale ?? 1) * this.appliedLabelScreenScale,
+              ),
+            })
+          : false;
       },
     );
   }
@@ -1576,37 +2030,11 @@ class SceneRuntime {
         continue;
       }
 
+      const style = nodeLabelStyle(node, update.colorScheme);
       const sprite = createTextSprite(label, {
-        textColor:
-          node.stateRole === "in-state"
-            ? "#083344"
-            : node.stateRole === "out-of-state"
-              ? "#f8fafc"
-              : node.alwaysLabel
-                ? "#111827"
-                : node.isRelationBoundary
-                  ? "#b42318"
-                  : "#24292f",
-        backgroundColor:
-          node.stateRole === "in-state"
-            ? "rgba(165, 243, 252, 0.96)"
-            : node.stateRole === "out-of-state"
-              ? "rgba(71, 85, 105, 0.86)"
-              : node.alwaysLabel
-                ? "rgba(240, 253, 250, 0.94)"
-                : node.isRelationBoundary
-                  ? "rgba(255, 247, 237, 0.92)"
-                  : "rgba(255, 255, 255, 0.86)",
-        borderColor:
-          node.stateRole === "in-state"
-            ? "#0891b2"
-            : node.stateRole === "out-of-state"
-              ? "#94a3b8"
-              : node.alwaysLabel
-                ? "#0f766e"
-                : node.isRelationBoundary
-                  ? "#b42318"
-                  : "rgba(36, 41, 47, 0.24)",
+        textColor: cssColor(style.foreground),
+        backgroundColor: cssColor(style.background),
+        borderColor: cssColor(style.border),
         fontSize: 28,
         paddingX: 8,
         paddingY: 5,
@@ -1616,10 +2044,24 @@ class SceneRuntime {
       sprite.position.copy(position);
       sprite.position.z += 0.13 * (node.labelScale ?? 1);
       sprite.renderOrder = 20;
-      this.labelGroup.add(sprite);
+      this.addScaledLabelSprite(sprite);
+      this.labelFadeEntries.push({
+        anchor: position,
+        pinned: this.isSelectionContextNode(node.id, update),
+        sprite,
+        opacity: 1,
+        scale: farLabelScale(node, update),
+      });
     }
 
     return entries.length;
+  }
+
+  private addScaledLabelSprite(sprite: Sprite) {
+    sprite.userData.baseScale = [sprite.scale.x, sprite.scale.y];
+    const factor = this.appliedLabelScreenScale;
+    sprite.scale.set(sprite.scale.x * factor, sprite.scale.y * factor, 1);
+    this.labelGroup.add(sprite);
   }
 
   private addEdgeLabels(
@@ -1652,20 +2094,11 @@ class SceneRuntime {
         continue;
       }
 
-      const color = edgeColor(edge, update);
+      const style = edgeLabelStyle(edge, update);
       const sprite = createTextSprite(label, {
-        textColor: edge.isRelationBoundary ? "#b42318" : color,
-        backgroundColor: edge.isRelationBoundary
-          ? edge.emphasis === "readable-boundary"
-            ? "rgba(255, 255, 255, 0.95)"
-            : "rgba(255, 247, 237, 0.9)"
-          : "rgba(255, 255, 255, 0.72)",
-        borderColor:
-          edge.emphasis === "readable-boundary"
-            ? "#111827"
-            : edge.isRelationBoundary
-              ? "#b42318"
-              : color,
+        textColor: cssColor(style.foreground),
+        backgroundColor: cssColor(style.background),
+        borderColor: cssColor(style.border),
         fontSize: 22,
         paddingX: 6,
         paddingY: 3,
@@ -1674,7 +2107,13 @@ class SceneRuntime {
       sprite.center.set(0.5, 0.5);
       sprite.position.copy(position.labelPosition);
       sprite.renderOrder = 18;
-      this.labelGroup.add(sprite);
+      this.addScaledLabelSprite(sprite);
+      this.labelFadeEntries.push({
+        anchor: position.labelPosition.clone(),
+        pinned: edgeIncidentToSelection(edge, update),
+        sprite,
+        opacity: 1,
+      });
       if (shouldDrawEdgeLabelLeader(edge, update)) {
         const drewLeader = pushLabelLeaderCoordinates(
           leaderCoordinates,
@@ -1696,7 +2135,7 @@ class SceneRuntime {
         new BufferAttribute(new Float32Array(leaderCoordinates), 3),
       );
       const material = new LineBasicMaterial({
-        color: update.semanticLabelsOnly ? "#111827" : "#57606a",
+        color: labelLeaderColor(update),
         transparent: true,
         opacity: update.semanticLabelsOnly ? 0.68 : 0.46,
       });
@@ -1717,7 +2156,14 @@ class SceneRuntime {
       if (!position) {
         continue;
       }
-      const style = sdfNodeLabelStyle(node);
+      const style = sdfStyle(nodeLabelStyle(node, update.colorScheme));
+      this.labelFadeEntries.push({
+        anchor: position,
+        pinned: this.isSelectionContextNode(node.id, update),
+        sdfId: `node:${node.id}`,
+        opacity: 1,
+        scale: farLabelScale(node, update),
+      });
       labels.push({
         id: `node:${node.id}`,
         text: label,
@@ -1757,7 +2203,13 @@ class SceneRuntime {
       if (!placement) {
         continue;
       }
-      const style = sdfEdgeLabelStyle(edge, update);
+      const style = sdfStyle(edgeLabelStyle(edge, update));
+      this.labelFadeEntries.push({
+        anchor: placement.labelPosition.clone(),
+        pinned: edgeIncidentToSelection(edge, update),
+        sdfId: `edge:${edge.id}`,
+        opacity: 1,
+      });
       labels.push({
         id: `edge:${edge.id}`,
         text: label,
@@ -1792,6 +2244,7 @@ class SceneRuntime {
       renderOrder: 18,
       depthTest: false,
     });
+    this.activeSdfBatch.setLabelScale(this.appliedLabelScreenScale);
     this.labelGroup.add(this.activeSdfBatch.group);
 
     if (leaderCoordinates.length > 0) {
@@ -1801,7 +2254,7 @@ class SceneRuntime {
         new BufferAttribute(new Float32Array(leaderCoordinates), 3),
       );
       const material = new LineBasicMaterial({
-        color: update.semanticLabelsOnly ? "#111827" : "#57606a",
+        color: labelLeaderColor(update),
         transparent: true,
         opacity: update.semanticLabelsOnly ? 0.68 : 0.46,
       });
@@ -1859,7 +2312,17 @@ class SceneRuntime {
     occupancy: ScreenLabelOccupancy,
     force: boolean,
   ): EdgeLabelPlacement | undefined {
-    const candidates = edgeLabelCandidates(edge, source, target, this.camera);
+    // Curved edges are labelled on a chord through the middle of the curve.
+    const path = edge.drawingControlPoint
+      ? edgePathPoints(edge, source, target, this.lastGraphUpdate!)
+      : undefined;
+    const chord = path ? labelChordForPath(path) : undefined;
+    const candidates = edgeLabelCandidates(
+      edge,
+      chord?.[0] ?? source,
+      chord?.[1] ?? target,
+      this.camera,
+    );
     for (const candidate of candidates) {
       if (occupancy.reserve(candidate.labelPosition, label)) {
         return candidate;
@@ -1905,8 +2368,12 @@ class SceneRuntime {
     const applyFillBudget =
       update.localCellRenderMode !== "outline-only" &&
       update.cells.length > transparentFillBudget;
+    const nearestFillIds = applyFillBudget
+      ? nearestCellsForFillBudget(update, transparentFillBudget)
+      : undefined;
     let filledTransparentCells = 0;
     let omittedTransparentFills = 0;
+    let unfillableCells = 0;
     const pickingItems: PickingSpatialItem<SceneCell>[] = [];
 
     for (const cell of update.cells) {
@@ -1934,11 +2401,6 @@ class SceneRuntime {
         update.localCellRenderMode,
       );
       this.cellVerticesById.set(cell.id, vertices);
-      if (!this.gpuPickingActive) {
-        pickingItems.push(
-          createCellPickingItem(cell, vertices, drawingSurface),
-        );
-      }
 
       const cellPairKey = pairKey(cell.generatorPair);
       const bucketStyle = cellBucketStyleKey(cell);
@@ -1956,16 +2418,28 @@ class SceneRuntime {
       );
       outlineBuckets.set(outlineKey, outlineBucket);
 
+      // A cell is pickable only where something is drawn for it: its fill,
+      // or (outline-only mode) the interior of a fillable outline. Cells whose
+      // fill was dropped by the budget, or whose drawn boundary crosses
+      // itself, register no hit area, so clicking empty space cannot select
+      // an invisible cell.
       if (
-        update.localCellRenderMode !== "outline-only" &&
-        shouldFillTransparentCell(
+        update.localCellRenderMode === "outline-only" ||
+        !shouldFillTransparentCell(
           cell,
           update,
           applyFillBudget,
           filledTransparentCells,
           transparentFillBudget,
+          nearestFillIds,
         )
       ) {
+        if (update.localCellRenderMode !== "outline-only") {
+          omittedTransparentFills += 1;
+        } else if (cellHasFill(vertices, drawingSurface)) {
+          this.pickableCellIds.add(cell.id);
+        }
+      } else {
         const fillKey = `${cellPairKey}:${bucketStyle}`;
         const fillBucket = fillBuckets.get(fillKey) ?? {
           pairKey: cellPairKey,
@@ -1973,19 +2447,30 @@ class SceneRuntime {
           styleCell: cell,
           coordinates: [],
         };
-        pushCellFillCoordinates(
-          fillBucket.coordinates,
-          vertices,
-          drawingSurface,
-        );
-        fillBuckets.set(fillKey, fillBucket);
-        filledTransparentCells += 1;
-      } else if (update.localCellRenderMode !== "outline-only") {
-        omittedTransparentFills += 1;
+        if (
+          pushCellFillCoordinates(
+            fillBucket.coordinates,
+            vertices,
+            drawingSurface,
+          )
+        ) {
+          fillBuckets.set(fillKey, fillBucket);
+          filledTransparentCells += 1;
+          this.pickableCellIds.add(cell.id);
+        } else {
+          unfillableCells += 1;
+        }
+      }
+      if (!this.gpuPickingActive && this.pickableCellIds.has(cell.id)) {
+        const item = createCellPickingItem(cell, vertices, drawingSurface);
+        if (item) {
+          pickingItems.push(item);
+        }
       }
       renderedCells += 1;
     }
     this.stats.omittedTransparentFills = omittedTransparentFills;
+    this.stats.unfillableCells = unfillableCells;
     if (!this.gpuPickingActive) {
       const pickingStartedAt = performance.now();
       this.cellPickingIndex.build(pickingItems);
@@ -2001,7 +2486,11 @@ class SceneRuntime {
         true,
       );
       const material = new MeshBasicMaterial({
-        color: cellColor(update.generators, bucket.styleCell),
+        color: cellColor(
+          update.generators,
+          bucket.styleCell,
+          update.colorScheme,
+        ),
         opacity: cellOpacity(bucket.styleCell, update, false),
         transparent: true,
         side: DoubleSide,
@@ -2026,7 +2515,11 @@ class SceneRuntime {
         false,
       );
       const material = new LineBasicMaterial({
-        color: cellColor(update.generators, bucket.styleCell),
+        color: cellColor(
+          update.generators,
+          bucket.styleCell,
+          update.colorScheme,
+        ),
         transparent: true,
         opacity: cellOutlineOpacity(bucket.styleCell, update, false),
         linewidth: cellOutlineWidth(bucket.styleCell, update, false),
@@ -2098,9 +2591,13 @@ class SceneRuntime {
       : undefined;
     for (const bucket of this.cellBuckets) {
       const active = activePairKey === bucket.pairKey;
-      const color = active
-        ? "#0f6b5f"
-        : cellColor(update.generators, bucket.styleCell);
+      // The active pair is emphasised by opacity and outline width, not by a
+      // new hue, so its cells keep reading as their two generators.
+      const color = cellColor(
+        update.generators,
+        bucket.styleCell,
+        update.colorScheme,
+      );
       bucket.fillMaterial?.color.set(color);
       if (bucket.fillMaterial) {
         bucket.fillMaterial.opacity = cellOpacity(
@@ -2139,15 +2636,18 @@ class SceneRuntime {
       if (!vertices || vertices.length < 3) {
         continue;
       }
-      if (update.localCellRenderMode !== "outline-only") {
-        const fillGeometry = createCellFillGeometry(
-          vertices,
-          cellDrawingSurface(cell, update.localCellRenderMode),
-        );
+      const fillGeometry =
+        update.localCellRenderMode !== "outline-only"
+          ? createCellFillGeometry(
+              vertices,
+              cellDrawingSurface(cell, update.localCellRenderMode),
+            )
+          : undefined;
+      if (fillGeometry) {
         const fill = new Mesh(
           fillGeometry,
           new MeshBasicMaterial({
-            color: "#f85149",
+            color: selectionColor[update.colorScheme],
             opacity: Math.max(update.cellOpacity, 0.38),
             transparent: true,
             side: DoubleSide,
@@ -2171,7 +2671,7 @@ class SceneRuntime {
       );
       const outline = createStableLineSegments(
         outlineGeometry,
-        edgeOverlayMaterial("#f85149", 1, 4),
+        edgeOverlayMaterial(selectionColor[update.colorScheme], 1, 4),
         13,
       );
       outline.renderOrder = 13;
@@ -2235,6 +2735,9 @@ class SceneRuntime {
         new Vector3(...update.cameraFocusTarget),
         update.cameraFocusOffset,
       );
+      // Caller-chosen offsets are still the "framed" view for the dense
+      // label zoom rule.
+      this.recordAutomaticFrame();
       return;
     }
 
@@ -2244,20 +2747,42 @@ class SceneRuntime {
       this.camera.updateProjectionMatrix();
       this.controls.target.set(0, 0, 0);
       this.camera.position.set(0, -distance, distance * 0.45);
+      this.recordAutomaticFrame();
       this.controls.update();
       this.scheduleDampingFrames("camera-frame", 18);
       return;
     }
 
-    this.camera.fov = update.showReferenceBall ? 74 : 55;
+    this.camera.fov = update.showReferenceBall ? referenceBallFov : 55;
     this.camera.updateProjectionMatrix();
     this.controls.target.copy(center);
+    this.framedSceneRadius = maxRadius;
     if (update.showReferenceBall) {
-      this.camera.position.set(
-        center.x,
-        center.y - maxRadius * 1.1,
-        center.z + maxRadius * 0.36,
+      // Projection views are framed on the whole model ball (radius R about
+      // the origin), seen from outside at ~2.8R with a moderate field of view,
+      // so near chambers are not magnified into blobs by a wide-angle camera
+      // sitting on the ball's surface.
+      const ballPoints = [
+        new Vector3(maxRadius, 0, 0),
+        new Vector3(-maxRadius, 0, 0),
+        new Vector3(0, maxRadius, 0),
+        new Vector3(0, -maxRadius, 0),
+        new Vector3(0, 0, maxRadius),
+        new Vector3(0, 0, -maxRadius),
+      ];
+      const framing = computeSceneFraming(
+        ballPoints,
+        this.camera.fov,
+        this.camera.aspect,
+        referenceBallFrameFill,
       );
+      this.controls.target.copy(framing.center);
+      this.camera.position
+        .copy(framing.center)
+        .addScaledVector(framing.direction, framing.distance);
+      this.camera.near = Math.max(0.01, framing.distance / 200);
+      this.camera.far = Math.max(1000, framing.distance * 20);
+      this.camera.updateProjectionMatrix();
     } else if (oneVertexCellBouquet) {
       this.camera.position.set(
         center.x + maxRadius * 0.95,
@@ -2265,12 +2790,21 @@ class SceneRuntime {
         center.z + maxRadius * 1.2,
       );
     } else {
-      this.camera.position.set(
-        center.x,
-        center.y - maxRadius * 2.6 - 4,
-        center.z + maxRadius * 1.5 + 2,
+      const framing = computeSceneFraming(
+        [...nodePositions.values()],
+        this.camera.fov,
+        this.camera.aspect,
       );
+      this.controls.target.copy(framing.center);
+      this.camera.position
+        .copy(framing.center)
+        .addScaledVector(framing.direction, framing.distance);
+      this.camera.near = Math.max(0.01, framing.distance / 200);
+      this.camera.far = Math.max(1000, framing.distance * 20);
+      this.camera.updateProjectionMatrix();
+      this.framedSceneRadius = framing.radius;
     }
+    this.recordAutomaticFrame();
     this.controls.update();
     this.scheduleDampingFrames("camera-frame", 18);
   }
@@ -2293,8 +2827,36 @@ class SceneRuntime {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
+    // The fitted distance depends on the aspect ratio, so the automatic
+    // framing is redone when the viewer changes shape. A camera the user has
+    // orbited, panned or zoomed is left where it is.
+    if (this.lastGraphUpdate && this.cameraAtAutomaticFrame()) {
+      this.framedGraphKey = "";
+      this.frameGraph(this.lastGraphUpdate);
+      // Dense label selection is camera-dependent (proximity and screen
+      // collisions), so rebuild it for the refitted camera.
+      if (this.labelDensity(this.lastGraphUpdate).dense) {
+        this.updateLabelAppearance(this.lastGraphUpdate);
+      }
+    }
     this.requestRender(reason);
     return true;
+  }
+
+  private recordAutomaticFrame() {
+    this.framedCameraDistance = this.camera.position.distanceTo(
+      this.controls.target,
+    );
+    this.framedCameraPosition = this.camera.position.clone();
+  }
+
+  /** True while the user has not orbited, panned or zoomed since framing. */
+  private cameraAtAutomaticFrame(): boolean {
+    return (
+      this.framedCameraPosition !== undefined &&
+      this.camera.position.distanceTo(this.framedCameraPosition) <
+        1e-3 * Math.max(1, this.framedCameraDistance)
+    );
   }
 
   private scheduleResize(reason: string) {
@@ -2366,11 +2928,37 @@ class SceneRuntime {
 
   private readonly handleControlsChange = () => {
     this.requestRender("camera-change");
+    this.scheduleLabelZoomCheck();
   };
+
+  /**
+   * Dense scenes cap labels at the framed view and relax the cap at each 2x
+   * zoom step. The check is debounced so labels are rebuilt once the camera
+   * settles, not on every damping frame.
+   */
+  private scheduleLabelZoomCheck() {
+    if (this.labelZoomTimer !== undefined) {
+      window.clearTimeout(this.labelZoomTimer);
+    }
+    this.labelZoomTimer = window.setTimeout(() => {
+      this.labelZoomTimer = undefined;
+      const update = this.lastGraphUpdate;
+      if (!update || this.cameraInteractionActive) {
+        return;
+      }
+      const density = this.labelDensity(update);
+      if (!density.dense || density.zoomLevel === this.labelZoomLevelBuilt) {
+        return;
+      }
+      this.updateLabelAppearance(update);
+      this.requestRender("label-zoom");
+    }, 220);
+  }
 
   private readonly handleControlsEnd = () => {
     this.cameraInteractionActive = false;
     this.scheduleDampingFrames("camera-end", 18);
+    this.scheduleLabelZoomCheck();
   };
 
   private readonly handleKeyDown = (event: KeyboardEvent) => {
@@ -2429,15 +3017,15 @@ class SceneRuntime {
     this.cameraInteractionActive = false;
   };
 
-  private setColorScheme(colorScheme: SceneColorScheme) {
+  /** Returns true when the scheme actually changed. */
+  private setColorScheme(colorScheme: SceneColorScheme): boolean {
     if (this.colorScheme === colorScheme && this.scene.background) {
-      return;
+      return false;
     }
     this.colorScheme = colorScheme;
-    this.scene.background = new Color(
-      colorScheme === "dark" ? "#0d1117" : "#f6f7f9",
-    );
+    this.scene.background = new Color(sceneBackgroundColor[colorScheme]);
     this.requestRender("theme");
+    return true;
   }
 
   private isCameraMovementActive(): boolean {
@@ -2554,6 +3142,9 @@ class SceneRuntime {
           rect,
           pickPoint.pixel,
         );
+        if (pickId === 0 && this.pickEdgeAt(pickPoint.pixel, rect)) {
+          return;
+        }
         if (pickId === 0) {
           pickId = await this.gpuIdPicker.pick(
             this.renderer,
@@ -2616,6 +3207,9 @@ class SceneRuntime {
     if (nearestNode) {
       this.onSelectNode(nearestNode.nodeId);
       this.requestRender("pick-node");
+      return;
+    }
+    if (this.pickEdgeAt(pickPoint.pixel, rect)) {
       return;
     }
 
@@ -2702,6 +3296,67 @@ class SceneRuntime {
     }
   };
 
+  /**
+   * Edge picking in screen space: the drawn edge whose projected segment
+   * passes within edgePickTolerancePx of the click wins (nearest in pixels,
+   * then nearest in depth). Lines are 1px wide, so a ray test against the
+   * 3D segments would almost never hit. Runs only when a caller listens.
+   */
+  private pickEdgeAt(
+    pixel: { x: number; y: number },
+    rect: Pick<DOMRect, "width" | "height">,
+  ): boolean {
+    const update = this.lastGraphUpdate;
+    if (!this.onSelectEdge || !update) {
+      return false;
+    }
+    const segments: ScreenSegment[] = [];
+    const projected = new Vector3();
+    const toScreen = (point: Vector3): [number, number, number] | undefined => {
+      projected.copy(point).project(this.camera);
+      if (projected.z < -1 || projected.z > 1) {
+        return undefined;
+      }
+      return [
+        ((projected.x + 1) / 2) * rect.width,
+        ((1 - projected.y) / 2) * rect.height,
+        projected.z,
+      ];
+    };
+    for (const edge of selectRenderableEdges(update)) {
+      if (edge.ghost) {
+        continue;
+      }
+      const source = update.nodePositions.get(edge.source);
+      const target = update.nodePositions.get(edge.target);
+      if (!source || !target || source.equals(target)) {
+        continue;
+      }
+      const path = edgePathPoints(edge, source, target, update);
+      if (!path) {
+        continue;
+      }
+      for (let index = 1; index < path.length; index += 1) {
+        const a = toScreen(path[index - 1]);
+        const b = toScreen(path[index]);
+        if (a && b) {
+          segments.push({ id: edge.id, a, b });
+        }
+      }
+    }
+    const edgeId = nearestScreenSegment(
+      [pixel.x, pixel.y],
+      segments,
+      edgePickTolerancePx,
+    );
+    if (!edgeId) {
+      return false;
+    }
+    this.onSelectEdge(edgeId);
+    this.requestRender("pick-edge");
+    return true;
+  }
+
   private pickCellWithBvh(): string | undefined {
     const startedAt = performance.now();
     const ray: PickingRay = {
@@ -2768,14 +3423,19 @@ class SceneRuntime {
     const items: PickingSpatialItem<SceneCell>[] = [];
     for (const cell of update.cells) {
       const vertices = this.cellVerticesById.get(cell.id);
-      if (vertices && vertices.length >= 3) {
-        items.push(
-          createCellPickingItem(
-            cell,
-            vertices,
-            cellDrawingSurface(cell, update.localCellRenderMode),
-          ),
+      if (
+        vertices &&
+        vertices.length >= 3 &&
+        this.pickableCellIds.has(cell.id)
+      ) {
+        const item = createCellPickingItem(
+          cell,
+          vertices,
+          cellDrawingSurface(cell, update.localCellRenderMode),
         );
+        if (item) {
+          items.push(item);
+        }
       }
     }
     const startedAt = performance.now();
@@ -2833,6 +3493,8 @@ class SceneRuntime {
   };
 
   private readonly render = (reason: string) => {
+    this.applyLabelScreenScale();
+    this.applyLabelDepthFade();
     this.renderer.render(this.scene, this.camera);
     this.stats.renderReason = reason;
     this.stats.renderCount += 1;
@@ -2842,6 +3504,101 @@ class SceneRuntime {
     this.notifyStatsOnNextRender = false;
     this.publishStats({ notifyCallback, force: notifyCallback });
   };
+
+  /**
+   * Labels are sized in world units, so a large or far-away scene can shrink
+   * them to a few pixels. Scale every label up so an edge label is at least
+   * minimumEdgeLabelPixels tall at the orbit target's depth.
+   */
+  private applyLabelScreenScale() {
+    const distance = this.camera.position.distanceTo(this.controls.target);
+    const factor = labelScreenScale(
+      this.viewportHeight,
+      distance,
+      this.camera.fov,
+    );
+    if (Math.abs(factor - this.appliedLabelScreenScale) < 0.01) {
+      return;
+    }
+    this.appliedLabelScreenScale = factor;
+    this.rescaleLabels();
+  }
+
+  /**
+   * Labels draw without depth testing so they are never cut by edges, which
+   * also lets labels of far vertices sit over nearer geometry. They are faded
+   * by depth instead: full opacity up to the orbit target, then down to
+   * labelFadeMinimumOpacity one framed radius further back. Labels of the
+   * selected vertex, its neighbours and its edges stay opaque.
+   */
+  private applyLabelDepthFade() {
+    if (this.labelFadeEntries.length === 0) {
+      return;
+    }
+    const camera = this.camera.position;
+    const target = this.controls.target;
+    const key = `${camera.x.toFixed(3)},${camera.y.toFixed(3)},${camera.z.toFixed(3)}:${target.x.toFixed(3)},${target.y.toFixed(3)},${target.z.toFixed(3)}`;
+    if (key === this.labelFadeCameraKey) {
+      return;
+    }
+    this.labelFadeCameraKey = key;
+    const focusDistance = camera.distanceTo(target);
+    for (const entry of this.labelFadeEntries) {
+      const opacity = entry.pinned
+        ? 1
+        : (entry.scale ?? 1) *
+          labelDepthOpacity(
+            camera.distanceTo(entry.anchor),
+            focusDistance,
+            this.framedSceneRadius,
+          );
+      if (Math.abs(opacity - entry.opacity) < 0.02) {
+        continue;
+      }
+      entry.opacity = opacity;
+      if (entry.sprite) {
+        entry.sprite.material.opacity = opacity;
+      } else if (entry.sdfId) {
+        this.activeSdfBatch?.setLabelOpacity(entry.sdfId, opacity);
+      }
+    }
+  }
+
+  /**
+   * "fade-far" focus: an edge recedes when both endpoints are at graph
+   * distance >= 2 from the selection (SceneNode.localDistance). Nodes without
+   * localDistance count as near, so the mode is a no-op until the caller
+   * supplies distances.
+   */
+  private edgeIsFar(edge: SceneEdge, update: GraphUpdate): boolean {
+    if (update.occlusionMode !== "fade-far") {
+      return false;
+    }
+    return (
+      isFarNode(this.nodesById.get(edge.source)) &&
+      isFarNode(this.nodesById.get(edge.target))
+    );
+  }
+
+  private isSelectionContextNode(nodeId: string, update: GraphUpdate) {
+    return (
+      nodeId === update.selectedNodeId ||
+      this.neighborsFor(update.selectedNodeId).has(nodeId)
+    );
+  }
+
+  private rescaleLabels() {
+    const factor = this.appliedLabelScreenScale;
+    for (const child of this.labelGroup.children) {
+      if (child instanceof Sprite) {
+        const base = child.userData.baseScale as [number, number] | undefined;
+        if (base) {
+          child.scale.set(base[0] * factor, base[1] * factor, 1);
+        }
+      }
+    }
+    this.activeSdfBatch?.setLabelScale(factor);
+  }
 
   private publishStats(
     options: { notifyCallback?: boolean; force?: boolean } = {},
@@ -3080,22 +3837,380 @@ export function prefilterSpatialPickSpheres<T extends SpatialPickSphere>(
   };
 }
 
-function nodeColor(node: SceneNode, occlusionMode: OcclusionMode) {
-  const base = shellPalette[node.length % shellPalette.length];
+/** Screen-space tolerance for edge picking, in CSS pixels. */
+const edgePickTolerancePx = 6;
+
+export interface ScreenSegment {
+  id: string;
+  /** Endpoints as [x, y, ndcDepth] in CSS pixels. */
+  a: readonly [number, number, number];
+  b: readonly [number, number, number];
+}
+
+/**
+ * Id of the segment nearest to `point` within `tolerance` pixels, ties
+ * (within 0.5 px) broken by the depth of the closest point on the segment.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function nearestScreenSegment(
+  point: readonly [number, number],
+  segments: readonly ScreenSegment[],
+  tolerance: number,
+): string | undefined {
+  let bestId: string | undefined;
+  let bestDistance = Number.POSITIVE_INFINITY;
+  let bestDepth = Number.POSITIVE_INFINITY;
+  for (const segment of segments) {
+    const dx = segment.b[0] - segment.a[0];
+    const dy = segment.b[1] - segment.a[1];
+    const lengthSq = dx * dx + dy * dy;
+    const t =
+      lengthSq > 0
+        ? Math.min(
+            1,
+            Math.max(
+              0,
+              ((point[0] - segment.a[0]) * dx +
+                (point[1] - segment.a[1]) * dy) /
+                lengthSq,
+            ),
+          )
+        : 0;
+    const x = segment.a[0] + t * dx;
+    const y = segment.a[1] + t * dy;
+    const distance = Math.hypot(point[0] - x, point[1] - y);
+    if (distance > tolerance) {
+      continue;
+    }
+    const depth = segment.a[2] + t * (segment.b[2] - segment.a[2]);
+    if (
+      distance < bestDistance - 0.5 ||
+      (Math.abs(distance - bestDistance) <= 0.5 && depth < bestDepth)
+    ) {
+      bestId = segment.id;
+      bestDistance = distance;
+      bestDepth = depth;
+    }
+  }
+  return bestId;
+}
+
+/** Fraction of the shorter viewport side the fitted bounding sphere spans. */
+const sceneFrameFill = 0.7;
+/** Projection views: vertical field of view and fill for the model ball. */
+const referenceBallFov = 45;
+const referenceBallFrameFill = 0.92;
+/** Lower bound on the framed radius so one or two vertices are not giant. */
+const minimumFramedRadius = 0.6;
+/** Planarity test: thinnest/widest principal spread below this is "flat". */
+const coplanarSpreadRatio = 0.12;
+/** Tilt off the plane normal, so flat scenes keep a little depth cue. */
+const coplanarViewTilt = (12 * Math.PI) / 180;
+/** Default oblique view direction of the global preset (camera - target). */
+const defaultFrameDirection = new Vector3(0, -2.6, 1.5).normalize();
+
+export interface SceneFraming {
+  center: Vector3;
+  /** Unit vector from the orbit target toward the camera. */
+  direction: Vector3;
+  distance: number;
+  radius: number;
+  coplanar: boolean;
+}
+
+/**
+ * Camera framing for the global preset. Node positions are never moved.
+ *
+ * The bounding sphere (about the bounding-box center) is fitted so it spans
+ * ~70% of the shorter viewport side. When the points are (nearly) coplanar,
+ * as for a single Davis 2m-gon or a planar Gamma drawing, the camera looks
+ * along the plane normal, tilted slightly toward the default view so the
+ * polygon is seen face-on rather than edge-on. Collinear points are viewed
+ * perpendicular to their line.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function computeSceneFraming(
+  points: readonly Vector3[],
+  fovDegrees: number,
+  aspect: number,
+  fill = sceneFrameFill,
+): SceneFraming {
+  const center = new Vector3();
+  if (points.length > 0) {
+    const min = new Vector3(Infinity, Infinity, Infinity);
+    const max = new Vector3(-Infinity, -Infinity, -Infinity);
+    for (const point of points) {
+      min.min(point);
+      max.max(point);
+    }
+    center.addVectors(min, max).multiplyScalar(0.5);
+  }
+  let radius = 0;
+  for (const point of points) {
+    radius = Math.max(radius, point.distanceTo(center));
+  }
+  radius = Math.max(radius, minimumFramedRadius);
+
+  const normal = planeNormalIfCoplanar(points);
+  const direction = defaultFrameDirection.clone();
+  if (normal) {
+    if (normal.dot(direction) < 0) {
+      normal.negate();
+    }
+    // Tangent part of the default direction gives the tilt axis; when the
+    // default direction is the normal itself any perpendicular will do.
+    const tangent = direction
+      .clone()
+      .addScaledVector(normal, -direction.dot(normal));
+    if (tangent.lengthSq() < 1e-8) {
+      tangent.set(1, 0, 0).addScaledVector(normal, -normal.x);
+    }
+    tangent.normalize();
+    direction
+      .copy(normal)
+      .multiplyScalar(Math.cos(coplanarViewTilt))
+      .addScaledVector(tangent, Math.sin(coplanarViewTilt))
+      .normalize();
+  } else {
+    // A collinear drawing seen along the default direction can collapse to
+    // a short stub; look perpendicular to the line instead.
+    const axis = lineAxisIfCollinear(points);
+    if (axis) {
+      direction.addScaledVector(axis, -direction.dot(axis));
+      if (direction.lengthSq() < 1e-8) {
+        direction.set(0, 0, 1).addScaledVector(axis, -axis.z);
+      }
+      direction.normalize();
+    }
+  }
+
+  const halfVertical = (Math.max(1, fovDegrees) * Math.PI) / 360;
+  const tanVertical = Math.tan(halfVertical);
+  const tanHalf =
+    Math.min(tanVertical, tanVertical * Math.max(0.05, aspect || 1)) *
+    Math.min(1, Math.max(0.05, fill));
+  // A sphere of radius r at distance d subtends tan(theta) = r / sqrt(d^2 - r^2).
+  const distance = radius * Math.sqrt(1 + 1 / (tanHalf * tanHalf));
+  return {
+    center,
+    direction,
+    distance,
+    radius,
+    coplanar: normal !== undefined,
+  };
+}
+
+interface PointSpread {
+  /** Covariance eigenvalues, ascending (clamped at 0). */
+  values: [number, number, number];
+  /** Matching unit eigenvectors. */
+  axes: [Vector3, Vector3, Vector3];
+}
+
+function principalSpread(points: readonly Vector3[]): PointSpread | undefined {
+  if (points.length < 2) {
+    return undefined;
+  }
+  const mean = new Vector3();
+  for (const point of points) {
+    mean.add(point);
+  }
+  mean.multiplyScalar(1 / points.length);
+  const c = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ];
+  for (const point of points) {
+    const d = [point.x - mean.x, point.y - mean.y, point.z - mean.z];
+    for (let i = 0; i < 3; i += 1) {
+      for (let j = 0; j < 3; j += 1) {
+        c[i][j] += d[i] * d[j];
+      }
+    }
+  }
+  const { values, vectors } = symmetricEigen3(c);
+  const order = [0, 1, 2].sort((a, b) => values[a] - values[b]);
+  const axis = (k: number) =>
+    new Vector3(vectors[0][k], vectors[1][k], vectors[2][k]).normalize();
+  return {
+    values: order.map((k) => Math.max(0, values[k])) as [
+      number,
+      number,
+      number,
+    ],
+    axes: order.map(axis) as [Vector3, Vector3, Vector3],
+  };
+}
+
+/**
+ * Unit normal of the best-fit plane when the point cloud is flat, otherwise
+ * undefined. Uses the eigenvector of the smallest covariance eigenvalue;
+ * collinear or tiny inputs have no well-defined plane and return undefined.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function planeNormalIfCoplanar(
+  points: readonly Vector3[],
+): Vector3 | undefined {
+  const spread = points.length >= 3 ? principalSpread(points) : undefined;
+  if (!spread) {
+    return undefined;
+  }
+  const [smallest, middle, largest] = spread.values;
+  if (largest <= 1e-12 || middle <= 1e-6 * largest) {
+    return undefined;
+  }
+  if (Math.sqrt(smallest / largest) >= coplanarSpreadRatio) {
+    return undefined;
+  }
+  return spread.axes[0];
+}
+
+/**
+ * Unit direction of the best-fit line when the points are (nearly)
+ * collinear, e.g. a two-vertex defining graph; otherwise undefined.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function lineAxisIfCollinear(
+  points: readonly Vector3[],
+): Vector3 | undefined {
+  const spread = principalSpread(points);
+  if (!spread) {
+    return undefined;
+  }
+  const [, middle, largest] = spread.values;
+  if (largest <= 1e-12 || Math.sqrt(middle / largest) >= coplanarSpreadRatio) {
+    return undefined;
+  }
+  return spread.axes[2];
+}
+
+/** Cyclic Jacobi eigen-decomposition of a symmetric 3x3 matrix. */
+function symmetricEigen3(matrix: number[][]): {
+  values: number[];
+  vectors: number[][];
+} {
+  const a = matrix.map((row) => [...row]);
+  const v = [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+  ];
+  for (let sweep = 0; sweep < 32; sweep += 1) {
+    const off = a[0][1] ** 2 + a[0][2] ** 2 + a[1][2] ** 2;
+    if (off < 1e-20) {
+      break;
+    }
+    for (const [p, q] of [
+      [0, 1],
+      [0, 2],
+      [1, 2],
+    ]) {
+      if (Math.abs(a[p][q]) < 1e-30) {
+        continue;
+      }
+      const theta = (a[q][q] - a[p][p]) / (2 * a[p][q]);
+      const t =
+        Math.sign(theta || 1) /
+        (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+      const cos = 1 / Math.sqrt(t * t + 1);
+      const sin = t * cos;
+      for (let k = 0; k < 3; k += 1) {
+        const akp = a[k][p];
+        const akq = a[k][q];
+        a[k][p] = cos * akp - sin * akq;
+        a[k][q] = sin * akp + cos * akq;
+      }
+      for (let k = 0; k < 3; k += 1) {
+        const apk = a[p][k];
+        const aqk = a[q][k];
+        a[p][k] = cos * apk - sin * aqk;
+        a[q][k] = sin * apk + cos * aqk;
+      }
+      for (let k = 0; k < 3; k += 1) {
+        const vkp = v[k][p];
+        const vkq = v[k][q];
+        v[k][p] = cos * vkp - sin * vkq;
+        v[k][q] = sin * vkp + cos * vkq;
+      }
+    }
+  }
+  return { values: [a[0][0], a[1][1], a[2][2]], vectors: v };
+}
+
+/**
+ * Approximate drawn size of a node-label sprite (28px semibold text, 8/5px
+ * padding, 0.28 world units tall), for screen-space collision checks.
+ */
+function nodeLabelChipSize(label: string, scale: number) {
+  return {
+    worldHeight: 0.28 * scale,
+    aspect: (label.length * 0.6 * 28 + 16) / 38,
+    anchorBottom: true,
+  };
+}
+
+/** Smallest on-screen height, in CSS pixels, of an edge-label chip. */
+const minimumEdgeLabelPixels = 16;
+const edgeLabelWorldHeight = 0.2;
+const maximumLabelScreenScale = 2.5;
+
+/**
+ * Uniform label scale so an edge label (0.2 world units) is at least
+ * minimumEdgeLabelPixels tall at the given camera distance. Capped so a
+ * fully zoomed-out view does not turn into a wall of chips.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function labelScreenScale(
+  viewportHeight: number,
+  distance: number,
+  fovDegrees: number,
+): number {
+  if (!(viewportHeight > 0) || !(distance > 0) || !(fovDegrees > 0)) {
+    return 1;
+  }
+  const worldPerPixel =
+    (2 * distance * Math.tan((fovDegrees * Math.PI) / 360)) / viewportHeight;
+  const pixels = edgeLabelWorldHeight / worldPerPixel;
+  return Math.min(
+    maximumLabelScreenScale,
+    Math.max(1, minimumEdgeLabelPixels / pixels),
+  );
+}
+
+function nodeColor(
+  node: SceneNode,
+  occlusionMode: OcclusionMode,
+  colorScheme: SceneColorScheme = "light",
+  generators: readonly SceneGenerator[] = [],
+) {
+  const dark = colorScheme === "dark";
+  // Word length is encoded by lightness only; hue stays free for generators.
+  const base = shellColor(node.length, colorScheme);
   if (node.stateRole && node.colorHint) {
     return node.colorHint;
   }
   if (node.colorHint && !node.ghost) {
     return node.colorHint;
   }
+  if (node.generatorColorIndex !== undefined && !node.ghost) {
+    return generatorColor(generators, node.generatorColorIndex, colorScheme);
+  }
+  // Ghost and far vertices recede toward the background in either theme.
   if (node.ghost) {
-    return occlusionMode === "x-ray" ? "#e5eaf0" : "#cbd5e1";
+    return dark
+      ? occlusionMode === "x-ray"
+        ? "#334155"
+        : "#475569"
+      : occlusionMode === "x-ray"
+        ? "#e5eaf0"
+        : "#cbd5e1";
   }
   if (occlusionMode === "fade-far" && (node.localDistance ?? 0) >= 2) {
-    return "#9aa7b5";
+    return dark ? "#64748b" : "#9aa7b5";
   }
   if (occlusionMode === "x-ray" && (node.localDistance ?? 0) >= 2) {
-    return "#d5dbe3";
+    return dark ? "#475569" : "#d5dbe3";
   }
   return base;
 }
@@ -3122,12 +4237,60 @@ function isHighDetailNode(node: SceneNode, update: GraphUpdate): boolean {
   );
 }
 
+/**
+ * Fill budget fallback for scenes whose cells carry no localDistance (e.g.
+ * bar X with all relation families): the `budget` cells whose boundary
+ * centroid is nearest the selected vertex, or the centre of the drawing when
+ * nothing is selected. Undefined when localDistance is available, so the
+ * graph-distance rule applies.
+ */
+function nearestCellsForFillBudget(
+  update: GraphUpdate,
+  budget: number,
+): Set<string> | undefined {
+  if (update.cells.some((cell) => cell.localDistance !== undefined)) {
+    return undefined;
+  }
+  let focus = update.selectedNodeId
+    ? update.nodePositions.get(update.selectedNodeId)
+    : undefined;
+  if (!focus) {
+    focus = new Vector3();
+    for (const position of update.nodePositions.values()) {
+      focus.add(position);
+    }
+    focus.multiplyScalar(1 / Math.max(1, update.nodePositions.size));
+  }
+  const ranked: Array<{ id: string; distance: number }> = [];
+  const centroid = new Vector3();
+  for (const cell of update.cells) {
+    centroid.set(0, 0, 0);
+    let count = 0;
+    for (const nodeId of cell.boundaryNodeIds) {
+      const position = update.nodePositions.get(nodeId);
+      if (position) {
+        centroid.add(position);
+        count += 1;
+      }
+    }
+    if (count === 0) continue;
+    centroid.multiplyScalar(1 / count);
+    ranked.push({ id: cell.id, distance: centroid.distanceToSquared(focus) });
+  }
+  ranked.sort(
+    (left, right) =>
+      left.distance - right.distance || left.id.localeCompare(right.id),
+  );
+  return new Set(ranked.slice(0, budget).map((entry) => entry.id));
+}
+
 function shouldFillTransparentCell(
   cell: SceneCell,
   update: GraphUpdate,
   applyBudget: boolean,
   filledCount: number,
   budget: number,
+  nearestFillIds?: ReadonlySet<string>,
 ): boolean {
   if (!applyBudget) {
     return true;
@@ -3142,6 +4305,9 @@ function shouldFillTransparentCell(
       pairKey(cell.generatorPair) === activePairKey)
   ) {
     return true;
+  }
+  if (nearestFillIds) {
+    return nearestFillIds.has(cell.id);
   }
   if ((cell.localDistance ?? Number.POSITIVE_INFINITY) > 1) {
     return false;
@@ -3159,7 +4325,9 @@ function createCellFillGeometry(
   surface?: CellDrawingSurface,
 ) {
   const coordinates: number[] = [];
-  pushCellFillCoordinates(coordinates, vertices, surface);
+  if (!pushCellFillCoordinates(coordinates, vertices, surface)) {
+    return undefined;
+  }
 
   const geometry = new BufferGeometry();
   geometry.setAttribute(
@@ -3171,11 +4339,17 @@ function createCellFillGeometry(
   return geometry;
 }
 
+/**
+ * Appends fill triangles for one drawn cell and returns false when the cell
+ * gets no fill. Scene-builder surfaces (interior point / fold ring) are used
+ * as given; otherwise the boundary is triangulated so the fill stays inside
+ * the drawn boundary cycle (see cellPolygon.ts).
+ */
 function pushCellFillCoordinates(
   coordinates: number[],
   vertices: Vector3[],
   surface?: CellDrawingSurface,
-) {
+): boolean {
   if (surface?.ring?.length === vertices.length) {
     const ring = surface.ring;
     vertices.forEach((vertex, index) => {
@@ -3208,7 +4382,7 @@ function pushCellFillCoordinates(
         );
       }
     }
-    return;
+    return true;
   }
   if (surface?.center) {
     vertices.forEach((vertex, index) => {
@@ -3219,15 +4393,31 @@ function pushCellFillCoordinates(
         ...vectorToArray(next),
       );
     });
-    return;
+    return true;
   }
-  for (let i = 1; i < vertices.length - 1; i += 1) {
-    coordinates.push(
-      ...vectorToArray(vertices[0]),
-      ...vectorToArray(vertices[i]),
-      ...vectorToArray(vertices[i + 1]),
-    );
+  const triangulation = triangulateCellBoundary(vertices.map(vectorToArray));
+  if (!triangulation) {
+    return false;
   }
+  const corner = (index: number) =>
+    index === triangulation.centroidIndex && triangulation.centroid
+      ? triangulation.centroid
+      : vectorToArray(vertices[index]);
+  for (const [a, b, c] of triangulation.triangles) {
+    coordinates.push(...corner(a), ...corner(b), ...corner(c));
+  }
+  return true;
+}
+
+/** True when the cell has a fill that stays inside its drawn boundary. */
+function cellHasFill(
+  vertices: Vector3[],
+  surface: CellDrawingSurface | undefined,
+): boolean {
+  if (surface?.ring?.length === vertices.length || surface?.center) {
+    return true;
+  }
+  return triangulateCellBoundary(vertices.map(vectorToArray)) !== undefined;
 }
 
 function pushCellOutlineCoordinates(
@@ -3261,7 +4451,7 @@ function createCellPickingItem(
   cell: SceneCell,
   vertices: Vector3[],
   surface?: CellDrawingSurface,
-): PickingSpatialItem<SceneCell> {
+): PickingSpatialItem<SceneCell> | undefined {
   const surfaceVertices = [
     ...vertices,
     ...(surface?.ring ?? []),
@@ -3279,7 +4469,9 @@ function createCellPickingItem(
     radiusSquared = Math.max(radiusSquared, center.distanceToSquared(vertex));
   }
   const fillCoordinates: number[] = [];
-  pushCellFillCoordinates(fillCoordinates, vertices, surface);
+  if (!pushCellFillCoordinates(fillCoordinates, vertices, surface)) {
+    return undefined;
+  }
   const triangles = [];
   for (let index = 0; index < fillCoordinates.length; index += 9) {
     triangles.push({
@@ -3437,6 +4629,8 @@ function petalCellVertices(
   });
 }
 
+const plainCellFillScale = 0.8;
+
 function cellOpacity(cell: SceneCell, update: GraphUpdate, active: boolean) {
   if (cell.readabilityRole === "focus") {
     return Math.max(0.24, Math.min(update.cellOpacity, 0.38));
@@ -3466,7 +4660,9 @@ function cellOpacity(cell: SceneCell, update: GraphUpdate, active: boolean) {
     ? Math.max(update.cellOpacity, 0.36)
     : active
       ? Math.max(update.cellOpacity, 0.3)
-      : update.cellOpacity;
+      : // Ordinary fills are kept a little below the caller's opacity so the
+        // boundary edges (the 1-skeleton) stay the strongest mark.
+        update.cellOpacity * plainCellFillScale;
   if (update.occlusionMode === "x-ray" && (cell.localDistance ?? 0) >= 2) {
     return Math.min(base, 0.12);
   }
@@ -3521,27 +4717,141 @@ function edgeCoordinates(
   source: Vector3,
   target: Vector3,
   update: GraphUpdate,
+  dashUnit = 1,
 ): number[] {
+  const path = edgePathPoints(edge, source, target, update);
+  if (!path) {
+    return loopEdgeCoordinates(
+      source,
+      edge.generator,
+      update.generators.length,
+    );
+  }
+  const coordinates: number[] = [];
+  pushPolylineSegments(
+    coordinates,
+    path,
+    dashPattern(edge.lineStyle),
+    dashUnit,
+  );
+  return coordinates;
+}
+
+/**
+ * Drawn path of a non-loop edge: the visual endpoints (with any lane
+ * offset), bent through drawingControlPoint when present. Undefined for a
+ * loop, which is drawn by loopEdgeCoordinates.
+ */
+function edgePathPoints(
+  edge: SceneEdge,
+  source: Vector3,
+  target: Vector3,
+  update: GraphUpdate,
+): Vector3[] | undefined {
   const [visualSource, visualTarget] = visualEdgeEndpoints(
     edge,
     source,
     target,
     update,
   );
-  return visualSource.equals(visualTarget)
-    ? loopEdgeCoordinates(
-        visualSource,
-        edge.generator,
-        update.generators.length,
-      )
-    : [
-        visualSource.x,
-        visualSource.y,
-        visualSource.z,
-        visualTarget.x,
-        visualTarget.y,
-        visualTarget.z,
-      ];
+  if (visualSource.equals(visualTarget)) {
+    return undefined;
+  }
+  if (edge.drawingControlPoint) {
+    const offset = visualSource.clone().sub(source);
+    const control = new Vector3(...edge.drawingControlPoint).add(offset);
+    return quadraticBezierPoints(visualSource, control, visualTarget);
+  }
+  return [visualSource, visualTarget];
+}
+
+/**
+ * A straight chord standing in for the path near its middle, scaled to the
+ * path length, so arrowHeadMatrix and the label placer (which work on
+ * straight edges) put arrows and labels on the drawn curve.
+ */
+function arrowChordForPath(
+  path: readonly Vector3[],
+): [Vector3, Vector3] | undefined {
+  if (path.length === 2) {
+    return [path[0], path[1]];
+  }
+  const sample = polylinePointAt(path, 0.6);
+  if (!sample) {
+    return undefined;
+  }
+  return [
+    sample.point.clone().addScaledVector(sample.tangent, -0.6 * sample.length),
+    sample.point.clone().addScaledVector(sample.tangent, 0.4 * sample.length),
+  ];
+}
+
+/** Short straight chord around the middle of a curved path, for labels. */
+function labelChordForPath(
+  path: readonly Vector3[],
+): [Vector3, Vector3] | undefined {
+  if (path.length === 2) {
+    return [path[0], path[1]];
+  }
+  const sample = polylinePointAt(path, 0.5);
+  if (!sample) {
+    return undefined;
+  }
+  const half = 0.5 * path[0].distanceTo(path[path.length - 1]);
+  return [
+    sample.point.clone().addScaledVector(sample.tangent, -half),
+    sample.point.clone().addScaledVector(sample.tangent, half),
+  ];
+}
+
+/**
+ * Wall-dual stroke: the edge's own (wall) colour, dashed unless the wall
+ * already has a style, and doubled by a parallel copy offset across the
+ * view so it reads heavier than ordinary 1px edges (WebGL ignores
+ * linewidth on most platforms).
+ */
+function pushWallDualCoordinates(
+  out: number[],
+  edge: SceneEdge,
+  source: Vector3,
+  target: Vector3,
+  update: GraphUpdate,
+  dashUnit: number,
+) {
+  const path = edgePathPoints(edge, source, target, update);
+  if (!path) {
+    return;
+  }
+  const pattern = dashPattern(
+    edge.lineStyle && edge.lineStyle !== "solid" ? edge.lineStyle : "dashed",
+  );
+  pushPolylineSegments(out, path, pattern, dashUnit);
+  const chord = path[path.length - 1].clone().sub(path[0]);
+  let side = chord.clone().cross(new Vector3(0, 0, 1));
+  if (side.lengthSq() < 1e-10) {
+    side = chord.clone().cross(new Vector3(0, 1, 0));
+  }
+  side.normalize().multiplyScalar(0.012 * Math.max(dashUnit, 0.2));
+  pushPolylineSegments(
+    out,
+    path.map((point) => point.clone().add(side)),
+    pattern,
+    dashUnit,
+  );
+}
+
+/** Median drawn length of the scene's non-loop edges (dash unit). */
+function sceneDashUnit(update: GraphUpdate): number {
+  const lengths: number[] = [];
+  for (const edge of update.edges) {
+    const source = update.nodePositions.get(edge.source);
+    const target = update.nodePositions.get(edge.target);
+    if (source && target) {
+      lengths.push(source.distanceTo(target));
+    }
+    if (lengths.length >= 4096) break;
+  }
+  return medianLength(lengths);
 }
 
 function visualEdgeEndpoints(
@@ -3639,6 +4949,17 @@ function appendFrameSample(
   return samples;
 }
 
+function midpointDistanceTo(
+  source: Vector3,
+  target: Vector3,
+  point: Vector3,
+): number {
+  const x = (source.x + target.x) / 2 - point.x;
+  const y = (source.y + target.y) / 2 - point.y;
+  const z = (source.z + target.z) / 2 - point.z;
+  return Math.sqrt(x * x + y * y + z * z);
+}
+
 function midpointLengthSq(source: Vector3, target: Vector3): number {
   const x = (source.x + target.x) * 0.5;
   const y = (source.y + target.y) * 0.5;
@@ -3657,6 +4978,7 @@ class ScreenLabelOccupancy {
   private readonly buckets = new Map<string, ScreenRect[]>();
   private readonly cellSize = 0.12;
   private readonly projected = new Vector3();
+  private readonly projectedTop = new Vector3();
 
   constructor(private readonly camera: PerspectiveCamera) {
     this.camera.updateMatrixWorld();
@@ -3666,7 +4988,16 @@ class ScreenLabelOccupancy {
   reserve(
     position: Vector3,
     label: string,
-    options: { force?: boolean } = {},
+    options: {
+      force?: boolean;
+      /** Reject (unforced) labels whose anchor projects outside the view. */
+      onScreenOnly?: boolean;
+      /**
+       * Actual chip size: world height and width/height ratio. Without it a
+       * fixed NDC estimate sized for short edge labels is used.
+       */
+      chip?: { worldHeight: number; aspect: number; anchorBottom?: boolean };
+    } = {},
   ): boolean {
     const projected = this.projected.copy(position).project(this.camera);
     if (
@@ -3677,14 +5008,36 @@ class ScreenLabelOccupancy {
     ) {
       return false;
     }
+    if (
+      options.onScreenOnly &&
+      !options.force &&
+      (Math.abs(projected.x) > 1 || Math.abs(projected.y) > 1)
+    ) {
+      return false;
+    }
 
-    const halfWidth = Math.min(0.18, 0.035 + label.length * 0.009);
-    const halfHeight = 0.035;
+    let halfWidth = Math.min(0.18, 0.035 + label.length * 0.009);
+    let halfHeight = 0.035;
+    let centerY = projected.y;
+    if (options.chip) {
+      const top = this.projectedTop
+        .setFromMatrixColumn(this.camera.matrixWorld, 1)
+        .multiplyScalar(options.chip.worldHeight)
+        .add(position)
+        .project(this.camera);
+      halfHeight = Math.abs(top.y - projected.y) / 2;
+      // NDC x and y span different pixel counts; convert via the aspect.
+      halfWidth =
+        (halfHeight * options.chip.aspect) / Math.max(1e-6, this.camera.aspect);
+      if (options.chip.anchorBottom) {
+        centerY += halfHeight;
+      }
+    }
     const rect = {
       left: projected.x - halfWidth,
       right: projected.x + halfWidth,
-      top: projected.y + halfHeight,
-      bottom: projected.y - halfHeight,
+      top: centerY + halfHeight,
+      bottom: centerY - halfHeight,
     };
     const bucketKeys = this.bucketKeys(rect);
     if (!options.force) {
@@ -3730,7 +5083,11 @@ class ScreenLabelOccupancy {
  * for each drawn segment instead of letting several relation cells place
  * competing labels on the same edge.
  */
-function edgeLabelPriority(edge: SceneEdge, update: GraphUpdate): number {
+function edgeLabelPriority(
+  edge: SceneEdge,
+  update: GraphUpdate,
+  cameraPosition?: Vector3,
+): number {
   const source = update.nodePositions.get(edge.source);
   const target = update.nodePositions.get(edge.target);
   if (!source || !target) {
@@ -3751,11 +5108,62 @@ function edgeLabelPriority(edge: SceneEdge, update: GraphUpdate): number {
     (edge.emphasis === "readable-boundary" ? 22_000 : 0) +
     (edge.isRelationBoundary ? 15_000 : 0) +
     (incident ? 10_000 : 0) -
-    midpointLengthSq(source, target)
+    (cameraPosition
+      ? midpointDistanceTo(source, target, cameraPosition)
+      : midpointLengthSq(source, target))
   );
 }
 
-function selectEdgeLabelCandidates(update: GraphUpdate): EdgeLabelCandidate[] {
+interface EdgeLabelDensityContext {
+  budget: LabelDensityBudget;
+  cameraPosition: Vector3;
+}
+
+/** Edge labels that explain the current selection skip the dense cap. */
+function edgeLabelExemptFromDensity(
+  edge: SceneEdge,
+  update: GraphUpdate,
+  pinsExempt: boolean,
+): boolean {
+  return (
+    (pinsExempt && edgeLabelPinned(edge)) ||
+    (update.selectedNodeId !== undefined &&
+      (edge.source === update.selectedNodeId ||
+        edge.target === update.selectedNodeId))
+  );
+}
+
+function edgeLabelPinned(edge: SceneEdge): boolean {
+  return (
+    edge.alwaysLabel === true ||
+    edge.isRelationBoundary === true ||
+    edge.emphasis === "readable-boundary"
+  );
+}
+
+/** Counts matches, stopping once the count passes `limit`. */
+function countAtMost<T>(
+  items: readonly T[],
+  predicate: (item: T) => boolean,
+  limit: number,
+): number {
+  let count = 0;
+  for (const item of items) {
+    if (predicate(item)) {
+      count += 1;
+      if (count > limit) {
+        break;
+      }
+    }
+  }
+  return count;
+}
+
+function selectEdgeLabelCandidates(
+  update: GraphUpdate,
+  density?: EdgeLabelDensityContext,
+): EdgeLabelCandidate[] {
+  const dense = density?.budget.dense === true;
   if (
     !update.showEdgeLabels ||
     update.labelScope === "off" ||
@@ -3774,18 +5182,36 @@ function selectEdgeLabelCandidates(update: GraphUpdate): EdgeLabelCandidate[] {
       return {
         edge,
         label: compactLabelText(label, 10),
-        priority: edgeLabelPriority(edge, update),
+        priority: edgeLabelPriority(
+          edge,
+          update,
+          dense ? density?.cameraPosition : undefined,
+        ),
       };
     })
     .filter((candidate): candidate is EdgeLabelCandidate => Boolean(candidate));
 
-  if (update.semanticLabelsOnly) {
-    return selectSemanticEdgeLabelCandidates(candidates, update);
+  const picked = update.semanticLabelsOnly
+    ? selectSemanticEdgeLabelCandidates(candidates, update)
+    : candidates
+        .sort(compareEdgeLabelCandidates)
+        .slice(0, update.maxEdgeLabels);
+  if (!dense || !density) {
+    return picked;
   }
-
-  return candidates
-    .sort(compareEdgeLabelCandidates)
-    .slice(0, update.maxEdgeLabels);
+  const pinsExempt =
+    countAtMost(
+      picked,
+      (candidate) => edgeLabelPinned(candidate.edge),
+      denseLabelPinLimit,
+    ) <= denseLabelPinLimit;
+  return applyDenseLabelCap(
+    picked,
+    density.budget.edgeCap,
+    update.maxEdgeLabels,
+    (candidate) =>
+      edgeLabelExemptFromDensity(candidate.edge, update, pinsExempt),
+  );
 }
 
 function selectRenderableEdges(update: GraphUpdate): SceneEdge[] {
@@ -4175,7 +5601,66 @@ function stableEdgeLane(edgeId: string): number {
   return [-2, -1, 0, 1, 2][Math.abs(hash) % 5] ?? 0;
 }
 
-function arrowHeadMatrix(
+const labelFadeMinimumOpacity = 0.32;
+/** Opacity of edges and labels outside the focus in "fade-far" mode. */
+const farEdgeOpacity = 0.22;
+const farLabelOpacity = 0.45;
+
+function isFarNode(node: SceneNode | undefined): boolean {
+  return (node?.localDistance ?? 0) >= 2;
+}
+
+/**
+ * Depth fade for an overlay label: 1 in front of the orbit target, falling
+ * linearly to labelFadeMinimumOpacity one scene radius behind it.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function labelDepthOpacity(
+  labelDistance: number,
+  focusDistance: number,
+  sceneRadius: number,
+): number {
+  const behind = labelDistance - focusDistance;
+  if (!(behind > 0)) {
+    return 1;
+  }
+  const t = Math.min(1, behind / Math.max(0.25, sceneRadius));
+  return 1 - (1 - labelFadeMinimumOpacity) * t;
+}
+
+function farLabelScale(node: SceneNode, update: GraphUpdate): number {
+  return update.occlusionMode === "fade-far" && isFarNode(node)
+    ? farLabelOpacity
+    : 1;
+}
+
+function edgeIncidentToSelection(edge: SceneEdge, update: GraphUpdate) {
+  return (
+    update.selectedNodeId !== undefined &&
+    (edge.source === update.selectedNodeId ||
+      edge.target === update.selectedNodeId)
+  );
+}
+
+/** Height of the shared arrowhead cone geometry (world units, scale 1). */
+const arrowConeHeight = 0.18;
+/** Arrowhead centre as a fraction of the edge, measured from the source. */
+const arrowHeadEdgeFraction = 0.6;
+/** Largest share of the edge length one arrowhead may cover. */
+const arrowHeadMaxEdgeShare = 0.28;
+
+/**
+ * Instance matrix for a directed-edge arrowhead.
+ *
+ * The cone sits slightly past the midpoint toward the target, not at the
+ * target vertex: cones at the vertex form a fan that hides high-degree
+ * vertices, and on the two rails of an inverse pair (hat X) the staggered
+ * positions keep opposite arrows from reading as one double-headed arrow.
+ * The cone is shrunk on short edges so it never covers more than
+ * arrowHeadMaxEdgeShare of the edge.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function arrowHeadMatrix(
   source: Vector3,
   target: Vector3,
   direction: Vector3,
@@ -4188,9 +5673,15 @@ function arrowHeadMatrix(
     return undefined;
   }
   direction.multiplyScalar(1 / length);
-  object.position.copy(target).addScaledVector(direction, -0.09 * scale);
+  const size = Math.min(
+    scale,
+    (arrowHeadMaxEdgeShare * length) / arrowConeHeight,
+  );
+  object.position
+    .copy(source)
+    .addScaledVector(direction, arrowHeadEdgeFraction * length);
   object.quaternion.setFromUnitVectors(unitY, direction);
-  object.scale.setScalar(scale);
+  object.scale.setScalar(size);
   object.updateMatrix();
   return object.matrix.clone();
 }
@@ -4274,76 +5765,206 @@ function selectedEdgeOutlineColor(update: GraphUpdate) {
 }
 
 function edgeColor(edge: SceneEdge, update: GraphUpdate) {
-  return edge.colorHint ?? generatorColor(update.generators, edge.generator);
+  return (
+    edge.colorHint ??
+    generatorColor(update.generators, edge.generator, update.colorScheme)
+  );
 }
 
 type SdfRgba = readonly [number, number, number, number];
 
-function sdfNodeLabelStyle(node: SceneNode): {
-  foreground: SdfRgba;
-  background: SdfRgba;
-  border: SdfRgba;
-} {
+/** A label color as sRGB hex plus straight alpha. */
+interface LabelColor {
+  hex: string;
+  alpha: number;
+}
+
+interface LabelStyle {
+  foreground: LabelColor;
+  background: LabelColor;
+  border: LabelColor;
+}
+
+/** Ordinary label chip per theme: near-opaque so text contrast is predictable. */
+const labelChip: Record<SceneColorScheme, LabelColor> = {
+  light: { hex: "#ffffff", alpha: 0.92 },
+  dark: { hex: "#111827", alpha: 0.9 },
+};
+
+/**
+ * WCAG ratio for generator-colored edge-label text. Above the 4.5:1 minimum
+ * because edge chips are small and antialiased glyphs never reach the full
+ * text color.
+ */
+const edgeLabelTextContrast = 6.5;
+
+function labelColor(hex: string, alpha = 1): LabelColor {
+  return { hex, alpha };
+}
+
+/**
+ * Text color that stays recognisably `hex` but reaches edgeLabelTextContrast against
+ * the chip as composited over the canvas background.
+ */
+function readableLabelText(
+  hex: string,
+  chip: LabelColor,
+  colorScheme: SceneColorScheme,
+): LabelColor {
+  const text = parseHexColor(hex) ?? parseHexColor(cssHex(hex));
+  const chipRgb = parseHexColor(chip.hex);
+  const canvas = parseHexColor(sceneBackgroundColor[colorScheme]);
+  if (!text || !chipRgb || !canvas) {
+    return labelColor(hex);
+  }
+  const effective = blendOver(chipRgb, chip.alpha, canvas);
+  return labelColor(
+    rgbToHex(ensureTextContrast(text, effective, edgeLabelTextContrast)),
+  );
+}
+
+function nodeLabelStyle(
+  node: SceneNode,
+  colorScheme: SceneColorScheme,
+): LabelStyle {
+  const dark = colorScheme === "dark";
   if (node.stateRole === "in-state") {
     return {
-      foreground: sdfRgba("#083344"),
-      background: sdfRgba("#a5f3fc", 0.96),
-      border: sdfRgba("#0891b2"),
+      foreground: labelColor("#083344"),
+      background: labelColor("#a5f3fc", 0.96),
+      border: labelColor("#0891b2"),
     };
   }
   if (node.stateRole === "out-of-state") {
     return {
-      foreground: sdfRgba("#f8fafc"),
-      background: sdfRgba("#475569", 0.86),
-      border: sdfRgba("#94a3b8"),
+      foreground: labelColor("#f8fafc"),
+      background: labelColor("#475569", 0.92),
+      border: labelColor("#94a3b8"),
     };
   }
   if (node.alwaysLabel) {
-    return {
-      foreground: sdfRgba("#111827"),
-      background: sdfRgba("#f0fdfa", 0.94),
-      border: sdfRgba("#0f766e"),
-    };
+    return dark
+      ? {
+          foreground: labelColor("#ccfbf1"),
+          background: labelColor("#042f2e", 0.92),
+          border: labelColor("#2dd4bf"),
+        }
+      : {
+          foreground: labelColor("#111827"),
+          background: labelColor("#f0fdfa", 0.94),
+          border: labelColor("#0f766e"),
+        };
   }
   if (node.isRelationBoundary) {
-    return {
-      foreground: sdfRgba("#b42318"),
-      background: sdfRgba("#fff7ed", 0.92),
-      border: sdfRgba("#b42318"),
-    };
+    return dark
+      ? {
+          foreground: labelColor("#ffb4ab"),
+          background: labelColor("#2b1416", 0.92),
+          border: labelColor("#f85149"),
+        }
+      : {
+          foreground: labelColor("#b42318"),
+          background: labelColor("#fff7ed", 0.92),
+          border: labelColor("#b42318"),
+        };
   }
+  return dark
+    ? {
+        foreground: labelColor("#e6edf3"),
+        background: labelChip.dark,
+        border: labelColor("#94a3b8", 0.45),
+      }
+    : {
+        foreground: labelColor("#24292f"),
+        background: labelChip.light,
+        border: labelColor("#24292f", 0.24),
+      };
+}
+
+function edgeLabelStyle(edge: SceneEdge, update: GraphUpdate): LabelStyle {
+  const dark = update.colorScheme === "dark";
+  const color = cssHex(edgeColor(edge, update));
+  if (edge.semanticLabelKind === "coxeter-order") {
+    // "m=k" labels name a relation order, not a generator or a boundary:
+    // neutral ink on the ordinary chip.
+    return dark
+      ? {
+          foreground: labelColor("#e6edf3"),
+          background: labelChip.dark,
+          border: labelColor("#94a3b8", 0.6),
+        }
+      : {
+          foreground: labelColor("#1f2328"),
+          background: labelChip.light,
+          border: labelColor("#57606a", 0.5),
+        };
+  }
+  if (edge.isRelationBoundary) {
+    const readable = edge.emphasis === "readable-boundary";
+    return dark
+      ? {
+          foreground: labelColor("#ffb4ab"),
+          background: readable
+            ? labelColor("#111827", 0.95)
+            : labelColor("#2b1416", 0.92),
+          border: labelColor(readable ? "#f8fafc" : "#f85149"),
+        }
+      : {
+          foreground: labelColor("#b42318"),
+          background: readable
+            ? labelColor("#ffffff", 0.95)
+            : labelColor("#fff7ed", 0.92),
+          border: labelColor(readable ? "#111827" : "#b42318"),
+        };
+  }
+  const chip = labelChip[update.colorScheme];
   return {
-    foreground: sdfRgba("#24292f"),
-    background: sdfRgba("#ffffff", 0.86),
-    border: sdfRgba("#24292f", 0.24),
+    // Generator hue is kept for recognition, pushed darker (light theme) or
+    // lighter (dark theme) only as far as the contrast target needs.
+    foreground: readableLabelText(color, chip, update.colorScheme),
+    background: chip,
+    border: labelColor(
+      edge.emphasis === "readable-boundary"
+        ? dark
+          ? "#f8fafc"
+          : "#111827"
+        : color,
+    ),
   };
 }
 
-function sdfEdgeLabelStyle(
-  edge: SceneEdge,
-  update: GraphUpdate,
-): {
+function labelLeaderColor(update: GraphUpdate): string {
+  const dark = update.colorScheme === "dark";
+  if (update.semanticLabelsOnly) {
+    return dark ? "#e2e8f0" : "#111827";
+  }
+  return dark ? "#94a3b8" : "#57606a";
+}
+
+function cssHex(value: string): string {
+  return `#${new Color(value).getHexString()}`;
+}
+
+function cssColor(color: LabelColor): string {
+  const rgb = parseHexColor(color.hex);
+  if (!rgb) {
+    return color.hex;
+  }
+  const [r, g, b] = rgb.map((channel) => Math.round(channel * 255));
+  return color.alpha >= 1
+    ? color.hex
+    : `rgba(${r}, ${g}, ${b}, ${color.alpha})`;
+}
+
+function sdfStyle(style: LabelStyle): {
   foreground: SdfRgba;
   background: SdfRgba;
   border: SdfRgba;
 } {
-  const color = edgeColor(edge, update);
-  const foreground = edge.isRelationBoundary ? "#b42318" : color;
-  const background = edge.isRelationBoundary
-    ? edge.emphasis === "readable-boundary"
-      ? sdfRgba("#ffffff", 0.95)
-      : sdfRgba("#fff7ed", 0.9)
-    : sdfRgba("#ffffff", 0.72);
-  const border =
-    edge.emphasis === "readable-boundary"
-      ? "#111827"
-      : edge.isRelationBoundary
-        ? "#b42318"
-        : color;
   return {
-    foreground: sdfRgba(foreground),
-    background,
-    border: sdfRgba(border),
+    foreground: sdfRgba(style.foreground.hex, style.foreground.alpha),
+    background: sdfRgba(style.background.hex, style.background.alpha),
+    border: sdfRgba(style.border.hex, style.border.alpha),
   };
 }
 
@@ -4534,11 +6155,47 @@ function drawRoundedRect(
   context.closePath();
 }
 
+const selectionRingTextures = new Map<string, CanvasTexture>();
+
+/** Ring texture shared by every selection ring of one colour. */
+function selectionRingTexture(color: string): CanvasTexture {
+  const cached = selectionRingTextures.get(color);
+  if (cached) {
+    return cached;
+  }
+  const size = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext("2d");
+  if (context) {
+    context.beginPath();
+    context.arc(size / 2, size / 2, size / 2 - 12, 0, Math.PI * 2);
+    context.lineWidth = 14;
+    context.strokeStyle = "rgba(0, 0, 0, 0.35)";
+    context.stroke();
+    context.lineWidth = 9;
+    context.strokeStyle = color;
+    context.stroke();
+  }
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  // Shared across rebuilds; disposeMaterial must not free it.
+  texture.userData.shared = true;
+  selectionRingTextures.set(color, texture);
+  return texture;
+}
+
 function disposeMaterial(material: Material) {
   const mappedMaterial = material as Material & {
     map?: { dispose: () => void } | null;
   };
-  mappedMaterial.map?.dispose();
+  if (
+    !(mappedMaterial.map as { userData?: { shared?: boolean } } | null)
+      ?.userData?.shared
+  ) {
+    mappedMaterial.map?.dispose();
+  }
   material.dispose();
 }
 
@@ -4546,24 +6203,41 @@ function vectorToArray(vector: Vector3): [number, number, number] {
   return [vector.x, vector.y, vector.z];
 }
 
-function generatorColor(generators: SceneGenerator[], generator: number) {
+/**
+ * Example colour hints win; otherwise the theme's categorical palette, which
+ * never repeats a colour (see scenePalette.ts).
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function generatorColor(
+  generators: readonly SceneGenerator[],
+  generator: number,
+  colorScheme: SceneColorScheme = "light",
+) {
   return (
     generators[generator]?.colorHint ??
-    fallbackGeneratorColors[generator % fallbackGeneratorColors.length]
+    fallbackGeneratorColor(generator, colorScheme)
   );
 }
 
 function generatorPairColor(
   generators: SceneGenerator[],
   pair: [number, number],
+  colorScheme: SceneColorScheme,
 ) {
-  const first = new Color(generatorColor(generators, pair[0]));
-  const second = new Color(generatorColor(generators, pair[1]));
+  const first = new Color(generatorColor(generators, pair[0], colorScheme));
+  const second = new Color(generatorColor(generators, pair[1], colorScheme));
   return first.lerp(second, 0.5).getStyle();
 }
 
-function cellColor(generators: SceneGenerator[], cell: SceneCell) {
-  return cell.colorHint ?? generatorPairColor(generators, cell.generatorPair);
+function cellColor(
+  generators: SceneGenerator[],
+  cell: SceneCell,
+  colorScheme: SceneColorScheme = "light",
+) {
+  return (
+    cell.colorHint ??
+    generatorPairColor(generators, cell.generatorPair, colorScheme)
+  );
 }
 
 function pairKey(pair: [number, number]) {

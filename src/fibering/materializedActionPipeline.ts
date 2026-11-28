@@ -10,7 +10,7 @@ import {
   type TorsionFreeActionCertificate,
 } from "../torsionFree";
 import type { CoxeterSystemInput } from "../types";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import { canonicalJsonSha256, canonicalSha256 } from "../utils/canonicalSha256";
 import {
   searchFullDavisWallCoorientations,
   type FullDavisCoorientationSearchOptions,
@@ -254,7 +254,7 @@ export interface MaterializedActionPromotionArtifact {
   promotionOutcome: "certified" | "not-certified" | "inconclusive";
   selectedTrack: "lawful-subcomplex" | "full-davis" | null;
   implementation: {
-    profile: "materialized-action-two-track-promotion-v3";
+    profile: "materialized-action-two-track-promotion-v4";
     hashes: Record<string, string>;
     manifest?: MaterializedActionImplementationManifest;
   };
@@ -949,7 +949,7 @@ export function verifyMaterializedActionPromotionArtifact(
     artifact.schemaVersion !== 2 ||
     artifact.kind !== "materialized-action-two-track-promotion" ||
     artifact.implementation.profile !==
-      "materialized-action-two-track-promotion-v3"
+      "materialized-action-two-track-promotion-v4"
   ) {
     errors.push("The two-track promotion header is unsupported.");
   }
@@ -1025,7 +1025,7 @@ export function verifyMaterializedActionPromotionArtifact(
 
   let lawfulReplay: LawfulSubcomplexCertificateVerification | undefined;
   if (artifact.lawfulSearch) {
-    const searchHash = canonicalSha256(jsonClone(artifact.lawfulSearch));
+    const searchHash = canonicalJsonSha256(artifact.lawfulSearch);
     if (artifact.hashes.lawfulSearchSha256 !== searchHash) {
       errors.push("The embedded lawful-search hash is stale.");
     } else {
@@ -1077,7 +1077,7 @@ export function verifyMaterializedActionPromotionArtifact(
 
   let fiberingReplay: FullDavisCertificateVerification | undefined;
   if (artifact.coorientationSearch) {
-    const searchHash = canonicalSha256(jsonClone(artifact.coorientationSearch));
+    const searchHash = canonicalJsonSha256(artifact.coorientationSearch);
     if (artifact.hashes.coorientationSearchSha256 !== searchHash) {
       errors.push("The embedded full-Davis search hash is stale.");
     } else {
@@ -1147,6 +1147,8 @@ export function verifyMaterializedActionPromotionArtifact(
         ? artifact.stages.find((stage) => stage.id === "lawful-subcomplex")
             ?.status === "passed" &&
           artifact.lawfulCertificate?.status === "passed" &&
+          artifact.lawfulCertificate?.lawful?.finiteHeightBand?.status ===
+            "passed" &&
           lawfulReplay?.valid === true &&
           lawfulReplay.mandatoryChecksPassed
         : artifact.selectedTrack === "full-davis"
@@ -1278,6 +1280,7 @@ function statusFromLawfulSearch(
 ): MaterializedActionPromotionStatus {
   if (search.status === "found") {
     return search.certificate?.status === "passed" &&
+      search.certificate.lawful.finiteHeightBand?.status === "passed" &&
       replay?.valid === true &&
       replay.mandatoryChecksPassed &&
       implementationManifestValid
@@ -1346,7 +1349,7 @@ export async function promoteMaterializedActionToFullDavisFibering(
   const implementationHashes = implementationManifest
     ? manifestHashes
     : legacyHashes;
-  const sourceSystemSha256 = canonicalSha256(jsonClone(system));
+  const sourceSystemSha256 = canonicalJsonSha256(system);
   const stages = initialStages();
   const source: MaterializedActionPromotionArtifact["source"] = {
     systemName: system.name,
@@ -1401,7 +1404,7 @@ export async function promoteMaterializedActionToFullDavisFibering(
             : "not-certified",
       selectedTrack,
       implementation: {
-        profile: "materialized-action-two-track-promotion-v3",
+        profile: "materialized-action-two-track-promotion-v4",
         hashes: implementationHashes,
         ...(implementationManifest ? { manifest: implementationManifest } : {}),
       },
@@ -1495,7 +1498,7 @@ export async function promoteMaterializedActionToFullDavisFibering(
       options.sphericalPlanLimits,
     );
     metrics.sphericalSubsetCount = sphericalPlan.sphericalSubgroups.length;
-    hashes.sphericalPlanSha256 = canonicalSha256(jsonClone(sphericalPlan));
+    hashes.sphericalPlanSha256 = canonicalJsonSha256(sphericalPlan);
     if (sphericalPlan.status !== "complete") {
       status = "incomplete";
       setStage(
@@ -1637,12 +1640,14 @@ export async function promoteMaterializedActionToFullDavisFibering(
       certificationComplex:
         options.lawfulSearch?.certificationComplex ?? "rank-two-lawful",
       applicability: options.lawfulSearch?.applicability,
+      generalizedCertificatesBySignKey:
+        options.lawfulSearch?.generalizedCertificatesBySignKey,
       includeFullClosure: options.lawfulSearch?.includeFullClosure,
     },
   });
   const lawfulSearch = deterministicLawfulSearchResult(rawLawfulSearch);
   promotedEvidence.lawfulSearch = lawfulSearch;
-  hashes.lawfulSearchSha256 = canonicalSha256(jsonClone(lawfulSearch));
+  hashes.lawfulSearchSha256 = canonicalJsonSha256(lawfulSearch);
   const lawfulCertificate = rawLawfulSearch.certificate;
   const lawfulCertificateReplay = rawLawfulSearch.certificateReplay;
   promotedEvidence.lawfulCertificate = lawfulCertificate;
@@ -1665,7 +1670,7 @@ export async function promoteMaterializedActionToFullDavisFibering(
     "lawful-subcomplex",
     lawfulStatus,
     lawfulStatus === "passed"
-      ? "The rank-two lawful complex passed exact metric-link asphericity, Morse-link, primitive-character, kernel-transfer, and action-rooted replay checks."
+      ? "The lawful complex passed the finite-height-band pi_1-surjection, nonempty connected Morse-link, primitive-character, kernel-transfer, and action-rooted replay checks. CAT(0)/asphericity is retained only as optional stronger evidence."
       : rawLawfulSearch.status === "not-found"
         ? "The exact wall-sign space contains no certificate under the lawful-subcomplex profile; the full Davis fallback will run."
         : rawLawfulSearch.status === "incomplete"
@@ -1683,7 +1688,7 @@ export async function promoteMaterializedActionToFullDavisFibering(
     selectedTrack = "lawful-subcomplex";
     status = "passed";
     claims.push(
-      "explicit virtual algebraic fibration certified by the lawful-subcomplex Morse and kernel-transfer track",
+      "explicit virtual algebraic fibration certified by the lawful-subcomplex finite-height-band, Morse-link, and kernel-transfer track",
     );
     if (!options.alwaysRunFullDavis) {
       setStage(

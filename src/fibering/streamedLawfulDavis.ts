@@ -1,7 +1,32 @@
 import { parseCoxeterSystemInput } from "../coxeter";
+import {
+  pairCellUnions,
+  type PairUnionTables,
+  type PairUnionInput,
+  type PairUnionResult,
+} from "./wallUnionKernel";
+import {
+  runOrdered,
+  sharedCopy,
+  type KernelPool,
+} from "../parallel/kernelPool";
+import {
+  indexMaximalCells,
+  type MaximalCellIndexInput,
+  type MaximalCellIndexResult,
+} from "./orbitIndexKernel";
 import { planSphericalSpecialSubgroups } from "../torsionFree";
 import type { CoxeterSystemInput } from "../types";
-import { canonicalSha256 } from "../utils/canonicalSha256";
+import type { ActionRow } from "../torsionFree/types";
+import {
+  firstAlternatingRelationFailure,
+  isInvolutionRow,
+} from "../torsionFree/relationCheck";
+import {
+  canonicalJsonSha256,
+  canonicalSha256,
+  sha256Hex,
+} from "../utils/canonicalSha256";
 
 export type StreamedOrientationSign = 1 | -1;
 
@@ -233,6 +258,8 @@ export interface StreamedLawfulDavisOracle {
   readonly actionRowsCanonicalSha256: string;
   readonly structureHash: string;
   neighbor(point: number, generator: number): number;
+  /** Fresh copies of the packed generator rows (the oracle keeps its own). */
+  copyActionRows(): Uint32Array[];
   geometricEdge(point: number, generator: number): StreamedGeometricEdge;
   wallForGeometricEdge(edgeIndex: number): StreamedWall;
   wallIdForEdge(point: number, generator: number): string;
@@ -265,6 +292,24 @@ export interface StreamedLawfulDavisOracle {
     visitor: (face: StreamedDavisCell) => void,
   ): void;
   forEachRankTwoCell(visitor: (cell: StreamedRankTwoCell) => void): void;
+  /**
+   * Allocation-free variant of forEachRankTwoCell for streaming passes over
+   * every 2-cell.  Same cells, same order, same boundary walk; the visitor
+   * receives one reused record whose arrays are valid only during the call.
+   */
+  forEachRankTwoCellPacked(visitor: (cell: PackedRankTwoCell) => void): void;
+  /** Generator and stored endpoints of every geometric edge, by edge index. */
+  packedEdgeTables(): PackedEdgeTables;
+  /** Wall index and stored-orientation parity of every geometric edge. */
+  packedWallTables(): PackedWallTables;
+  /** Geometric edge index of the generator step at `point`. */
+  edgeIndexAt(point: number, generator: number): number;
+  /**
+   * The oracle's own walk tables and the root bitset of every rank-two type,
+   * in forEachRankTwoCellPacked order, for kernels that walk 2-cells off the
+   * main thread.  Read-only views: writing to them corrupts the oracle.
+   */
+  rankTwoWalkTables(): RankTwoWalkTables;
   bindCoorientations(
     candidates: readonly StreamedWallSignCandidate[],
   ): StreamedLawfulEvaluation;
@@ -275,10 +320,91 @@ export interface StreamedLawfulDavisOracle {
   enumerateNativeVertexLinkPrefilter(): StreamedNativeVertexLinkPrefilterResult;
 }
 
+/** Reused per-cell record of forEachRankTwoCellPacked. */
+export interface PackedRankTwoCell {
+  typeIndex: number;
+  representativePoint: number;
+  /** Stable id, as oracle.cellId(cell) would return. */
+  cellId: string;
+  /** Boundary length 2m. */
+  length: number;
+  edgeIndex: Uint32Array;
+  /** +1 when the walk runs along the stored edge orientation. */
+  traversal: Int8Array;
+  /** Walk vertex at each boundary step (the step's source point). */
+  point: Uint32Array;
+  /** Generator of each boundary step. */
+  generator: Uint8Array;
+}
+
+export interface PackedEdgeTables {
+  generator: Uint32Array;
+  /** Stored source (label order), as in StreamedGeometricEdge. */
+  source: Uint32Array;
+  target: Uint32Array;
+}
+
+export interface PackedWallTables {
+  edgeToWall: Uint32Array;
+  edgeParity: Int8Array;
+}
+
+export interface RankTwoWalkTables {
+  tables: PairUnionTables;
+  types: Array<{
+    typeIndex: number;
+    typeId: string;
+    /** Cell id prefix: the cell rooted at q has id `${idPrefix}${q}`. */
+    idPrefix: string;
+    left: number;
+    right: number;
+    relation: number;
+    rootBits: Uint32Array;
+    cellCount: number;
+  }>;
+}
+
 export interface StreamedLawfulDavisInput {
   system: unknown;
-  /** `generatorImages[g][q]` is the endpoint of the right generator step. */
-  generatorImages: readonly (readonly number[])[];
+  /**
+   * `generatorImages[g][q]` is the endpoint of the right generator step.
+   * Rows are copied, so later changes to the caller's arrays do not reach
+   * the oracle.
+   */
+  generatorImages: readonly (ActionRow | readonly number[])[];
+  /**
+   * Spherical-cell index storage.  "eager" keeps one ordinal per point and
+   * type (O(1) lookups, ~4 bytes x points x types); "lazy" keeps a bitset of
+   * orbit minima plus a rank directory (~0.13 bytes x points x types) and
+   * recomputes an orbit minimum per lookup.  "auto" (default) is eager while
+   * the ordinal tables fit EAGER_ORDINAL_BUDGET_BYTES.  Both modes number
+   * cells identically, so every hash and certificate is unchanged.
+   */
+  ordinalIndex?: "auto" | "eager" | "lazy";
+  /** Called after each construction phase, e.g. for progress display. */
+  onProgress?: (event: StreamedOracleBuildProgress) => void;
+  /**
+   * Reuse a live oracle built from the same system and rows (default true).
+   * Benchmarks and equivalence tests turn it off to force a fresh build.
+   */
+  cache?: boolean;
+}
+
+export interface StreamedOracleBuildProgress {
+  phase:
+    | "validate-action"
+    | "hash-action-rows"
+    | "spherical-types"
+    | "orbit-index"
+    | "edges"
+    | "walls"
+    // Parallel builder only: kernels and walls run before construction,
+    // whose own orbit-index and walls phases then take almost no time.
+    | "parallel-kernels"
+    | "parallel-walls";
+  /** Milliseconds spent in this phase. */
+  elapsedMs: number;
+  ordinalIndex?: "eager" | "lazy";
 }
 
 interface PackedAction {
@@ -288,7 +414,27 @@ interface PackedAction {
 
 type PackedOrdinalArray = Uint16Array | Uint32Array;
 
+/**
+ * Orbit-minimum bitset with a rank directory.  Cells are numbered by their
+ * minimum point, so ordinal(cell) = rank of its minimum among all minima.
+ */
+interface LazyOrbitIndex {
+  minimumBits: Uint32Array;
+  /** Number of minima strictly before each 16-word (512-point) block. */
+  blockRank: Uint32Array;
+  rows: Uint32Array[];
+  /** Shared scratch for orbit walks larger than LINEAR_DEDUP_LIMIT. */
+  scratch: OrbitScratch;
+}
+
+interface OrbitScratch {
+  stamp?: Uint32Array;
+  generation: number;
+  queue: Uint32Array;
+}
+
 interface InternalSphericalType extends StreamedSphericalType {
+  lazyIndex?: LazyOrbitIndex;
   ordinalByPoint?: PackedOrdinalArray;
   representatives?: Uint32Array;
   ordinalSentinel?: number;
@@ -297,11 +443,34 @@ interface InternalSphericalType extends StreamedSphericalType {
   immediateCofaceTypeIndices: number[];
 }
 
+/**
+ * Geometric edges without per-edge tables.  Edges are numbered generator by
+ * generator, and within a generator in increasing order of their numerically
+ * smaller endpoint, so
+ *   edgeIndex(point, g) = offsets[g] + rank_g(min(point, point.s_g)),
+ * where rank_g counts the points p < p.s_g below its argument.  One bit per
+ * point and generator replaces 4 * rank + 10 bytes per edge.
+ */
 interface PackedEdges {
-  byGeneratorPoint: Uint32Array;
-  generator: Uint16Array;
-  source: Uint32Array;
-  target: Uint32Array;
+  count: number;
+  degree: number;
+  rows: Uint32Array[];
+  /** offsets[g] = first edge index of generator g; offsets[rank] = count. */
+  offsets: number[];
+  minimumBits: Uint32Array[];
+  /**
+   * Bit p of sourceBits[g]: p is the stored source of its g-edge (the
+   * smaller point label).  Precomputed because the label comparison spells
+   * out decimal digits and every boundary walk needs it.
+   */
+  sourceBits: Uint32Array[];
+  blockRank: Uint32Array[];
+  /**
+   * Set bits strictly before each word.  Edge lookups are the hottest rank
+   * queries (every boundary step of every 2-cell), so they get an O(1)
+   * per-word directory: 4 bytes per 32 points per generator.
+   */
+  wordRank: Uint32Array[];
 }
 
 interface InternalWalls {
@@ -315,6 +484,8 @@ const UINT32_SENTINEL = 0xffff_ffff;
 const MAX_CANDIDATES = 32;
 const MAX_CLOSURE_WITNESSES = 32;
 const MAX_EXHAUSTIVE_PREFILTER_BITS = 16;
+const EAGER_ORDINAL_BUDGET_BYTES = 1024 * 1024 * 1024;
+const LINEAR_DEDUP_LIMIT = 48;
 
 export class StreamedLawfulDavisError extends Error {
   readonly errors: string[];
@@ -331,17 +502,27 @@ class ParityDisjointSet {
   private readonly rank: Uint8Array;
   /** XOR from a node to its parent: zero means equal transverse signs. */
   private readonly parity: Uint8Array;
-  private readonly conflicts: Uint32Array;
+  /**
+   * Parity conflicts per root.  Only wall roots ever carry conflicts, so a
+   * sparse map replaces a 4-byte-per-edge array.
+   */
+  private readonly conflicts = new Map<number, number>();
+  /** Parity of the last `root()` argument relative to its root. */
+  lastParity = 0;
 
   constructor(size: number) {
     this.parent = new Uint32Array(size);
     this.rank = new Uint8Array(size);
     this.parity = new Uint8Array(size);
-    this.conflicts = new Uint32Array(size);
     for (let index = 0; index < size; index += 1) this.parent[index] = index;
   }
 
-  find(item: number): { root: number; parity: number } {
+  /**
+   * Root of `item` with path compression; the parity of `item` relative to
+   * the root is left in `lastParity`.  Hot loops call this instead of find()
+   * so that no result object is allocated per lookup.
+   */
+  root(item: number): number {
     let root = item;
     let parityToRoot = 0;
     while (this.parent[root] !== root) {
@@ -359,38 +540,48 @@ class ParityDisjointSet {
       accumulated ^= step;
       current = next;
     }
-    return { root, parity: parityToRoot };
+    this.lastParity = parityToRoot;
+    return root;
+  }
+
+  find(item: number): { root: number; parity: number } {
+    const root = this.root(item);
+    return { root, parity: this.lastParity };
   }
 
   /** Require parity(first) XOR parity(second) to equal `requiredXor`. */
   union(first: number, second: number, requiredXor: number): boolean {
-    const left = this.find(first);
-    const right = this.find(second);
+    const leftRoot = this.root(first);
+    const leftParity = this.lastParity;
+    const rightRoot = this.root(second);
+    const rightParity = this.lastParity;
     const required = requiredXor & 1;
-    if (left.root === right.root) {
-      const consistent = (left.parity ^ right.parity) === required;
-      if (!consistent) this.conflicts[left.root] += 1;
+    if (leftRoot === rightRoot) {
+      const consistent = (leftParity ^ rightParity) === required;
+      if (!consistent) {
+        this.conflicts.set(leftRoot, (this.conflicts.get(leftRoot) ?? 0) + 1);
+      }
       return consistent;
     }
 
-    const relation = left.parity ^ right.parity ^ required;
-    if (this.rank[left.root] < this.rank[right.root]) {
-      this.parent[left.root] = right.root;
-      this.parity[left.root] = relation;
-      this.conflicts[right.root] += this.conflicts[left.root];
-    } else {
-      this.parent[right.root] = left.root;
-      this.parity[right.root] = relation;
-      this.conflicts[left.root] += this.conflicts[right.root];
-      if (this.rank[left.root] === this.rank[right.root]) {
-        this.rank[left.root] += 1;
-      }
+    const relation = leftParity ^ rightParity ^ required;
+    const [child, parent] =
+      this.rank[leftRoot] < this.rank[rightRoot]
+        ? [leftRoot, rightRoot]
+        : [rightRoot, leftRoot];
+    this.parent[child] = parent;
+    this.parity[child] = relation;
+    const moved = this.conflicts.get(child);
+    if (moved !== undefined) {
+      this.conflicts.delete(child);
+      this.conflicts.set(parent, (this.conflicts.get(parent) ?? 0) + moved);
     }
+    if (this.rank[leftRoot] === this.rank[rightRoot]) this.rank[parent] += 1;
     return true;
   }
 
   conflictCount(item: number): number {
-    return this.conflicts[this.find(item).root];
+    return this.conflicts.get(this.root(item)) ?? 0;
   }
 }
 
@@ -475,8 +666,59 @@ function pointLabel(point: number): string {
   return `q${point}`;
 }
 
+const POWERS_OF_TEN = Array.from({ length: 17 }, (_unused, k) => 10 ** k);
+
+function decimalLength(value: number): number {
+  let length = 1;
+  while (length < 16 && value >= POWERS_OF_TEN[length]) length += 1;
+  return length;
+}
+
+/**
+ * Compare the decimal spellings of two nonnegative integers as JavaScript
+ * compares strings, without building the strings.  When one spelling is a
+ * proper prefix of the other, the result depends on what follows it: the end
+ * of the string sorts first, while a ":" separator (0x3a) sorts after every
+ * digit (0x30..0x39).
+ */
+function compareDecimalSpellings(
+  left: number,
+  right: number,
+  followedBySeparator: boolean,
+): number {
+  if (left === right) return 0;
+  const leftLength = decimalLength(left);
+  const rightLength = decimalLength(right);
+  const common = Math.min(leftLength, rightLength);
+  for (let position = 0; position < common; position += 1) {
+    const leftDigit =
+      Math.floor(left / POWERS_OF_TEN[leftLength - 1 - position]) % 10;
+    const rightDigit =
+      Math.floor(right / POWERS_OF_TEN[rightLength - 1 - position]) % 10;
+    if (leftDigit !== rightDigit) return leftDigit < rightDigit ? -1 : 1;
+  }
+  const shorterFirst = leftLength < rightLength ? -1 : 1;
+  return followedBySeparator ? -shorterFirst : shorterFirst;
+}
+
+/** Same order as compareIds(pointLabel(left), pointLabel(right)). */
 function comparePointLabels(left: number, right: number): number {
-  return compareIds(pointLabel(left), pointLabel(right));
+  return compareDecimalSpellings(left, right, false);
+}
+
+/**
+ * Same order as compareIds on edgeStableId strings
+ * "bar:e:g<g>:q<s>:q<t>", field by field.
+ */
+function compareEdgeStableIds(
+  left: readonly [number, number, number],
+  right: readonly [number, number, number],
+): number {
+  return (
+    compareDecimalSpellings(left[0], right[0], true) ||
+    compareDecimalSpellings(left[1], right[1], true) ||
+    compareDecimalSpellings(left[2], right[2], false)
+  );
 }
 
 function storedEdgeEndpoints(first: number, second: number): [number, number] {
@@ -485,7 +727,7 @@ function storedEdgeEndpoints(first: number, second: number): [number, number] {
     : [second, first];
 }
 
-function edgeStableId(
+export function edgeStableId(
   generator: number,
   sourcePoint: number,
   targetPoint: number,
@@ -500,7 +742,8 @@ function cellStableId(cell: StreamedDavisCell): string {
 
 function packAction(
   system: CoxeterSystemInput,
-  sourceRows: readonly (readonly number[])[],
+  sourceRows: readonly (ActionRow | readonly number[])[],
+  precomputed?: PrecomputedOracleKernels,
 ): PackedAction {
   const errors: string[] = [];
   if (sourceRows.length !== system.rank) {
@@ -521,11 +764,23 @@ function packAction(
       );
       continue;
     }
-    const row = new Uint32Array(degree);
+    // Rows are always copied: the oracle (and the content-addressed oracle
+    // cache) must not change if the caller later mutates its arrays.
+    const packed = source instanceof Uint32Array;
+    // Rows from the parallel builder are private copies already.
+    const row = packed
+      ? precomputed
+        ? source
+        : source.slice()
+      : new Uint32Array(degree);
     const seen = new Uint8Array(degree);
     for (let point = 0; point < degree; point += 1) {
       const image = source[point];
-      if (!Number.isInteger(image) || image < 0 || image >= degree) {
+      if (
+        packed
+          ? image >= degree
+          : !Number.isInteger(image) || image < 0 || image >= degree
+      ) {
         errors.push(
           `Generator ${generator} sends q${point} outside 0..${degree - 1}.`,
         );
@@ -535,7 +790,7 @@ function packAction(
         errors.push(`Generator ${generator} repeats image q${image}.`);
       }
       seen[image] = 1;
-      row[point] = image;
+      if (!packed) row[point] = image;
     }
     rows.push(row);
   }
@@ -562,21 +817,26 @@ function packAction(
       }
     }
   }
+  const involutive = rows.map(isInvolutionRow);
   for (let left = 0; left < system.rank; left += 1) {
     for (let right = left + 1; right < system.rank; right += 1) {
       const m = system.coxeterMatrix[left][right];
       if (m === "inf") continue;
-      for (let point = 0; point < degree; point += 1) {
-        let current = point;
-        for (let repetition = 0; repetition < m; repetition += 1) {
-          current = rows[right][rows[left][current]];
-        }
-        if (current !== point) {
-          errors.push(
-            `The (${left},${right}) Coxeter relation of order ${m} fails at q${point}.`,
-          );
-          break;
-        }
+      const known = precomputed?.relationFailures.get(`${left},${right}`);
+      const failure =
+        known !== undefined
+          ? (known ?? undefined)
+          : firstAlternatingRelationFailure(
+              rows[left],
+              rows[right],
+              m,
+              degree,
+              involutive[left] && involutive[right],
+            );
+      if (failure) {
+        errors.push(
+          `The (${left},${right}) Coxeter relation of order ${m} fails at q${failure.point}.`,
+        );
       }
     }
   }
@@ -608,25 +868,50 @@ function packAction(
 }
 
 /**
- * Hash large rows without first copying them into one JSON number matrix.
- * Fixed chunk boundaries make the digest independently replayable.
+ * Canonical action-row digest used by streamed proof certificates.
+ *
+ * Fixed chunk boundaries avoid one large JSON copy and make the digest
+ * independently replayable. Ordinary arrays are accepted alongside packed
+ * rows so intake code can bind an action before constructing the oracle.
  */
-function hashPackedActionRows(action: PackedAction): string {
+export function computeStreamedActionRowsCanonicalSha256(
+  rows: readonly ArrayLike<number>[],
+): string {
   const chunkSize = 4_096;
-  const rowChunkHashes = action.rows.map((row, generator) => {
+  const degree = rows[0]?.length ?? 0;
+  const rowChunkHashes = rows.map((row, generator) => {
     const chunks: string[] = [];
     for (let start = 0; start < row.length; start += chunkSize) {
+      const end = Math.min(row.length, start + chunkSize);
+      // Literal canonical JSON of {generator, start, images}: keys sorted,
+      // integers in plain decimal.  Spelling it out skips the generic
+      // canonicalizer's per-element property checks, which dominated the
+      // cost for actions with 10^8 entries.  Non-integers fall back to it.
+      let images = "";
+      let plain = true;
+      for (let point = start; point < end; point += 1) {
+        const image = row[point];
+        if (!Number.isSafeInteger(image)) {
+          plain = false;
+          break;
+        }
+        images += point === start ? `${image}` : `,${image}`;
+      }
       chunks.push(
-        canonicalSha256({
-          generator,
-          start,
-          images: Array.from(row.subarray(start, start + chunkSize)),
-        }),
+        plain
+          ? sha256Hex(
+              `{"generator":${generator},"images":[${images}],"start":${start}}`,
+            )
+          : canonicalSha256({
+              generator,
+              start,
+              images: Array.from(row).slice(start, end),
+            }),
       );
     }
     return canonicalSha256({
       generator,
-      degree: action.degree,
+      degree,
       chunkSize,
       chunks,
     });
@@ -634,11 +919,15 @@ function hashPackedActionRows(action: PackedAction): string {
   return canonicalSha256({
     schemaVersion: 1,
     method: "fixed-row-chunk-sha256-tree",
-    degree: action.degree,
-    generatorCount: action.rows.length,
+    degree,
+    generatorCount: rows.length,
     chunkSize,
     rowChunkHashes,
   });
+}
+
+function hashPackedActionRows(action: PackedAction): string {
+  return computeStreamedActionRowsCanonicalSha256(action.rows);
 }
 
 function buildSphericalTypes(
@@ -799,6 +1088,309 @@ function buildOrbitIndex(
   type.representatives = representatives;
 }
 
+function popcount32(value: number): number {
+  value -= (value >>> 1) & 0x5555_5555;
+  value = (value & 0x3333_3333) + ((value >>> 2) & 0x3333_3333);
+  return Math.imul((value + (value >>> 4)) & 0x0f0f_0f0f, 0x0101_0101) >>> 24;
+}
+
+function eagerOrdinalBytes(
+  types: readonly InternalSphericalType[],
+  degree: number,
+): number {
+  return types.reduce(
+    (sum, type) =>
+      type.dimension === 0
+        ? sum
+        : sum +
+          degree * (type.cellCount < UINT16_SENTINEL ? 2 : 4) +
+          4 * type.cellCount,
+    0,
+  );
+}
+
+/**
+ * Lazy counterpart of buildOrbitIndex: the same freeness and cell-count
+ * checks, but only orbit minima are recorded.  Roots are scanned in
+ * increasing order, so an unvisited root is the minimum of its orbit.
+ */
+function buildLazyOrbitIndex(
+  type: InternalSphericalType,
+  action: PackedAction,
+  visited: Uint32Array,
+  scratch: OrbitScratch,
+): void {
+  if (type.dimension === 0) return;
+  visited.fill(0);
+  const words = Math.ceil(action.degree / 32);
+  const minimumBits = new Uint32Array(words);
+  const queue = new Uint32Array(type.subgroupOrder);
+  let cells = 0;
+  for (let root = 0; root < action.degree; root += 1) {
+    if ((visited[root >>> 5] >>> (root & 31)) & 1) continue;
+    minimumBits[root >>> 5] |= 1 << (root & 31);
+    visited[root >>> 5] |= 1 << (root & 31);
+    queue[0] = root;
+    let head = 0;
+    let tail = 1;
+    while (head < tail) {
+      const point = queue[head++];
+      for (const generator of type.generators) {
+        const image = action.rows[generator][point];
+        if ((visited[image >>> 5] >>> (image & 31)) & 1) continue;
+        if (tail >= queue.length) {
+          throw new StreamedLawfulDavisError("Spherical action is not free", [
+            `${type.id} has an orbit larger than ${type.subgroupOrder}.`,
+          ]);
+        }
+        visited[image >>> 5] |= 1 << (image & 31);
+        queue[tail++] = image;
+      }
+    }
+    if (tail !== type.subgroupOrder) {
+      throw new StreamedLawfulDavisError("Spherical action is not free", [
+        `${type.id} has an orbit of size ${tail}; expected ${type.subgroupOrder}.`,
+      ]);
+    }
+    cells += 1;
+  }
+  if (cells !== type.cellCount) {
+    throw new StreamedLawfulDavisError("Spherical orbit count mismatch", [
+      `${type.id} produced ${cells} cells; expected ${type.cellCount}.`,
+    ]);
+  }
+  const blockRank = buildBlockRank(minimumBits);
+  if (scratch.queue.length < type.subgroupOrder) {
+    scratch.queue = new Uint32Array(type.subgroupOrder);
+  }
+  type.lazyIndex = { minimumBits, blockRank, rows: action.rows, scratch };
+}
+
+/**
+ * Lazy indexes for every spherical type from one walk per maximal type.
+ *
+ * A maximal cell x W_V has |W_V| points (the action is free; the orbit walk
+ * of buildLazyOrbitIndex checks that).  Its points are laid out once through
+ * a universal BFS template of W_V, the same for every cell because the
+ * action is free, and for each subtype T of V the T-cells inside it are the
+ * cosets of W_T in W_V.  Their minima are found locally, so the action is
+ * walked once per maximal type instead of once per spherical type.
+ */
+function buildLazyOrbitIndexesByMaximalCells(
+  types: readonly InternalSphericalType[],
+  action: PackedAction,
+  scratch: OrbitScratch,
+  /** Kernel results by host type index, computed off-thread on these rows. */
+  precomputed?: ReadonlyMap<number, MaximalCellIndexResult>,
+): void {
+  const { maximal, assigned, unhosted } = maximalCellAssignment(types);
+  const visited = new Uint32Array(Math.ceil(action.degree / 32));
+  // Types inside no maximal type are indexed with their own orbit walk.
+  for (const type of unhosted) {
+    buildLazyOrbitIndex(type, action, visited, scratch);
+  }
+  for (const host of maximal) {
+    const subtypes = assigned.get(host)!;
+    const result =
+      precomputed?.get(host.typeIndex) ??
+      indexMaximalCells(maximalCellIndexInput(host, subtypes, action));
+    if (!result.ok) {
+      throw new StreamedLawfulDavisError(result.title, result.details);
+    }
+    if (result.cells !== host.cellCount) {
+      throw new StreamedLawfulDavisError("Spherical orbit count mismatch", [
+        `${host.id} produced ${result.cells} cells; expected ${host.cellCount}.`,
+      ]);
+    }
+    if (scratch.queue.length < host.subgroupOrder) {
+      scratch.queue = new Uint32Array(host.subgroupOrder);
+    }
+    host.lazyIndex = {
+      minimumBits: result.hostBits,
+      blockRank: buildBlockRank(result.hostBits),
+      rows: action.rows,
+      scratch,
+    };
+    subtypes.forEach((subtype, t) => {
+      const bits = result.subtypeBits[t];
+      const blockRank = buildBlockRank(bits);
+      if (blockRank[blockRank.length - 1] !== subtype.cellCount) {
+        throw new StreamedLawfulDavisError("Spherical orbit count mismatch", [
+          `${subtype.id} produced ${blockRank[blockRank.length - 1]} cells; expected ${subtype.cellCount}.`,
+        ]);
+      }
+      if (scratch.queue.length < subtype.subgroupOrder) {
+        scratch.queue = new Uint32Array(subtype.subgroupOrder);
+      }
+      subtype.lazyIndex = {
+        minimumBits: bits,
+        blockRank,
+        rows: action.rows,
+        scratch,
+      };
+    });
+  }
+}
+
+/** Maximal spherical types and the lower types each one indexes. */
+function maximalCellAssignment(types: readonly InternalSphericalType[]): {
+  maximal: InternalSphericalType[];
+  assigned: Map<InternalSphericalType, InternalSphericalType[]>;
+  unhosted: InternalSphericalType[];
+} {
+  const positive = types.filter((type) => type.dimension > 0);
+  const maximal = positive.filter(
+    (type) => type.immediateCofaceTypeIndices.length === 0,
+  );
+  const assigned = new Map<InternalSphericalType, InternalSphericalType[]>(
+    maximal.map((type) => [type, []]),
+  );
+  const unhosted: InternalSphericalType[] = [];
+  for (const type of positive) {
+    if (assigned.has(type)) continue;
+    const host = maximal.find((candidate) =>
+      isSubsetMask(type.generatorMask, candidate.generatorMask),
+    );
+    if (host) assigned.get(host)!.push(type);
+    else unhosted.push(type);
+  }
+  return { maximal, assigned, unhosted };
+}
+
+function maximalCellIndexInput(
+  host: InternalSphericalType,
+  subtypes: readonly InternalSphericalType[],
+  action: PackedAction,
+): MaximalCellIndexInput {
+  return {
+    rows: action.rows,
+    degree: action.degree,
+    hostId: host.id,
+    hostGenerators: host.generators,
+    size: host.subgroupOrder,
+    subtypeGenerators: subtypes.map((subtype) => subtype.generators),
+  };
+}
+
+/** Minimum point of the W_T-orbit of `point` (orbits have |W_T| points). */
+function lazyOrbitMinimum(
+  type: InternalSphericalType,
+  index: LazyOrbitIndex,
+  point: number,
+): number {
+  const { scratch } = index;
+  const queue = scratch.queue;
+  queue[0] = point;
+  let tail = 1;
+  let minimum = point;
+  if (type.subgroupOrder <= LINEAR_DEDUP_LIMIT) {
+    // Rank-two and other small cells: a linear scan of <= 48 entries is
+    // cheaper than touching a point-sized stamp array.
+    for (let head = 0; head < tail; head += 1) {
+      const current = queue[head];
+      for (const generator of type.generators) {
+        const image = index.rows[generator][current];
+        let seen = false;
+        for (let k = 0; k < tail; k += 1) {
+          if (queue[k] === image) {
+            seen = true;
+            break;
+          }
+        }
+        if (seen) continue;
+        queue[tail++] = image;
+        if (image < minimum) minimum = image;
+      }
+    }
+    return minimum;
+  }
+  if (!scratch.stamp) scratch.stamp = new Uint32Array(index.rows[0].length);
+  const stamp = scratch.stamp;
+  scratch.generation = (scratch.generation + 1) >>> 0;
+  if (scratch.generation === 0) {
+    stamp.fill(0);
+    scratch.generation = 1;
+  }
+  const generation = scratch.generation;
+  stamp[point] = generation;
+  for (let head = 0; head < tail; head += 1) {
+    const current = queue[head];
+    for (const generator of type.generators) {
+      const image = index.rows[generator][current];
+      if (stamp[image] === generation) continue;
+      stamp[image] = generation;
+      queue[tail++] = image;
+      if (image < minimum) minimum = image;
+    }
+  }
+  return minimum;
+}
+
+/** Rank directory: set bits strictly before each 16-word (512-bit) block. */
+function buildBlockRank(bits: Uint32Array): Uint32Array {
+  const blockRank = new Uint32Array(Math.ceil(bits.length / 16) + 1);
+  let running = 0;
+  for (let word = 0; word < bits.length; word += 1) {
+    if ((word & 15) === 0) blockRank[word >>> 4] = running;
+    running += popcount32(bits[word]);
+  }
+  blockRank[blockRank.length - 1] = running;
+  return blockRank;
+}
+
+/** Number of set bits strictly below `position`. */
+function rankBits(
+  bits: Uint32Array,
+  blockRank: Uint32Array,
+  position: number,
+): number {
+  const word = position >>> 5;
+  let rank = blockRank[word >>> 4];
+  for (let k = word & ~15; k < word; k += 1) rank += popcount32(bits[k]);
+  const below = position & 31;
+  if (below > 0) rank += popcount32((bits[word] & ((1 << below) - 1)) >>> 0);
+  return rank;
+}
+
+/** Position of the set bit of rank `ordinal` (zero-based). */
+function selectBits(
+  bits: Uint32Array,
+  blockRank: Uint32Array,
+  ordinal: number,
+): number {
+  // Last block whose starting rank is <= ordinal, then scan its words.
+  let low = 0;
+  let high = blockRank.length - 2;
+  while (low < high) {
+    const middle = (low + high + 1) >>> 1;
+    if (blockRank[middle] <= ordinal) low = middle;
+    else high = middle - 1;
+  }
+  let remaining = ordinal - blockRank[low];
+  for (let word = low * 16; word < bits.length; word += 1) {
+    let value = bits[word];
+    const count = popcount32(value);
+    if (remaining >= count) {
+      remaining -= count;
+      continue;
+    }
+    while (remaining > 0) {
+      value &= value - 1;
+      remaining -= 1;
+    }
+    return word * 32 + (31 - Math.clz32(value & -value));
+  }
+  throw new RangeError(`Bit rank ${ordinal} is out of range.`);
+}
+
+function lazyRank(index: LazyOrbitIndex, minimum: number): number {
+  return rankBits(index.minimumBits, index.blockRank, minimum);
+}
+
+function lazySelect(index: LazyOrbitIndex, ordinal: number): number {
+  return selectBits(index.minimumBits, index.blockRank, ordinal);
+}
+
 function typeOrThrow(
   types: readonly InternalSphericalType[],
   typeIndex: number,
@@ -812,6 +1404,12 @@ function typeOrThrow(
 
 function ordinalAt(type: InternalSphericalType, point: number): number {
   if (type.dimension === 0) return point;
+  if (type.lazyIndex) {
+    return lazyRank(
+      type.lazyIndex,
+      lazyOrbitMinimum(type, type.lazyIndex, point),
+    );
+  }
   const ordinal = type.ordinalByPoint?.[point];
   if (ordinal === undefined || ordinal === type.ordinalSentinel) {
     throw new StreamedLawfulDavisError("Missing spherical orbit lookup", [
@@ -826,7 +1424,13 @@ function cellFromOrdinal(
   ordinal: number,
 ): StreamedDavisCell {
   const representativePoint =
-    type.dimension === 0 ? ordinal : type.representatives?.[ordinal];
+    type.dimension === 0
+      ? ordinal
+      : type.lazyIndex
+        ? ordinal >= 0 && ordinal < type.cellCount
+          ? lazySelect(type.lazyIndex, ordinal)
+          : undefined
+        : type.representatives?.[ordinal];
   if (
     representativePoint === undefined ||
     ordinal < 0 ||
@@ -958,48 +1562,102 @@ function buildEdges(action: PackedAction, rank: number): PackedEdges {
       `degree*rank/2 is ${expectedEdgeCount}.`,
     ]);
   }
-  const byGeneratorPoint = new Uint32Array(action.degree * rank);
-  byGeneratorPoint.fill(UINT32_SENTINEL);
-  const generator = new Uint16Array(expectedEdgeCount);
-  const source = new Uint32Array(expectedEdgeCount);
-  const target = new Uint32Array(expectedEdgeCount);
-  let edgeIndex = 0;
-  for (
-    let currentGenerator = 0;
-    currentGenerator < rank;
-    currentGenerator += 1
-  ) {
-    const row = action.rows[currentGenerator];
-    const offset = currentGenerator * action.degree;
+  const words = Math.ceil(action.degree / 32);
+  const offsets = [0];
+  const minimumBits: Uint32Array[] = [];
+  const sourceBits: Uint32Array[] = [];
+  const blockRank: Uint32Array[] = [];
+  const wordRank: Uint32Array[] = [];
+  for (let generator = 0; generator < rank; generator += 1) {
+    const row = action.rows[generator];
+    const bits = sharedUint32Array(words);
+    const sources = sharedUint32Array(words);
     for (let point = 0; point < action.degree; point += 1) {
-      if (byGeneratorPoint[offset + point] !== UINT32_SENTINEL) continue;
       const image = row[point];
       if (image === point) {
         throw new StreamedLawfulDavisError(
           "Cannot index a fixed generator edge",
-          [`Generator ${currentGenerator} fixes q${point}.`],
+          [`Generator ${generator} fixes q${point}.`],
         );
       }
-      if (edgeIndex >= expectedEdgeCount) {
-        throw new StreamedLawfulDavisError("Geometric edge count overflow", [
-          `Expected ${expectedEdgeCount} edges.`,
-        ]);
+      if (point < image) bits[point >>> 5] |= 1 << (point & 31);
+      if (comparePointLabels(point, image) <= 0) {
+        sources[point >>> 5] |= 1 << (point & 31);
       }
-      const [storedSource, storedTarget] = storedEdgeEndpoints(point, image);
-      generator[edgeIndex] = currentGenerator;
-      source[edgeIndex] = storedSource;
-      target[edgeIndex] = storedTarget;
-      byGeneratorPoint[offset + point] = edgeIndex;
-      byGeneratorPoint[offset + image] = edgeIndex;
-      edgeIndex += 1;
     }
+    sourceBits.push(sources);
+    const directory = buildBlockRank(bits);
+    const perWord = sharedUint32Array(words);
+    let running = 0;
+    for (let word = 0; word < words; word += 1) {
+      perWord[word] = running;
+      running += popcount32(bits[word]);
+    }
+    minimumBits.push(bits);
+    blockRank.push(directory);
+    wordRank.push(perWord);
+    offsets.push(offsets[generator] + directory[directory.length - 1]);
   }
-  if (edgeIndex !== expectedEdgeCount) {
+  if (offsets[rank] !== expectedEdgeCount) {
     throw new StreamedLawfulDavisError("Geometric edge count mismatch", [
-      `Indexed ${edgeIndex} edges; expected ${expectedEdgeCount}.`,
+      `Indexed ${offsets[rank]} edges; expected ${expectedEdgeCount}.`,
     ]);
   }
-  return { byGeneratorPoint, generator, source, target };
+  return {
+    count: expectedEdgeCount,
+    degree: action.degree,
+    rows: action.rows,
+    offsets,
+    minimumBits,
+    sourceBits,
+    blockRank,
+    wordRank,
+  };
+}
+
+/**
+ * Uint32Array in shared memory when the environment has it, so worker-thread
+ * kernels can read the table in place; an ordinary one otherwise.
+ */
+function sharedUint32Array(length: number): Uint32Array {
+  return typeof SharedArrayBuffer === "undefined"
+    ? new Uint32Array(length)
+    : new Uint32Array(new SharedArrayBuffer(length * 4));
+}
+
+function edgeGeneratorOf(edges: PackedEdges, edgeIndex: number): number {
+  let generator = 0;
+  while (edges.offsets[generator + 1] <= edgeIndex) generator += 1;
+  return generator;
+}
+
+/** Stored endpoints (source first, in point-label order) of an edge. */
+function edgeEndpoints(
+  edges: PackedEdges,
+  edgeIndex: number,
+): [number, number, number] {
+  const generator = edgeGeneratorOf(edges, edgeIndex);
+  const minimum = selectBits(
+    edges.minimumBits[generator],
+    edges.blockRank[generator],
+    edgeIndex - edges.offsets[generator],
+  );
+  const [source, target] = storedEdgeEndpoints(
+    minimum,
+    edges.rows[generator][minimum],
+  );
+  return [generator, source, target];
+}
+
+/** +1 when `point` is the stored source of its generator edge, else -1. */
+function edgeTraversal(
+  edges: PackedEdges,
+  point: number,
+  generator: number,
+): 1 | -1 {
+  return (edges.sourceBits[generator][point >>> 5] >>> (point & 31)) & 1
+    ? 1
+    : -1;
 }
 
 function edgeRecord(
@@ -1009,13 +1667,11 @@ function edgeRecord(
   if (
     !Number.isInteger(edgeIndex) ||
     edgeIndex < 0 ||
-    edgeIndex >= edges.generator.length
+    edgeIndex >= edges.count
   ) {
     throw new RangeError(`Unknown geometric edge index ${edgeIndex}.`);
   }
-  const generator = edges.generator[edgeIndex];
-  const sourcePoint = edges.source[edgeIndex];
-  const targetPoint = edges.target[edgeIndex];
+  const [generator, sourcePoint, targetPoint] = edgeEndpoints(edges, edgeIndex);
   return {
     edgeIndex,
     id: edgeStableId(generator, sourcePoint, targetPoint),
@@ -1031,13 +1687,25 @@ function edgeIndexAt(
   point: number,
   generator: number,
 ): number {
-  const edgeIndex = edges.byGeneratorPoint[generator * degree + point];
-  if (edgeIndex === UINT32_SENTINEL) {
+  const row = edges.rows[generator];
+  if (row === undefined || point < 0 || point >= degree) {
     throw new StreamedLawfulDavisError("Missing geometric edge", [
       `No edge is indexed at q${point} for generator ${generator}.`,
     ]);
   }
-  return edgeIndex;
+  const image = row[point];
+  const minimum = point < image ? point : image;
+  const word = minimum >>> 5;
+  const below = minimum & 31;
+  return (
+    edges.offsets[generator] +
+    edges.wordRank[generator][word] +
+    (below === 0
+      ? 0
+      : popcount32(
+          (edges.minimumBits[generator][word] & ((1 << below) - 1)) >>> 0,
+        ))
+  );
 }
 
 function boundaryForPairCell(
@@ -1099,115 +1767,338 @@ function boundaryForPairCell(
   return { cell, m: relation, boundary };
 }
 
+/** Reusable boundary buffers for one 2m-gon (m <= relation bound). */
+interface PairBoundaryScratch {
+  edgeIndex: Uint32Array;
+  traversal: Int8Array;
+  point: Uint32Array;
+}
+
+function createPairBoundaryScratch(
+  system: CoxeterSystemInput,
+): PairBoundaryScratch {
+  let longest = 4;
+  for (const row of system.coxeterMatrix) {
+    for (const entry of row) {
+      if (entry !== "inf") longest = Math.max(longest, 2 * entry);
+    }
+  }
+  return {
+    edgeIndex: new Uint32Array(longest),
+    traversal: new Int8Array(longest),
+    point: new Uint32Array(longest),
+  };
+}
+
+/**
+ * Visit the representative point (orbit minimum) of every cell of `type` in
+ * ordinal order, reading the eager table or the lazy minimum bitset directly
+ * so no per-cell select or object is needed.
+ */
+function forEachCellRoot(
+  type: InternalSphericalType,
+  visitor: (root: number, ordinal: number) => void,
+): void {
+  if (type.lazyIndex) {
+    const bits = type.lazyIndex.minimumBits;
+    let ordinal = 0;
+    for (let word = 0; word < bits.length; word += 1) {
+      let remaining = bits[word];
+      while (remaining !== 0) {
+        const lowest = remaining & -remaining;
+        visitor(word * 32 + (31 - Math.clz32(lowest)), ordinal);
+        ordinal += 1;
+        remaining = (remaining ^ lowest) >>> 0;
+      }
+    }
+    return;
+  }
+  const representatives = type.representatives!;
+  for (let ordinal = 0; ordinal < type.cellCount; ordinal += 1) {
+    visitor(representatives[ordinal], ordinal);
+  }
+}
+
+/**
+ * Fill `scratch` with the boundary of the 2m-gon rooted at `root` (edges
+ * alternate left, right) and return its length 2m.  Same checks and the same
+ * traversal convention as boundaryForPairCell, without allocation.
+ */
+function walkPairBoundary(
+  root: number,
+  type: InternalSphericalType,
+  relation: number,
+  action: PackedAction,
+  edges: PackedEdges,
+  scratch: PairBoundaryScratch,
+): number {
+  const [left, right] = type.generators;
+  const length = 2 * relation;
+  let current = root;
+  for (let boundaryIndex = 0; boundaryIndex < length; boundaryIndex += 1) {
+    for (let earlier = 0; earlier < boundaryIndex; earlier += 1) {
+      if (scratch.point[earlier] === current) {
+        throw new StreamedLawfulDavisError("Degenerate rank-two boundary", [
+          `${type.id} cell at q${root} repeats q${current} before closing.`,
+        ]);
+      }
+    }
+    const generator = boundaryIndex % 2 === 0 ? left : right;
+    const edgeIndex = edgeIndexAt(edges, action.degree, current, generator);
+    scratch.point[boundaryIndex] = current;
+    scratch.edgeIndex[boundaryIndex] = edgeIndex;
+    scratch.traversal[boundaryIndex] = edgeTraversal(edges, current, generator);
+    current = action.rows[generator][current];
+  }
+  if (current !== root) {
+    throw new StreamedLawfulDavisError("Incomplete rank-two boundary", [
+      `${type.id} cell at q${root} does not close as a ${length}-gon.`,
+    ]);
+  }
+  return length;
+}
+
+function pairRelation(
+  system: CoxeterSystemInput,
+  type: InternalSphericalType,
+): number {
+  const [left, right] = type.generators;
+  const relation = system.coxeterMatrix[left][right];
+  if (type.dimension !== 2 || relation === "inf" || relation < 2) {
+    throw new StreamedLawfulDavisError("Invalid finite-pair type", [
+      `${type.id} does not have a finite rank-two relation.`,
+    ]);
+  }
+  return relation;
+}
+
+function rankTwoCellIdPrefix(type: InternalSphericalType): string {
+  return `sld:cell:T${type.generators.join("-")}:q`;
+}
+
+/** Cell roots per union kernel call: 2^14 bitset words = 2^19 points. */
+const PAIR_UNION_CHUNK_WORDS = 1 << 14;
+
+/** Union-find state of the wall pass, filled chunk by chunk in cell order. */
+interface WallUnionState {
+  disjointSet: ParityDisjointSet;
+  /**
+   * Crossing segments tallied on the segment's first edge and summed per
+   * wall afterwards.  An edge lies on at most rank-1 rank-two cells, so a
+   * byte holds its count.
+   */
+  segmentsByEdge: Uint8Array;
+  crossingSegmentCount: number;
+}
+
+function createWallUnionState(edges: PackedEdges): WallUnionState {
+  if (edges.count >= 2 ** 31) {
+    throw new StreamedLawfulDavisError("Too many geometric edges", [
+      `${edges.count} edges exceed the 2^31 limit of packed union records.`,
+    ]);
+  }
+  return {
+    disjointSet: new ParityDisjointSet(edges.count),
+    segmentsByEdge: new Uint8Array(edges.count),
+    crossingSegmentCount: 0,
+  };
+}
+
+/** Orbit-minimum bitset of a type, from either index representation. */
+function cellRootBits(
+  type: InternalSphericalType,
+  degree: number,
+): Uint32Array {
+  if (type.lazyIndex) return type.lazyIndex.minimumBits;
+  const bits = new Uint32Array(Math.ceil(degree / 32));
+  for (const root of type.representatives!)
+    bits[root >>> 5] |= 1 << (root & 31);
+  return bits;
+}
+
+/**
+ * Union kernel inputs for every rank-two type, in the order the sequential
+ * pass visits cells: type by type, roots increasing.
+ */
+function* pairUnionJobs(
+  system: CoxeterSystemInput,
+  action: PackedAction,
+  edges: PackedEdges,
+  types: readonly InternalSphericalType[],
+  rootBitsOf: (type: InternalSphericalType) => Uint32Array,
+): Generator<PairUnionInput> {
+  for (const type of types.filter((candidate) => candidate.dimension === 2)) {
+    const relation = pairRelation(system, type);
+    const rootBits = rootBitsOf(type);
+    for (
+      let firstWord = 0;
+      firstWord < rootBits.length;
+      firstWord += PAIR_UNION_CHUNK_WORDS
+    ) {
+      yield {
+        rows: action.rows,
+        degree: action.degree,
+        offsets: edges.offsets,
+        minimumBits: edges.minimumBits,
+        wordRank: edges.wordRank,
+        sourceBits: edges.sourceBits,
+        typeId: type.id,
+        left: type.generators[0],
+        right: type.generators[1],
+        relation,
+        rootBits: rootBits.slice(firstWord, firstWord + PAIR_UNION_CHUNK_WORDS),
+        firstWord,
+      };
+    }
+  }
+}
+
+function applyPairUnions(state: WallUnionState, result: PairUnionResult) {
+  if (!result.ok) {
+    throw new StreamedLawfulDavisError(result.title, result.details);
+  }
+  const { disjointSet, segmentsByEdge } = state;
+  const unions = result.unions;
+  for (let index = 0; index < 2 * result.count; index += 2) {
+    const first = unions[index];
+    const packed = unions[index + 1];
+    disjointSet.union(first, packed & 0x7fff_ffff, packed >>> 31);
+    segmentsByEdge[first] += 1;
+  }
+  state.crossingSegmentCount += result.count;
+}
+
 function buildWalls(
   system: CoxeterSystemInput,
   action: PackedAction,
   edges: PackedEdges,
   types: readonly InternalSphericalType[],
 ): InternalWalls {
-  const disjointSet = new ParityDisjointSet(edges.generator.length);
-  let crossingSegmentCount = 0;
-  for (const type of types.filter((candidate) => candidate.dimension === 2)) {
-    for (let ordinal = 0; ordinal < type.cellCount; ordinal += 1) {
-      const cell = cellFromOrdinal(type, ordinal);
-      const relationCell = boundaryForPairCell(
-        cell,
-        type,
-        system,
-        action,
-        edges,
-      );
-      const half = relationCell.boundary.length / 2;
-      for (let index = 0; index < half; index += 1) {
-        const first = relationCell.boundary[index];
-        const second = relationCell.boundary[index + half];
-        const orientationParity = -first.traversal * second.traversal;
-        disjointSet.union(
-          first.edgeIndex,
-          second.edgeIndex,
-          orientationParity === 1 ? 0 : 1,
-        );
-        crossingSegmentCount += 1;
-      }
-    }
+  const state = createWallUnionState(edges);
+  for (const job of pairUnionJobs(system, action, edges, types, (type) =>
+    cellRootBits(type, action.degree),
+  )) {
+    applyPairUnions(state, pairCellUnions(job));
   }
+  return finishWalls(action, edges, state);
+}
 
-  const canonicalByRoot = new Uint32Array(edges.generator.length);
-  canonicalByRoot.fill(UINT32_SENTINEL);
-  const edgeCountByRoot = new Uint32Array(edges.generator.length);
-  for (let edgeIndex = 0; edgeIndex < edges.generator.length; edgeIndex += 1) {
-    const root = disjointSet.find(edgeIndex).root;
-    edgeCountByRoot[root] += 1;
-    const existing = canonicalByRoot[root];
-    if (
-      existing === UINT32_SENTINEL ||
-      compareIds(
-        edgeRecord(edges, edgeIndex).id,
-        edgeRecord(edges, existing).id,
-      ) < 0
-    ) {
-      canonicalByRoot[root] = edgeIndex;
+/**
+ * buildWalls with the cell walks on a kernel pool.  Results are applied in
+ * job order through a bounded window, so the union sequence, and with it
+ * every wall, conflict count and hash, is the sequential one.
+ */
+async function buildWallsParallel(
+  system: CoxeterSystemInput,
+  action: PackedAction,
+  edges: PackedEdges,
+  types: readonly InternalSphericalType[],
+  rootBitsOf: (type: InternalSphericalType) => Uint32Array,
+  pool: KernelPool,
+): Promise<InternalWalls> {
+  const state = createWallUnionState(edges);
+  const jobs = pairUnionJobs(system, action, edges, types, rootBitsOf);
+  await runOrdered(
+    pool,
+    jobs,
+    (job) => pool.run("pairCellUnions", job),
+    (result) => applyPairUnions(state, result),
+  );
+  return finishWalls(action, edges, state);
+}
+
+function finishWalls(
+  action: PackedAction,
+  edges: PackedEdges,
+  state: WallUnionState,
+): InternalWalls {
+  const { disjointSet, segmentsByEdge, crossingSegmentCount } = state;
+  // One slot per union-find root, i.e. per wall.  Walls are few even when
+  // edges number in the hundreds of millions, so per-root data lives in small
+  // slot arrays instead of four edge-sized tables.
+  const slotByRoot = new Map<number, number>();
+  const slotRoot: number[] = [];
+  const slotCanonicalEdge: number[] = [];
+  const slotCanonicalId: Array<[number, number, number]> = [];
+  const slotEdgeCount: number[] = [];
+  const slotSegmentCount: number[] = [];
+  const rootSlot = (root: number): number => {
+    let slot = slotByRoot.get(root);
+    if (slot === undefined) {
+      slot = slotRoot.length;
+      slotByRoot.set(root, slot);
+      slotRoot.push(root);
+      slotCanonicalEdge.push(UINT32_SENTINEL);
+      slotCanonicalId.push([0, 0, 0]);
+      slotEdgeCount.push(0);
+      slotSegmentCount.push(0);
     }
-  }
-  const roots = [...canonicalByRoot.keys()]
-    .filter((root) => canonicalByRoot[root] !== UINT32_SENTINEL)
-    .sort((left, right) =>
-      compareIds(
-        edgeRecord(edges, canonicalByRoot[left]).id,
-        edgeRecord(edges, canonicalByRoot[right]).id,
-      ),
-    );
-  const wallIndexByRoot = new Uint32Array(edges.generator.length);
-  wallIndexByRoot.fill(UINT32_SENTINEL);
-  const segmentCountByRoot = new Uint32Array(edges.generator.length);
-  // Count each opposite-edge constraint without retaining the constraint list.
-  for (const type of types.filter((candidate) => candidate.dimension === 2)) {
-    for (let ordinal = 0; ordinal < type.cellCount; ordinal += 1) {
-      const relationCell = boundaryForPairCell(
-        cellFromOrdinal(type, ordinal),
-        type,
-        system,
-        action,
-        edges,
-      );
-      const half = relationCell.boundary.length / 2;
-      for (let index = 0; index < half; index += 1) {
-        const root = disjointSet.find(
-          relationCell.boundary[index].edgeIndex,
-        ).root;
-        segmentCountByRoot[root] += 1;
+    return slot;
+  };
+  // Walk edges in index order (generator, then smaller endpoint) so each
+  // edge's id fields are known without a select query.
+  const candidateId: [number, number, number] = [0, 0, 0];
+  let edgeIndex = 0;
+  for (let generator = 0; generator < action.rows.length; generator += 1) {
+    const row = action.rows[generator];
+    for (let point = 0; point < action.degree; point += 1) {
+      const image = row[point];
+      if (point > image) continue;
+      const slot = rootSlot(disjointSet.root(edgeIndex));
+      slotEdgeCount[slot] += 1;
+      slotSegmentCount[slot] += segmentsByEdge[edgeIndex];
+      const [source, target] = storedEdgeEndpoints(point, image);
+      candidateId[0] = generator;
+      candidateId[1] = source;
+      candidateId[2] = target;
+      if (
+        slotCanonicalEdge[slot] === UINT32_SENTINEL ||
+        compareEdgeStableIds(candidateId, slotCanonicalId[slot]) < 0
+      ) {
+        slotCanonicalEdge[slot] = edgeIndex;
+        slotCanonicalId[slot] = [generator, source, target];
       }
+      edgeIndex += 1;
     }
   }
-  const walls: StreamedWall[] = roots.map((root, wallIndex) => {
-    wallIndexByRoot[root] = wallIndex;
-    const canonicalEdgeIndex = canonicalByRoot[root];
+  const slotsInWallOrder = slotRoot
+    .map((_root, slot) => slot)
+    .sort((left, right) =>
+      compareEdgeStableIds(slotCanonicalId[left], slotCanonicalId[right]),
+    );
+  const wallIndexBySlot = new Uint32Array(slotRoot.length);
+  const walls: StreamedWall[] = slotsInWallOrder.map((slot, wallIndex) => {
+    wallIndexBySlot[slot] = wallIndex;
+    const canonicalEdgeIndex = slotCanonicalEdge[slot];
     const canonicalEdgeId = edgeRecord(edges, canonicalEdgeIndex).id;
-    const parityConflictCount = disjointSet.conflictCount(root);
+    const parityConflictCount = disjointSet.conflictCount(slotRoot[slot]);
     return {
       wallIndex,
       id: `wall:${canonicalEdgeId}`,
       canonicalEdgeIndex,
       canonicalEdgeId,
-      edgeCount: edgeCountByRoot[root],
-      crossingSegmentCount: segmentCountByRoot[root],
+      edgeCount: slotEdgeCount[slot],
+      crossingSegmentCount: slotSegmentCount[slot],
       parityConflictCount,
       twoSided: parityConflictCount === 0,
     };
   });
-  const edgeToWall = new Uint32Array(edges.generator.length);
-  const edgeParity = new Int8Array(edges.generator.length);
-  for (let edgeIndex = 0; edgeIndex < edges.generator.length; edgeIndex += 1) {
-    const found = disjointSet.find(edgeIndex);
-    const wallIndex = wallIndexByRoot[found.root];
-    const canonical = canonicalByRoot[found.root];
-    const canonicalParity = disjointSet.find(canonical).parity;
-    edgeToWall[edgeIndex] = wallIndex;
-    edgeParity[edgeIndex] = (found.parity ^ canonicalParity) === 0 ? 1 : -1;
+  // Parity of each wall's canonical edge relative to its root.
+  const slotCanonicalParity = slotCanonicalEdge.map((edgeIndex) => {
+    disjointSet.root(edgeIndex);
+    return disjointSet.lastParity;
+  });
+  const edgeToWall = new Uint32Array(edges.count);
+  const edgeParity = new Int8Array(edges.count);
+  for (let edgeIndex = 0; edgeIndex < edges.count; edgeIndex += 1) {
+    const slot = slotByRoot.get(disjointSet.root(edgeIndex))!;
+    const parity = disjointSet.lastParity;
+    edgeToWall[edgeIndex] = wallIndexBySlot[slot];
+    edgeParity[edgeIndex] = (parity ^ slotCanonicalParity[slot]) === 0 ? 1 : -1;
   }
   const summaryWithoutHash = {
     wallCount: walls.length,
-    edgeCount: edges.generator.length,
+    edgeCount: edges.count,
     crossingSegmentCount,
     twoSided: walls.every((wall) => wall.twoSided),
     walls,
@@ -1220,15 +2111,6 @@ function buildWalls(
     edgeToWall,
     edgeParity,
   };
-}
-
-function countCyclicTransitions(signs: readonly number[]): number {
-  if (signs.length === 0) return 0;
-  let transitions = 0;
-  for (let index = 0; index < signs.length; index += 1) {
-    if (signs[index] !== signs[(index + 1) % signs.length]) transitions += 1;
-  }
-  return transitions;
 }
 
 function normalizeCandidate(
@@ -1304,36 +2186,42 @@ function lawfulRankTwoCountsForCanonicalMasks(input: {
   const { system, action, edges, walls, types, maskCount } = input;
   const wallCount = walls.summary.wallCount;
   const patterns = new Map<string, RankTwoTransitionPattern>();
+  const scratch = createPairBoundaryScratch(system);
+  const termBuffer = new Float64Array(scratch.edgeIndex.length);
   for (const type of types.filter((candidate) => candidate.dimension === 2)) {
-    for (let ordinal = 0; ordinal < type.cellCount; ordinal += 1) {
-      const relationCell = boundaryForPairCell(
-        cellFromOrdinal(type, ordinal),
+    const relation = pairRelation(system, type);
+    forEachCellRoot(type, (root) => {
+      const length = walkPairBoundary(
+        root,
         type,
-        system,
+        relation,
         action,
         edges,
+        scratch,
       );
-      const terms: number[] = [];
-      for (let index = 0; index < relationCell.boundary.length; index += 1) {
-        const current = relationCell.boundary[index];
-        const next =
-          relationCell.boundary[(index + 1) % relationCell.boundary.length];
-        const currentWall = walls.edgeToWall[current.edgeIndex];
-        const nextWall = walls.edgeToWall[next.edgeIndex];
+      for (let index = 0; index < length; index += 1) {
+        const currentEdge = scratch.edgeIndex[index];
+        const nextIndex = (index + 1) % length;
+        const nextEdge = scratch.edgeIndex[nextIndex];
+        const currentWall = walls.edgeToWall[currentEdge];
+        const nextWall = walls.edgeToWall[nextEdge];
         const leftWall = Math.min(currentWall, nextWall);
         const rightWall = Math.max(currentWall, nextWall);
         const currentFixedSign =
-          walls.edgeParity[current.edgeIndex] * current.traversal;
-        const nextFixedSign = walls.edgeParity[next.edgeIndex] * next.traversal;
+          walls.edgeParity[currentEdge] * scratch.traversal[index];
+        const nextFixedSign =
+          walls.edgeParity[nextEdge] * scratch.traversal[nextIndex];
         const fixedTransition = currentFixedSign === nextFixedSign ? 0 : 1;
-        terms.push(2 * (leftWall * wallCount + rightWall) + fixedTransition);
+        termBuffer[index] =
+          2 * (leftWall * wallCount + rightWall) + fixedTransition;
       }
-      terms.sort(compareNumbers);
+      const terms = termBuffer.subarray(0, length).sort();
+      // Distinct patterns are few; the key string is the only per-cell allocation.
       const key = terms.join(",");
       const existing = patterns.get(key);
       if (existing) existing.frequency += 1;
-      else patterns.set(key, { frequency: 1, terms });
-    }
+      else patterns.set(key, { frequency: 1, terms: Array.from(terms) });
+    });
   }
 
   const counts = Array.from({ length: maskCount }, () => 0);
@@ -1470,12 +2358,13 @@ function enumerateNativeVertexLinkPrefilter(input: {
   const firstFailures: Array<StreamedNativeLinkFailureWitness | undefined> =
     Array(maskCount);
 
+  const wallGeneratorEffects = new Uint32Array(orderedWallIds.length);
   for (let point = 0; point < action.degree; point += 1) {
     let descendingGeneratorMask = 0;
-    const wallGeneratorEffects = new Uint32Array(orderedWallIds.length);
+    wallGeneratorEffects.fill(0);
     for (let generator = 0; generator < system.rank; generator += 1) {
       const edgeIndex = edgeIndexAt(edges, action.degree, point, generator);
-      const traversal = edges.source[edgeIndex] === point ? 1 : -1;
+      const traversal = edgeTraversal(edges, point, generator);
       if (walls.edgeParity[edgeIndex] * traversal === -1) {
         descendingGeneratorMask |= 2 ** generator;
       }
@@ -1624,6 +2513,28 @@ function groupedCounts(
   );
 }
 
+/**
+ * Digest of {[valuesKey]: [...], start, typeIndex} written as literal
+ * canonical JSON (keys already sorted: both value keys precede "start").
+ * Equal to canonicalSha256 of that object, without building per-cell
+ * arrays and walking them through the generic canonicalizer.
+ */
+function retentionChunkDigest(
+  valuesKey: "retained" | "retentionBits",
+  count: number,
+  valueAt: (offset: number) => number,
+  start: number,
+  typeIndex: number,
+): string {
+  let values = "";
+  for (let offset = 0; offset < count; offset += 1) {
+    values += offset === 0 ? `${valueAt(offset)}` : `,${valueAt(offset)}`;
+  }
+  return sha256Hex(
+    `{"${valuesKey}":[${values}],"start":${start},"typeIndex":${typeIndex}}`,
+  );
+}
+
 function hashRetentionBits(input: {
   oracleStructureHash: string;
   types: readonly InternalSphericalType[];
@@ -1642,18 +2553,17 @@ function hashRetentionBits(input: {
     const chunkHashes: string[] = [];
     for (let start = 0; start < type.cellCount; start += chunkSize) {
       const end = Math.min(type.cellCount, start + chunkSize);
-      const bits =
-        type.dimension === 0
-          ? Array.from({ length: end - start }, () => input.allBits)
-          : Array.from(
-              input.retentionByType[type.typeIndex]!.subarray(start, end),
-            );
+      const retention = input.retentionByType[type.typeIndex];
       chunkHashes.push(
-        canonicalSha256({
-          typeIndex: type.typeIndex,
+        retentionChunkDigest(
+          "retentionBits",
+          end - start,
+          type.dimension === 0
+            ? () => input.allBits
+            : (offset) => retention![start + offset],
           start,
-          retentionBits: bits,
-        }),
+          type.typeIndex,
+        ),
       );
     }
     typeRoots.push({
@@ -1694,19 +2604,17 @@ function hashCandidateRetentionBits(input: {
     const chunkHashes: string[] = [];
     for (let start = 0; start < type.cellCount; start += chunkSize) {
       const end = Math.min(type.cellCount, start + chunkSize);
-      const retained =
-        type.dimension === 0
-          ? Array.from({ length: end - start }, () => 1)
-          : Array.from(
-              input.retentionByType[type.typeIndex]!.subarray(start, end),
-              (bits) => ((bits & bit) !== 0 ? 1 : 0),
-            );
+      const retention = input.retentionByType[type.typeIndex];
       chunkHashes.push(
-        canonicalSha256({
-          typeIndex: type.typeIndex,
+        retentionChunkDigest(
+          "retained",
+          end - start,
+          type.dimension === 0
+            ? () => 1
+            : (offset) => ((retention![start + offset] & bit) !== 0 ? 1 : 0),
           start,
-          retained,
-        }),
+          type.typeIndex,
+        ),
       );
     }
     typeRoots.push({
@@ -1770,26 +2678,19 @@ function buildLawfulEvaluation(input: {
     }),
   );
   const allBits = allCandidateBits(candidates.length);
-  const edgeDirections = new Int8Array(
-    candidates.length * edges.generator.length,
-  );
-  for (
-    let candidateIndex = 0;
-    candidateIndex < candidates.length;
-    candidateIndex += 1
-  ) {
-    const candidate = candidates[candidateIndex];
-    const offset = candidateIndex * edges.generator.length;
-    for (
-      let edgeIndex = 0;
-      edgeIndex < edges.generator.length;
-      edgeIndex += 1
-    ) {
-      const wall = walls.summary.walls[walls.edgeToWall[edgeIndex]];
-      edgeDirections[offset + edgeIndex] =
-        candidate.wallSigns[wall.id] * walls.edgeParity[edgeIndex];
-    }
-  }
+  // Bit c of negativeWallBits[w] is set when candidate c gives wall w the
+  // sign -1.  The direction of edge e for candidate c is then
+  // (bit ? -1 : 1) * edgeParity[e]: no candidates-by-edges table is needed.
+  const negativeWallBits = new Uint32Array(walls.summary.wallCount);
+  walls.summary.walls.forEach((wall, wallIndex) => {
+    let bits = 0;
+    candidates.forEach((candidate, candidateIndex) => {
+      if (candidate.wallSigns[wall.id] === -1) {
+        bits |= candidateBit(candidateIndex);
+      }
+    });
+    negativeWallBits[wallIndex] = bits >>> 0;
+  });
 
   const retentionByType: Array<Uint32Array | undefined> = Array(types.length);
   for (const type of types) {
@@ -1798,52 +2699,66 @@ function buildLawfulEvaluation(input: {
     if (type.dimension === 1) retentionByType[type.typeIndex]?.fill(allBits);
   }
 
+  const pairScratch = createPairBoundaryScratch(system);
   for (const type of types.filter((candidate) => candidate.dimension === 2)) {
     const retention = retentionByType[type.typeIndex]!;
-    for (let ordinal = 0; ordinal < type.cellCount; ordinal += 1) {
-      const relationCell = boundaryForPairCell(
-        cellFromOrdinal(type, ordinal),
+    const relation = pairRelation(system, type);
+    forEachCellRoot(type, (root, ordinal) => {
+      const length = walkPairBoundary(
+        root,
         type,
-        system,
+        relation,
         action,
         edges,
+        pairScratch,
       );
-      let bits = 0;
-      for (
-        let candidateIndex = 0;
-        candidateIndex < candidates.length;
-        candidateIndex += 1
-      ) {
-        const offset = candidateIndex * edges.generator.length;
-        const signs = relationCell.boundary.map(
-          (occurrence) =>
-            edgeDirections[offset + occurrence.edgeIndex] *
-            occurrence.traversal,
-        );
-        if (countCyclicTransitions(signs) === 2)
-          bits |= candidateBit(candidateIndex);
+      // A lawful 2m-gon has exactly two sign changes around its boundary.
+      // Bit-sliced over all candidates: the change between consecutive
+      // boundary steps is the fixed-parity flip XOR both walls' sign masks,
+      // and a saturating 0/1/2/3+ counter is kept in three bit planes.
+      let ones = 0;
+      let twos = 0;
+      let more = 0;
+      for (let index = 0; index < length; index += 1) {
+        const nextIndex = index + 1 === length ? 0 : index + 1;
+        const edge = pairScratch.edgeIndex[index];
+        const nextEdge = pairScratch.edgeIndex[nextIndex];
+        const fixedFlip =
+          walls.edgeParity[edge] * pairScratch.traversal[index] !==
+          walls.edgeParity[nextEdge] * pairScratch.traversal[nextIndex];
+        const change =
+          ((fixedFlip ? allBits : 0) ^
+            negativeWallBits[walls.edgeToWall[edge]] ^
+            negativeWallBits[walls.edgeToWall[nextEdge]]) &
+          allBits;
+        more |= twos & change;
+        const nextTwos = (twos & ~change) | (ones & change);
+        ones = (ones & ~change) | (~ones & ~twos & ~more & change);
+        twos = nextTwos & ~more;
       }
-      retention[ordinal] = bits >>> 0;
-    }
+      retention[ordinal] = (twos & ~more & allBits) >>> 0;
+    });
   }
 
+  // A higher cell is retained for a candidate exactly when all of its
+  // rank-two faces are; its faces are the pair cells through its points.
+  const walker = createCellWalker(types, action.degree);
   for (const type of types.filter((candidate) => candidate.dimension >= 3)) {
     const retention = retentionByType[type.typeIndex]!;
-    for (let ordinal = 0; ordinal < type.cellCount; ordinal += 1) {
-      const cell = cellFromOrdinal(type, ordinal);
-      const vertices = verticesOfCell(cell, types, action);
+    forEachCellRoot(type, (root, ordinal) => {
+      const count = walkCellPoints(type, root, action, walker);
       let bits = allBits;
       for (const pairTypeIndex of type.rankTwoFaceTypeIndices) {
         const pairType = types[pairTypeIndex];
         const pairRetention = retentionByType[pairTypeIndex]!;
-        for (const point of vertices) {
-          bits &= pairRetention[ordinalAt(pairType, point)];
+        for (let index = 0; index < count; index += 1) {
+          bits &= pairRetention[ordinalAt(pairType, walker.points[index])];
           if (bits === 0) break;
         }
         if (bits === 0) break;
       }
       retention[ordinal] = bits >>> 0;
-    }
+    });
   }
 
   const dimensions = types.map((type) => type.dimension);
@@ -1912,28 +2827,30 @@ function buildLawfulEvaluation(input: {
   );
   const downwardClosureViolationWitnesses: StreamedClosureSummary["downwardClosureViolationWitnesses"] =
     [];
+  // Faces are visited per cell in increasing ordinal order, as before, so
+  // counts and the first witnesses are unchanged; cell records are only
+  // built for witnesses.
+  const faceOrdinals: number[] = [];
   for (const type of types.filter((candidate) => candidate.dimension > 0)) {
     const cofaceRetention = retentionByType[type.typeIndex];
-    for (let ordinal = 0; ordinal < type.cellCount; ordinal += 1) {
-      const cell = cellFromOrdinal(type, ordinal);
-      const cellBits =
-        type.dimension === 0 ? allBits : cofaceRetention![ordinal];
-      forEachFaceByTypeIndices(
-        cell,
-        type.immediateFaceTypeIndices,
-        types,
-        action,
-        (facet) => {
+    forEachCellRoot(type, (root, ordinal) => {
+      const cellBits = cofaceRetention![ordinal];
+      const count = walkCellPoints(type, root, action, walker);
+      for (const faceTypeIndex of type.immediateFaceTypeIndices) {
+        const faceType = types[faceTypeIndex];
+        for (const faceOrdinal of faceOrdinalsOfWalkedCell(
+          faceType,
+          walker,
+          count,
+          faceOrdinals,
+        )) {
           immediateIncidenceCount += 1;
-          const facetType = types[facet.typeIndex];
           const facetBits =
-            facet.dimension === 0
+            faceType.dimension === 0
               ? allBits
-              : retentionByType[facet.typeIndex]![
-                  ordinalAt(facetType, facet.representativePoint)
-                ];
+              : retentionByType[faceTypeIndex]![faceOrdinal];
           const violations = (cellBits & ~facetBits) >>> 0;
-          if (violations === 0) return;
+          if (violations === 0) continue;
           downwardClosureViolationCount += 1;
           for (
             let candidateIndex = 0;
@@ -1948,8 +2865,8 @@ function buildLawfulEvaluation(input: {
             downwardClosureViolationWitnesses.length < MAX_CLOSURE_WITNESSES
           ) {
             downwardClosureViolationWitnesses.push({
-              faceCellId: cellStableId(facet),
-              cofaceCellId: cellStableId(cell),
+              faceCellId: cellStableId(cellFromOrdinal(faceType, faceOrdinal)),
+              cofaceCellId: cellStableId(cellFromOrdinal(type, ordinal)),
               candidateIds: candidates
                 .filter(
                   (_candidate, candidateIndex) =>
@@ -1958,9 +2875,9 @@ function buildLawfulEvaluation(input: {
                 .map((candidate) => candidate.id),
             });
           }
-        },
-      );
-    }
+        }
+      }
+    });
   }
 
   for (const summary of candidateSummaries) {
@@ -2048,10 +2965,52 @@ function buildLawfulEvaluation(input: {
     assertGenerator(generator, system.rank);
     assertCandidateIndex(candidateIndex, candidates.length);
     const edgeIndex = edgeIndexAt(edges, action.degree, point, generator);
-    const storedDirection =
-      edgeDirections[candidateIndex * edges.generator.length + edgeIndex];
-    const traversal = edges.source[edgeIndex] === point ? 1 : -1;
+    const negative =
+      (negativeWallBits[walls.edgeToWall[edgeIndex]] &
+        candidateBit(candidateIndex)) !==
+      0;
+    const storedDirection = (negative ? -1 : 1) * walls.edgeParity[edgeIndex];
+    const traversal = edgeTraversal(edges, point, generator);
     return (storedDirection * traversal) as StreamedOrientationSign;
+  };
+
+  const metricFlagTypes = types.filter((type) => type.dimension >= 3);
+  let metricFlagCountCache:
+    | { checkedPointTypePairs: number; violations: Uint32Array }
+    | undefined;
+  /**
+   * Metric-flag violation counts for every candidate in a single pass.
+   * Retention is a per-candidate bitmask, so AND-ing the rank-two face bits
+   * at a (point, type) pair and clearing the spherical cell's own bits leaves
+   * exactly the candidates for which that pair is a violation.
+   */
+  const metricFlagCounts = () => {
+    if (metricFlagCountCache) return metricFlagCountCache;
+    const violations = new Uint32Array(candidates.length);
+    let checkedPointTypePairs = 0;
+    for (const type of metricFlagTypes) {
+      const typeRetention = retentionByType[type.typeIndex]!;
+      for (let point = 0; point < action.degree; point += 1) {
+        checkedPointTypePairs += 1;
+        let bits = allBits;
+        for (const pairTypeIndex of type.rankTwoFaceTypeIndices) {
+          bits &=
+            retentionByType[pairTypeIndex]![
+              ordinalAt(types[pairTypeIndex], point)
+            ];
+          if (bits === 0) break;
+        }
+        if (bits === 0) continue;
+        bits = (bits & ~typeRetention[ordinalAt(type, point)]) >>> 0;
+        while (bits !== 0) {
+          const lowest = (bits & -bits) >>> 0;
+          violations[31 - Math.clz32(lowest)] += 1;
+          bits = (bits ^ lowest) >>> 0;
+        }
+      }
+    }
+    metricFlagCountCache = { checkedPointTypePairs, violations };
+    return metricFlagCountCache;
   };
 
   const checkMoussongMetricFlag = (
@@ -2063,30 +3022,35 @@ function buildLawfulEvaluation(input: {
       throw new RangeError("witnessLimit must be a nonnegative integer.");
     }
     const bit = candidateBit(candidateIndex);
-    let checkedPointTypePairs = 0;
-    let violationCount = 0;
     const witnesses: StreamedMetricFlagWitness[] = [];
     // In the native Davis metric, the link edge for {i,j} has length
     // pi-pi/m_ij, hence at least pi/2. Moussong's metric-flag criterion says
     // that such a link is CAT(1) exactly when every metrically spherical
     // clique is filled. The exact spherical plan is the finite clique list.
-    for (const type of types.filter((candidate) => candidate.dimension >= 3)) {
+    // Counts come from one pass over all candidates at once (cached);
+    // only witness collection walks again, and stops at witnessLimit.
+    const counts = metricFlagCounts();
+    const checkedPointTypePairs = counts.checkedPointTypePairs;
+    const violationCount = counts.violations[candidateIndex];
+    witnessSearch: for (const type of metricFlagTypes) {
+      if (witnesses.length >= witnessLimit) break;
       const typeRetention = retentionByType[type.typeIndex]!;
       for (let point = 0; point < action.degree; point += 1) {
-        checkedPointTypePairs += 1;
-        const pairCells = type.rankTwoFaceTypeIndices.map((pairTypeIndex) => {
-          const pairType = types[pairTypeIndex];
-          const ordinal = ordinalAt(pairType, point);
-          return {
-            cell: cellFromOrdinal(pairType, ordinal),
-            retained: (retentionByType[pairTypeIndex]![ordinal] & bit) !== 0,
-          };
-        });
-        if (!pairCells.every((entry) => entry.retained)) continue;
+        if (witnesses.length >= witnessLimit) break witnessSearch;
+        // Only retention bits are needed to decide; cell records are built
+        // below for the rare witnesses (millions of pairs per candidate).
+        let allPairFacesRetained = true;
+        for (const pairTypeIndex of type.rankTwoFaceTypeIndices) {
+          const ordinal = ordinalAt(types[pairTypeIndex], point);
+          if ((retentionByType[pairTypeIndex]![ordinal] & bit) === 0) {
+            allPairFacesRetained = false;
+            break;
+          }
+        }
+        if (!allPairFacesRetained) continue;
         const sphericalOrdinal = ordinalAt(type, point);
         if ((typeRetention[sphericalOrdinal] & bit) !== 0) continue;
-        violationCount += 1;
-        if (witnesses.length < witnessLimit) {
+        {
           const sphericalCell = cellFromOrdinal(type, sphericalOrdinal);
           const sphericalVertices = verticesOfCell(
             sphericalCell,
@@ -2121,8 +3085,13 @@ function buildLawfulEvaluation(input: {
             point,
             sphericalTypeId: type.id,
             sphericalCellId: cellStableId(sphericalCell),
-            pairCellIds: pairCells
-              .map((entry) => cellStableId(entry.cell))
+            pairCellIds: type.rankTwoFaceTypeIndices
+              .map((pairTypeIndex) => {
+                const pairType = types[pairTypeIndex];
+                return cellStableId(
+                  cellFromOrdinal(pairType, ordinalAt(pairType, point)),
+                );
+              })
               .sort(compareIds),
             unlawfulRankTwoFaceCellId: cellStableId(unlawfulRankTwoFace),
             unlawfulRankTwoFaceRepresentativePoint:
@@ -2190,6 +3159,94 @@ function buildLawfulEvaluation(input: {
   return Object.freeze(evaluation);
 }
 
+/**
+ * Allocation-free walk of a cell's points (the W_T-orbit of its root) for hot
+ * loops over every cell.  Orbits were checked to be free when the index was
+ * built, so no per-image consistency check is repeated here.
+ */
+interface CellWalker {
+  stamp: Uint32Array;
+  generation: number;
+  points: Uint32Array;
+  /** Stamps over face ordinals, to deduplicate faces without sorting. */
+  faceStamp: Uint32Array;
+  faceGeneration: number;
+}
+
+function createCellWalker(
+  types: readonly InternalSphericalType[],
+  degree: number,
+): CellWalker {
+  const largest = types.reduce(
+    (maximum, type) => Math.max(maximum, type.subgroupOrder),
+    1,
+  );
+  const mostCells = types.reduce(
+    (maximum, type) => Math.max(maximum, type.cellCount),
+    1,
+  );
+  return {
+    stamp: new Uint32Array(degree),
+    generation: 0,
+    points: new Uint32Array(largest),
+    faceStamp: new Uint32Array(mostCells),
+    faceGeneration: 0,
+  };
+}
+
+/** Fills walker.points with the cell's points; returns how many. */
+function walkCellPoints(
+  type: InternalSphericalType,
+  root: number,
+  action: PackedAction,
+  walker: CellWalker,
+): number {
+  walker.generation = (walker.generation + 1) >>> 0;
+  if (walker.generation === 0) {
+    walker.stamp.fill(0);
+    walker.generation = 1;
+  }
+  const generation = walker.generation;
+  const points = walker.points;
+  points[0] = root;
+  walker.stamp[root] = generation;
+  let tail = 1;
+  for (let head = 0; head < tail; head += 1) {
+    const point = points[head];
+    for (const generator of type.generators) {
+      const image = action.rows[generator][point];
+      if (walker.stamp[image] === generation) continue;
+      walker.stamp[image] = generation;
+      points[tail++] = image;
+    }
+  }
+  return tail;
+}
+
+/** Sorted distinct ordinals of `faceType` cells through the walked points. */
+function faceOrdinalsOfWalkedCell(
+  faceType: InternalSphericalType,
+  walker: CellWalker,
+  count: number,
+  out: number[],
+): number[] {
+  walker.faceGeneration = (walker.faceGeneration + 1) >>> 0;
+  if (walker.faceGeneration === 0) {
+    walker.faceStamp.fill(0);
+    walker.faceGeneration = 1;
+  }
+  const generation = walker.faceGeneration;
+  out.length = 0;
+  for (let index = 0; index < count; index += 1) {
+    const ordinal = ordinalAt(faceType, walker.points[index]);
+    if (walker.faceStamp[ordinal] === generation) continue;
+    walker.faceStamp[ordinal] = generation;
+    out.push(ordinal);
+  }
+  // A cell has |W_T| / |W_F| faces of type F: few entries to sort.
+  return out.sort(compareNumbers);
+}
+
 function forEachFaceByTypeIndices(
   cell: StreamedDavisCell,
   faceTypeIndices: readonly number[],
@@ -2213,19 +3270,260 @@ function forEachFaceByTypeIndices(
  * Davis face poset. A nonempty spherical type keeps one compact ordinal per
  * action point; a cell's vertices and faces are reconstructed only on demand.
  */
+/**
+ * Content-addressed reuse of oracles.  Construction is a deterministic
+ * function of (system, action rows, ordinal index mode) and the result is
+ * immutable, so an oracle for the same bytes is exactly what a rebuild would
+ * produce.  Certification pipelines rebuild the oracle at every replay
+ * boundary (26 times in one full-H1 + Track B run); each call still
+ * presents its own bytes, which are re-hashed here, so replay semantics are
+ * unchanged.  Entries are weak: a finished pipeline releases its oracle.
+ */
+const ORACLE_CACHE = new Map<string, WeakRef<StreamedLawfulDavisOracle>>();
+const ORACLE_CACHE_CLEANUP =
+  typeof FinalizationRegistry === "undefined"
+    ? undefined
+    : new FinalizationRegistry<string>((key) => {
+        const entry = ORACLE_CACHE.get(key);
+        if (entry && entry.deref() === undefined) ORACLE_CACHE.delete(key);
+      });
+
 export function buildStreamedLawfulDavisOracle(
   input: StreamedLawfulDavisInput,
+): StreamedLawfulDavisOracle {
+  if (typeof WeakRef === "undefined" || input.cache === false)
+    return constructStreamedLawfulDavisOracle(input);
+  const rows = input.generatorImages as readonly ArrayLike<number>[];
+  let key: string;
+  let rowsDigest: string;
+  try {
+    rowsDigest = computeStreamedActionRowsCanonicalSha256(rows);
+    key = [
+      canonicalJsonSha256(input.system),
+      rowsDigest,
+      input.ordinalIndex ?? "auto",
+    ].join(":");
+  } catch {
+    // Malformed input: let construction report the precise validation error.
+    return constructStreamedLawfulDavisOracle(input);
+  }
+  const cached = ORACLE_CACHE.get(key)?.deref();
+  if (cached) return cached;
+  const oracle = constructStreamedLawfulDavisOracle(input, rowsDigest);
+  ORACLE_CACHE.set(key, new WeakRef(oracle));
+  ORACLE_CACHE_CLEANUP?.register(oracle, key);
+  return oracle;
+}
+
+/**
+ * Kernel results computed on worker threads for exactly the rows handed to
+ * construction.  Module-private: only the parallel builder creates them, from
+ * a row copy no caller can reach.
+ */
+interface PrecomputedOracleKernels {
+  relationFailures: ReadonlyMap<
+    string,
+    { point: number; image: number } | null
+  >;
+
+  cellIndexByHostType: ReadonlyMap<number, MaximalCellIndexResult>;
+  edges: PackedEdges;
+  walls: InternalWalls;
+}
+
+/**
+ * buildStreamedLawfulDavisOracle with its two linear-time scans, the Coxeter
+ * relation checks and the per-maximal-type cell index, spread over a kernel
+ * pool.  The oracle is identical to the sequential one (same structure hash);
+ * only wall-clock time changes.
+ */
+export async function buildStreamedLawfulDavisOracleParallel(
+  input: StreamedLawfulDavisInput,
+  pool: KernelPool,
+): Promise<StreamedLawfulDavisOracle> {
+  const rows = input.generatorImages as readonly ArrayLike<number>[];
+  if (
+    pool.kind === "inline" ||
+    typeof WeakRef === "undefined" ||
+    input.ordinalIndex === "eager" ||
+    rows.length === 0 ||
+    rows.some(
+      (row) => !(row instanceof Uint32Array) || row.length !== rows[0].length,
+    )
+  ) {
+    return buildStreamedLawfulDavisOracle(input);
+  }
+  const system = cloneJsonData(parseCoxeterSystemInput(input.system));
+  const degree = rows[0].length;
+  const types = buildSphericalTypes(system, degree);
+  if (
+    input.ordinalIndex !== "lazy" &&
+    eagerOrdinalBytes(types, degree) <= EAGER_ORDINAL_BUDGET_BYTES
+  ) {
+    // Small actions: the eager index has no per-type kernels to share out.
+    return buildStreamedLawfulDavisOracle(input);
+  }
+  const rowsDigest = computeStreamedActionRowsCanonicalSha256(rows);
+  const key = [
+    canonicalJsonSha256(input.system),
+    rowsDigest,
+    input.ordinalIndex ?? "auto",
+  ].join(":");
+  const useCache = input.cache !== false;
+  const cached = useCache ? ORACLE_CACHE.get(key)?.deref() : undefined;
+  if (cached) return cached;
+
+  // A private shared copy: workers read it in place, and the caller cannot
+  // change it between the kernels and construction.
+  const shared = rows.map((row) => {
+    const copy = new Uint32Array(new SharedArrayBuffer(row.length * 4));
+    copy.set(row);
+    return copy;
+  });
+  const involutive = shared.map(isInvolutionRow);
+  const relationJobs: Array<
+    Promise<[string, { point: number; image: number } | null]>
+  > = [];
+  for (let left = 0; left < system.rank; left += 1) {
+    for (let right = left + 1; right < system.rank; right += 1) {
+      const m = system.coxeterMatrix[left][right];
+      if (m === "inf") continue;
+      relationJobs.push(
+        pool
+          .run("alternatingRelation", {
+            left: shared[left],
+            right: shared[right],
+            m,
+            degree,
+            involutions: involutive[left] && involutive[right],
+          })
+          .then((failure) => [`${left},${right}`, failure]),
+      );
+    }
+  }
+  const { maximal, assigned } = maximalCellAssignment(types);
+  const action: PackedAction = { degree, rows: shared };
+  const cellJobs = maximal.map((host) =>
+    pool
+      .run(
+        "maximalCellIndex",
+        maximalCellIndexInput(host, assigned.get(host)!, action),
+      )
+      .then((result): [number, MaximalCellIndexResult] => [
+        host.typeIndex,
+        result,
+      ]),
+  );
+  let phaseStart = performance.now();
+  const report = (phase: StreamedOracleBuildProgress["phase"]) => {
+    const now = performance.now();
+    input.onProgress?.({ phase, elapsedMs: now - phaseStart });
+    phaseStart = now;
+  };
+  const [relations, cells] = await Promise.all([
+    Promise.all(relationJobs),
+    Promise.all(cellJobs),
+  ]);
+  report("parallel-kernels");
+  // Root bitsets of every hosted type, from the kernel results.  Failures
+  // are reported by construction below, in the sequential order.
+  const rootBits = new Map<number, Uint32Array>();
+  for (const [hostIndex, result] of cells) {
+    if (!result.ok) continue;
+    rootBits.set(hostIndex, result.hostBits);
+    const host = types[hostIndex];
+    assigned.get(host)!.forEach((subtype, t) => {
+      rootBits.set(subtype.typeIndex, result.subtypeBits[t]);
+    });
+  }
+  const rankTwo = types.filter((type) => type.dimension === 2);
+  let edges: PackedEdges | undefined;
+  let walls: InternalWalls | undefined;
+  const relationsHold = relations.every(([, failure]) => failure === null);
+  if (relationsHold && rankTwo.every((type) => rootBits.has(type.typeIndex))) {
+    try {
+      edges = buildEdges(action, system.rank);
+      walls = await buildWallsParallel(
+        system,
+        action,
+        edges,
+        types,
+        (type) => rootBits.get(type.typeIndex)!,
+        pool,
+      );
+    } catch {
+      // Construction repeats the sequential checks and reports the error.
+      edges = undefined;
+      walls = undefined;
+    }
+  }
+  report("parallel-walls");
+  const again = useCache ? ORACLE_CACHE.get(key)?.deref() : undefined;
+  if (again) return again;
+  const oracle = constructStreamedLawfulDavisOracle(
+    { ...input, generatorImages: shared },
+    rowsDigest,
+    edges && walls
+      ? {
+          relationFailures: new Map(relations),
+          cellIndexByHostType: new Map(cells),
+          edges,
+          walls,
+        }
+      : undefined,
+  );
+  if (useCache) {
+    ORACLE_CACHE.set(key, new WeakRef(oracle));
+    ORACLE_CACHE_CLEANUP?.register(oracle, key);
+  }
+  return oracle;
+}
+
+function constructStreamedLawfulDavisOracle(
+  input: StreamedLawfulDavisInput,
+  /** Digest of exactly these rows, when the caller already computed it. */
+  precomputedRowsDigest?: string,
+  precomputed?: PrecomputedOracleKernels,
 ): StreamedLawfulDavisOracle {
   // Validation returns the caller's object. Clone it before constructing any
   // packed tables so later mutations of an imported JSON object cannot change
   // the meaning of an already-hashed oracle.
+  let phaseStart = performance.now();
+  const report = (phase: StreamedOracleBuildProgress["phase"], extra = {}) => {
+    const now = performance.now();
+    input.onProgress?.({ phase, elapsedMs: now - phaseStart, ...extra });
+    phaseStart = now;
+  };
   const system = cloneJsonData(parseCoxeterSystemInput(input.system));
-  const action = packAction(system, input.generatorImages);
-  const actionRowsCanonicalSha256 = hashPackedActionRows(action);
+  const action = packAction(system, input.generatorImages, precomputed);
+  report("validate-action");
+  const actionRowsCanonicalSha256 =
+    precomputedRowsDigest ?? hashPackedActionRows(action);
+  report("hash-action-rows");
   const types = buildSphericalTypes(system, action.degree);
-  for (const type of types) buildOrbitIndex(type, action);
-  const edges = buildEdges(action, system.rank);
-  const walls = buildWalls(system, action, edges, types);
+  report("spherical-types");
+  const ordinalMode =
+    input.ordinalIndex === "eager" || input.ordinalIndex === "lazy"
+      ? input.ordinalIndex
+      : eagerOrdinalBytes(types, action.degree) <= EAGER_ORDINAL_BUDGET_BYTES
+        ? "eager"
+        : "lazy";
+  if (ordinalMode === "eager") {
+    for (const type of types) buildOrbitIndex(type, action);
+  } else {
+    const scratch: OrbitScratch = { generation: 0, queue: new Uint32Array(1) };
+    buildLazyOrbitIndexesByMaximalCells(
+      types,
+      action,
+      scratch,
+      precomputed?.cellIndexByHostType,
+    );
+  }
+  report("orbit-index", { ordinalIndex: ordinalMode });
+  const edges = precomputed?.edges ?? buildEdges(action, system.rank);
+  report("edges");
+  const walls = precomputed?.walls ?? buildWalls(system, action, edges, types);
+  report("walls");
   const cellCountByDimension: Record<string, number> = {};
   for (const type of types) {
     const key = String(type.dimension);
@@ -2265,7 +3563,7 @@ export function buildStreamedLawfulDavisOracle(
     actionRowsCanonicalSha256,
     sphericalTypes: publicTypes,
     cellCountByDimension,
-    geometricEdgeCount: edges.generator.length,
+    geometricEdgeCount: edges.count,
     rankTwoCellCount,
     wallStructureHash: walls.summary.structureHash,
   });
@@ -2286,7 +3584,7 @@ export function buildStreamedLawfulDavisOracle(
     system: publicSystem,
     degree: action.degree,
     generatorCount: system.rank,
-    geometricEdgeCount: edges.generator.length,
+    geometricEdgeCount: edges.count,
     rankTwoCellCount,
     cellCount,
     cellCountByDimension: publicCellCountByDimension,
@@ -2294,6 +3592,7 @@ export function buildStreamedLawfulDavisOracle(
     walls: publicWalls,
     actionRowsCanonicalSha256,
     structureHash,
+    copyActionRows: () => action.rows.map((row) => row.slice()),
     neighbor: (point, generator) => {
       assertPoint(point, action.degree);
       assertGenerator(generator, system.rank);
@@ -2377,6 +3676,94 @@ export function buildStreamedLawfulDavisOracle(
         action,
         visitor,
       );
+    },
+    forEachRankTwoCellPacked: (visitor) => {
+      const scratch = createPairBoundaryScratch(system);
+      const record: PackedRankTwoCell = {
+        typeIndex: 0,
+        representativePoint: 0,
+        cellId: "",
+        length: 0,
+        edgeIndex: scratch.edgeIndex,
+        traversal: scratch.traversal,
+        point: scratch.point,
+        generator: new Uint8Array(scratch.edgeIndex.length),
+      };
+      for (const type of types.filter(
+        (candidate) => candidate.dimension === 2,
+      )) {
+        const relation = pairRelation(system, type);
+        const idPrefix = rankTwoCellIdPrefix(type);
+        const [left, right] = type.generators;
+        for (let step = 0; step < 2 * relation; step += 1) {
+          record.generator[step] = step % 2 === 0 ? left : right;
+        }
+        record.typeIndex = type.typeIndex;
+        forEachCellRoot(type, (root) => {
+          record.length = walkPairBoundary(
+            root,
+            type,
+            relation,
+            action,
+            edges,
+            scratch,
+          );
+          record.representativePoint = root;
+          record.cellId = `${idPrefix}${root}`;
+          visitor(record);
+        });
+      }
+    },
+    packedEdgeTables: () => {
+      const generator = new Uint32Array(edges.count);
+      const source = new Uint32Array(edges.count);
+      const target = new Uint32Array(edges.count);
+      let edgeIndex = 0;
+      for (let g = 0; g < action.rows.length; g += 1) {
+        const row = action.rows[g];
+        for (let point = 0; point < action.degree; point += 1) {
+          const image = row[point];
+          if (point > image) continue;
+          const [stored, other] = storedEdgeEndpoints(point, image);
+          generator[edgeIndex] = g;
+          source[edgeIndex] = stored;
+          target[edgeIndex] = other;
+          edgeIndex += 1;
+        }
+      }
+      return { generator, source, target };
+    },
+    rankTwoWalkTables: () => ({
+      tables: {
+        rows: action.rows,
+        degree: action.degree,
+        offsets: edges.offsets,
+        minimumBits: edges.minimumBits,
+        wordRank: edges.wordRank,
+        sourceBits: edges.sourceBits,
+      },
+      types: types
+        .filter((type) => type.dimension === 2)
+        .map((type) => ({
+          typeIndex: type.typeIndex,
+          typeId: type.id,
+          idPrefix: rankTwoCellIdPrefix(type),
+          left: type.generators[0],
+          right: type.generators[1],
+          relation: pairRelation(system, type),
+          rootBits: cellRootBits(type, action.degree),
+          cellCount: type.cellCount,
+        })),
+    }),
+    // Copies in shared memory, so worker kernels can read them in place.
+    packedWallTables: () => ({
+      edgeToWall: sharedCopy(walls.edgeToWall),
+      edgeParity: sharedCopy(walls.edgeParity),
+    }),
+    edgeIndexAt: (point, generator) => {
+      assertPoint(point, action.degree);
+      assertGenerator(generator, system.rank);
+      return edgeIndexAt(edges, action.degree, point, generator);
     },
     forEachRankTwoCell: (visitor) => {
       for (const type of types.filter(

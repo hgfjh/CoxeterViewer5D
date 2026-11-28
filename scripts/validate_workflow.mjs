@@ -83,7 +83,9 @@ try {
       logLevel: "silent",
       optimizeDeps: { include: [], noDiscovery: true },
       root: process.cwd(),
-      server: { middlewareMode: true },
+      // A one-shot module loader needs no file watcher; watching the whole
+      // repository dominated this script's runtime.
+      server: { middlewareMode: true, watch: null },
     });
     const quotientModule = await vite.ssrLoadModule(
       "/src/quotient/validation.ts",

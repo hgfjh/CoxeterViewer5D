@@ -15,6 +15,7 @@ import {
   topologyLensDefinition,
 } from "../src/app/researchWorkflow";
 import {
+  compactResearchCatalogueNotices,
   createAnnotation,
   createCameraBookmark,
   defaultGalleryEntries,
@@ -190,12 +191,66 @@ describe("research UI helper data", () => {
       "catalogue:8facet:all",
     );
     expect(defaultGalleryEntries().map((entry) => entry.id)).toContain(
-      "catalogue:8facet:08",
+      "catalogue:8facet:06",
     );
     const jnwCubeEntry = defaultGalleryEntries().find(
       (entry) => entry.id === "jnw:cube-graph",
     );
     expect(jnwCubeEntry?.actionLabel).toBe("Open JNW game");
+    expect(
+      defaultGalleryEntries().find((entry) => entry.id === "compact:5-prism-p2")
+        ?.summary,
+    ).toContain("archived 240-record Track B portfolio");
+    expect(
+      defaultGalleryEntries().find((entry) => entry.id === "compact:5-prism-p2")
+        ?.summary,
+    ).toContain("component-resolved Niblo-Reeves CEGAR experiment");
+    expect(
+      defaultGalleryEntries().find((entry) => entry.id === "compact:5-prism-p2")
+        ?.summary,
+    ).toContain("not a cubulation or nonfibering theorem");
+    expect(
+      defaultGalleryEntries().find(
+        (entry) => entry.id === "catalogue:8facet:g12221",
+      )?.summary,
+    ).toContain("not mathematically excluded");
+    expect(defaultGalleryEntries().map((entry) => entry.id)).toEqual(
+      expect.arrayContaining([
+        "compact:5-prism-h5-p7-22",
+        "catalogue:9facet:all",
+        "compact:3-tetrahedron-c44",
+      ]),
+    );
+    expect(
+      compactResearchCatalogueNotices.find(
+        (notice) => notice.id === "makarov-p0-p1",
+      ),
+    ).toMatchObject({ status: "paired primary campaign" });
+    expect(
+      compactResearchCatalogueNotices.find(
+        (notice) => notice.id === "tumarkin-06-15",
+      ),
+    ).toMatchObject({ status: "paired bounded comparison" });
+    expect(
+      compactResearchCatalogueNotices.find(
+        (notice) => notice.id === "makarov-p2",
+      ),
+    ).toMatchObject({
+      status: "Track B archived / NR affine CEGAR inconclusive",
+    });
+    expect(
+      compactResearchCatalogueNotices.find(
+        (notice) => notice.id === "makarov-p2",
+      )?.summary,
+    ).toContain("not Track B or P2 fibering in general");
+    expect(
+      compactResearchCatalogueNotices.find(
+        (notice) => notice.id === "h5-p7-22",
+      ),
+    ).toMatchObject({
+      status: "cover studied / no wall fibering",
+      sourceAvailability: "bundled-source",
+    });
     expect(
       viewComparisonOptions.some((option) => option.id === "davis-vs-ygamma"),
     ).toBe(true);
@@ -278,7 +333,7 @@ describe("topology-first explanations", () => {
     expect(gammaScene.edges).toHaveLength(gammaScene.records.length);
     for (const edge of gammaScene.edges) {
       const record = gammaScene.records.find((entry) => entry.id === edge.id)!;
-      expect(edge.compactLabel).toBe(String(record.entry));
+      expect(edge.compactLabel).toBe(`m=${record.entry}`);
       expect(
         compactSystem.generators.some(
           (generator) => generator.label === edge.compactLabel,

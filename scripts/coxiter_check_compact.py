@@ -56,7 +56,13 @@ SUPPORTED_EXAMPLES = {
         "expectedRank": 7,
         "expectedDimension": 5,
     },
+    "compact_5_prism_h5_p7_22.json": {
+        "sourceRefIds": ["ma-zheng-2022-prism-figure", "kaplinskaja-1974-simplicial-prisms"],
+        "expectedRank": 7,
+        "expectedDimension": 5,
+    },
 }
+MAZHENG_NINE_FACET_PATTERN = re.compile(r"mazheng_5d_9facet_p[0-9]{3}(_[0-9]{2})?\.json")
 TUMARKIN_EIGHT_FACET_PATTERN = re.compile(
     r"tumarkin_5d_8facet_(g11411|g12221)_([0-9]{2})\.json"
 )
@@ -74,6 +80,12 @@ def supported_example_spec(name: str) -> dict[str, Any]:
         return {
             "sourceRefIds": ["tumarkin-2007-n-plus-3"],
             "expectedRank": 8,
+            "expectedDimension": 5,
+        }
+    if MAZHENG_NINE_FACET_PATTERN.fullmatch(name):
+        return {
+            "sourceRefIds": ["ma-zheng-2022-nine-facets", "10facets5d-m9-verified"],
+            "expectedRank": 9,
             "expectedDimension": 5,
         }
     raise ValueError(f"{name} is not a supported compact CoxIter fixture")

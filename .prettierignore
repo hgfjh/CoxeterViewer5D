@@ -24,3 +24,42 @@ src-tauri/gen
 src-tauri/target
 pnpm-lock.yaml
 dev-server.log
+
+# Display-math-heavy research writeup: Prettier escapes _ and * inside its \( \) math.
+docs/C44_2233_3D_Coxeter_Wall_Fibering_Writeup.md
+
+# Sealed research fixtures read by the app and tests. Some are pinned by exact
+# bytes, so they keep their generator's formatting.
+scripts/certificates/portfolio/compact_h5_research_portfolio.json
+scripts/certificates/portfolio/makarov_p0_p1_small_prime_structural_screen.json
+scripts/certificates/portfolio/makarov_p2_cocycle_screening_portfolio.json
+scripts/certificates/portfolio/makarov_p2_facet_binary_orientation_cover.json
+scripts/certificates/portfolio/makarov_p2_lq_schreier_table.json
+scripts/certificates/portfolio/makarov_p2_section5_color_class_wall_orientation.json
+scripts/certificates/portfolio/makarov_p2_section5_compressed_track_b.json
+scripts/certificates/portfolio/makarov_p2_section5_generalized_track_a_attempt.json
+scripts/certificates/portfolio/makarov_p2_section5_import.json
+scripts/certificates/portfolio/makarov_p2_section5_wall_compatibility.json
+scripts/certificates/portfolio/makarov_p2_section5_wall_coorientation_obstruction.json
+scripts/certificates/portfolio/makarov_p2_section5_x_primitive_cocycle.json
+scripts/certificates/portfolio/makarov_p2_sheet_resolved_wall_flip_cegar.json
+scripts/certificates/portfolio/makarov_p2_sheet_resolved_wall_flip_cegar_unrestricted_depth2.json
+scripts/certificates/portfolio/makarov_p2_tits_orientation_cover.json
+scripts/certificates/portfolio/makarov_p2_tits_root_orbit_frontier.json
+scripts/certificates/portfolio/makarov_p2_type6_barycentric_reduction.json
+scripts/certificates/portfolio/makarov_p2_type6_cone_apex_lemma.json
+scripts/certificates/portfolio/makarov_p2_type6_fourier_schreier_chamber_screen.json
+scripts/certificates/portfolio/makarov_p2_type6_full_star_compiled.json
+scripts/certificates/portfolio/makarov_p2_type6_full_star_equivalence.json
+scripts/certificates/portfolio/makarov_p2_type6_maximal_type5_global_timeout.json
+scripts/certificates/portfolio/makarov_p2_type6_r2_maximal_compiled.json
+scripts/certificates/portfolio/makarov_p2_type6_r2_periodic_repair.json
+scripts/certificates/portfolio/makarov_p2_type6_wall_track_b.json
+scripts/certificates/portfolio/makarov_p2_type6_zero_fourier_compiled.json
+scripts/certificates/portfolio/makarov_p2_wall_flip_cegar.json
+scripts/certificates/torsion-free/jnw_cube_graph_degree4_track_a_wall_preflight.json
+scripts/certificates/torsion-free/makarov_h4_projection_obstruction.json
+scripts/certificates/torsion-free/makarov_p0_p1_prime5_structural_obstruction.json
+scripts/certificates/torsion-free/tumarkin_06_15_shallow_split_target_screen.json
+scripts/data/makarov_p2_section5_coarse_incidence.json
+scripts/data/makarov_p2_section5_coloring.json

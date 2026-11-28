@@ -1,0 +1,185 @@
+{
+  "activeDegreeTiers": [
+    28800,
+    57600,
+    86400,
+    115200
+  ],
+  "artifactType": "makarov-p0-p1-small-prime-structural-screen-portfolio",
+  "certificateSha256": "3a3c7915b4811c9c650f92bb404cac4a2ea079867cf682ab87c606028f43b2b7",
+  "children": [
+    {
+      "activeDegreeTiersRuledOut": [
+        28800,
+        57600,
+        86400,
+        115200
+      ],
+      "artifactBytesSha256": "7893faef456d122c3e8b4e8a00e9b9b3bfb7b520fd7cc2aeb0bb455a478f89b6",
+      "artifactPath": "scripts/certificates/torsion-free/makarov_p0_p1_prime3_structural_obstruction.json",
+      "artifactType": "makarov-p0-p1-prime3-structural-obstruction-certificate",
+      "canonicalArtifactSha256": "dd6860f6e0229dea9d54d6cd1dc5b1d0b39a3022c41204b58b3ff55ff4f38bd6",
+      "certificateSha256": "bf2d2d61948eb92be54ab2b89402dbc202d231070e2fb44d704f4d5ce65541cf",
+      "importer": {
+        "bytesSha256": "98036c2f2e55b1c51dd04ab3d728bb67f05a9441379c1b0cb41cb5d2b4fba0dd",
+        "path": "scripts/certify_makarov_p0_p1_prime3_structure.py",
+        "validationStatus": "passed",
+        "validator": "validate_stored_certificate"
+      },
+      "proofBoundary": {
+        "claims": [
+          "The selected Q(zeta_30) prime reduction descends exactly from GF(81) to GF(9).",
+          "All maximal spherical restrictions remain injective in the selected image.",
+          "P0 and restricted P1 have the recorded common image and kernel index.",
+          "No subgroup of this finite image has any listed active-tier index."
+        ],
+        "nonClaims": [
+          "a source-complete statement about every prime ideal above rational prime 3",
+          "minimal torsion-free index for P0 or P1",
+          "nonexistence of active-tier torsion-free subgroups through another finite image",
+          "materialized quotient action or quotient complex",
+          "full integral H1 or a fibering conclusion"
+        ]
+      },
+      "rationalPrime": 3,
+      "status": "passed"
+    },
+    {
+      "activeDegreeTiersRuledOut": [
+        28800,
+        57600,
+        86400,
+        115200
+      ],
+      "artifactBytesSha256": "eb63cb8551932865b90ebd5fcb0ec70f987ec31efb6eda43fadf4b1ae88a70b6",
+      "artifactPath": "scripts/certificates/torsion-free/makarov_p0_p1_prime7_structural_obstruction.json",
+      "artifactType": "makarov-p0-p1-prime7-structural-obstruction-certificate",
+      "canonicalArtifactSha256": "9bc8d330533ec4edf5622b546430d4a82fda9042e62a58cadc74e375e99a3fc6",
+      "certificateSha256": "39a077e91811696abdbed4161d9a3c0679a6eac5865e9f8dbc5f3bfc45b16046",
+      "importer": {
+        "bytesSha256": "3bfd4160baffb969d834e5da53be2f5b7fd605df5095cfe4946b1404a63564b5",
+        "path": "scripts/certify_makarov_p0_p1_prime7_structure.py",
+        "validationStatus": "passed",
+        "validator": "validate_stored_certificate"
+      },
+      "proofBoundary": {
+        "claims": [
+          "Both reviewed degree-four prime-7 residues have the recorded exact common coefficient-subfield descent to GF(49).",
+          "The descended P0 image has the recorded exact order, derived subgroup, and quotient.",
+          "The restricted P1 representation maps onto the same finite image.",
+          "The P0 congruence kernel and its P1 restriction have the recorded exact index and are torsion-free.",
+          "No subgroup of this common finite image has any listed active-tier index."
+        ],
+        "nonClaims": [
+          "minimal torsion-free index for P0 or P1",
+          "nonexistence of active-tier torsion-free subgroups through another finite image",
+          "materialized quotient action or quotient complex",
+          "full integral H1",
+          "virtual algebraic fibering",
+          "smooth fibering",
+          "a global subgroup-classification statement beyond the audited finite image and degrees"
+        ]
+      },
+      "rationalPrime": 7,
+      "status": "passed"
+    },
+    {
+      "activeDegreeTiersRuledOut": [
+        28800,
+        57600,
+        86400,
+        115200
+      ],
+      "artifactBytesSha256": "8f864a065234367f6e48f760837589a18bb374d6fa2b188daf12bfeb1a5649ac",
+      "artifactPath": "scripts/certificates/torsion-free/makarov_p0_p1_prime11_structural_obstruction.json",
+      "artifactType": "makarov-p0-p1-prime11-structural-obstruction-certificate",
+      "canonicalArtifactSha256": "2583377b5c56990be8e54c92850041f5cf4549a366766555ab44a22234cb39f6",
+      "certificateSha256": "984b74672b8901891a4b8f36da7744366691804cea4cb8470ddd0efa7e0d1003",
+      "importer": {
+        "bytesSha256": "97f4caa14ae559efff9c027614ede9f14e7408e44da612a1ea508985336d98fd",
+        "path": "scripts/certify_makarov_p0_p1_prime11_structure.py",
+        "validationStatus": "passed",
+        "validator": "validate_stored"
+      },
+      "proofBoundary": {
+        "claims": [
+          "All four q=121 prime-11 residue actions are covered by two exact GF(11) descents.",
+          "Each descended P0 action and its P1 restriction has image Omega(7,11):C2 of the recorded order.",
+          "Each corresponding P0 kernel and P1 restricted kernel is normal, torsion-free, and has the recorded exact index.",
+          "No subgroup of any reviewed prime-11 image has an active-tier index."
+        ],
+        "nonClaims": [
+          "global minimal torsion-free index of P0 or P1",
+          "nonexistence of active-tier subgroups through another finite image",
+          "materialized quotient action or quotient complex",
+          "full integral H1",
+          "virtual algebraic fibering",
+          "smooth fibering"
+        ]
+      },
+      "rationalPrime": 11,
+      "status": "passed"
+    }
+  ],
+  "commonConclusions": {
+    "activeDegreeTiersRuledOutInEveryAuditedImage": [
+      28800,
+      57600,
+      86400,
+      115200
+    ],
+    "allChildrenValidatedByOwnImporter": true,
+    "auditedRationalPrimes": [
+      3,
+      7,
+      11
+    ],
+    "eachAuditedImageProvidesExactNormalTorsionFreeP0Kernel": true,
+    "eachAuditedImageProvidesExactTorsionFreeRestrictedP1Kernel": true,
+    "scope": "only the reductions and finite images recorded by all pinned child certificates"
+  },
+  "implementationBinding": {
+    "bytesSha256": "836640099c09932fb412cd2489b16b8abd4c2721e4819731a172c15a2338ca52",
+    "path": "scripts/certify_makarov_p0_p1_small_prime_portfolio.py"
+  },
+  "proofBoundary": {
+    "claims": [
+      "The three pinned child artifacts pass their own structural-certificate importers against the current exact P0/P1 sources.",
+      "Every audited child image supplies an exact normal finite-index torsion-free P0 kernel and an exact torsion-free restricted P1 kernel.",
+      "No subgroup of any audited child image has index 28800, 57600, 86400, or 115200."
+    ],
+    "nonClaims": [
+      "a complete statement about every prime ideal above rational prime 3",
+      "minimal torsion-free index for P0 or P1",
+      "nonexistence of an active-tier subgroup through another finite image, a direct action, or a noncongruence action",
+      "a materialized quotient action or quotient complex",
+      "full integral H1, virtual algebraic fibering, or smooth fibering"
+    ]
+  },
+  "schemaVersion": 1,
+  "sourceBindings": {
+    "p0": {
+      "bytesSha256": "6cb5c7bd535e654e83dc87d383fd9aba5db61fa491edaeff634f792aea5bc221",
+      "canonicalSourceSha256": "907041f98b252d98aeb0b14b4279bf2e311c56a925d1e60781d590e9a44fcf86",
+      "certificateStatus": "passed",
+      "dataStatus": "certified",
+      "dimension": 5,
+      "normalizedCoxeterMatrixSha256": "35e6fc7b8637c828d877f6d0df98fe36d46e625ae9545ca330e6e3c689d7fdb6",
+      "path": "public/examples/compact_5_prism_makarov.json",
+      "rank": 7,
+      "sourceCertificateSha256": "b8f7627c3d0746cb17d1ecad3ef64840b37f0ee66a819f86b6844dd73c56df12"
+    },
+    "p1": {
+      "bytesSha256": "2f5acbaef9bfa5423a38e6052eb1bd25929b41b9c8430c179e49e0993bdcaf31",
+      "canonicalSourceSha256": "7704ef26a631675e44f37969b0125f7675ad0f5ad9337046d413d0c1621256d7",
+      "certificateStatus": "passed",
+      "dataStatus": "certified",
+      "dimension": 5,
+      "normalizedCoxeterMatrixSha256": "7dd97a65f82c492a783e20d7ce630c6bfd46020084517f5f9d5d2906b1744383",
+      "path": "public/examples/compact_5_polytope_p1_double_makarov.json",
+      "rank": 7,
+      "sourceCertificateSha256": "a556bc7ac840343a86f0eaa63ee51ed596609c7581a1ac002b813dcc8096c24c"
+    }
+  },
+  "status": "passed"
+}

@@ -1,0 +1,1473 @@
+{
+  "schemaVersion": 2,
+  "kind": "compact-h5-research-portfolio",
+  "status": "research-manifest-recorded",
+  "registry": {
+    "campaigns": [
+      {
+        "id": "makarov-p0-p1-primary",
+        "label": "Makarov P0/P1 primary campaign",
+        "mode": "paired-finite-action",
+        "notes": [
+          "One commensurability campaign, evaluated through both certified Coxeter cellulations.",
+          "The canonical-first H4 direct-product family is closed; imported, nonnormal, nonsplit, and noncanonical-H4 action routes remain open."
+        ],
+        "order": 1,
+        "status": "active",
+        "targetIds": [
+          "makarov-p0",
+          "makarov-p1"
+        ]
+      },
+      {
+        "id": "tumarkin-06-15-comparison",
+        "label": "Tumarkin #06/#15 bounded comparison",
+        "mode": "paired-finite-action-comparison",
+        "notes": [
+          "The identical shallow W(H4) x C2 lane is closed for both peers; keep them paired for imported finite-action evidence only."
+        ],
+        "order": 2,
+        "status": "bounded",
+        "targetIds": [
+          "tumarkin-g11411-06",
+          "tumarkin-g11411-15"
+        ]
+      },
+      {
+        "id": "makarov-p2-coarse-experiment",
+        "label": "Makarov P2 coarse right-angled experiment",
+        "mode": "coarse-right-angled-import",
+        "notes": [
+          "The coarse import, two Q-independent primitive-class anchor screens, exact obstruction of the declared 128-candidate type-6/Fourier family, scoped 384-pair R2-product closure, sheet-resolved generalized-Davis frontier, and exact F9 image remain recorded.",
+          "The separately sealed 240-record multi-cellulation Track B portfolio is archived after exact obstructions for every branch. The first component-resolved P2 Niblo-Reeves affine-residual CEGAR is bounded-inconclusive after 64 exact-counterexample rounds; it has no principal survivor or family obstruction, and its gated frontier did not run. Broader component rules remain open, while this affine ansatz is deprioritized."
+        ],
+        "order": 3,
+        "status": "experimental",
+        "targetIds": [
+          "makarov-p2"
+        ]
+      },
+      {
+        "id": "tumarkin-g12221-deferred",
+        "label": "Tumarkin G12221 deferred contrast",
+        "mode": "deferred-finite-action",
+        "notes": [
+          "Registered rather than hard-excluded, but restricted to current capacity-compatible action tiers."
+        ],
+        "order": 4,
+        "status": "deferred",
+        "targetIds": [
+          "tumarkin-g12221"
+        ]
+      },
+      {
+        "id": "h5-p7-22-source-import",
+        "label": "H5-P7-22 source import",
+        "mode": "source-import",
+        "notes": [
+          "This is an intake placeholder, not a ranked mathematical prospect."
+        ],
+        "order": 5,
+        "status": "blocked-on-source",
+        "targetIds": [
+          "h5-p7-22"
+        ]
+      }
+    ],
+    "registryDigest": "b61e90fc2a9121809a3d19481b033d7f113d979b77ad520190bd73ea21126c59"
+  },
+  "policy": {
+    "proofBranchesRunIndependently": true,
+    "directRankOneGatesScalableFullH1": false,
+    "scalableFullH1GatesDirectRankOne": false,
+    "p2UsesSeparateCoarsePlan": true
+  },
+  "targets": [
+    {
+      "definition": {
+        "acquisitionScreens": [
+          {
+            "acceptsImportedFiniteActionEvidence": true,
+            "artifactBytesSha256": "c71da1799234078b8be01efcd5f917d6622ffd0a21772a288e4e37e9468c7025",
+            "artifactPath": "scripts/certificates/torsion-free/makarov_h4_projection_obstruction.json",
+            "artifactType": "makarov-h4-projection-obstruction",
+            "canonicalFirstProjection": true,
+            "certificateSha256": "1aa9561ed47767e7bd152f4899fa6716112ad98b2d810dc019f347fbebb61508",
+            "claimBoundary": "Closes only the canonical first H4 projection in the ten displayed split direct targets; noncanonical H4 embeddings, nonsplit targets, nonnormal actions, and imported finite actions remain open.",
+            "cofactorOrders": [
+              2,
+              4,
+              6,
+              8
+            ],
+            "disposition": "custom-lane-closed-imported-actions-open",
+            "eliminatedTargetCount": 10,
+            "id": "makarov-h4-projection-obstruction",
+            "sourceBytesSha256": "6cb5c7bd535e654e83dc87d383fd9aba5db61fa491edaeff634f792aea5bc221",
+            "sourceCanonicalSystemSha256": "c1e89cfd943dbb7eda7c55a761ca80f612e95bdc44d118b9429f38bcf77914d0",
+            "sourcePath": "public/examples/compact_5_prism_makarov.json",
+            "status": "closed-within-modeled-classes",
+            "targetFamily": "W(H4) x SmallGroup(q,id)"
+          }
+        ],
+        "actionDegreeTiers": [
+          28800,
+          57600,
+          86400,
+          115200
+        ],
+        "campaignId": "makarov-p0-p1-primary",
+        "canonicalSystemSha256": "c1e89cfd943dbb7eda7c55a761ca80f612e95bdc44d118b9429f38bcf77914d0",
+        "degreeCapacityAudits": [
+          {
+            "degree": 28800,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 201600,
+              "compressedCells": 352484,
+              "cubeScaledTemplateAdjacencyEntries": 37226400,
+              "cubeScaledTemplateGerms": 3722640,
+              "rootedFaceRecords": 27705600,
+              "rootedSourceCells": 2678400,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 28800
+            }
+          },
+          {
+            "degree": 57600,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 403200,
+              "compressedCells": 704968,
+              "cubeScaledTemplateAdjacencyEntries": 74452800,
+              "cubeScaledTemplateGerms": 7445280,
+              "rootedFaceRecords": 55411200,
+              "rootedSourceCells": 5356800,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 57600
+            }
+          },
+          {
+            "degree": 86400,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 604800,
+              "compressedCells": 1057452,
+              "cubeScaledTemplateAdjacencyEntries": 111679200,
+              "cubeScaledTemplateGerms": 11167920,
+              "rootedFaceRecords": 83116800,
+              "rootedSourceCells": 8035200,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 86400
+            }
+          },
+          {
+            "degree": 115200,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 806400,
+              "compressedCells": 1409936,
+              "cubeScaledTemplateAdjacencyEntries": 148905600,
+              "cubeScaledTemplateGerms": 14890560,
+              "rootedFaceRecords": 110822400,
+              "rootedSourceCells": 10713600,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 115200
+            }
+          }
+        ],
+        "executionPolicy": {
+          "acceptsFiniteActionEvidence": true,
+          "allowedDegreeTiers": [
+            28800,
+            57600,
+            86400,
+            115200
+          ],
+          "capacityRule": "current-static-expensive-stage-preflight",
+          "mode": "active-finite-action-queue",
+          "queueStatus": "active"
+        },
+        "facts": {
+          "canonicalSystemSha256": "c1e89cfd943dbb7eda7c55a761ca80f612e95bdc44d118b9429f38bcf77914d0",
+          "conditionalDavisCellCountAtDivisor": "352484",
+          "dimension": 5,
+          "largestSphericalSubgroupOrder": "28800",
+          "name": "Compact hyperbolic Coxeter 5-prism (Makarov)",
+          "nonemptySphericalTypeCount": 92,
+          "nonzeroAmbientMod2CharacterCount": "3",
+          "oddCoxeterComponentCount": 2,
+          "rank": 7,
+          "sourcePath": "public/examples/compact_5_prism_makarov.json",
+          "torsionFreeDegreeDivisor": "28800"
+        },
+        "id": "makarov-p0",
+        "label": "Makarov P0",
+        "notes": [
+          "Treat P0 and its index-two P1 subgroup as one commensurability campaign.",
+          "The canonical-first H4 direct-product lane is closed; externally supplied and nonnormal actions remain admissible."
+        ],
+        "role": "primary-presentation",
+        "sourceStatus": "bundled-certified",
+        "status": "active-primary"
+      },
+      "actions": [],
+      "targetRecordDigest": "591ccdafdf020d72a863bae7c7300d37e16b64a40cacb5dd61228596107dd968"
+    },
+    {
+      "definition": {
+        "acquisitionScreens": [
+          {
+            "acceptsImportedFiniteActionEvidence": true,
+            "artifactBytesSha256": "c71da1799234078b8be01efcd5f917d6622ffd0a21772a288e4e37e9468c7025",
+            "artifactPath": "scripts/certificates/torsion-free/makarov_h4_projection_obstruction.json",
+            "artifactType": "makarov-h4-projection-obstruction",
+            "canonicalFirstProjection": true,
+            "certificateSha256": "1aa9561ed47767e7bd152f4899fa6716112ad98b2d810dc019f347fbebb61508",
+            "claimBoundary": "Closes only the canonical first H4 projection in the ten displayed split direct targets; noncanonical H4 embeddings, nonsplit targets, nonnormal actions, and imported finite actions remain open.",
+            "cofactorOrders": [
+              2,
+              4,
+              6,
+              8
+            ],
+            "disposition": "custom-lane-closed-imported-actions-open",
+            "eliminatedTargetCount": 10,
+            "id": "makarov-h4-projection-obstruction",
+            "sourceBytesSha256": "2f5acbaef9bfa5423a38e6052eb1bd25929b41b9c8430c179e49e0993bdcaf31",
+            "sourceCanonicalSystemSha256": "d88862776eb9945135d42f16b2fe7ed35f813d5f6bd388a0ae6c03398148daec",
+            "sourcePath": "public/examples/compact_5_polytope_p1_double_makarov.json",
+            "status": "closed-within-modeled-classes",
+            "targetFamily": "W(H4) x SmallGroup(q,id)"
+          }
+        ],
+        "actionDegreeTiers": [
+          28800,
+          57600,
+          86400,
+          115200
+        ],
+        "campaignId": "makarov-p0-p1-primary",
+        "canonicalSystemSha256": "d88862776eb9945135d42f16b2fe7ed35f813d5f6bd388a0ae6c03398148daec",
+        "degreeCapacityAudits": [
+          {
+            "degree": 28800,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 201600,
+              "compressedCells": 342084,
+              "cubeScaledTemplateAdjacencyEntries": 37226400,
+              "cubeScaledTemplateGerms": 3722640,
+              "rootedFaceRecords": 27705600,
+              "rootedSourceCells": 2678400,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 28800
+            }
+          },
+          {
+            "degree": 57600,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 403200,
+              "compressedCells": 684168,
+              "cubeScaledTemplateAdjacencyEntries": 74452800,
+              "cubeScaledTemplateGerms": 7445280,
+              "rootedFaceRecords": 55411200,
+              "rootedSourceCells": 5356800,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 57600
+            }
+          },
+          {
+            "degree": 86400,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 604800,
+              "compressedCells": 1026252,
+              "cubeScaledTemplateAdjacencyEntries": 111679200,
+              "cubeScaledTemplateGerms": 11167920,
+              "rootedFaceRecords": 83116800,
+              "rootedSourceCells": 8035200,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 86400
+            }
+          },
+          {
+            "degree": 115200,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 806400,
+              "compressedCells": 1368336,
+              "cubeScaledTemplateAdjacencyEntries": 148905600,
+              "cubeScaledTemplateGerms": 14890560,
+              "rootedFaceRecords": 110822400,
+              "rootedSourceCells": 10713600,
+              "sphericalTypesIncludingEmpty": 93,
+              "strictFaceTypeRelations": 962,
+              "templates": 115200
+            }
+          }
+        ],
+        "executionPolicy": {
+          "acceptsFiniteActionEvidence": true,
+          "allowedDegreeTiers": [
+            28800,
+            57600,
+            86400,
+            115200
+          ],
+          "capacityRule": "current-static-expensive-stage-preflight",
+          "mode": "active-finite-action-queue",
+          "queueStatus": "active"
+        },
+        "facts": {
+          "canonicalSystemSha256": "d88862776eb9945135d42f16b2fe7ed35f813d5f6bd388a0ae6c03398148daec",
+          "conditionalDavisCellCountAtDivisor": "342084",
+          "dimension": 5,
+          "largestSphericalSubgroupOrder": "28800",
+          "name": "Compact hyperbolic Coxeter 5-polytope P1 (double of P0)",
+          "nonemptySphericalTypeCount": 92,
+          "nonzeroAmbientMod2CharacterCount": "1",
+          "oddCoxeterComponentCount": 1,
+          "rank": 7,
+          "sourcePath": "public/examples/compact_5_polytope_p1_double_makarov.json",
+          "torsionFreeDegreeDivisor": "28800"
+        },
+        "id": "makarov-p1",
+        "label": "Makarov P1 (double of P0)",
+        "notes": [
+          "Test every restricted P0 action on each P1 orbit and retain the alternative P1 cellulation.",
+          "The canonical-first H4 direct-product lane is closed; externally supplied and nonnormal actions remain admissible."
+        ],
+        "role": "index-two-companion",
+        "sourceStatus": "bundled-certified",
+        "status": "active-primary"
+      },
+      "actions": [],
+      "targetRecordDigest": "4a35bfd226ae8d0f406019d8eb1057be7ffca7635ca634439e4c5fc38d7f59c8"
+    },
+    {
+      "definition": {
+        "acquisitionScreens": [
+          {
+            "acceptsImportedFiniteActionEvidence": true,
+            "artifactBytesSha256": "bc1f85bfa236b884441fb32e5a98f4f10f16c576d0722448ad793ee5f46081c7",
+            "artifactPath": "scripts/certificates/torsion-free/tumarkin_06_15_shallow_split_target_screen.json",
+            "artifactType": "tumarkin-06-15-shallow-split-target-screen",
+            "certificateSha256": "fc49bbfc0e42d65376f6a5a33958be8d9ffc8f60741fd6e7fcc1d78b1da77d8f",
+            "claimBoundary": "Closes only the displayed split target and explicit H4 projection classes; it does not obstruct nonnormal actions, nonsplit targets, other H4 embeddings, or higher degrees.",
+            "disposition": "custom-lane-closed-imported-actions-open",
+            "eliminatedAnchorRecordCount": 32,
+            "id": "tumarkin-06-15-shallow-split-target",
+            "modeledAnchorRecordCount": 32,
+            "sourceBytesSha256": "bf0653b04960a37d620d263b224c036e219fcfba81a9001d943232943267064b",
+            "sourceCanonicalSystemSha256": "42da09e1ceef6e9f07a0e76bd9f4cd88505d735d993025fa89bbc551e3b15068",
+            "sourcePath": "public/examples/tumarkin_5d_8facet_g11411_06.json",
+            "status": "closed-within-modeled-classes",
+            "targetFamily": "W(H4) x C2"
+          }
+        ],
+        "actionDegreeTiers": [
+          28800,
+          57600
+        ],
+        "campaignId": "tumarkin-06-15-comparison",
+        "canonicalSystemSha256": "42da09e1ceef6e9f07a0e76bd9f4cd88505d735d993025fa89bbc551e3b15068",
+        "degreeCapacityAudits": [
+          {
+            "degree": 28800,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 230400,
+              "compressedCells": 434984,
+              "cubeScaledTemplateAdjacencyEntries": 37226400,
+              "cubeScaledTemplateGerms": 3722640,
+              "rootedFaceRecords": 38073600,
+              "rootedSourceCells": 3542400,
+              "sphericalTypesIncludingEmpty": 123,
+              "strictFaceTypeRelations": 1322,
+              "templates": 28800
+            }
+          },
+          {
+            "degree": 57600,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 460800,
+              "compressedCells": 869968,
+              "cubeScaledTemplateAdjacencyEntries": 74452800,
+              "cubeScaledTemplateGerms": 7445280,
+              "rootedFaceRecords": 76147200,
+              "rootedSourceCells": 7084800,
+              "sphericalTypesIncludingEmpty": 123,
+              "strictFaceTypeRelations": 1322,
+              "templates": 57600
+            }
+          }
+        ],
+        "executionPolicy": {
+          "acceptsFiniteActionEvidence": true,
+          "allowedDegreeTiers": [
+            28800,
+            57600
+          ],
+          "capacityRule": "current-static-expensive-stage-preflight",
+          "mode": "active-finite-action-queue",
+          "queueStatus": "active"
+        },
+        "facts": {
+          "canonicalSystemSha256": "42da09e1ceef6e9f07a0e76bd9f4cd88505d735d993025fa89bbc551e3b15068",
+          "conditionalDavisCellCountAtDivisor": "434984",
+          "dimension": 5,
+          "largestSphericalSubgroupOrder": "28800",
+          "name": "Tumarkin 5D eight-facet G11411 #06",
+          "nonemptySphericalTypeCount": 122,
+          "nonzeroAmbientMod2CharacterCount": "7",
+          "oddCoxeterComponentCount": 3,
+          "rank": 8,
+          "sourcePath": "public/examples/tumarkin_5d_8facet_g11411_06.json",
+          "torsionFreeDegreeDivisor": "28800"
+        },
+        "id": "tumarkin-g11411-06",
+        "label": "Tumarkin G11411 #06",
+        "notes": [
+          "Its slightly smaller conditional cell count is not action-level evidence of superiority over #15.",
+          "The custom W(H4) x C2 shallow lane is closed; externally supplied finite actions remain admissible."
+        ],
+        "role": "comparison-peer",
+        "sourceStatus": "bundled-certified",
+        "status": "bounded-comparison"
+      },
+      "actions": [],
+      "targetRecordDigest": "47827407c5577b26a94344f5c66acbb6aa25fe28cfd5d3679fd4834d59c8199c"
+    },
+    {
+      "definition": {
+        "acquisitionScreens": [
+          {
+            "acceptsImportedFiniteActionEvidence": true,
+            "artifactBytesSha256": "bc1f85bfa236b884441fb32e5a98f4f10f16c576d0722448ad793ee5f46081c7",
+            "artifactPath": "scripts/certificates/torsion-free/tumarkin_06_15_shallow_split_target_screen.json",
+            "artifactType": "tumarkin-06-15-shallow-split-target-screen",
+            "certificateSha256": "fc49bbfc0e42d65376f6a5a33958be8d9ffc8f60741fd6e7fcc1d78b1da77d8f",
+            "claimBoundary": "Closes only the displayed split target and explicit H4 projection classes; it does not obstruct nonnormal actions, nonsplit targets, other H4 embeddings, or higher degrees.",
+            "disposition": "custom-lane-closed-imported-actions-open",
+            "eliminatedAnchorRecordCount": 32,
+            "id": "tumarkin-06-15-shallow-split-target",
+            "modeledAnchorRecordCount": 32,
+            "sourceBytesSha256": "8955e1c37c4993b9af271d84a796b0551e3e21aedfeed8341319f304cce7bdac",
+            "sourceCanonicalSystemSha256": "16e88a6577484de52a0a9eb45724dfbd6faf3951e70e45ebccd7b053e06e3219",
+            "sourcePath": "public/examples/tumarkin_5d_8facet_g11411_15.json",
+            "status": "closed-within-modeled-classes",
+            "targetFamily": "W(H4) x C2"
+          }
+        ],
+        "actionDegreeTiers": [
+          28800,
+          57600
+        ],
+        "campaignId": "tumarkin-06-15-comparison",
+        "canonicalSystemSha256": "16e88a6577484de52a0a9eb45724dfbd6faf3951e70e45ebccd7b053e06e3219",
+        "degreeCapacityAudits": [
+          {
+            "degree": 28800,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 230400,
+              "compressedCells": 443348,
+              "cubeScaledTemplateAdjacencyEntries": 37226400,
+              "cubeScaledTemplateGerms": 3722640,
+              "rootedFaceRecords": 38073600,
+              "rootedSourceCells": 3542400,
+              "sphericalTypesIncludingEmpty": 123,
+              "strictFaceTypeRelations": 1322,
+              "templates": 28800
+            }
+          },
+          {
+            "degree": 57600,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 460800,
+              "compressedCells": 886696,
+              "cubeScaledTemplateAdjacencyEntries": 74452800,
+              "cubeScaledTemplateGerms": 7445280,
+              "rootedFaceRecords": 76147200,
+              "rootedSourceCells": 7084800,
+              "sphericalTypesIncludingEmpty": 123,
+              "strictFaceTypeRelations": 1322,
+              "templates": 57600
+            }
+          }
+        ],
+        "executionPolicy": {
+          "acceptsFiniteActionEvidence": true,
+          "allowedDegreeTiers": [
+            28800,
+            57600
+          ],
+          "capacityRule": "current-static-expensive-stage-preflight",
+          "mode": "active-finite-action-queue",
+          "queueStatus": "active"
+        },
+        "facts": {
+          "canonicalSystemSha256": "16e88a6577484de52a0a9eb45724dfbd6faf3951e70e45ebccd7b053e06e3219",
+          "conditionalDavisCellCountAtDivisor": "443348",
+          "dimension": 5,
+          "largestSphericalSubgroupOrder": "28800",
+          "name": "Tumarkin 5D eight-facet G11411 #15",
+          "nonemptySphericalTypeCount": 122,
+          "nonzeroAmbientMod2CharacterCount": "7",
+          "oddCoxeterComponentCount": 3,
+          "rank": 8,
+          "sourcePath": "public/examples/tumarkin_5d_8facet_g11411_15.json",
+          "torsionFreeDegreeDivisor": "28800"
+        },
+        "id": "tumarkin-g11411-15",
+        "label": "Tumarkin G11411 #15",
+        "notes": [
+          "Its lower stored Coxeter growth and #06's lower cell count are competing weak priors.",
+          "The custom W(H4) x C2 shallow lane is closed; externally supplied finite actions remain admissible."
+        ],
+        "role": "comparison-peer",
+        "sourceStatus": "bundled-certified",
+        "status": "bounded-comparison"
+      },
+      "actions": [],
+      "targetRecordDigest": "2c7c8a2161418c5b7af0dd9884d5e03333c7deb29073265554c0b344b3f3b8ea"
+    },
+    {
+      "definition": {
+        "acquisitionScreens": [],
+        "actionDegreeTiers": [],
+        "campaignId": "makarov-p2-coarse-experiment",
+        "canonicalSystemSha256": "989ac7b9bde0964da22584ec3a48b7a4b0cfae61c72877180e224f00d7a40e46",
+        "degreeCapacityAudits": [],
+        "executionPolicy": {
+          "acceptsFiniteActionEvidence": false,
+          "allowedDegreeTiers": [],
+          "capacityRule": "coarse-cellulation-only",
+          "mode": "coarse-only",
+          "queueStatus": "not-applicable"
+        },
+        "facts": {
+          "canonicalSystemSha256": "989ac7b9bde0964da22584ec3a48b7a4b0cfae61c72877180e224f00d7a40e46",
+          "conditionalDavisCellCountAtDivisor": "694628",
+          "dimension": 5,
+          "largestSphericalSubgroupOrder": "28800",
+          "name": "Compact hyperbolic Coxeter 5-prism P2 (Makarov)",
+          "nonemptySphericalTypeCount": 92,
+          "nonzeroAmbientMod2CharacterCount": "7",
+          "oddCoxeterComponentCount": 3,
+          "rank": 7,
+          "sourcePath": "public/examples/compact_5_prism_makarov_p2.json",
+          "torsionFreeDegreeDivisor": "57600"
+        },
+        "id": "makarov-p2",
+        "label": "Makarov P2 coarse right-angled branch",
+        "notes": [
+          "The coarse incidence/coloring import is validated, its split b1>=144 gate is positive, and two exact primitive cocycles with Q-linearly independent classes are bound; this branch does not queue a raw P2 action.",
+          "The same cheap identity-first factored Track B gauge rejects both primitive classes only at its anchor. The coarse order-complex calculation for the first class also fails only within its recorded perturbations and root check; neither is a global character obstruction.",
+          "The primitive type-6 cocycle survives one identity-link polarity; exact chamber and maximal type-5 screens leave 24 candidates, then endpoint-hub and full-star certificates reduce them to six classes and eliminate all 24 at rank-four side-cell barycenters.",
+          "This closes the declared 128-candidate primitive type-6/Fourier height family. For the bounded R2 extension, quick gates close all 72 pairs over the old frontier and 344 of the full 384-pair product, leaving 40 resurrected c=+1 pairs in ten classes.",
+          "The compiled maximal-type-5 continuation eliminates all ten classes after 2,334 of 5,078 cell-orbit rows, with ten independent Python full-fiber replays. This closes only that R2 coordinate, coefficient set, action, primitive character, and canonical barycentric subdivision.",
+          "The separate multi-cellulation batch gives exact bad-link witnesses for all 239 scheduled records and all 286 branches, with zero bounded-prefix survivors or unresolved records. Together with the preexisting selected obstruction, it archives the declared 240-record Track B portfolio. Other characters, potentials, subdivisions, P2 Track B families, and virtual fibering remain open.",
+          "The current cover has one-sided type-5 walls, so strict wall Track A stops at the same two-sidedness gate used by the generic preflight. Its source-bound availability record does not manufacture a rank-two complex or local-feasibility result. Pure generator-5 color-class extensions also fail side-wall parity.",
+          "On the rank-312 orientation cover, exact sheet-component formulas produce an unrestricted generalized-Davis radius-two frontier survivor; the compact radius-one seed fails at 96 radius-two vertices, and global compatibility plus higher-cell links remain open.",
+          "In the Niblo-Reeves cubing, the canonical primitive coorientation passes every complete sheet-zero link through radius three but fails at an exact reachable all-sheet principal vertex. Sheet-independent projected-wall flips are closed.",
+          "The exact component bridge binds 159 principal roots and 543 reduced-transversal images to 120 projected component classes. Common-family and key-specific affine residual CEGAR each reached a 32-round limit with exact bad-sheet cuts, finding neither an all-sheet principal survivor nor an infeasibility proof. The gated depth-one/radius-one frontier was skipped. This bounded-inconclusive result deprioritizes those affine ansatzes but does not close general component-resolved orientations or the P2 cubulation route.",
+          "The F9 image is the spinor kernel of order 108051462804999168000. The current subgroup image has known divisor 40, but the exact cover degree and global component flips remain open; the stored root-line candidate fails explicit link gates."
+        ],
+        "role": "coarse-structural-experiment",
+        "sourceStatus": "bundled-certified",
+        "status": "experimental-coarse-import"
+      },
+      "actions": [],
+      "targetRecordDigest": "fd19bfe9ee6d509bf07b8d19d7bd191fd0ada48b612f8c931b0ec945081da3f7"
+    },
+    {
+      "definition": {
+        "acquisitionScreens": [],
+        "actionDegreeTiers": [
+          57600
+        ],
+        "campaignId": "tumarkin-g12221-deferred",
+        "canonicalSystemSha256": "142998fa57626df652e23f3ce73439cb9ebaefe787cfe9846acc3156d90b504f",
+        "degreeCapacityAudits": [
+          {
+            "degree": 57600,
+            "failedBounds": [],
+            "status": "passes-current-static-preflight",
+            "workload": {
+              "actionEntries": 460800,
+              "compressedCells": 915172,
+              "cubeScaledTemplateAdjacencyEntries": 74452800,
+              "cubeScaledTemplateGerms": 7445280,
+              "rootedFaceRecords": 95500800,
+              "rootedSourceCells": 8467200,
+              "sphericalTypesIncludingEmpty": 147,
+              "strictFaceTypeRelations": 1658,
+              "templates": 57600
+            }
+          },
+          {
+            "degree": 115200,
+            "failedBounds": [
+              "maxRootedSourceCells",
+              "maxRootedFaceRecords"
+            ],
+            "status": "exceeds-current-static-preflight",
+            "workload": {
+              "actionEntries": 921600,
+              "compressedCells": 1830344,
+              "cubeScaledTemplateAdjacencyEntries": 148905600,
+              "cubeScaledTemplateGerms": 14890560,
+              "rootedFaceRecords": 191001600,
+              "rootedSourceCells": 16934400,
+              "sphericalTypesIncludingEmpty": 147,
+              "strictFaceTypeRelations": 1658,
+              "templates": 115200
+            }
+          }
+        ],
+        "executionPolicy": {
+          "acceptsFiniteActionEvidence": true,
+          "allowedDegreeTiers": [
+            57600
+          ],
+          "capacityRule": "current-static-expensive-stage-preflight",
+          "mode": "registered-deferred",
+          "queueStatus": "deferred"
+        },
+        "facts": {
+          "canonicalSystemSha256": "142998fa57626df652e23f3ce73439cb9ebaefe787cfe9846acc3156d90b504f",
+          "conditionalDavisCellCountAtDivisor": "915172",
+          "dimension": 5,
+          "largestSphericalSubgroupOrder": "2304",
+          "name": "Tumarkin 5D eight-facet G12221 (unique)",
+          "nonemptySphericalTypeCount": 146,
+          "nonzeroAmbientMod2CharacterCount": "15",
+          "oddCoxeterComponentCount": 4,
+          "rank": 8,
+          "sourcePath": "public/examples/tumarkin_5d_8facet_g12221_01.json",
+          "torsionFreeDegreeDivisor": "57600"
+        },
+        "id": "tumarkin-g12221",
+        "label": "Tumarkin G12221",
+        "notes": [
+          "The one-divisor tier is capacity-admissible but remains deferred; the two-divisor tier stays visible as a rejected audit.",
+          "Ambient mod-2 character count is a weak prior, not evidence of subgroup first Betti number or fibering."
+        ],
+        "role": "deferred-contrast",
+        "sourceStatus": "bundled-certified",
+        "status": "deferred"
+      },
+      "actions": [],
+      "targetRecordDigest": "7e6cd927de5fe9d2629b8fe0644001db9d0383a2b52ae7e2cee55adf465b1e79"
+    },
+    {
+      "definition": {
+        "acquisitionScreens": [],
+        "actionDegreeTiers": [],
+        "campaignId": "h5-p7-22-source-import",
+        "canonicalSystemSha256": null,
+        "degreeCapacityAudits": [],
+        "executionPolicy": {
+          "acceptsFiniteActionEvidence": false,
+          "allowedDegreeTiers": [],
+          "capacityRule": "source-replay-required",
+          "mode": "source-import-gated",
+          "queueStatus": "blocked-on-source"
+        },
+        "facts": null,
+        "id": "h5-p7-22",
+        "label": "H5-P7-22",
+        "notes": [
+          "No source matrix, source certificate, or materialized action is bundled under this identifier.",
+          "Do not attach a degree divisor, cell count, action degree, or search queue until an imported source replays."
+        ],
+        "role": "unverified-placeholder",
+        "sourceStatus": "import-required",
+        "status": "import-required"
+      },
+      "actions": [],
+      "targetRecordDigest": "6c1aafa9940912f11fb8fc8491b481a26c057a0b34a8ca1bc3987afedbcf83e4"
+    }
+  ],
+  "p2Plan": {
+    "artifactDigest": "de56fea00508d9fbbd38c78b51149372c9f0beb4f19cdde64854ea479a1a69d1",
+    "conclusions": {
+      "algebraicFiberingCertified": false,
+      "coarseFixedCharacterTrackBObstructedForRecordedModel": true,
+      "coarseFixedCharacterTrackBRunCompleted": true,
+      "colorClassOnlyOrientationCoverOpen": false,
+      "conditionalMorseSearchComplete": false,
+      "currentCoverFullWallCoorientabilityKnown": true,
+      "currentCoverFullWallCoorientable": false,
+      "currentCoverStrictWallTrackABlocked": true,
+      "directCocycleTrackANotRun": true,
+      "directCocycleTrackAOpen": true,
+      "explicitPrimitiveCharacterMaterialized": true,
+      "explicitPrimitiveCharacterWallTrackAObstructed": true,
+      "f9ExactDegreeOpen": true,
+      "f9ExactImageOrderComputed": true,
+      "f9GlobalFlipSearchOpen": true,
+      "f9RootLineCandidateRejected": true,
+      "f9SubgroupImageDivisor": 40,
+      "facetSpecificOrientationCoverConstructed": true,
+      "facetSpecificOrientationCoverOpen": false,
+      "finiteHeightBandNotRun": true,
+      "fixedCharacterTrackBObstructedForRecordedModel": true,
+      "fixedCharacterTrackBRunCompleted": true,
+      "fullCharacterLatticeMaterialized": false,
+      "furtherCoverWallTrackAOpen": true,
+      "globalWallLawfulCalculationRun": false,
+      "importedDataValidated": true,
+      "nonzeroIntegralCharacterExists": true,
+      "oddPrimeOrientationCoverConstructed": true,
+      "orientationCoverGlobalLawfulCalculationRun": false,
+      "otherWallCharacterTrackAOpen": false,
+      "positiveIntegralH1Gate": true,
+      "positiveTrackACertificate": false,
+      "positiveTrackBCertificate": false,
+      "primitiveIntegralCharacterExists": true,
+      "qIndependentPrimitiveClassCount": 2,
+      "registeredPrimitiveClassCount": 2,
+      "secondPrimitiveClassCheapScreenCompleted": true,
+      "secondPrimitiveClassGlobalTrackBOpen": true,
+      "secondPrimitiveClassObstructedForRecordedModel": true,
+      "section5ColoredB1Known": false,
+      "sheetResolvedCompactRuleRejectedAtRadius2": true,
+      "sheetResolvedComponentFormulasCertified": true,
+      "sheetResolvedGlobalTrackAOpen": true,
+      "sheetResolvedRadius2SurvivorFrontier": true,
+      "smoothFiberingCertified": false,
+      "strictWallTrackAInputIncomplete": false,
+      "trackBRunnable": true,
+      "type6BarycentricReductionRunCompleted": true,
+      "type6DeclaredHeightFamilyObstructed": true,
+      "type6DeclaredHeightFamilyScreenCompleted": true,
+      "type6DeclaredHeightFamilySurvivorCount": 0,
+      "type6FourierFrameAttemptRecorded": true,
+      "type6FourierFrameScanCompleted": false,
+      "type6LqSchreierTableCertified": true,
+      "type6MaximalType5GlobalAttemptRecorded": true,
+      "type6MaximalType5GlobalScreenCompleted": true,
+      "type6MaximalType5SurvivorCount": 24,
+      "type6NonmaximalBarycentricLinksOpen": false,
+      "type6OriginalChamberScreenCompleted": true,
+      "type6OriginalChamberSurvivorCount": 112,
+      "type6OtherPeriodicCoordinatesOpen": true,
+      "type6R2MaximalType5ScreenCompleted": true,
+      "type6R2ProductObstructed": true,
+      "type6R2ProductScreenCompleted": true,
+      "type6R2ProductSurvivorCount": 0,
+      "type6R2QuickGateSurvivorCount": 40,
+      "type6RawDominantTypeOnlyObstructed": true,
+      "type6TrackBAnchorRunCompleted": true,
+      "type6TrackBAnchorSurvived": true,
+      "type6TrackBGlobalScanRun": false,
+      "wallFlipCegarScopedAnsatzObstructed": true
+    },
+    "fixedCharacterEvidence": {
+      "coarseTrackB": {
+        "bothCanonicalPerturbationPolaritiesRejectedAtRoot": true,
+        "bytesSha256": "d2fe3c1ae284d266a3bc9903d258d7aa049bb39ec0df8d3f2461b56ab04fc649",
+        "certificateSha256": "ee447ec91aed2ac4d84d68e35386942043c6ed3fb450b1ec55d35adb83c2526a",
+        "coloredRootCopiesCovered": 256,
+        "globalAllVertexScanCompleted": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_section5_coarse_track_b.json",
+        "primitiveCocycleBindingMatches": true,
+        "sealValid": true,
+        "status": "fixed-model-obstructed-at-root"
+      },
+      "colorClassWallOrientation": {
+        "anyColorClassOnlyVoltageExtensionCanHaveFullWallCoorientation": false,
+        "artifactSha256": "5445d8a09e27c15cc16e52abb27d80649a1ab4f00f9f204d0f92b601fd995c42",
+        "bytesSha256": "ac94a123c2987c69f8378028fed829c3f6c378c1039a7acf6b49733cec37c4bc",
+        "directedLinkCalculationRun": false,
+        "facetSpecificCoverRemainsOpen": true,
+        "lawfulCellClosureDefinedForTheseCovers": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_section5_color_class_wall_orientation.json",
+        "minimalColorClassExtensionIndex": 16,
+        "minimalExtensionRepairsType5Obstruction": true,
+        "oddPrimeCoverRemainsOpen": true,
+        "projectedSideWallClassCount": 300,
+        "projectedSideWallConflictCount": 300,
+        "sealValid": true,
+        "status": "color-class-only-orientation-covers-obstructed"
+      },
+      "compressedTrackB": {
+        "artifactSha256": "7bbf2806f85f39b9e91e3e666eef7b972ca4e7fa7d1a73113ea1a231c6357ea0",
+        "bothTiePolaritiesRejectedAtIdentity": true,
+        "bytesSha256": "8c959c660d96ec8d66704b520b4ee8fb243cac4944256109da8e5c1f386977f8",
+        "globalAllVertexScanNeededForRecordedModel": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_section5_compressed_track_b.json",
+        "primitiveCocycleBindingMatches": true,
+        "rootedStateUnionCount": 48549,
+        "sealValid": true,
+        "status": "fixed-model-obstructed-at-anchor"
+      },
+      "facetBinaryOrientationCover": {
+        "allWallsTwoSided": true,
+        "artifactSha256": "8ef7d0c905483500cfcf3c79c2519bc7cccb2a90c1b21d09c9c0e102379e2899",
+        "bytesSha256": "f12283df3d177c655e131042997751c5146bf99c7cdcfba1fe91a70457cf36bb",
+        "canonicalOracleIdentityLinkPassed": false,
+        "globalLawfulCalculationRun": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_facet_binary_orientation_cover.json",
+        "rank14ImpossibleInScopedFamily": true,
+        "rank15Resolved": false,
+        "relativeIndexPowerOfTwoExponent": 303,
+        "sealValid": true,
+        "status": "valid-rank312-cover-rank15-unresolved",
+        "totalSheetRank": 312
+      },
+      "fullWallCoorientation": {
+        "artifactSha256": "1adb8e9449e0b2cba37aa4d502877f07b7961092e8cec51e6b6369d20f1f5bfe",
+        "bytesSha256": "6db74185b74dfae335837d7957fa0388279c0b1bb8319520ab2db901f268e1af",
+        "directCocycleTrackAUnaffected": true,
+        "everyType5WallComponentOneSided": true,
+        "explicitReversingLoopReplayed": true,
+        "fullWallSystemCoorientable": false,
+        "furtherCoverRemainsOpen": true,
+        "labelsPassingFullSpanTest": 650,
+        "locator": "scripts/certificates/portfolio/makarov_p2_section5_wall_coorientation_obstruction.json",
+        "sealValid": true,
+        "status": "full-wall-system-not-coorientable",
+        "type6PartialCocycleStrictTrackAAdmissible": false,
+        "type6WallCount": 256,
+        "type6WallsTwoSided": true
+      },
+      "globalLawfulReadiness": {
+        "artifactSha256": "0e7c158f6e5d5a1c25452152319adca6a7330acd95b8cfeb979f29c0ad83515d",
+        "bytesSha256": "c862f1c6e18cde9bd263a32d5aac237f23244b4b31e56b95e0792f2d589161eb",
+        "colorClassWallOrientationBindingMatches": true,
+        "conditionalHeightRuleFaceCompatible": true,
+        "lawfulClosureAndDirectedLinksDefined": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_factored_global_lawful_readiness.json",
+        "runOnCurrentCover": false,
+        "sealValid": true,
+        "sheetInvariantRankTwoTemplateCount": 66456000,
+        "sheetInvariantTemplateCount": 176905950,
+        "status": "downstream-not-run-no-wall-coorientation-on-current-cover",
+        "unreducedCellCount": 57793049600,
+        "wallCoorientationBindingMatches": true
+      },
+      "lqSchreierTable": {
+        "artifactSha256": "40fe34044f718a50908318098309590697d4acdef10a4e47bdcc1c804fb81d97",
+        "bytesSha256": "5f9056b711d3be7fff2d5a71fb43d8ac725f88ec50a33ae81054ac7943e2908f",
+        "colorStabilizerOrder": 125,
+        "coloringStabilizerExactlyL": true,
+        "compressedTableBytes": 1209649,
+        "exactQOrder": 9360000,
+        "frameCount": 74880,
+        "locator": "scripts/certificates/portfolio/makarov_p2_lq_schreier_table.json",
+        "maximalType5Ready": true,
+        "originalChamberOrbitCount": 149760,
+        "sealValid": true,
+        "section5ImportBindingMatches": true,
+        "status": "exact-74880-state-table-certified",
+        "transitionCount": 374400
+      },
+      "primitiveCocycle": {
+        "bytesSha256": "0ce60376a14c89927a6b09289a9a66318ea0a601ede2101489975ddbb6ce1cd3",
+        "certificateSha256": "aeb2591986d77a5d60e595920eaf1af5e9bfca805314ed6c0acccef13e03acd7",
+        "exactTriangleClosure": true,
+        "importBindingMatches": true,
+        "locator": "scripts/certificates/portfolio/makarov_p2_section5_x_primitive_cocycle.json",
+        "primitiveCycleWitnessReplayed": true,
+        "sealValid": true,
+        "treeGaugeReplayed": true
+      },
+      "primitiveCocycleScreeningPortfolio": {
+        "artifactSha256": "f50a61abe654c8a08f65d0004929a55c9b477a0caacb2cd20b9014e6eea3f804",
+        "bothCheapAnchorScreensObstructed": true,
+        "bytesSha256": "a05575eef5fd6f2cfb57719e9704cacb5a91571d145a84a4d660dc2668e2e2f8",
+        "exactTriangleCountEach": 156000,
+        "fullCharacterLatticeMaterialized": false,
+        "globalTrackBScreenRun": false,
+        "importBindingMatches": true,
+        "independenceWitnessGenerator": 4,
+        "locator": "scripts/certificates/portfolio/makarov_p2_cocycle_screening_portfolio.json",
+        "otherGaugesRemainOpen": true,
+        "primitiveClassCount": 2,
+        "qLinearlyIndependent": true,
+        "registeredCandidateCount": 2,
+        "sealValid": true,
+        "status": "two-independent-primitive-classes-cheap-screened"
+      },
+      "replayStatus": "passed-bundled-fixed-character-evidence",
+      "sheetResolvedWallFlipCegar": {
+        "artifactSha256": "e3e70174ff74f6cf50d20b66e90dc35f5b198bd918f1ab68a0c58b641215000e",
+        "bytesSha256": "acc3daceda47fee678be7b54d0c7a24196ff77690428170a20f18383cd445c89",
+        "compactRadius1RankTwoCellCount": 11520,
+        "compactRadius1VertexCount": 768,
+        "compactRadius1WallComponentVariableCount": 1834,
+        "compactRuleRadius2FailedVertexCount": 96,
+        "compactRuleRejectedAtRadius2": true,
+        "exactComponentKeyFormulasCertified": true,
+        "globalTrackACertified": false,
+        "higherCellAndSubdivisionLinksRun": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_sheet_resolved_wall_flip_cegar.json",
+        "rank312CoverBindingMatches": true,
+        "sealValid": true,
+        "sideProjectiveRootClassCount": 300,
+        "status": "bounded-structured-survivor-rejected-at-next-frontier",
+        "type5LabelCount": 650,
+        "type6StabilizerRank": 1,
+        "unrestrictedDepth2ArtifactSha256": "5b0c98e68841c9676c2d4011ac8f22b3672b719d81653c2b3f3d8d0886b4a205",
+        "unrestrictedDepth2BytesSha256": "e8bb23073c5c459ab3ed0c0c0c47178245d3f7d7e8eeed694dfbe3e429721e82",
+        "unrestrictedDepth2Locator": "scripts/certificates/portfolio/makarov_p2_sheet_resolved_wall_flip_cegar_unrestricted_depth2.json",
+        "unrestrictedDepth2SealValid": true,
+        "unrestrictedRadius2BothDirectedLinksPass": true,
+        "unrestrictedRadius2RankTwoCellCount": 32768,
+        "unrestrictedRadius2VertexCount": 2560,
+        "unrestrictedRadius2WallComponentVariableCount": 2736
+      },
+      "strictWallTrackA": {
+        "bytesSha256": "c949602a83a0848b4913fa0430d0c6e6d05c4d232b3b664daa5df28def83eed5",
+        "certificateSha256": "bf7818d52afcf65e9d34080cfb7260ae3088e091a21b1bbf40a86b86000f938a",
+        "directCocycleTrackANotRun": true,
+        "finiteHeightBandNotRun": true,
+        "formerTrackBRootObstructionRepairedByLocalPotential": true,
+        "globalDirectedLinksChecked": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_section5_generalized_track_a_attempt.json",
+        "missingRequiredObjectCount": 3,
+        "primitiveCocycleBindingMatches": true,
+        "sealValid": true,
+        "status": "explicit-character-obstructed-other-variants-incomplete",
+        "strictWallTrackAInputIncomplete": true,
+        "wallCompatibilityBindingMatches": true
+      },
+      "titsOrientationCover": {
+        "allWallsTwoSided": true,
+        "artifactSha256": "8165d031be54156e53195d416bdbbec2ea0bc814287fb968332cf2b96a756bf5",
+        "bytesSha256": "dfb5f94d1a904f6fcf44d8a709983f0130977c4e233b575433eb1a6e9118cc40",
+        "canonicalOracleIdentityLinkPassed": false,
+        "degreeLowerBound": 38338560000,
+        "exactImageOrderComputed": false,
+        "globalLawfulCalculationRun": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_tits_orientation_cover.json",
+        "sealValid": true,
+        "status": "orientation-cover-proved-canonical-oracle-edge-link-obstructed-image-order-not-computed",
+        "torsionFree": true
+      },
+      "titsRootOrbitFrontier": {
+        "actualQuotientWallComponentCountComputed": false,
+        "artifactSha256": "b665e1342db0df98d34497a908d7e9b1e04948cc7d2f580355d661c1dc719b11",
+        "bytesSha256": "734453ef00e7ec3c24913d9b7fc91c9a1d9436398bd7a29ff17b34ef74b54c5b",
+        "exactImageDescription": "ker(spinor: O(7,9) -> F9*/(F9*)^2)",
+        "exactImageOrderComputed": true,
+        "exactImageOrderDecimal": "108051462804999168000",
+        "exactOrientationCoverDegreeComputed": false,
+        "globalLawfulClosureAuthorized": false,
+        "globalTrackACertified": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_tits_root_orbit_frontier.json",
+        "pointStabilizerLayerFailureCounts": [
+          0,
+          3656,
+          3456,
+          12400,
+          6043
+        ],
+        "priorTitsCoverBindingMatches": true,
+        "rootLineConstantFlipVariableCount": 266085,
+        "rootTransversalFullLinkFailureCount": 31400,
+        "sealValid": true,
+        "section5SubgroupImageDivisor": 40,
+        "section5SubgroupNonnormalWitnessReplayed": true,
+        "status": "exact-image-order-computed-root-line-flip-frontier-open",
+        "storedRootLineCandidatePassed": false
+      },
+      "type6BarycentricReduction": {
+        "artifactSha256": "2aecf892261082a4ade2db0b23f2a66a50be5c6fa27296e3138c02f41400d6ac",
+        "bytesSha256": "0ae39c0aada47faccf7de49326ff6006687624245bc05cce7f8fee014acb6c15",
+        "cellBarycenterOrbitLowerBound": 1806033,
+        "fixedCharacterSymmetryOrder": 32000,
+        "fourierFrameDependent": true,
+        "globalFourierLinksRun": false,
+        "globalResultCertified": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_barycentric_reduction.json",
+        "negativeDimensionEmptyLinkWitnessCount": 22630400,
+        "originalChamberOrbitCount": 149760,
+        "positiveDimensionEmptyLinkWitnessCount": 2396160000,
+        "rawDominantTypeOnlyObstructed": true,
+        "sealValid": true,
+        "status": "exact-reduction-global-fourier-links-not-yet-run",
+        "type6CharacterBindingMatches": true,
+        "typeOnlyTemplateCount": 124
+      },
+      "type6ConeApex": {
+        "artifactSha256": "ae1421401348e90b977f96760bb268c48d92fda22eb96fa80bcdc7d1bedfd252",
+        "automaticType6CellOrbitCount": 471770,
+        "automaticType6CellTypeCount": 31,
+        "barycentricReductionBindingMatches": true,
+        "bytesSha256": "5609235517ac0c7d2aacf477143da37f12ac0aa92ceb030e9e6c972c21810c9e",
+        "everyType6DirectedLinkAutomatic": true,
+        "firstRankFourSideCellOrbitCount": 7540,
+        "globalTrackBCertified": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_cone_apex_lemma.json",
+        "lqSchreierBindingMatches": true,
+        "maximalType5FrontierBindingMatches": true,
+        "sealValid": true,
+        "status": "exact-type6-links-automatic-56-types-remain",
+        "unresolvedCellOrbitCount": 1589860,
+        "unresolvedCellTypeCount": 56
+      },
+      "type6FourierFrameScreen": {
+        "artifactSha256": "adc2ec577553cf28b2ff47f63519bce92c901c8103c713689d8785b213ccc651",
+        "boundedAttemptCount": 2,
+        "bytesSha256": "664201d66b55607e479e90b0531677934364b6006e6fa12d26337eae62a0a9e2",
+        "candidateCount": 128,
+        "candidateEliminations": 0,
+        "candidateSurvivors": 0,
+        "certifiedCandidateCount": 0,
+        "certifiedFrameCount": 0,
+        "certifiedReducedOriginalVertexCount": 0,
+        "completeFrameTranscriptAvailable": false,
+        "exactRunnerOptIn": true,
+        "fallbackTimeoutExitCode": 124,
+        "higherCellTemplatesChecked": 0,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_fourier_frame_screen_timeout.json",
+        "mathematicalDisposition": "none",
+        "plannedFrameCount": 74880,
+        "plannedReducedOriginalVertexCount": 149760,
+        "sealValid": true,
+        "status": "incomplete-backend-timeout-no-mathematical-result",
+        "type6CharacterBindingMatches": true
+      },
+      "type6FullStarCompiled": {
+        "artifactSha256": "f776505a5c9d0ec92e002a0c5108ba0998c21982192d66d853f5366076e93d02",
+        "bytesSha256": "ea9151f203484d4251439087066aed2695f591b9d68bce387c71de54e5b0e6b0",
+        "compiledRepresentativeFailuresReplayedInPython": 6,
+        "completedCellOrbitRows": 5626,
+        "completedRowsByType": [
+          1248,
+          3120,
+          1258,
+          0,
+          0
+        ],
+        "coneApexBindingMatches": true,
+        "currentDeclaredHeightFamilyEliminated": true,
+        "eliminatedCandidateCount": 24,
+        "equivalenceBindingMatches": true,
+        "equivalenceTransferredFailuresReplayedInPython": 24,
+        "exactRankFourSideCellOrbitCount": 7540,
+        "fullFaceCosetsAndBothUpperCofacesRetained": true,
+        "globalFiberingObstructed": false,
+        "globalP2TrackBObstructed": false,
+        "inputCandidateCount": 24,
+        "inputEquivalenceClassCount": 6,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_full_star_compiled.json",
+        "lqSchreierBindingMatches": true,
+        "maximalType5FrontierBindingMatches": true,
+        "sealValid": true,
+        "status": "current-type6-height-family-eliminated",
+        "survivorCandidateCount": 0
+      },
+      "type6FullStarEquivalence": {
+        "artifactSha256": "95d83a53c83009ac148af9b7b878baa2a46316d74f0d1742401ab46caafe3107",
+        "bytesSha256": "fe2f501ef0321e65e9833582f19a644f70043e20c75f29596c7b6a812d650307",
+        "equivalenceClassCount": 6,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_full_star_equivalence.json",
+        "maximalType5FrontierBindingMatches": true,
+        "representativeCandidateIndices": [
+          19,
+          21,
+          22,
+          25,
+          26,
+          28
+        ],
+        "representativeOnlyGlobalScanExact": true,
+        "sealValid": true,
+        "sourceSurvivorCount": 24,
+        "status": "exact-global-equivalence-for-central-types-avoiding-generator6",
+        "type6CharacterBindingMatches": true,
+        "unresolvedCentralTypeCount": 56
+      },
+      "type6MaximalType5Timeout": {
+        "artifactSha256": "9d0e5d475e12f88fc3a35735ac7e55da327272ece4a1e997e5af53514c1dc752",
+        "bytesSha256": "574c563dc271c98b9d0554fc81da58b30120b8d8658ca9c8ac9462f9e7adead9",
+        "certifiedZeroFourierCellLinkRows": 0,
+        "chamberScreenBindingMatches": true,
+        "completeGlobalTranscript": false,
+        "constantFourierCandidateEliminations": 48,
+        "constantFourierCandidateSurvivors": 32,
+        "constantFourierCellOrbitCount": 2616,
+        "constantFourierStageComplete": true,
+        "constantFourierSurvivorEquivalenceClassCount": 8,
+        "exactRunnerOptIn": true,
+        "globalMaximalType5ScreenComplete": false,
+        "intersectionCandidateCount": 80,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_maximal_type5_global_timeout.json",
+        "lqSchreierBindingMatches": true,
+        "maximalCellOrbitCount": 5078,
+        "partialZeroFourierTranscriptRetained": false,
+        "sealValid": true,
+        "status": "incomplete-wall-time-no-global-mathematical-result",
+        "wallSecondsCap": 900,
+        "zeroFourierCellOrbitCount": 2462,
+        "zeroFourierMathematicalDisposition": "none",
+        "zeroFourierStageComplete": false
+      },
+      "type6R2MaximalCompiled": {
+        "artifactSha256": "774468b8b6cc397651260e3151953d402766276503831e87b380f22dbcb3bcee",
+        "bytesSha256": "3de7e3bf46e4f705ea95cdac16c5ecd29ba30a1deb4b90e92d2df9c4a21fd4b0",
+        "coefficient": 1,
+        "completedCellOrbitRows": 2334,
+        "completedRowsByType": [
+          492,
+          1772,
+          46,
+          24,
+          0
+        ],
+        "completedWithinWallCap": true,
+        "eliminatedCandidateCount": 40,
+        "fullFaceCosetsRetained": true,
+        "fullR2ProductClosed": true,
+        "globalFiberingObstructed": false,
+        "globalP2TrackBObstructed": false,
+        "inputCandidateCount": 40,
+        "inputEquivalenceClassCount": 10,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_r2_maximal_compiled.json",
+        "lqSchreierBindingMatches": true,
+        "maximalType5CellOrbitCount": 5078,
+        "otherPeriodicCoordinatesRemainOpen": true,
+        "quickGateBindingMatches": true,
+        "representativeFailuresReplayedInPython": 10,
+        "sealValid": true,
+        "status": "maximal-type5-eliminated",
+        "survivorCandidateCount": 0
+      },
+      "type6R2PeriodicRepair": {
+        "artifactSha256": "7b535ff40e6ad1ff7e09a0df7109995242af38f190d401cc324e0c3e4e8f7630",
+        "bytesSha256": "a3e234a295d2382b28180628ee19b9bdb7c3efe80994875a5bf7c0743f975b1c",
+        "coefficientSet": [
+          -1,
+          0,
+          1
+        ],
+        "completedWithinWallCap": true,
+        "exactRankFourSideCellOrbitCount": 7540,
+        "faceCompatible": true,
+        "fullFiberRootIndependent": true,
+        "fullProductClosedAtQuickGates": false,
+        "fullProductCoefficientPairCount": 384,
+        "globalFiberingObstructed": false,
+        "globalP2TrackBObstructed": false,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_r2_periodic_repair.json",
+        "negativeCoefficientChamberSurvivorCount": 92,
+        "oldFrontierClosed": true,
+        "oldFrontierCoefficientPairCount": 72,
+        "oldMotifsRepairedByPositiveCoefficient": 6,
+        "otherPeriodicCoordinatesRemainOpen": true,
+        "positiveCoefficientChamberSurvivorCount": 112,
+        "primitiveIntegralCharacterUnchanged": true,
+        "quickGateEliminatedPairCount": 344,
+        "quickGateSurvivorClassCount": 10,
+        "quickGateSurvivorPairCount": 40,
+        "sealValid": true,
+        "sourceBindingsMatch": true,
+        "status": "bounded-r2-all128-quick-gates-40-open"
+      },
+      "type6SchreierChamberScreen": {
+        "allFramesAndSignsCovered": true,
+        "artifactSha256": "482b93bd67c6ddfd040447f1307ac55c491ec98009d3911058d1ff6a2a99fea7",
+        "bytesSha256": "fad654adf97785be0a63010eea9d28306b8d1c4d3184797ffdd7644e110ddd5e",
+        "candidateCount": 128,
+        "eliminatedCount": 16,
+        "exactOriginalChamberRootCount": 149760,
+        "globalResultCertified": false,
+        "higherCellGateRequired": true,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_fourier_schreier_chamber_screen.json",
+        "lqSchreierBindingMatches": true,
+        "sealValid": true,
+        "status": "chamber-root-survivor-frontier",
+        "survivorCount": 112,
+        "type6CharacterBindingMatches": true,
+        "uniqueFrameFlagPatternCount": 6
+      },
+      "type6TrackB": {
+        "artifactSha256": "501125fa7150a4d0c208cd4b40cd6a5132f7e04424820e71fd5f3219b165a16d",
+        "ascendingVertexCount": 14647,
+        "bothIdentityLinksConnected": true,
+        "bytesSha256": "864f8b39407b45a6d101e139e9a8f8e5511fadbba1b26dcb5f42c741b28a227b",
+        "descendingVertexCount": 33901,
+        "globalResultCertified": false,
+        "globalScanRun": false,
+        "localTemplateOrAutomatonReductionOpen": true,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_wall_track_b.json",
+        "oppositePolarityDescendingEmpty": true,
+        "primitiveIntegralCharacter": true,
+        "primitiveLoopEvaluation": -1,
+        "requiredRootCount": 4792320000,
+        "sealValid": true,
+        "status": "primitive-cocycle-one-identity-polarity-passed",
+        "survivingPolarity": -1,
+        "wallCocycleClosed": true,
+        "wallCocycleTwoSided": true
+      },
+      "type6ZeroFourierCompiled": {
+        "artifactSha256": "d3a45ffaca348ac8285387a71f15cbb4f2616516e12a03975c8a83c4e8388886",
+        "bytesSha256": "a86f92cce2dde32f5c3db42c069ec73533491080e6ae0ef32b4d1d056dedf531",
+        "compiledFailureWitnessesReplayedInPython": 2,
+        "completedRowsByType": [
+          132,
+          6,
+          724,
+          1100,
+          500
+        ],
+        "eliminatedCandidateCount": 8,
+        "everySurvivorCheckedAtEveryOrbit": true,
+        "fullFaceCosetsRetained": true,
+        "globalTrackBCertified": false,
+        "inputCandidateCount": 32,
+        "inputEquivalenceClassCount": 8,
+        "locator": "scripts/certificates/portfolio/makarov_p2_type6_zero_fourier_compiled.json",
+        "lqSchreierBindingMatches": true,
+        "nonmaximalBarycentricLinksOpen": true,
+        "sealValid": true,
+        "status": "zero-Fourier-maximal-type5-survivor-frontier",
+        "survivorCandidateCount": 24,
+        "survivorCandidateIndices": [
+          19,
+          21,
+          22,
+          25,
+          26,
+          28,
+          35,
+          37,
+          38,
+          41,
+          42,
+          44,
+          83,
+          85,
+          86,
+          89,
+          90,
+          92,
+          99,
+          101,
+          102,
+          105,
+          106,
+          108
+        ],
+        "timeoutReceiptBindingMatches": true,
+        "zeroFourierCellOrbitCount": 2462
+      },
+      "wallCompatibility": {
+        "artifactSha256": "f8c0bbbaec0f2896239c362c44801e9c985bfd8bfed0ceea849253ca1164f423",
+        "bytesSha256": "970761eabe64396fed9b618c46fd15131f73e0897ea209d325c41668de9d8366",
+        "differentWallCharacterTrackAOpen": true,
+        "directCocycleTrackAOpen": true,
+        "gaugeIndependent": true,
+        "importAndIncidenceCrossBindingReplayed": true,
+        "locator": "scripts/certificates/portfolio/makarov_p2_section5_wall_compatibility.json",
+        "periodicPotentialCanRepair": false,
+        "primitiveCocycleBindingMatches": true,
+        "rationalWallSpanContainsExplicitCharacter": false,
+        "saturationCanRepair": false,
+        "sealValid": true,
+        "sectionPullbackPrimitiveReplayed": true,
+        "status": "explicit-character-not-in-rational-wall-span"
+      },
+      "wallFlipCegar": {
+        "artifactSha256": "a7117f6da599d0ebb67c70872bf7001438fb57b3462d966458ec7cea539a4861",
+        "assignmentsPassingNonemptyBothSides": 0,
+        "bytesSha256": "8a688b6220653a27ec53bf967fda3a38164d71ae8b5925f2eeb41a210aa13878",
+        "globalDirectedLinksRun": false,
+        "globalLawfulClosureRun": false,
+        "incidentFlipAssignmentCount": 128,
+        "incidentSheetSignRank": 7,
+        "independentlyResolvedWallComponentsRemainOpen": true,
+        "locator": "scripts/certificates/portfolio/makarov_p2_wall_flip_cegar.json",
+        "orbitFlipVariableCount": 951,
+        "rank312CoverBindingMatches": true,
+        "sealValid": true,
+        "status": "exact-unsat-empty-directed-link-in-scoped-ansatz",
+        "translationEquivariantOrbitFlipCandidateExists": false,
+        "witnessWordLength": 1
+      }
+    },
+    "importCertificate": {
+      "allFiniteFieldAndColoringChecksPassed": true,
+      "bytesSha256": "a9a3e8f37e0af5fd10a5b11d1d15bdae4d5ab0209ba04675afb57deb6acd74af",
+      "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+      "locator": "scripts/certificates/portfolio/makarov_p2_section5_import.json",
+      "replayStatus": "passed-bundled-certificate",
+      "sealValid": true,
+      "sourceBindingsMatch": true
+    },
+    "importGate": {
+      "allRequiredExactSourcesBound": true,
+      "missingRoles": [],
+      "requiredRoles": [
+        "paper-v2",
+        "p2-coxeter-input",
+        "section-5-coarse-incidence",
+        "section-5-coloring-data"
+      ],
+      "runnable": true,
+      "runnableScope": "exact-import-incidence-coloring-and-h1-gate"
+    },
+    "integralH1Gate": {
+      "baseFourManifoldIntegralH1": "source-reported-Z^144",
+      "baseHomologyEvidenceKind": "source-reported-exact-HAP-output",
+      "closedFiveManifoldFreeRankLowerBound": 144,
+      "explicitPrimitiveCharacterMaterialized": true,
+      "fullCharacterLatticeMaterialized": false,
+      "fullIntegralH1": "not-computed",
+      "independentH1Replay": "not-completed-resource-and-tooling-limit",
+      "inferenceKind": "repository-derived-retraction-inference",
+      "nonzeroIntegralCharacterExists": true,
+      "primitiveIntegralCharacterExists": true,
+      "status": "passed-positive"
+    },
+    "kind": "p2-coarse-coloring-experiment-plan",
+    "nonClaims": [
+      "The source-reported H1(X)=Z^144 and split injection give b1(M)>=144, but do not determine the full H1 of the closed Section 5 colored five-manifold.",
+      "The independent Sage H1(X) replay failed at its bounded dense-FLINT memory path; GAP/HAP was unavailable, so no independent H1 transcript is claimed.",
+      "Two Q-linearly independent primitive integral representatives and several scoped Track B height models are materialized. The complete chamber, maximal-cell, endpoint-hub, equivalence, and rank-four full-star chain eliminates the declared 128-candidate primitive type-6/Fourier height family for the first class; the full character lattice, other gauges or subdivisions, a positive Morse certificate, algebraic fibering, and smooth fibering remain open.",
+      "The second primitive representative is rejected only by the same identity-first pulling gauge at one anchor. This is not a character obstruction, and no global Track B scan has been run for it.",
+      "The identity-link obstruction is scoped to the stored cocycle section, global order, and two tie polarities; it does not obstruct the primitive character itself.",
+      "The coarse order-complex Track B failure is likewise scoped to two canonical dimension perturbations at one translation-reduced root.",
+      "Strict full-wall Track A is blocked on the current cover: every generator-5 wall component is one-sided, so no full wall coorientation or wall-lawful closure exists there.",
+      "A separate exact necessary-condition calculation obstructs only this explicit primitive class in wall Track A: it is not in the rational wall-cochain span, even after a periodic potential or saturation.",
+      "Direct-cocycle Track A and passage to a further finite cover remain open; the current-cover wall obstruction does not apply to either route.",
+      "The natural 16-fold repair and every color-class-only voltage extension are obstructed by side-wall parity. Explicit facet-specific binary and odd-prime Tits covers do coorient all walls, but their canonical coorientation oracles fail the identity directed-link gate. The 951-variable translation-equivariant wall-orbit-flip ansatz also has an exact empty-link obstruction; independently resolved wall-component flips and subdivision rules remain open.",
+      "Exact voltage-graph formulas now identify the rank-312 cover's sheet-resolved wall components. An unrestricted assignment passes both directed rank-two links on a radius-two frontier of 2,560 vertices, 32,768 cells, and 2,736 component variables; this is finite original-vertex evidence, not global Track A.",
+      "The compact radius-one component-flip rule fails at 96 radius-two vertices. The F9 image is the spinor kernel of order 108051462804999168000, but the stored root-line candidate has explicit full-link failures; the exact cover degree, actual quotient wall components, global flips, lawful closure, and subdivision links remain open.",
+      "A mixed periodic potential repairs the former root obstruction locally, but no global directed-link conclusion follows.",
+      "The primitive type-6 cocycle passes both identity links for polarity -1. The exact barycentric reduction has 149,760 original-chamber orbits and at least 1,806,033 cell-barycenter orbits; raw-dominant type-only perturbations are obstructed.",
+      "The bounded Fourier-frame backend timed out with zero certified frames, roots, candidates, eliminations, or survivors. This is no mathematical result; the exact scanner remains opt-in.",
+      "The replacement L\\Q backend exactly certifies 74,880 frames and the complete 149,760-root chamber screen, eliminating 16 of 128 candidates. Intersecting its 112 survivors with the identity-anchor frontier leaves 80 candidates.",
+      "The exact constant-Fourier maximal type-5 templates eliminate 48 of those 80 candidates. The compiled continuation checks all 2,462 zero-Fourier maximal-cell orbits, eliminates eight more, and leaves 24 maximal-type5 survivors.",
+      "The endpoint-hub lemma automatically discharges every cell type containing generator 6 and reduces the unresolved workload to 56 central types. Exact character and sheet symmetries reduce the 24 maximal-type5 survivors to six representatives.",
+      "The compiled full-star continuation retains every actual lower-face coset and both distinct upper cofaces. Rank-four side-cell witnesses eliminate all six representatives and, by independently replayed equivalence transfers, all 24 candidates. This closes only the declared 128-candidate primitive type-6/Fourier height family; it is not a global P2 Track B or fibering obstruction.",
+      "For the quotient-periodic R2 coordinate, the old c=0 pipeline and the c=+/-1 chamber/rank-four quick gates eliminate 344 of the complete 384 coefficient-candidate pairs and leave 40 resurrected c=+1 pairs in ten exact symmetry classes. The compiled maximal-type-5 continuation eliminates all 40, with ten complete-fiber witnesses independently replayed in Python. This closes only that R2 coefficient family for the certified action, primitive character, and canonical barycentric subdivision; other periodic coordinates, coefficient families, primitive characters, and Track B remain open."
+    ],
+    "paper": {
+      "locators": {
+        "alternativeConstruction": "Sections 5.2-5.3",
+        "prism": "Section 1",
+        "publishedFirstHomology": "Section 4.3"
+      },
+      "sourceId": "arXiv:2502.19225v2",
+      "url": "https://arxiv.org/abs/2502.19225v2"
+    },
+    "paperSupportedFacts": {
+      "alternativeSection5": {
+        "closedColoredFiveManifoldB1": "not-computed-in-paper",
+        "x120CellCount": 650,
+        "xDimension": 4,
+        "xIntegralH1": "Z^144",
+        "xIntegralH1FreeRank": 144
+      },
+      "coxeterPrism": "P2-[5,3,3,3,4]",
+      "p2PrismsPer120CellPrism": 14400,
+      "publishedFamilies": {
+        "disposition": "known-b1-zero-not-fibering-candidates",
+        "firstBettiNumber": 0,
+        "names": [
+          "N_i,I^+/-",
+          "Mhat_i,I^+/-"
+        ]
+      }
+    },
+    "schemaVersion": 1,
+    "sourceBindings": [
+      {
+        "bytesSha256": "53ba5c15cd102b2f21426e9506da5334f9346a03054349cf1dc250755faa07a0",
+        "format": "arxiv-source-archive",
+        "locator": "https://arxiv.org/e-print/2502.19225v2",
+        "role": "paper-v2"
+      },
+      {
+        "bytesSha256": "3207516ab4323c28d00123b2391f45499d2eb3f1d75b44fca19577f71a27af6c",
+        "format": "coxeter-system-json",
+        "locator": "public/examples/compact_5_prism_makarov_p2.json",
+        "role": "p2-coxeter-input"
+      },
+      {
+        "bytesSha256": "f2f4b34aedddb081477a9d90643f4ad618b708f8864c421dd5e54a697d257a1a",
+        "format": "p2-section-5-coarse-incidence",
+        "locator": "scripts/data/makarov_p2_section5_coarse_incidence.json",
+        "role": "section-5-coarse-incidence"
+      },
+      {
+        "bytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+        "format": "p2-section-5-coloring-data",
+        "locator": "scripts/data/makarov_p2_section5_coloring.json",
+        "role": "section-5-coloring-data"
+      }
+    ],
+    "sourceBundleDigest": "1ac7ddb54d5903001c789165b1acfdde87816710e1710a3514fcfbd01c2b2aa1",
+    "stages": [
+      {
+        "gate": "Recompute every declared SHA-256 before parsing any imported data.",
+        "id": "replay-source-bytes",
+        "state": "blocked"
+      },
+      {
+        "gate": "Replay the complete Section 5 coarse cell incidence and attaching maps, not only the 650-vertex adjacency graph.",
+        "id": "validate-coarse-incidence",
+        "state": "completed"
+      },
+      {
+        "gate": "Check the characteristic matrix, local linear-independence condition, and source binding of the selected Section 5 coloring.",
+        "id": "validate-coloring",
+        "state": "completed"
+      },
+      {
+        "gate": "Materialize a cellular chain model for the closed coarse five-complex; the validated characteristic construction defines it but does not enumerate its full attaching data.",
+        "id": "construct-closed-colored-complex",
+        "state": "blocked"
+      },
+      {
+        "gate": "Two exact primitive cellular cocycles in Q-linearly independent reflection eigenspaces are bound; computing the full integral character lattice remains a separate expansion.",
+        "id": "compute-integral-h1",
+        "state": "completed"
+      },
+      {
+        "gate": "Track B has exactly eliminated the declared 128-candidate primitive type-6/Fourier height family. For the R2 repair product, the quick gates eliminate 344 of 384 pairs and the compiled maximal-type-5 continuation eliminates the remaining 40. Other periodic coordinates, coefficients, characters, gauges, and subdivisions remain open. Track A has one unrestricted radius-two sheet-resolved survivor, but its global component-flip assignment, higher lawful closure, subdivision links, and height-band gate remain open.",
+        "id": "conditional-morse-search",
+        "state": "blocked"
+      }
+    ],
+    "status": "bundled-fixed-character-screened"
+  },
+  "replayLimitations": [
+    "Manifest replay exactly rebuilds callback-free scalable branches from their embedded JSON input; other branches receive canonical-digest, nested-digest, and action-binding validation only.",
+    "Direct-rank-one replay still needs the original Coxeter system, accepted action, and complete wall-sign source.",
+    "A legacy scalable-full-H1 branch without an embedded JSON adapter still needs its runtime oracle/preparation and external modular-rank and integral-kernel inputs.",
+    "Pure manifest replay validates acquisition-screen registry bindings only; the Node CLI additionally reads the H4 and Tumarkin artifacts and sources, checks their byte hashes and certificate seals, and replays their completed scope.",
+    "P2-plan replay validates the declared plan and source hashes, not the bytes at external source locators."
+  ],
+  "artifactDigest": "4dc4ceecdb8c6bc141201f42f2aef88ccf7b902fd6169a66d3ea9f59afbedcd3"
+}

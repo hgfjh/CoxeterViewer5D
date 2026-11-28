@@ -21,24 +21,9 @@ export {
   localLinkHomology,
   type DavisIncidenceOptions,
 } from "./incidence";
-export {
-  buildGeneralizedCompressionCertificate,
-  computeGeneralizedCompressionArchiveHash,
-  GeneralizedCompressionError,
-  materializeGeneralizedCompressionFaceCompatibility,
-  materializeGeneralizedCompressionFibers,
-  verifyGeneralizedCompressionCertificate,
-  type GeneralizedCompressionBuildOptions,
-  type GeneralizedCompressionCertificate,
-  type GeneralizedCompressionFaceCompatibility,
-  type GeneralizedCompressionFiberCommitment,
-  type GeneralizedCompressionRankTwoAgreement,
-  type GeneralizedCompressionReplayResult,
-  type MaterializedGeneralizedCompressionFiber,
-  type MaterializedGeneralizedCompressionFaceCompatibility,
-  type MaterializedGeneralizedCompressionFaceIncidence,
-  type MaterializedGeneralizedCompressionRootedFaceRecord,
-} from "./generalizedCompression";
+// Generalized compression depends on the torsion-free and compression
+// layers, so it is imported from "./generalizedCompression" directly rather
+// than through this core barrel.
 export type {
   LocalLink,
   LocalLinkSimplex,

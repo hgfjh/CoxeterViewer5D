@@ -1,0 +1,131 @@
+{
+  "auxiliaryCollapsedSmallFacetNerve": {
+    "isFullSection5ManifoldH1": false,
+    "nonzeroContributions": [],
+    "nonzeroRowSpaceElementCount": 511,
+    "rationalB1": 0,
+    "rowSpaceElementCount": 512,
+    "scope": "collapsed-small-facet-nerve-only"
+  },
+  "certificateSha256": "96b055aee2b60e185269384d28cd47453bab91490f3f2789206a87981b2a97e8",
+  "disposition": {
+    "b1ZeroGate": "survives",
+    "nextExactInput": "A cellular chain model retaining X and the base-facet gluing, or explicit HAP homology generators/cocycles for X, is still required before Track B.",
+    "readyForFullCharacterLattice": false
+  },
+  "independentH1Replay": {
+    "attempts": [
+      {
+        "backend": "sage-native-simplicial-homology",
+        "failure": "Sage densified the integer sparse boundary matrix; FLINT raised 'Unable to allocate memory (8)'.",
+        "observedWslVmMemoryGiBApprox": 2.2,
+        "producedTranscript": false,
+        "sageVersion": "10.8",
+        "status": "failed-resource-limit"
+      },
+      {
+        "backend": "gap-hap-simplicial-homology",
+        "failure": "GAP/HAP is absent from the WSL image and the scoped Ubuntu package install requires an interactive sudo password.",
+        "producedTranscript": false,
+        "status": "not-started-tool-unavailable"
+      }
+    ],
+    "hardLimits": {
+      "wallMinutes": 30,
+      "wslVmMemoryGiB": 3
+    },
+    "status": "not-completed-resource-and-tooling-limit",
+    "transcriptBound": false
+  },
+  "integralH1Gate": {
+    "analogousPublishedRetractionReference": "Chen, Remark 4.11",
+    "baseFourManifoldFreeRank": 144,
+    "baseFourManifoldIntegralH1": "Z^144",
+    "baseHomologyEvidenceKind": "source-reported-exact-HAP-output",
+    "closedFiveManifoldFreeRankLowerBound": 144,
+    "evidenceKind": "repository-derived-retraction-inference",
+    "fullIntegralH1": "not-computed",
+    "fullIntegralH1Reason": "The source computes H1(X), not H1 of the Section 5 colored five-manifold; the Section 4 collapsing argument is inapplicable because H1(X) is free of rank 144.",
+    "hypotheses": {
+      "all651FacetColorsNonzero": true,
+      "closedColoredManifoldDefinedByValidColoring": true,
+      "localColorIndependenceAtEveryCorner": true,
+      "prismThickeningYRetractsToX": true,
+      "selectedChamberEmbedsWithoutSelfGluing": true
+    },
+    "nonzeroIntegralCharacterExists": true,
+    "primitiveIntegralCharacterExists": true,
+    "retraction": {
+      "consequence": "H1(X;Z) is a split subgroup of H1(M(Y,lambda);Z)",
+      "foldAfterChamberSection": "identity-on-Y",
+      "maps": [
+        "M(Y,lambda) -> Y",
+        "Y -> X"
+      ],
+      "prismRetractionAfterBaseSection": "identity-on-X",
+      "section": "the selected copy X -> M(Y,lambda)"
+    },
+    "sourceLocator": "Chen, equation (28), and the output stored in the commit-pinned 5-manifolds-2.ipynb; no independent H1 transcript is bound",
+    "status": "passed-positive"
+  },
+  "kind": "makarov-p2-section5-coarse-import-certificate",
+  "nonClaims": [
+    "This certificate proves a positive integral-H1 gate, not the full isomorphism type of H1 of a closed Section 5 colored five-manifold.",
+    "The auxiliary Choi--Park graph sum is not substituted for the full manifold H1.",
+    "No explicit primitive-character representative or cellular cocycle is materialized.",
+    "No complete generator-permutation action, Track B link certificate, algebraic fibering, or smooth fibering is claimed."
+  ],
+  "producer": {
+    "script": "scripts/makarov_p2_section5_import.py",
+    "version": "1.0.0"
+  },
+  "replay": {
+    "allFiniteFieldAndColoringChecksPassed": true,
+    "coloringArtifactSha256": "564f05a58e116b76c81fd07261a9694499813a1ab3b64478fa26bbeedcc6d54a",
+    "incidenceArtifactSha256": "4bd5691b5934c0cc831c062653ce139e3b7a434f3c2a12b03933b8937c735cc3",
+    "incidenceTranscriptSha256": "56a2446ced5e6aef64e6160d7007c22a918c79b493aa65cdca49b32246b76826"
+  },
+  "schemaVersion": 1,
+  "sourceBindings": [
+    {
+      "bytesSha256": "53ba5c15cd102b2f21426e9506da5334f9346a03054349cf1dc250755faa07a0",
+      "format": "arxiv-source-archive",
+      "locator": "https://arxiv.org/e-print/2502.19225v2",
+      "role": "paper-v2"
+    },
+    {
+      "bytesSha256": "3207516ab4323c28d00123b2391f45499d2eb3f1d75b44fca19577f71a27af6c",
+      "format": "coxeter-system-json",
+      "locator": "public/examples/compact_5_prism_makarov_p2.json",
+      "role": "p2-coxeter-input"
+    },
+    {
+      "bytesSha256": "f2f4b34aedddb081477a9d90643f4ad618b708f8864c421dd5e54a697d257a1a",
+      "format": "p2-section-5-coarse-incidence",
+      "locator": "scripts/data/makarov_p2_section5_coarse_incidence.json",
+      "role": "section-5-coarse-incidence"
+    },
+    {
+      "bytesSha256": "d3090c266a28b1f26f10f5458326db281d2d1781faf2ab3ff383383d6fcba9b2",
+      "format": "p2-section-5-coloring-data",
+      "locator": "scripts/data/makarov_p2_section5_coloring.json",
+      "role": "section-5-coloring-data"
+    }
+  ],
+  "supplementBinding": {
+    "bytesSha256": "79091a941dfeba547afbd03da26ad67298db942fed14a9cf764471dec8c3d2c5",
+    "commit": "f14f1a6018bb53c6fe55997cb9fba7f7278fa3bb",
+    "commitDate": "2025-09-17",
+    "license": "GPL-3.0",
+    "locators": [
+      "The adjacency graph",
+      "Finding real cliques",
+      "Homology of the 4-manifold X",
+      "Coloring the graph",
+      "Linear binary code"
+    ],
+    "path": "5-manifolds-2.ipynb",
+    "rawUrl": "https://raw.githubusercontent.com/floatingpoint-754/closed-hyp-5-manifolds/f14f1a6018bb53c6fe55997cb9fba7f7278fa3bb/5-manifolds-2.ipynb",
+    "repository": "https://github.com/floatingpoint-754/closed-hyp-5-manifolds"
+  }
+}

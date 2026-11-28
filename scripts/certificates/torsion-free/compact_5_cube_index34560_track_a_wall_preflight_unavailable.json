@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "kind": "track-a-wall-preflight-unavailable",
+  "method": "bound-source-evidence-gate",
+  "status": "not-runnable-unmaterialized",
+  "source": {
+    "name": "compact 5-cube index-34560 generalized compression",
+    "artifactPath": "scripts/certificates/torsion-free/compact_5_cube_index34560_generalized_compression.json",
+    "artifactCanonicalSha256": "c51fef63dab674e416f7c161903593e52de1b6b7baa17b7ae934199d1df6801b",
+    "storedDigest": "42ad6f697c734473ceb26bb88c6d5a1e30a44d77d9f190c4147f3304ff1b29fd"
+  },
+  "gate": {
+    "twoSidedness": "not-recomputed-without-materialized-rank-two-complex",
+    "rankTwoComplexMaterialized": false,
+    "evidence": {
+      "definitionLevelAgreementPassed": true,
+      "materializedCompressionSupplied": false,
+      "vertices": 34560,
+      "geometricEdges": 172800,
+      "rankTwoCells": 316800
+    }
+  },
+  "conclusion": "The compact-cube archive certifies definition-level rank-at-most-two agreement but does not store the 316,800-cell materialized bar-X bridge required by this preflight, so no cleanliness census is claimed.",
+  "nonClaims": [
+    "Definition-level generalized-compression agreement is not a wall-cleanliness calculation.",
+    "No sampled cube edges are substituted for whole wall components.",
+    "This availability record makes no new conclusion about the earlier compact-cube Track A search."
+  ],
+  "artifactDigest": "7c0f82c32cd41d439e2ffe2fce4bbdc2349f50ea1de898aefbfc29ea87eb965b"
+}

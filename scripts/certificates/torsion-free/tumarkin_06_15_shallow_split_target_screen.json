@@ -1,0 +1,3708 @@
+{
+  "artifactType": "tumarkin-06-15-shallow-split-target-screen",
+  "backend": {
+    "backendVersion": "1.0.0",
+    "gapVersion": "4.14.0"
+  },
+  "budget": {
+    "maxNodes": 1000000,
+    "nodesVisited": 219792,
+    "perSystem": [
+      {
+        "maxNodes": 500000,
+        "nodesVisited": 109888,
+        "systemId": "tumarkin-g11411-06",
+        "workerTimeoutSeconds": 435
+      },
+      {
+        "maxNodes": 500000,
+        "nodesVisited": 109904,
+        "systemId": "tumarkin-g11411-15",
+        "workerTimeoutSeconds": 435
+      }
+    ]
+  },
+  "certificateSha256": "fc49bbfc0e42d65376f6a5a33958be8d9ffc8f60741fd6e7fcc1d78b1da77d8f",
+  "claimBoundary": "A record marked eliminated has no completion inside its displayed anchor class. A pairwise survivor is only a lead: no compatible three-generator tuple or torsion-free action has been established.",
+  "configuration": {
+    "gapBackendSha256": "e2954f38f91ebed0565cfea69845911abf024cc6e1f00faa9fb575449f248822",
+    "launcherSha256": "372090051f37e81923e3f8d2315da5387d1e008145e765adece0e0381dbb088e",
+    "memoryBytes": 1073741824,
+    "nodeCapPerSystem": 500000,
+    "nodeCapTotal": 1000000,
+    "target": "W(H4) x C2",
+    "targetOrder": 28800,
+    "wallSeconds": 900,
+    "workerTimeoutSecondsPerSystem": 435
+  },
+  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "producerVersion": "1.0.0",
+  "runtime": {
+    "command": "wsl bash <workspace+rss+wall watchdog> <configured-sage-gap>",
+    "kind": "two-sequential-wsl-gap-capped-jobs"
+  },
+  "schemaVersion": 1,
+  "scope": {
+    "anchorProjectionClasses": [
+      "canonical H4 simple system",
+      "uniform twist by the nontrivial center of W(H4)",
+      "each with the two uniform C2 twists allowed by the odd H4 edges",
+      "the A1 image is exhaustively chosen to extend the anchor to order 28,800"
+    ],
+    "constraints": [
+      "exact rank-two product orders against the anchor",
+      "maximal-spherical image orders involving one outside generator",
+      "rank-two and maximal-spherical image orders involving two outside generators"
+    ],
+    "method": "exact unary and binary consistency screen in the split target W(H4) x C2",
+    "notSearched": [
+      "triples of outside-generator images",
+      "nonnormal transitive permutation actions",
+      "nonsplit targets or targets other than W(H4) x C2",
+      "H4 projection classes outside the four explicit central/cofactor twists",
+      "higher-degree actions"
+    ],
+    "smallPrimeReuseDecision": "The Makarov prime-3/5/7/11/31 certificates are matrix-bound and cannot be transferred. No unproved small-prime obstruction is asserted."
+  },
+  "status": "completed",
+  "systems": [
+    {
+      "anchors": [
+        {
+          "a1Generator": 6,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 0,
+          "anchorSourceGenerators": [
+            0,
+            4,
+            3,
+            2,
+            6
+          ],
+          "h4Generators": [
+            0,
+            4,
+            3,
+            2
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "33725ec871f685208b9ae6517da2f9d67824f89a48cdbc210457ed07683ff950",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 3429,
+              "nodesAtOutcome": 3433,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 3429,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 3433,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 3433,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "566dce70dc617b21ac102cd32095a90cab22258bad03913a7c5e5d7be18f31d1",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 6862,
+              "nodesAtOutcome": 6866,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 6862,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 6866,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 6866,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "df8ab1fbf394f22e76adbe80e80129f0ec29969f5c4be61c06b9978906fa5ba0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 10295,
+              "nodesAtOutcome": 10299,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 10295,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 10299,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 10299,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "812d50f773cadcad6d8c807a3b09f896d114f91a4769fb63dbf3637ad29a442a",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 13728,
+              "nodesAtOutcome": 13732,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 13728,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 13732,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 13732,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "efecdea3cedffa0b9bf84c278713daebcb527291b5f53b0ead5672505d32c073",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 17161,
+              "nodesAtOutcome": 17165,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 17161,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 17165,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 17165,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "013d95663e63739f37017191e0ebdc678cc84050ee409a8d7f8990758b1e28b8",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 20594,
+              "nodesAtOutcome": 20598,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 20594,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 20598,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 20598,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "5ef943e6555bb55eefbfdd755e4ab5e60466dfd768d90858ba326fb0c3eab9d0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 24027,
+              "nodesAtOutcome": 24031,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 24027,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 24031,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 24031,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "10efc86db1fe6162eee03aba8ff0dd9543d8f36bc0159d61c2c549f19bed1974",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 27460,
+              "nodesAtOutcome": 27464,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 27460,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 27464,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 27464,
+                  "sourceGenerators": [
+                    5,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            1,
+            5,
+            7
+          ],
+          "subset": [
+            0,
+            2,
+            3,
+            4,
+            6
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 0,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 146,
+            "targetOrder": 28800
+          }
+        },
+        {
+          "a1Generator": 7,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 1,
+          "anchorSourceGenerators": [
+            0,
+            4,
+            3,
+            2,
+            7
+          ],
+          "h4Generators": [
+            0,
+            4,
+            3,
+            2
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "d3d51ba9748ae5fcea2331ebcde318380c96d9fd4015520d182dbce9abd52643",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 30893,
+              "nodesAtOutcome": 30899,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 30893,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 30899,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 30899,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "040dac923408c9501f607b6202f814d90e14610fd02a01ecfd5b3040ebb3b6ca",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 34328,
+              "nodesAtOutcome": 34334,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 34328,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 34334,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 34334,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "1eddd3ef466374fe8f2aa5d0813cfe376bc355600868b98c9ec436386e3c2180",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 37763,
+              "nodesAtOutcome": 37769,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 37763,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 37769,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 37769,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "f5f8ab74120158fbf52375f48be12e13dc8e683d9afbd0474dc656a2ad779477",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 41198,
+              "nodesAtOutcome": 41204,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 41198,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 41204,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 41204,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "555ecb55b4d2187763799e0d6f15a17b7947026a0ee766c6a31864d14490e4bf",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 44633,
+              "nodesAtOutcome": 44639,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 44633,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 44639,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 44639,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "9c7c1ddb2d04446d1c7b48c64a25a97d7788568e949ba45cfba9bc60feb4dd40",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 48068,
+              "nodesAtOutcome": 48074,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 48068,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 48074,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 48074,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "815ffd607cfb703472d743559e972da92932367691bd1e645c315fd7ed1f8984",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 51503,
+              "nodesAtOutcome": 51509,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 51503,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 51509,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 51509,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "a642d088db8290f2c794dc1498f7cad78cc9f20eee758ec6fdaafd84135d84da",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 54938,
+              "nodesAtOutcome": 54944,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 54938,
+                  "sourceGenerators": [
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 54944,
+                  "sourceGenerators": [
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 54944,
+                  "sourceGenerators": [
+                    5,
+                    6
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                3,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            1,
+            5,
+            6
+          ],
+          "subset": [
+            0,
+            2,
+            3,
+            4,
+            7
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 27464,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 122,
+            "targetOrder": 28800
+          }
+        },
+        {
+          "a1Generator": 0,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 2,
+          "anchorSourceGenerators": [
+            6,
+            5,
+            2,
+            3,
+            0
+          ],
+          "h4Generators": [
+            6,
+            5,
+            2,
+            3
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "b5493e9dd442003c4e5a230875f6f1ba0107f3dfd3dfc1cfa57f595db67348fa",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 58373,
+              "nodesAtOutcome": 58377,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 58373,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 58377,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 58377,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "7d534e2e0fe9d5c27667dc8e4f6fa23baf8f9043df631462654d733398318ef8",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 61806,
+              "nodesAtOutcome": 61810,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 61806,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 61810,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 61810,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "bf39fa5ada5d69396420161557336f2ec978a903f99363d06ac871c44c5502b0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 65239,
+              "nodesAtOutcome": 65243,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 65239,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 65243,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 65243,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "43aaed550c6235a1bad311c023b8229c8329cbfc8d5badbed013e47deb074632",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 68672,
+              "nodesAtOutcome": 68676,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 68672,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 68676,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 68676,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "0f74f682710df713999eb587e6face1d723f30ec9b1faf6b0113640b7cf39714",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 72105,
+              "nodesAtOutcome": 72109,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 72105,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 72109,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 72109,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "d0da557dc913eadf5833520f987afb0670c299466a46bd17eb05c3d272efafc0",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 75538,
+              "nodesAtOutcome": 75542,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 75538,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 75542,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 75542,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "d94ee15e60dec40904e7d24d6289ca4d9ba4368a05582c590fd7e66e5ed938a6",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 78971,
+              "nodesAtOutcome": 78975,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 78971,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 78975,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 78975,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "7d56496b07266b14f4235b9fcf2cfaca03dc03310e731853cc69392195785b8d",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 82404,
+              "nodesAtOutcome": 82408,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 82404,
+                  "sourceGenerators": [
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 4,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 82408,
+                  "sourceGenerators": [
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 82408,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            1,
+            4,
+            7
+          ],
+          "subset": [
+            0,
+            2,
+            3,
+            5,
+            6
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 54944,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 122,
+            "targetOrder": 28800
+          }
+        },
+        {
+          "a1Generator": 1,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 3,
+          "anchorSourceGenerators": [
+            6,
+            5,
+            2,
+            3,
+            1
+          ],
+          "h4Generators": [
+            6,
+            5,
+            2,
+            3
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "33725ec871f685208b9ae6517da2f9d67824f89a48cdbc210457ed07683ff950",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 85837,
+              "nodesAtOutcome": 85843,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 85837,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 85843,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 85843,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "566dce70dc617b21ac102cd32095a90cab22258bad03913a7c5e5d7be18f31d1",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 89272,
+              "nodesAtOutcome": 89278,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 89272,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 89278,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 89278,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "df8ab1fbf394f22e76adbe80e80129f0ec29969f5c4be61c06b9978906fa5ba0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 92707,
+              "nodesAtOutcome": 92713,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 92707,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 92713,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 92713,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "812d50f773cadcad6d8c807a3b09f896d114f91a4769fb63dbf3637ad29a442a",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 96142,
+              "nodesAtOutcome": 96148,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 96142,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 96148,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 96148,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "efecdea3cedffa0b9bf84c278713daebcb527291b5f53b0ead5672505d32c073",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 99577,
+              "nodesAtOutcome": 99583,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 99577,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 99583,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 99583,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "013d95663e63739f37017191e0ebdc678cc84050ee409a8d7f8990758b1e28b8",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 103012,
+              "nodesAtOutcome": 103018,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 103012,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 103018,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 103018,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "5ef943e6555bb55eefbfdd755e4ab5e60466dfd768d90858ba326fb0c3eab9d0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 106447,
+              "nodesAtOutcome": 106453,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 106447,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 106453,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 106453,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "10efc86db1fe6162eee03aba8ff0dd9543d8f36bc0159d61c2c549f19bed1974",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 109882,
+              "nodesAtOutcome": 109888,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 109882,
+                  "sourceGenerators": [
+                    0,
+                    4
+                  ]
+                },
+                {
+                  "candidatePairsTested": 6,
+                  "compatiblePairCount": 4,
+                  "complete": true,
+                  "nodesAfterPair": 109888,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 109888,
+                  "sourceGenerators": [
+                    4,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                2,
+                0,
+                3
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            0,
+            4,
+            7
+          ],
+          "subset": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 82408,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 146,
+            "targetOrder": 28800
+          }
+        }
+      ],
+      "h4TimesA1AnchorCount": 4,
+      "id": "tumarkin-g11411-06",
+      "maximalSphericalSubgroupCount": 14,
+      "rank": 8,
+      "sourceBinding": {
+        "bytesSha256": "bf0653b04960a37d620d263b224c036e219fcfba81a9001d943232943267064b",
+        "canonicalSourceSha256": "42da09e1ceef6e9f07a0e76bd9f4cd88505d735d993025fa89bbc551e3b15068",
+        "matrixSha256": "8e1e9c15b35b86069d0e577a3f8b556c3d668de14bf5a78fea485a4418574e82",
+        "maximalSphericalCatalogueSha256": "2b82af7ee26391248726bbecc329992e422ee5078dc7ba70432a9690af89e498",
+        "path": "public/examples/tumarkin_5d_8facet_g11411_06.json"
+      },
+      "summary": {
+        "budgetExhaustedRecordCount": 0,
+        "concreteActionFound": false,
+        "eliminatedRecordCount": 32,
+        "modeledAnchorRecordCount": 32,
+        "pairwiseSurvivorCount": 0,
+        "splitTargetEliminatedWithinModeledAnchorClasses": true
+      }
+    },
+    {
+      "anchors": [
+        {
+          "a1Generator": 0,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 0,
+          "anchorSourceGenerators": [
+            4,
+            5,
+            6,
+            1,
+            0
+          ],
+          "h4Generators": [
+            4,
+            5,
+            6,
+            1
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "33725ec871f685208b9ae6517da2f9d67824f89a48cdbc210457ed07683ff950",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 3429,
+              "nodesAtOutcome": 3437,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 3437,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 3437,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 3437,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "566dce70dc617b21ac102cd32095a90cab22258bad03913a7c5e5d7be18f31d1",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 6866,
+              "nodesAtOutcome": 6874,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 6874,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 6874,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 6874,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "df8ab1fbf394f22e76adbe80e80129f0ec29969f5c4be61c06b9978906fa5ba0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 10303,
+              "nodesAtOutcome": 10311,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 10311,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 10311,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 10311,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "812d50f773cadcad6d8c807a3b09f896d114f91a4769fb63dbf3637ad29a442a",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 13740,
+              "nodesAtOutcome": 13748,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 13748,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 13748,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 13748,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "efecdea3cedffa0b9bf84c278713daebcb527291b5f53b0ead5672505d32c073",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 17177,
+              "nodesAtOutcome": 17185,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 17185,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 17185,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 17185,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "013d95663e63739f37017191e0ebdc678cc84050ee409a8d7f8990758b1e28b8",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 20614,
+              "nodesAtOutcome": 20622,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 20622,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 20622,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 20622,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "5ef943e6555bb55eefbfdd755e4ab5e60466dfd768d90858ba326fb0c3eab9d0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 24051,
+              "nodesAtOutcome": 24059,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 24059,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 24059,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 24059,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "10efc86db1fe6162eee03aba8ff0dd9543d8f36bc0159d61c2c549f19bed1974",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 27488,
+              "nodesAtOutcome": 27496,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 8,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 27496,
+                  "sourceGenerators": [
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 27496,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 27496,
+                  "sourceGenerators": [
+                    3,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                4,
+                2,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            2,
+            3,
+            7
+          ],
+          "subset": [
+            0,
+            1,
+            4,
+            5,
+            6
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 0,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 146,
+            "targetOrder": 28800
+          }
+        },
+        {
+          "a1Generator": 3,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 1,
+          "anchorSourceGenerators": [
+            4,
+            5,
+            6,
+            1,
+            3
+          ],
+          "h4Generators": [
+            4,
+            5,
+            6,
+            1
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "33725ec871f685208b9ae6517da2f9d67824f89a48cdbc210457ed07683ff950",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 30925,
+              "nodesAtOutcome": 30939,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 30939,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 30939,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 30939,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "566dce70dc617b21ac102cd32095a90cab22258bad03913a7c5e5d7be18f31d1",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 34368,
+              "nodesAtOutcome": 34382,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 34382,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 34382,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 34382,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "df8ab1fbf394f22e76adbe80e80129f0ec29969f5c4be61c06b9978906fa5ba0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 37811,
+              "nodesAtOutcome": 37825,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 37825,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 37825,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 37825,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "812d50f773cadcad6d8c807a3b09f896d114f91a4769fb63dbf3637ad29a442a",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 41254,
+              "nodesAtOutcome": 41268,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 41268,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 41268,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 41268,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "efecdea3cedffa0b9bf84c278713daebcb527291b5f53b0ead5672505d32c073",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 44697,
+              "nodesAtOutcome": 44711,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 44711,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 44711,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 44711,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "013d95663e63739f37017191e0ebdc678cc84050ee409a8d7f8990758b1e28b8",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 48140,
+              "nodesAtOutcome": 48154,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 48154,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 48154,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 48154,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "5ef943e6555bb55eefbfdd755e4ab5e60466dfd768d90858ba326fb0c3eab9d0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 51583,
+              "nodesAtOutcome": 51597,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 51597,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 51597,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 51597,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "10efc86db1fe6162eee03aba8ff0dd9543d8f36bc0159d61c2c549f19bed1974",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 55026,
+              "nodesAtOutcome": 55040,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 14,
+                  "compatiblePairCount": 8,
+                  "complete": true,
+                  "nodesAfterPair": 55040,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 55040,
+                  "sourceGenerators": [
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 55040,
+                  "sourceGenerators": [
+                    2,
+                    7
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                2,
+                7,
+                0
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            0,
+            2,
+            7
+          ],
+          "subset": [
+            1,
+            3,
+            4,
+            5,
+            6
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 27496,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 146,
+            "targetOrder": 28800
+          }
+        },
+        {
+          "a1Generator": 2,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 2,
+          "anchorSourceGenerators": [
+            4,
+            5,
+            6,
+            7,
+            2
+          ],
+          "h4Generators": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "33725ec871f685208b9ae6517da2f9d67824f89a48cdbc210457ed07683ff950",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 58469,
+              "nodesAtOutcome": 58469,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 58469,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 58469,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 58469,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "566dce70dc617b21ac102cd32095a90cab22258bad03913a7c5e5d7be18f31d1",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 61898,
+              "nodesAtOutcome": 61898,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 61898,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 61898,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 61898,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "df8ab1fbf394f22e76adbe80e80129f0ec29969f5c4be61c06b9978906fa5ba0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 65327,
+              "nodesAtOutcome": 65327,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 65327,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 65327,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 65327,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "812d50f773cadcad6d8c807a3b09f896d114f91a4769fb63dbf3637ad29a442a",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 68756,
+              "nodesAtOutcome": 68756,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 68756,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 68756,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 68756,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "efecdea3cedffa0b9bf84c278713daebcb527291b5f53b0ead5672505d32c073",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 72185,
+              "nodesAtOutcome": 72185,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 72185,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 72185,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 72185,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "013d95663e63739f37017191e0ebdc678cc84050ee409a8d7f8990758b1e28b8",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 75614,
+              "nodesAtOutcome": 75614,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 75614,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 75614,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 75614,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "5ef943e6555bb55eefbfdd755e4ab5e60466dfd768d90858ba326fb0c3eab9d0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 79043,
+              "nodesAtOutcome": 79043,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 79043,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 79043,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 79043,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "10efc86db1fe6162eee03aba8ff0dd9543d8f36bc0159d61c2c549f19bed1974",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 82472,
+              "nodesAtOutcome": 82472,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 82472,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 82472,
+                  "sourceGenerators": [
+                    0,
+                    3
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 82472,
+                  "sourceGenerators": [
+                    1,
+                    3
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            0,
+            1,
+            3
+          ],
+          "subset": [
+            2,
+            4,
+            5,
+            6,
+            7
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 55040,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 146,
+            "targetOrder": 28800
+          }
+        },
+        {
+          "a1Generator": 3,
+          "allModeledRecordsEliminated": true,
+          "anchorIndex": 3,
+          "anchorSourceGenerators": [
+            4,
+            5,
+            6,
+            7,
+            3
+          ],
+          "h4Generators": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "modeledAnchorRecords": [
+            {
+              "anchorTupleSha256": "33725ec871f685208b9ae6517da2f9d67824f89a48cdbc210457ed07683ff950",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 85901,
+              "nodesAtOutcome": 85901,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 85901,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 85901,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 85901,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 0,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "566dce70dc617b21ac102cd32095a90cab22258bad03913a7c5e5d7be18f31d1",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 89330,
+              "nodesAtOutcome": 89330,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 89330,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 89330,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 89330,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 1,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "df8ab1fbf394f22e76adbe80e80129f0ec29969f5c4be61c06b9978906fa5ba0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 92759,
+              "nodesAtOutcome": 92759,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 92759,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 92759,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 92759,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 2,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "812d50f773cadcad6d8c807a3b09f896d114f91a4769fb63dbf3637ad29a442a",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 0,
+              "nodesAfterUnary": 96188,
+              "nodesAtOutcome": 96188,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 96188,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 96188,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 96188,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 3,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "efecdea3cedffa0b9bf84c278713daebcb527291b5f53b0ead5672505d32c073",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 99617,
+              "nodesAtOutcome": 99617,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 99617,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 99617,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 99617,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 4,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "013d95663e63739f37017191e0ebdc678cc84050ee409a8d7f8990758b1e28b8",
+              "h4CofactorTwist": 0,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 103046,
+              "nodesAtOutcome": 103046,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 103046,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 103046,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 103046,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 5,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "5ef943e6555bb55eefbfdd755e4ab5e60466dfd768d90858ba326fb0c3eab9d0",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 106475,
+              "nodesAtOutcome": 106475,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 106475,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 106475,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 106475,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 6,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "anchorTupleSha256": "10efc86db1fe6162eee03aba8ff0dd9543d8f36bc0159d61c2c549f19bed1974",
+              "h4CofactorTwist": 1,
+              "h4ProjectionCentralTwist": 1,
+              "nodesAfterUnary": 109904,
+              "nodesAtOutcome": 109904,
+              "outcome": "eliminated",
+              "pairs": [
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 109904,
+                  "sourceGenerators": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 109904,
+                  "sourceGenerators": [
+                    0,
+                    2
+                  ]
+                },
+                {
+                  "candidatePairsTested": 0,
+                  "compatiblePairCount": 0,
+                  "complete": true,
+                  "nodesAfterPair": 109904,
+                  "sourceGenerators": [
+                    1,
+                    2
+                  ]
+                }
+              ],
+              "recordIndex": 7,
+              "unaryCandidateCounts": [
+                0,
+                0,
+                2
+              ],
+              "unaryComplete": [
+                true,
+                true,
+                true
+              ]
+            }
+          ],
+          "outsideGenerators": [
+            0,
+            1,
+            2
+          ],
+          "subset": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "targetProfile": {
+            "anchorRecordCount": 8,
+            "cofactorOrder": 2,
+            "h4Order": 14400,
+            "nodesAtStart": 82472,
+            "nonidentityInvolutionCount": 1143,
+            "permutationDegree": 146,
+            "targetOrder": 28800
+          }
+        }
+      ],
+      "h4TimesA1AnchorCount": 4,
+      "id": "tumarkin-g11411-15",
+      "maximalSphericalSubgroupCount": 14,
+      "rank": 8,
+      "sourceBinding": {
+        "bytesSha256": "8955e1c37c4993b9af271d84a796b0551e3e21aedfeed8341319f304cce7bdac",
+        "canonicalSourceSha256": "16e88a6577484de52a0a9eb45724dfbd6faf3951e70e45ebccd7b053e06e3219",
+        "matrixSha256": "813cc0baabfecb02b69c014a80202036bf4dde7744e9690f24eb886dd27d310c",
+        "maximalSphericalCatalogueSha256": "e4351850cdf835b81c6749379543acd5c57b7ef6c2dd2dd7229f395808d190bc",
+        "path": "public/examples/tumarkin_5d_8facet_g11411_15.json"
+      },
+      "summary": {
+        "budgetExhaustedRecordCount": 0,
+        "concreteActionFound": false,
+        "eliminatedRecordCount": 32,
+        "modeledAnchorRecordCount": 32,
+        "pairwiseSurvivorCount": 0,
+        "splitTargetEliminatedWithinModeledAnchorClasses": true
+      }
+    }
+  ]
+}

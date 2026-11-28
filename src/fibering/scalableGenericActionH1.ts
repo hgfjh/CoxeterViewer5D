@@ -1043,47 +1043,19 @@ export function replayScalableGenericActionH1(
       typeof stored.certificateDigest === "string" &&
       stored.certificateDigest ===
         computeScalableGenericActionH1CertificateDigest(stored);
+    // Oracle, preparation, modular-rank, kernel and torsion-free outcomes
+    // are all taken from the exact rebuild below.  Only the completion
+    // replay needs the canonical preparation separately.
     const canonicalOracle = buildStreamedLawfulDavisOracle({
       system: input.oracle.system,
       generatorImages: input.accepted.candidate.generatorImages,
     });
-    const actionRowsMatch = actionRowsMatchOracle(
-      input.oracle,
-      canonicalOracle,
-      input.accepted,
-    );
-    const oracleStructureMatches = suppliedOracleStructureMatchesCanonical(
-      input.oracle,
-      canonicalOracle,
-    );
-    checks.oracleOutcomeMatches =
-      actionRowsMatch === stored.checks.actionRowsMatchOracle &&
-      oracleStructureMatches ===
-        stored.checks.suppliedOracleStructureMatchesCanonical;
     const canonicalPreparation = prepareGenericStreamedH1(canonicalOracle);
-    const preparationPassed =
-      canonicalSha256(canonicalPreparation.certificate) ===
-      canonicalSha256(input.preparation.certificate);
-    checks.preparationOutcomeMatches =
-      preparationPassed === stored.checks.preparationReplayPassed;
     const canonicalInput: ScalableGenericActionH1BuildInput = {
       ...input,
       oracle: canonicalOracle,
       preparation: canonicalPreparation,
     };
-    const rankReplay = replayGenericSparseModularRankCertificateFromReader({
-      matrixReader:
-        scalableGenericActionH1SparseMatrixReader(canonicalPreparation),
-      sourceBindings: scalableGenericActionH1SourceBindings(
-        canonicalPreparation,
-        input.accepted,
-      ),
-      certificate: input.modularRankCertificate,
-      budgets: stored.modularRank.replayBudgets,
-    });
-    checks.modularRankOutcomeMatches =
-      (rankReplay.status === "passed") ===
-      stored.checks.modularRankReplayPassed;
     const witnessValidation = validateIntegralKernelWitness({
       witness: input.integralKernelWitness,
       preparationDigest: canonicalPreparation.certificate.preparationDigest,
@@ -1092,20 +1064,6 @@ export function replayScalableGenericActionH1(
         input.modularRankCertificate.certificateDigest,
       columnCount: canonicalPreparation.certificate.boundary.columnCount,
     });
-    const integralKernelValid =
-      witnessValidation.envelopeRecognized &&
-      witnessValidation.digestValid &&
-      witnessValidation.sourceBound &&
-      witnessValidation.validated !== undefined &&
-      witnessValidation.validated.basis.length ===
-        input.modularRankCertificate.nullity;
-    checks.integralKernelOutcomeMatches =
-      integralKernelValid ===
-      (stored.checks.integralKernelEnvelopeRecognized &&
-        stored.checks.integralKernelDigestValid &&
-        stored.checks.integralKernelSourceBound &&
-        stored.checks.integralKernelRankMatchesModularNullity);
-
     if (
       stored.completion !== undefined &&
       witnessValidation.validated !== undefined &&

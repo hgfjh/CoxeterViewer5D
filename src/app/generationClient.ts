@@ -27,6 +27,17 @@ import {
 
 export type GenerationCacheHit = "memory" | "persistent" | false;
 
+/**
+ * Rejection for a request that a newer request replaced before it finished.
+ * Callers that only care about the latest result should ignore it.
+ */
+export class GenerationSupersededError extends Error {
+  constructor() {
+    super("Generation request was superseded by a newer request.");
+    this.name = "GenerationSupersededError";
+  }
+}
+
 export interface GenerationClientResult {
   ball: GeneratedCayleyBall;
   sphericalSubsets: SphericalSubsetEnumerationResult;
@@ -179,6 +190,20 @@ export class GenerationClient {
         cacheHit: false,
         cacheMetadata: cached.cacheMetadata,
       };
+    }
+
+    // Only the newest request matters to the viewer (radius slider, example
+    // switch).  Terminating the worker abandons superseded generations instead
+    // of computing every intermediate radius to completion; a fresh worker
+    // starts in milliseconds and the system is re-posted automatically.
+    if (this.pending.size > 0 && this.worker) {
+      for (const stale of this.pending.values()) {
+        stale.reject(new GenerationSupersededError());
+      }
+      this.pending.clear();
+      this.worker.terminate();
+      this.worker = undefined;
+      this.postedSystemHashes.clear();
     }
 
     const worker = this.ensureWorker();

@@ -1,5 +1,6 @@
-import type { SceneEdge, SceneNode } from "../render/SceneView";
+import type { SceneNode } from "../render/SceneView";
 import type { CoxeterMatrixEntry, CoxeterSystemInput } from "../types";
+import type { SceneLineStyle, StyledSceneEdge } from "./compressedComplexScene";
 
 type Vec3 = [number, number, number];
 
@@ -10,11 +11,13 @@ export interface DefiningGraphEdgeRecord {
   entry: CoxeterMatrixEntry;
   label: string;
   color: string;
+  lineStyle: SceneLineStyle;
 }
 
 export interface DefiningGraphLegendEntry {
   label: string;
   color: string;
+  lineStyle: SceneLineStyle;
   count: number;
 }
 
@@ -30,6 +33,7 @@ export interface DefiningGraphIncidenceClass {
   entry: Exclude<CoxeterMatrixEntry, 1>;
   label: string;
   color: string;
+  lineStyle: SceneLineStyle;
   drawnInGamma: boolean;
   neighbors: DefiningGraphNeighborRecord[];
 }
@@ -56,13 +60,25 @@ export interface DefiningGraphRelationOrderComponents {
   relationOrder: number;
   label: string;
   color: string;
+  lineStyle: SceneLineStyle;
   edgeCount: number;
   components: DefiningGraphRelationComponent[];
   isolatedGenerators: number[];
   isolatedGeneratorLabels: string[];
 }
 
-export type DefiningGraphLayoutMode = "3d" | "planar";
+/**
+ * "auto" draws a planar Gamma crossing-free in one plane and a non-planar
+ * Gamma in 3D; "3d" forces the spherical spiral; "planar" is the circle
+ * drawing with crossings left visible.
+ */
+export type DefiningGraphLayoutMode = "auto" | "3d" | "planar";
+
+/**
+ * Requested node field: colour this vertex as generator `generatorColorIndex`
+ * in the active theme when no colorHint is supplied.
+ */
+export type GammaSceneNode = SceneNode & { generatorColorIndex?: number };
 
 export interface DefiningGraphPlanaritySummary {
   isPlanar: boolean;
@@ -74,8 +90,8 @@ export interface DefiningGraphPlanaritySummary {
 }
 
 export interface DefiningGraphScene {
-  nodes: SceneNode[];
-  edges: SceneEdge[];
+  nodes: GammaSceneNode[];
+  edges: StyledSceneEdge[];
   records: DefiningGraphEdgeRecord[];
   incidencePartitions: DefiningGraphVertexIncidence[];
   relationOrderComponents: DefiningGraphRelationOrderComponents[];
@@ -85,6 +101,8 @@ export interface DefiningGraphScene {
   warnings: string[];
   rightAnglePairCount: number;
   layoutMode: DefiningGraphLayoutMode;
+  /** Whether the drawn vertices lie in one plane (z = 0) or in space. */
+  layoutKind: "plane" | "space";
   planarity: DefiningGraphPlanaritySummary;
 }
 
@@ -106,6 +124,10 @@ const PLANAR_LABEL_FRACTIONS = [
   0.8, 0.84, 0.88,
 ];
 const PLANAR_LABEL_OFFSETS = [0.5, -0.5, 0.72, -0.72, 0.94, -0.94];
+/** Candidate outer faces tried for the Tutte drawing. */
+const GAMMA_CYCLE_LIMIT = 200;
+/** Minimum clearance (vertex-vertex, vertex-edge) over median edge length. */
+const GAMMA_MIN_SEPARATION = 0.2;
 
 // Parsed Coxeter systems are immutable app data. Caching by object identity
 // keeps planarity and incidence analysis out of layout/theme-only updates.
@@ -115,7 +137,11 @@ const definingGraphTopologyCache = new WeakMap<
 >();
 const planarLabelPlacementCache = new WeakMap<
   DefiningGraphTopology,
-  Map<string, PlanarLabelPlacement>
+  Map<string, Map<string, PlanarLabelPlacement>>
+>();
+const automaticLayoutCache = new WeakMap<
+  DefiningGraphTopology,
+  { positions: Vec3[]; kind: "plane" | "space" }
 >();
 
 /**
@@ -135,24 +161,27 @@ export function buildDefiningGraphScene(
     highlightColor?: string;
   } = {},
 ): DefiningGraphScene {
-  const layoutMode = options.layoutMode ?? "3d";
+  const layoutMode = options.layoutMode ?? "auto";
   const topology = buildDefiningGraphTopology(system);
+  const layout = gammaLayout(topology, system.rank, layoutMode);
   const highlightedGenerators =
     options.highlightedGenerators === undefined
       ? undefined
       : new Set(options.highlightedGenerators);
   const highlightColor = options.highlightColor ?? "#22d3ee";
-  const nodes: SceneNode[] = system.generators.map((generator, index) => ({
+  const nodes: GammaSceneNode[] = system.generators.map((generator, index) => ({
     id: definingGraphNodeId(index),
     label: generator.label,
     compactLabel: generator.label,
     length: 0,
     localDistance: 0,
+    // A Gamma vertex is a generator, so it wears that generator's colour.
     colorHint: highlightedGenerators
       ? highlightedGenerators.has(index)
         ? highlightColor
         : "#64748b"
-      : undefined,
+      : generator.colorHint,
+    generatorColorIndex: highlightedGenerators ? undefined : index,
     stateRole: highlightedGenerators
       ? highlightedGenerators.has(index)
         ? "in-state"
@@ -162,21 +191,18 @@ export function buildDefiningGraphScene(
       ? highlightedGenerators.has(index)
         ? 2.05
         : 0.72
-      : undefined,
-    alwaysLabel: highlightedGenerators ? true : undefined,
+      : 1.35,
+    alwaysLabel: true,
     labelPriority: highlightedGenerators
       ? highlightedGenerators.has(index)
         ? 130_000 - index
         : 95_000 - index
-      : undefined,
-    position:
-      layoutMode === "planar"
-        ? planarGeneratorDirection(index, system.rank)
-        : generatorDirection(index, system.rank),
+      : 120_000 - index,
+    position: layout.positions[index],
   }));
   const planarLabelPlacements =
-    layoutMode === "planar"
-      ? planarLabelPlacementsFor(topology, system.rank)
+    layout.kind === "plane"
+      ? planarLabelPlacementsFor(topology, layoutMode, layout.positions)
       : new Map<string, PlanarLabelPlacement>();
 
   return {
@@ -185,24 +211,18 @@ export function buildDefiningGraphScene(
       id: record.id,
       source: definingGraphNodeId(record.sourceGenerator),
       target: definingGraphNodeId(record.targetGenerator),
-      // SceneView colors edges by a single generator bucket. For Gamma edges,
-      // the label carries the relation; the color is only a stable cue.
+      // SceneView needs a generator bucket, but a Gamma edge is a relation,
+      // not a generator. The neutral colorHint overrides the generator hue;
+      // the "m=k" label and the line style carry the order.
       generator: record.sourceGenerator,
-      // Coxeter-diagram edges carry relation orders, not generator names.
-      // The legend writes "m=3"; the edge itself stays compact as "3".
-      compactLabel: String(record.entry),
+      compactLabel: record.label,
       semanticLabelKind: "coxeter-order",
       colorHint: record.color,
+      lineStyle: record.lineStyle,
       isRelationBoundary: true,
       alwaysLabel: true,
-      labelAnchor:
-        layoutMode === "planar"
-          ? planarLabelPlacements.get(record.id)?.anchor
-          : undefined,
-      labelPosition:
-        layoutMode === "planar"
-          ? planarLabelPlacements.get(record.id)?.labelPosition
-          : undefined,
+      labelAnchor: planarLabelPlacements.get(record.id)?.anchor,
+      labelPosition: planarLabelPlacements.get(record.id)?.labelPosition,
       labelLeader: true,
       labelPriority: 100_000 - index,
       emphasis: "readable-boundary",
@@ -227,13 +247,49 @@ export function buildDefiningGraphScene(
       "Pairs with m=inf are omitted because they do not contribute a finite Coxeter relation edge.",
       layoutMode === "planar"
         ? "Gamma planar mode is a 2D drawing of the defining graph. If an obstruction is present, crossings are unavoidable in any plane drawing."
-        : "The 3D placement of Gamma is a drawing convention; it is not a cell complex or a geometric realization.",
+        : layout.kind === "plane"
+          ? "Gamma is drawn crossing-free in one plane (the drawing is checked for crossings). Vertex positions are a drawing convention, not a geometric realization."
+          : "Gamma is drawn in 3D by a stress layout of graph distances; the placement is a drawing convention, not a cell complex or a geometric realization.",
+      "Edge colour is neutral on purpose: generator hues mark the vertices, while each edge's m=k label and line style give its Coxeter order.",
       topology.planarity.reason,
     ],
     rightAnglePairCount: topology.rightAnglePairCount,
     layoutMode,
+    layoutKind: layout.kind,
     planarity: topology.planarity,
   };
+}
+
+function gammaLayout(
+  topology: DefiningGraphTopology,
+  rank: number,
+  mode: DefiningGraphLayoutMode,
+): { positions: Vec3[]; kind: "plane" | "space" } {
+  if (mode === "planar") {
+    return {
+      positions: Array.from({ length: rank }, (_unused, index) =>
+        planarGeneratorDirection(index, rank),
+      ),
+      kind: "plane",
+    };
+  }
+  if (mode === "3d") {
+    return {
+      positions: Array.from({ length: rank }, (_unused, index) =>
+        generatorDirection(index, rank),
+      ),
+      kind: "space",
+    };
+  }
+  const cached = automaticLayoutCache.get(topology);
+  if (cached) return cached;
+  const layout = automaticGammaLayout(
+    rank,
+    topology.records,
+    topology.planarity.isPlanar,
+  );
+  automaticLayoutCache.set(topology, layout);
+  return layout;
 }
 
 /**
@@ -291,6 +347,7 @@ export function buildDefiningGraphTopology(
         entry,
         label: relationLabel(entry),
         color: relationColor(entry),
+        lineStyle: relationLineStyle(entry),
       });
     }
   }
@@ -305,6 +362,7 @@ export function buildDefiningGraphTopology(
       entry,
       label: relationLabel(entry),
       color: relationColor(entry),
+      lineStyle: relationLineStyle(entry),
       drawnInGamma: entry !== "inf",
       neighbors: [...(buckets.get(entry) ?? [])].sort(
         (left, right) => left.generator - right.generator,
@@ -432,6 +490,7 @@ function buildRelationOrderComponents(
       relationOrder,
       label: relationLabel(relationOrder),
       color: relationColor(relationOrder),
+      lineStyle: relationLineStyle(relationOrder),
       edgeCount: orderRecords.length,
       components,
       isolatedGenerators,
@@ -469,17 +528,19 @@ function neighborRecord(
 
 function planarLabelPlacementsFor(
   topology: DefiningGraphTopology,
-  generatorCount: number,
+  mode: DefiningGraphLayoutMode,
+  positions: readonly Vec3[],
 ): Map<string, PlanarLabelPlacement> {
-  const cached = planarLabelPlacementCache.get(topology);
+  const byMode =
+    planarLabelPlacementCache.get(topology) ??
+    new Map<string, Map<string, PlanarLabelPlacement>>();
+  planarLabelPlacementCache.set(topology, byMode);
+  const cached = byMode.get(mode);
   if (cached) {
     return cached;
   }
-  const placements = buildPlanarLabelPlacements(
-    topology.records,
-    generatorCount,
-  );
-  planarLabelPlacementCache.set(topology, placements);
+  const placements = buildPlanarLabelPlacements(topology.records, positions);
+  byMode.set(mode, placements);
   return placements;
 }
 
@@ -495,23 +556,40 @@ function relationLabel(entry: CoxeterMatrixEntry): string {
   return entry === "inf" ? "m=inf" : `m=${entry}`;
 }
 
+/**
+ * Neutral greys for relation edges. Generator hues are reserved for Gamma's
+ * vertices, so an edge colour never reads as a generator. Every grey keeps
+ * at least 3:1 contrast on the light (#f6f7f9) and dark (#0d1117) canvases;
+ * lightness alone cannot separate five orders in both themes, so the order is
+ * carried by the "m=k" label and `relationLineStyle`.
+ */
 function relationColor(entry: CoxeterMatrixEntry): string {
   if (entry === "inf") {
     return "#94a3b8";
   }
   if (entry === 2) {
-    return "#06b6d4";
+    return "#7c8799";
   }
   if (entry === 3) {
-    return "#2563eb";
+    return "#64748b";
   }
   if (entry === 4) {
-    return "#16a34a";
+    return "#5b6577";
   }
-  if (entry === 5) {
-    return "#f59e0b";
-  }
-  return "#8b5cf6";
+  return "#78716c";
+}
+
+/**
+ * m=2 is dotted (commuting pairs, usually omitted from Coxeter diagrams),
+ * m=3 solid (the unlabelled edge of a Coxeter diagram), and higher orders
+ * get progressively longer dash patterns.
+ */
+function relationLineStyle(entry: CoxeterMatrixEntry): SceneLineStyle {
+  if (entry === "inf" || entry === 2) return "dotted";
+  if (entry === 3) return "solid";
+  if (entry === 4) return "dashed";
+  if (entry === 5) return "dash-dot";
+  return "long-dash";
 }
 
 function relationLegend(
@@ -526,6 +604,7 @@ function relationLegend(
       counts.set(record.label, {
         label: record.label,
         color: record.color,
+        lineStyle: record.lineStyle,
         count: 1,
       });
     }
@@ -578,12 +657,12 @@ interface PlanarSegment {
 
 function buildPlanarLabelPlacements(
   records: DefiningGraphEdgeRecord[],
-  generatorCount: number,
+  positions: readonly Vec3[],
 ): Map<string, PlanarLabelPlacement> {
   const segments = records.map((record) => ({
     record,
-    source: planarGeneratorDirection(record.sourceGenerator, generatorCount),
-    target: planarGeneratorDirection(record.targetGenerator, generatorCount),
+    source: positions[record.sourceGenerator],
+    target: positions[record.targetGenerator],
   }));
   const placements = new Map<string, PlanarLabelPlacement>();
   const placed: PlanarLabelPlacement[] = [];
@@ -944,4 +1023,312 @@ function pairKeyForGenerators(left: number, right: number): string {
 
 function formatGeneratorSet(indices: number[], labels: string[]): string {
   return `{${indices.map((index) => labels[index] ?? `s${index}`).join(", ")}}`;
+}
+
+/**
+ * Automatic Gamma drawing.
+ *
+ * A planar Gamma is drawn crossing-free in the z=0 plane, so the camera sees
+ * it face-on and perspective does not shrink one side. We try, in order:
+ * Tutte barycentric embeddings with each short induced cycle as the convex
+ * outer face (Tutte's theorem makes these crossing-free for 3-connected
+ * planar graphs when the cycle is a face), a 2D stress layout, and the
+ * circle. Each candidate is accepted only after an explicit crossing and
+ * vertex-separation check. A non-planar Gamma, or one where every candidate
+ * fails the check, gets a 3D stress layout from graph distances.
+ */
+function automaticGammaLayout(
+  rank: number,
+  records: readonly DefiningGraphEdgeRecord[],
+  planar: boolean,
+): { positions: Vec3[]; kind: "plane" | "space" } {
+  if (rank <= 1) return { positions: [[0, 0, 0]], kind: "plane" };
+  const edges = records.map(
+    (record) => [record.sourceGenerator, record.targetGenerator] as const,
+  );
+  if (planar) {
+    const candidates: Array<() => Vec3[] | undefined> = [
+      ...inducedCycles(rank, edges, GAMMA_CYCLE_LIMIT).map(
+        (cycle) => () => tutteLayout(rank, edges, cycle),
+      ),
+      () => stressLayout(rank, edges, 2),
+      () =>
+        Array.from({ length: rank }, (_unused, index) =>
+          planarGeneratorDirection(index, rank),
+        ),
+    ];
+    let best: { positions: Vec3[]; separation: number } | undefined;
+    for (const candidate of candidates) {
+      const positions = candidate();
+      if (!positions || countCrossings(positions, edges) > 0) continue;
+      const separation = relativeSeparation(positions, edges);
+      if (separation < GAMMA_MIN_SEPARATION) continue;
+      if (!best || separation > best.separation + 1e-9) {
+        best = { positions, separation };
+      }
+    }
+    if (best) {
+      return {
+        positions: fitRadius(best.positions, PLANAR_RADIUS),
+        kind: "plane",
+      };
+    }
+  }
+  return {
+    positions: fitRadius(stressLayout(rank, edges, 3), DIAGRAM_RADIUS),
+    kind: "space",
+  };
+}
+
+/** Induced cycles of length 3..8, each once, as candidate outer faces. */
+function inducedCycles(
+  rank: number,
+  edges: ReadonlyArray<readonly [number, number]>,
+  limit: number,
+): number[][] {
+  const adjacent = Array.from({ length: rank }, () => new Set<number>());
+  for (const [left, right] of edges) {
+    adjacent[left].add(right);
+    adjacent[right].add(left);
+  }
+  const cycles: number[][] = [];
+  const seen = new Set<string>();
+  const extend = (path: number[]) => {
+    if (cycles.length >= limit) return;
+    const last = path[path.length - 1];
+    for (const next of adjacent[last]) {
+      if (next < path[0]) continue;
+      if (next === path[0] && path.length >= 3) {
+        const key = [...path].sort((a, b) => a - b).join(",");
+        if (!seen.has(key)) {
+          seen.add(key);
+          cycles.push([...path]);
+        }
+        continue;
+      }
+      if (path.includes(next) || path.length >= 8) continue;
+      // Induced: the new vertex may touch only its predecessor (and the start
+      // when it closes the cycle).
+      const chord = path
+        .slice(1, -1)
+        .some((vertex) => adjacent[next].has(vertex));
+      if (chord) continue;
+      extend([...path, next]);
+    }
+  };
+  for (let start = 0; start < rank; start += 1) extend([start]);
+  return cycles.filter((cycle) =>
+    cycle.every((vertex, index) => {
+      // Re-check the closing chord condition for the first vertex.
+      const neighbours = cycle.filter(
+        (other, otherIndex) =>
+          otherIndex !== index && adjacent[vertex].has(other),
+      );
+      return neighbours.length === 2;
+    }),
+  );
+}
+
+/** Tutte embedding: outer cycle on a circle, others at neighbour averages. */
+function tutteLayout(
+  rank: number,
+  edges: ReadonlyArray<readonly [number, number]>,
+  outer: readonly number[],
+): Vec3[] | undefined {
+  const adjacent = Array.from({ length: rank }, () => [] as number[]);
+  for (const [left, right] of edges) {
+    adjacent[left].push(right);
+    adjacent[right].push(left);
+  }
+  const fixed = new Set(outer);
+  if (adjacent.some((list, index) => list.length === 0 && !fixed.has(index))) {
+    return undefined;
+  }
+  const positions: Vec3[] = Array.from({ length: rank }, () => [0, 0, 0]);
+  outer.forEach((vertex, index) => {
+    const angle = Math.PI / 2 - (2 * Math.PI * index) / outer.length;
+    positions[vertex] = [Math.cos(angle), Math.sin(angle), 0];
+  });
+  for (let sweep = 0; sweep < 400; sweep += 1) {
+    for (let vertex = 0; vertex < rank; vertex += 1) {
+      if (fixed.has(vertex)) continue;
+      let x = 0;
+      let y = 0;
+      for (const neighbour of adjacent[vertex]) {
+        x += positions[neighbour][0];
+        y += positions[neighbour][1];
+      }
+      positions[vertex] = [
+        x / adjacent[vertex].length,
+        y / adjacent[vertex].length,
+        0,
+      ];
+    }
+  }
+  return positions;
+}
+
+/**
+ * Stress layout from shortest-path distances (disconnected pairs use the
+ * diameter plus one), started from a fixed spiral so the result is
+ * deterministic.
+ */
+function stressLayout(
+  rank: number,
+  edges: ReadonlyArray<readonly [number, number]>,
+  dimension: 2 | 3,
+): Vec3[] {
+  const distance = Array.from({ length: rank }, () =>
+    new Array<number>(rank).fill(Number.POSITIVE_INFINITY),
+  );
+  const adjacent = Array.from({ length: rank }, () => [] as number[]);
+  for (const [left, right] of edges) {
+    adjacent[left].push(right);
+    adjacent[right].push(left);
+  }
+  for (let source = 0; source < rank; source += 1) {
+    distance[source][source] = 0;
+    const queue = [source];
+    for (let head = 0; head < queue.length; head += 1) {
+      const vertex = queue[head];
+      for (const next of adjacent[vertex]) {
+        if (distance[source][next] === Number.POSITIVE_INFINITY) {
+          distance[source][next] = distance[source][vertex] + 1;
+          queue.push(next);
+        }
+      }
+    }
+  }
+  const finite = distance.flat().filter(Number.isFinite);
+  const fallback = Math.max(1, ...finite) + 1;
+  const positions: Vec3[] = Array.from({ length: rank }, (_unused, index) => {
+    const z = dimension === 3 ? 1 - (2 * (index + 0.5)) / rank : 0;
+    const radial = Math.sqrt(Math.max(0, 1 - z * z));
+    const angle = index * GOLDEN_ANGLE;
+    return [Math.cos(angle) * radial * 2, Math.sin(angle) * radial * 2, z * 2];
+  });
+  for (let iteration = 0; iteration < 600; iteration += 1) {
+    const step = 0.1 * (1 - iteration / 650);
+    for (let left = 0; left < rank; left += 1) {
+      for (let right = left + 1; right < rank; right += 1) {
+        const target = Number.isFinite(distance[left][right])
+          ? distance[left][right]
+          : fallback;
+        const delta = [0, 1, 2].map(
+          (axis) => positions[left][axis] - positions[right][axis],
+        );
+        const current = Math.max(1e-6, Math.hypot(...delta));
+        const pull = (step * (current - target)) / (current * target);
+        for (let axis = 0; axis < dimension; axis += 1) {
+          positions[left][axis] -= delta[axis] * pull;
+          positions[right][axis] += delta[axis] * pull;
+        }
+      }
+    }
+  }
+  return positions;
+}
+
+function countCrossings(
+  positions: readonly Vec3[],
+  edges: ReadonlyArray<readonly [number, number]>,
+): number {
+  let crossings = 0;
+  for (let left = 0; left < edges.length; left += 1) {
+    for (let right = left + 1; right < edges.length; right += 1) {
+      const [a, b] = edges[left];
+      const [c, d] = edges[right];
+      if (a === c || a === d || b === c || b === d) continue;
+      if (
+        segmentsCrossProperly(
+          positions[a],
+          positions[b],
+          positions[c],
+          positions[d],
+        )
+      ) {
+        crossings += 1;
+      }
+    }
+  }
+  return crossings;
+}
+
+/**
+ * Smallest vertex-vertex or vertex-edge clearance divided by the median
+ * edge length; it rejects drawings where a vertex sits on a foreign edge.
+ */
+function relativeSeparation(
+  positions: readonly Vec3[],
+  edges: ReadonlyArray<readonly [number, number]>,
+): number {
+  const lengths = edges
+    .map(([a, b]) =>
+      Math.hypot(
+        positions[a][0] - positions[b][0],
+        positions[a][1] - positions[b][1],
+      ),
+    )
+    .sort((left, right) => left - right);
+  const scaleLength =
+    lengths.length > 0 ? lengths[Math.floor(lengths.length / 2)] : 1;
+  if (scaleLength < 1e-9) return 0;
+  let minimum = Number.POSITIVE_INFINITY;
+  for (let left = 0; left < positions.length; left += 1) {
+    for (let right = left + 1; right < positions.length; right += 1) {
+      minimum = Math.min(
+        minimum,
+        Math.hypot(
+          positions[left][0] - positions[right][0],
+          positions[left][1] - positions[right][1],
+        ),
+      );
+    }
+    for (const [a, b] of edges) {
+      if (a === left || b === left) continue;
+      minimum = Math.min(
+        minimum,
+        pointSegmentDistance2(positions[left], positions[a], positions[b]),
+      );
+    }
+  }
+  return minimum / scaleLength;
+}
+
+function fitRadius(positions: readonly Vec3[], radius: number): Vec3[] {
+  const centre = [0, 1, 2].map(
+    (axis) =>
+      positions.reduce((sum, point) => sum + point[axis], 0) / positions.length,
+  );
+  const centred = positions.map(
+    (point) =>
+      [
+        point[0] - centre[0],
+        point[1] - centre[1],
+        point[2] - centre[2],
+      ] as Vec3,
+  );
+  const extent = Math.max(
+    1e-9,
+    ...centred.map((point) => Math.hypot(point[0], point[1], point[2])),
+  );
+  return centred.map(
+    (point) =>
+      [
+        (point[0] / extent) * radius,
+        (point[1] / extent) * radius,
+        (point[2] / extent) * radius,
+      ] as Vec3,
+  );
+}
+
+function segmentsCrossProperly(a: Vec3, b: Vec3, c: Vec3, d: Vec3): boolean {
+  const r = subtract2(b, a);
+  const s = subtract2(d, c);
+  const denominator = cross2(r, s);
+  if (Math.abs(denominator) < 1e-10) return false;
+  const offset = subtract2(c, a);
+  const t = cross2(offset, s) / denominator;
+  const u = cross2(offset, r) / denominator;
+  return t > 1e-8 && t < 1 - 1e-8 && u > 1e-8 && u < 1 - 1e-8;
 }

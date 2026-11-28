@@ -1113,24 +1113,35 @@ describe("local chamber UX helpers", () => {
       "Gamma:e:1-2",
     ]);
     expect(scene.edges.map((edge) => edge.compactLabel)).toEqual([
-      "3",
-      "2",
-      "3",
+      "m=3",
+      "m=2",
+      "m=3",
     ]);
     expect(
       scene.edges.every((edge) => edge.semanticLabelKind === "coxeter-order"),
     ).toBe(true);
+    // Relation edges are neutral grey; generator hues stay on the vertices.
     expect(scene.edges.map((edge) => edge.colorHint)).toEqual([
+      "#64748b",
+      "#7c8799",
+      "#64748b",
+    ]);
+    expect(scene.edges.map((edge) => edge.lineStyle)).toEqual([
+      "solid",
+      "dotted",
+      "solid",
+    ]);
+    expect(scene.nodes.map((node) => node.colorHint)).toEqual([
       "#2563eb",
-      "#06b6d4",
-      "#2563eb",
+      "#16a34a",
+      "#dc2626",
     ]);
     expect(
       scene.edges.every((edge) => edge.selectedHighlight === "outline"),
     ).toBe(true);
     expect(scene.legend).toEqual([
-      { label: "m=2", color: "#06b6d4", count: 1 },
-      { label: "m=3", color: "#2563eb", count: 2 },
+      { label: "m=2", color: "#7c8799", lineStyle: "dotted", count: 1 },
+      { label: "m=3", color: "#64748b", lineStyle: "solid", count: 2 },
     ]);
     expect(scene.charneyDavisCurvature).toBe(0.25);
     expect(scene.rightAnglePairCount).toBe(1);
@@ -1188,7 +1199,7 @@ describe("local chamber UX helpers", () => {
 
     expect(scene.edges).toHaveLength(expectedEdgeCount);
     expect(
-      scene.edges.every((edge) => /^\d+$/.test(edge.compactLabel ?? "")),
+      scene.edges.every((edge) => /^m=\d+$/.test(edge.compactLabel ?? "")),
     ).toBe(true);
     expect(scene.edges.every((edge) => edge.alwaysLabel)).toBe(true);
     expect(scene.edges.every((edge) => edge.labelLeader)).toBe(true);
@@ -1388,10 +1399,28 @@ describe("local chamber UX helpers", () => {
 
     expect(scene.records).toHaveLength(5);
     expect(scene.records.some((record) => record.entry === "inf")).toBe(false);
-    expect(colorsByLabel.get("m=2")).toBe("#06b6d4");
-    expect(colorsByLabel.get("m=3")).toBe("#2563eb");
-    expect(colorsByLabel.get("m=4")).toBe("#16a34a");
-    expect(colorsByLabel.get("m=5")).toBe("#f59e0b");
+    // Orders are told apart by line style (and the m=k label), never by a
+    // generator hue.
+    const generatorHues = new Set([
+      "#2563eb",
+      "#16a34a",
+      "#dc2626",
+      "#9333ea",
+      "#ea580c",
+      "#0891b2",
+    ]);
+    expect(
+      scene.records.every((record) => !generatorHues.has(record.color)),
+    ).toBe(true);
+    const stylesByLabel = new Map(
+      scene.records.map((record) => [record.label, record.lineStyle]),
+    );
+    expect(stylesByLabel.get("m=2")).toBe("dotted");
+    expect(stylesByLabel.get("m=3")).toBe("solid");
+    expect(stylesByLabel.get("m=4")).toBe("dashed");
+    expect(stylesByLabel.get("m=5")).toBe("dash-dot");
+    expect(new Set(stylesByLabel.values()).size).toBe(4);
+    expect(colorsByLabel.size).toBe(4);
     expect(scene.legend.map((entry) => entry.label)).toEqual([
       "m=2",
       "m=3",
