@@ -10,6 +10,7 @@ import {
   ConeGeometry,
   DirectionalLight,
   DoubleSide,
+  Fog,
   Group,
   InstancedBufferAttribute,
   InstancedMesh,
@@ -34,7 +35,7 @@ import {
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import type { SceneRevisionSet } from "../app/stableHash";
+import { stableHashString, type SceneRevisionSet } from "../app/stableHash";
 import {
   createGpuPickMaterial,
   cssPointInElement,
@@ -119,6 +120,12 @@ export interface SceneNode {
   ghost?: boolean;
   hidden?: boolean;
   drawingOnly?: boolean;
+  /**
+   * Label chip tone. "muted": grey text for context vertices (unit-cell
+   * ghosts). "accent": text and border in `colorHint` (gluing tags); an
+   * accent label is shown even on a drawing-only marker.
+   */
+  labelTone?: "muted" | "accent";
 }
 
 export interface SceneEdge {
@@ -156,9 +163,24 @@ export interface SceneEdge {
   drawingControlPoint?: [number, number, number];
   selectedHighlight?: "color" | "outline";
   ghost?: boolean;
+  /**
+   * Drawn at reduced opacity, depth tested and never as an overlay: context
+   * that should not compete with the selection (e.g. unselected wall arcs).
+   */
+  faint?: boolean;
   directed?: boolean;
+  /**
+   * Keep the edge's direction as data (link lenses, inspector) but draw no
+   * arrowhead. Crowded cover scenes show arrows only where the reader looks.
+   */
+  hideArrow?: boolean;
   /** A wall-induced direction, drawn more prominently than a generic directed edge. */
   coorientationArrow?: boolean;
+  /**
+   * hat X: the inverse lift (x s -> x for this x -> x s). The two lifts bound
+   * the generator bigons and may share one drawn rail.
+   */
+  bigonPartnerEdgeId?: string;
   visualOffset?: number;
   drawingOnly?: boolean;
   /** Drawing aid that must remain visible above translucent cell surfaces. */
@@ -174,6 +196,17 @@ export interface SceneCell {
   dimension?: number;
   sourceCellId?: string;
   readabilityRole?: "focus" | "incident" | "context" | "hidden-by-cutaway";
+  /**
+   * Draw the exact boundary as a faint outline without a fill. The interior
+   * stays pickable and is filled while hovered, so the cell can still be
+   * found and selected.
+   */
+  outlineOnly?: boolean;
+  /**
+   * Another cell with the same drawn boundary vertices. This cell keeps its
+   * id and data but is not drawn, so coincident disks do not stack.
+   */
+  coincidentWithCellId?: string;
   colorHint?: string;
   drawingOnly?: boolean;
   /**
@@ -803,7 +836,13 @@ class SceneRuntime {
   private readonly edgeOverlayGroup = new Group();
   private readonly cellGroup = new Group();
   private readonly cellOverlayGroup = new Group();
+  /** Fill of the hovered outline-only cell; rebuilt on hover, not on update. */
+  private readonly cellHoverGroup = new Group();
   private readonly labelGroup = new Group();
+  /** Track hover for outline-only cells even when no onHoverCell listens. */
+  private hoverFillEnabled = false;
+  /** Linear fog fading the back of crowded cover scenes (see depthCueRange). */
+  private depthCueActive = false;
   private readonly referenceGroup = new Group();
   private readonly resizeObserver: ResizeObserver;
   private resizeFrame: number | undefined;
@@ -913,6 +952,7 @@ class SceneRuntime {
       this.referenceGroup,
       this.cellGroup,
       this.cellOverlayGroup,
+      this.cellHoverGroup,
       this.edgeGroup,
       this.edgeOverlayGroup,
       this.nodeGroup,
@@ -950,6 +990,9 @@ class SceneRuntime {
     this.onHoverCell = update.onHoverCell;
     this.onRenderStats = update.onRenderStats;
     this.pickingEnabled = update.pickingEnabled;
+    this.hoverFillEnabled =
+      update.showCells && update.cells.some((cell) => cell.outlineOnly);
+    this.depthCueActive = crowdedCoverScene(update);
     // Theme is not part of the revision keys, so a theme switch must force
     // the node colors and label chips to be rebuilt here.
     const themeChanged = this.setColorScheme(update.colorScheme);
@@ -958,7 +1001,10 @@ class SceneRuntime {
       this.lastLayoutVersion = update.layoutVersion;
       this.scheduleResize("layout-change");
     }
-    const structureKey = update.structureVersion;
+    // Fill buckets, arrowheads and rail lanes are built with the geometry, so
+    // a change of cell emphasis or arrow visibility (driven by selection in
+    // cover scenes) must rebuild even when the caller's version is unchanged.
+    const structureKey = `${update.structureVersion}:${drawnEmphasisSignature(update)}`;
     const appearanceKey = update.appearanceVersion;
     // The renderer is demand-driven. A stable structure/appearance pair means
     // React re-rendered controls, not the Three.js scene.
@@ -1306,6 +1352,50 @@ class SceneRuntime {
     this.updateCellAppearance(update);
     clearGroup(this.cellOverlayGroup);
     this.addCellSelectionOverlay(update);
+    this.updateHoverFill();
+  }
+
+  /**
+   * Outline-only cells are filled while hovered, so a reader scanning a
+   * crowded cover can see each disk without the stacked fills of all of them.
+   */
+  private updateHoverFill() {
+    clearGroup(this.cellHoverGroup);
+    const update = this.lastGraphUpdate;
+    const cellId = this.hoveredCellId;
+    if (!update || !cellId || !this.hoverFillEnabled) {
+      return;
+    }
+    const cell = update.cells.find((candidate) => candidate.id === cellId);
+    const vertices = this.cellVerticesById.get(cellId);
+    if (
+      !cell?.outlineOnly ||
+      isSelectedCell(cell, update.selectedCellId) ||
+      !vertices ||
+      vertices.length < 3
+    ) {
+      return;
+    }
+    const surface = cellDrawingSurface(cell, update.localCellRenderMode);
+    const geometry = createCellFillGeometry(vertices, surface);
+    if (!geometry) {
+      return;
+    }
+    const color = cellColor(update.generators, cell, update.colorScheme);
+    const fill = new Mesh(
+      geometry,
+      new MeshBasicMaterial({
+        color,
+        opacity: Math.max(update.cellOpacity, 0.3),
+        transparent: true,
+        side: DoubleSide,
+        depthWrite: false,
+        fog: false,
+      }),
+    );
+    fill.renderOrder = 11;
+    fill.userData.kind = "cell-hover-fill";
+    this.cellHoverGroup.add(fill);
   }
 
   private updateLabelAppearance(update: GraphUpdate) {
@@ -1499,7 +1589,7 @@ class SceneRuntime {
       const color = edgeColor(edge, update);
       const tier = edge.ghost
         ? "ghost"
-        : this.edgeIsFar(edge, update)
+        : edge.faint || this.edgeIsFar(edge, update)
           ? "far"
           : "main";
       const bucketKey = `${color}:${tier}`;
@@ -1527,7 +1617,8 @@ class SceneRuntime {
       edgeBuckets.set(bucketKey, bucket);
       renderedEdgeSegments += 1;
 
-      const arrowChord = path ? arrowChordForPath(path) : undefined;
+      const arrowChord =
+        path && !edge.hideArrow ? arrowChordForPath(path) : undefined;
       if (edge.directed && arrowChord) {
         const matrix = arrowHeadMatrix(
           arrowChord[0],
@@ -1663,7 +1754,7 @@ class SceneRuntime {
         );
         wallDualOverlays.set(color, bucket);
       }
-      if (edge.readabilityOverlay) {
+      if (edge.readabilityOverlay && !edge.faint) {
         const color = edgeColor(edge, update);
         const key = `${color}:${edge.ghost ? "ghost" : "main"}`;
         const bucket = readabilityOverlays.get(key) ?? {
@@ -1788,6 +1879,7 @@ class SceneRuntime {
     const material = new SpriteMaterial({
       map: selectionRingTexture(selectionColor[update.colorScheme]),
       transparent: true,
+      fog: false,
       depthTest: false,
       depthWrite: false,
     });
@@ -1949,7 +2041,13 @@ class SceneRuntime {
         maxLabels: density.dense ? update.nodes.length : update.maxNodeLabels,
         maxCharacters: 14,
         getLabel: (node) => {
-          if (node.drawingOnly && !node.alwaysLabel) {
+          // Drawing-only markers carry no vertex label, except annotation
+          // chips ("accent" tone, e.g. gluing tags) that exist to be read.
+          if (
+            node.drawingOnly &&
+            !node.alwaysLabel &&
+            node.labelTone !== "accent"
+          ) {
             return undefined;
           }
           if (
@@ -2365,11 +2463,19 @@ class SceneRuntime {
     >();
     const usedGeometryKeys = new Set<string>();
     const transparentFillBudget = update.topologyMode ? 240 : 140;
+    // Only cells that would actually be filled count against the budget;
+    // coincident and outline-only cells draw no fill.
+    const fillCandidates = update.cells.filter(
+      (cell) => !cell.coincidentWithCellId && !cell.outlineOnly,
+    );
     const applyFillBudget =
       update.localCellRenderMode !== "outline-only" &&
-      update.cells.length > transparentFillBudget;
+      fillCandidates.length > transparentFillBudget;
     const nearestFillIds = applyFillBudget
-      ? nearestCellsForFillBudget(update, transparentFillBudget)
+      ? nearestCellsForFillBudget(
+          { ...update, cells: fillCandidates },
+          transparentFillBudget,
+        )
       : undefined;
     let filledTransparentCells = 0;
     let omittedTransparentFills = 0;
@@ -2377,6 +2483,11 @@ class SceneRuntime {
     const pickingItems: PickingSpatialItem<SceneCell>[] = [];
 
     for (const cell of update.cells) {
+      // A coincident cell is drawn by its representative; drawing it again
+      // would only stack the same translucent disk.
+      if (cell.coincidentWithCellId) {
+        continue;
+      }
       let vertices = cell.boundaryNodeIds
         .map((nodeId) => update.nodePositions.get(nodeId))
         .filter((position): position is Vector3 => Boolean(position));
@@ -2425,6 +2536,14 @@ class SceneRuntime {
       // an invisible cell.
       if (
         update.localCellRenderMode === "outline-only" ||
+        (cell.outlineOnly && !isSelectedCell(cell, update.selectedCellId))
+      ) {
+        // Outline-only cells keep a hit area over their interior, so they can
+        // still be hovered and selected.
+        if (cellHasFill(vertices, drawingSurface)) {
+          this.pickableCellIds.add(cell.id);
+        }
+      } else if (
         !shouldFillTransparentCell(
           cell,
           update,
@@ -2434,11 +2553,7 @@ class SceneRuntime {
           nearestFillIds,
         )
       ) {
-        if (update.localCellRenderMode !== "outline-only") {
-          omittedTransparentFills += 1;
-        } else if (cellHasFill(vertices, drawingSurface)) {
-          this.pickableCellIds.add(cell.id);
-        }
+        omittedTransparentFills += 1;
       } else {
         const fillKey = `${cellPairKey}:${bucketStyle}`;
         const fillBucket = fillBuckets.get(fillKey) ?? {
@@ -2652,6 +2767,7 @@ class SceneRuntime {
             transparent: true,
             side: DoubleSide,
             depthWrite: false,
+            fog: false,
           }),
         );
         fill.renderOrder = 12;
@@ -3221,7 +3337,10 @@ class SceneRuntime {
   };
 
   private readonly handlePointerMove = (event: PointerEvent) => {
-    if (!this.onHoverCell || this.cameraInteractionActive) {
+    if (
+      (!this.onHoverCell && !this.hoverFillEnabled) ||
+      this.cameraInteractionActive
+    ) {
       return;
     }
     this.pendingHoverPoint = { x: event.clientX, y: event.clientY };
@@ -3235,7 +3354,11 @@ class SceneRuntime {
     this.hoverFrame = undefined;
     const point = this.pendingHoverPoint;
     this.pendingHoverPoint = undefined;
-    if (!this.onHoverCell || !point || this.cameraInteractionActive) {
+    if (
+      (!this.onHoverCell && !this.hoverFillEnabled) ||
+      !point ||
+      this.cameraInteractionActive
+    ) {
       return;
     }
     const rect = this.renderer.domElement.getBoundingClientRect();
@@ -3277,7 +3400,8 @@ class SceneRuntime {
         const nextCellId = record?.kind === "cell" ? record.id : undefined;
         if (nextCellId !== this.hoveredCellId) {
           this.hoveredCellId = nextCellId;
-          this.onHoverCell(nextCellId);
+          this.onHoverCell?.(nextCellId);
+          this.updateHoverFill();
           this.requestRender("hover-cell-gpu");
         }
         return;
@@ -3291,7 +3415,8 @@ class SceneRuntime {
     const nextCellId = this.pickCellWithBvh();
     if (nextCellId !== this.hoveredCellId) {
       this.hoveredCellId = nextCellId;
-      this.onHoverCell(nextCellId);
+      this.onHoverCell?.(nextCellId);
+      this.updateHoverFill();
       this.requestRender("hover-cell");
     }
   };
@@ -3495,6 +3620,7 @@ class SceneRuntime {
   private readonly render = (reason: string) => {
     this.applyLabelScreenScale();
     this.applyLabelDepthFade();
+    this.applyDepthCue();
     this.renderer.render(this.scene, this.camera);
     this.stats.renderReason = reason;
     this.stats.renderCount += 1;
@@ -3504,6 +3630,33 @@ class SceneRuntime {
     this.notifyStatsOnNextRender = false;
     this.publishStats({ notifyCallback, force: notifyCallback });
   };
+
+  /**
+   * Crowded cover scenes (hat X, bar X) get a linear fog in the background
+   * colour, so the back layer of overlapping cells and edges recedes and the
+   * front layer reads first. Overlays (selection, selected wall, selected
+   * vertex edges) and labels opt out of fog and stay crisp.
+   */
+  private applyDepthCue() {
+    if (!this.depthCueActive) {
+      if (this.scene.fog) {
+        this.scene.fog = null;
+      }
+      return;
+    }
+    const range = depthCueRange(
+      this.camera.position.distanceTo(this.controls.target),
+      this.framedSceneRadius,
+    );
+    const color = sceneBackgroundColor[this.colorScheme];
+    if (!(this.scene.fog instanceof Fog)) {
+      this.scene.fog = new Fog(color, range.near, range.far);
+      return;
+    }
+    this.scene.fog.color.set(color);
+    this.scene.fog.near = range.near;
+    this.scene.fog.far = range.far;
+  }
 
   /**
    * Labels are sized in world units, so a large or far-away scene can shrink
@@ -4522,6 +4675,7 @@ function cellBucketStyleKey(cell: SceneCell): string {
     cell.isRelationBoundary ? "boundary" : "plain",
     cell.readabilityRole ?? "normal",
     cell.colorHint ?? "",
+    cell.outlineOnly ? "outline" : "fill",
   ].join(":");
 }
 
@@ -4532,6 +4686,11 @@ function cellOutlineOpacity(
 ) {
   if (cell.readabilityRole === "focus") {
     return 1;
+  }
+  if (cell.outlineOnly) {
+    // Faint: the boundary edges are already drawn by the 1-skeleton, the
+    // outline only marks which cycles bound disks.
+    return cell.readabilityRole === "incident" ? 0.45 : 0.2;
   }
   if (cell.readabilityRole === "incident") {
     return active || isSelectedCell(cell, update.selectedCellId) ? 0.96 : 0.82;
@@ -5243,7 +5402,12 @@ function selectSemanticEdgeRepresentatives(
       continue;
     }
     if (
-      !(edge.directed || edge.isRelationBoundary || edge.readabilityOverlay)
+      !(
+        edge.directed ||
+        edge.isRelationBoundary ||
+        edge.readabilityOverlay ||
+        edge.faint
+      )
     ) {
       continue;
     }
@@ -5628,6 +5792,99 @@ export function labelDepthOpacity(
   return 1 - (1 - labelFadeMinimumOpacity) * t;
 }
 
+const emphasisSignatureCache = new WeakMap<
+  readonly SceneCell[],
+  WeakMap<readonly SceneEdge[], string>
+>();
+
+/**
+ * Hash of the per-item drawing choices that are baked into geometry buffers:
+ * cell role/outline/coincidence and edge arrow/faint/lane/overlay flags.
+ */
+function drawnEmphasisSignature(update: {
+  cells: readonly SceneCell[];
+  edges: readonly SceneEdge[];
+}): string {
+  const byEdges = emphasisSignatureCache.get(update.cells);
+  const cached = byEdges?.get(update.edges);
+  if (cached !== undefined) return cached;
+  const parts: string[] = [];
+  for (const cell of update.cells) {
+    if (cell.outlineOnly || cell.coincidentWithCellId || cell.readabilityRole) {
+      parts.push(
+        `${cell.id}|${cell.readabilityRole ?? ""}|${cell.outlineOnly ? 1 : 0}|${cell.coincidentWithCellId ?? ""}`,
+      );
+    }
+  }
+  for (const edge of update.edges) {
+    if (
+      edge.hideArrow ||
+      edge.faint ||
+      edge.visualOffset ||
+      edge.readabilityOverlay
+    ) {
+      parts.push(
+        `${edge.id}|${edge.hideArrow ? 1 : 0}${edge.faint ? 1 : 0}${edge.readabilityOverlay ? 1 : 0}|${edge.visualOffset ?? 0}`,
+      );
+    }
+  }
+  const signature = stableHashString(parts.join(";"));
+  const map = byEdges ?? new WeakMap<readonly SceneEdge[], string>();
+  map.set(update.edges, signature);
+  emphasisSignatureCache.set(update.cells, map);
+  return signature;
+}
+
+/** Cover scenes above these counts get the depth cue (fog). */
+const depthCueCellThreshold = 24;
+const depthCueEdgeThreshold = 96;
+
+/**
+ * True for crowded hat X / bar X scenes (topologyMode), where several layers
+ * of cells and edges overlap and a depth cue helps the front layer read.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function crowdedCoverScene(update: {
+  topologyMode: boolean;
+  showCells: boolean;
+  cells: readonly SceneCell[];
+  edges: readonly SceneEdge[];
+}): boolean {
+  if (!update.topologyMode) return false;
+  let drawnCells = 0;
+  if (update.showCells) {
+    for (const cell of update.cells) {
+      if (!cell.coincidentWithCellId) drawnCells += 1;
+    }
+  }
+  let exactEdges = 0;
+  for (const edge of update.edges) {
+    if (!edge.drawingOnly) exactEdges += 1;
+  }
+  return (
+    drawnCells > depthCueCellThreshold || exactEdges > depthCueEdgeThreshold
+  );
+}
+
+/**
+ * Fog range for the depth cue. Geometry in front of the orbit target (up to
+ * a fifth of the scene radius behind it) is untouched; the far side of the
+ * scene, one radius behind the target, is blended about a third of the way
+ * into the background. A drawing aid only: it encodes depth, not any distance of the
+ * complex.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function depthCueRange(
+  focusDistance: number,
+  sceneRadius: number,
+): { near: number; far: number } {
+  const radius = Math.max(0.25, sceneRadius);
+  return {
+    near: Math.max(0, focusDistance + 0.2 * radius),
+    far: focusDistance + 2.4 * radius,
+  };
+}
+
 function farLabelScale(node: SceneNode, update: GraphUpdate): number {
   return update.occlusionMode === "fade-far" && isFarNode(node)
     ? farLabelOpacity
@@ -5748,6 +6005,8 @@ function edgeOverlayMaterial(color: string, opacity: number, linewidth = 1) {
     transparent: true,
     opacity,
     linewidth,
+    // Overlays mark the selection; the depth cue must not fade them.
+    fog: false,
   });
   // Relation outlines are explanatory overlays. They should sit above the
   // graph instead of z-fighting with the base generator-colored line.
@@ -5841,6 +6100,27 @@ function nodeLabelStyle(
       background: labelColor("#475569", 0.92),
       border: labelColor("#94a3b8"),
     };
+  }
+  if (node.labelTone === "accent" && node.colorHint) {
+    const chip = labelChip[colorScheme];
+    return {
+      foreground: readableLabelText(node.colorHint, chip, colorScheme),
+      background: chip,
+      border: labelColor(node.colorHint),
+    };
+  }
+  if (node.labelTone === "muted") {
+    return dark
+      ? {
+          foreground: labelColor("#94a3b8"),
+          background: labelColor("#111827", 0.82),
+          border: labelColor("#64748b", 0.35),
+        }
+      : {
+          foreground: labelColor("#57606a"),
+          background: labelColor("#ffffff", 0.82),
+          border: labelColor("#8c959f", 0.35),
+        };
   }
   if (node.alwaysLabel) {
     return dark
@@ -6019,6 +6299,8 @@ function createTextSprite(text: string, options: TextSpriteOptions) {
     transparent: true,
     depthWrite: false,
     depthTest: false,
+    // Labels have their own depth fade (labelDepthOpacity).
+    fog: false,
   });
   const sprite = new Sprite(material);
   const aspect = width / height;

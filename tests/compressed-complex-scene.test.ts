@@ -271,7 +271,9 @@ describe("hat X and bar X scene adapters", () => {
     expect(scene.nodes.every((node) => !node.drawingOnly)).toBe(true);
     expect(scene.edges.every((edge) => !edge.drawingOnly)).toBe(true);
     expect(scene.cells.every((cell) => !cell.drawingOnly)).toBe(true);
-    expect(scene.edges.every((edge) => edge.alwaysLabel)).toBe(true);
+    // Label policy: with nothing selected in a 72-edge scene no edge carries
+    // a text label; the generator legend gives the colours.
+    expect(scene.edges.some((edge) => edge.alwaysLabel)).toBe(false);
     // No detached copy: a fill is spanned only by its true boundary vertices.
     expect(
       scene.cells.every(

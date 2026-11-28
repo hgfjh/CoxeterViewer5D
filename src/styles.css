@@ -1323,3 +1323,343 @@ textarea {
     justify-content: flex-start;
   }
 }
+
+/* Cover view switch and cell atlas -------------------------------------------
+ * The atlas overlays the 3D canvas inside .viewer-frame; the canvas stays
+ * mounted underneath so its camera survives a round trip. */
+
+.cover-view-switch {
+  position: absolute;
+  z-index: 9;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-control);
+  background: var(--overlay-bg);
+  box-shadow: var(--overlay-shadow);
+  overflow: hidden;
+}
+
+/* In viewer-only mode the "Show controls" button owns the top-left corner. */
+.cover-view-switch.below-ui-toggle {
+  top: 56px;
+}
+
+.cover-view-switch button {
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 6px 11px;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.cover-view-switch button + button {
+  border-left: 1px solid var(--border);
+}
+
+.cover-view-switch button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+.cover-view-switch button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+.cell-atlas {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  padding: 52px 0 0;
+}
+
+.cell-atlas-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 16px 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.cell-atlas-header {
+  display: grid;
+  gap: 8px;
+  padding: 0 16px 10px;
+}
+
+.cell-atlas-caption {
+  margin: 0;
+  color: var(--text-body);
+  font-size: var(--fs-md);
+}
+
+.cell-atlas-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px 14px;
+}
+
+.cell-atlas-controls label {
+  display: grid;
+  gap: 3px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+}
+
+.cell-atlas-controls select,
+.cell-atlas-controls input {
+  min-width: 180px;
+  max-width: 320px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface-muted);
+  color: var(--text);
+  padding: 5px 8px;
+  font-size: var(--fs-sm);
+}
+
+.cell-atlas-count {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-atlas-legend {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  list-style: none;
+}
+
+.cell-atlas-legend svg {
+  vertical-align: -1px;
+}
+
+.cell-atlas-generators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 12px;
+}
+
+.cell-atlas-generators span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text);
+}
+
+.cell-atlas-generators i {
+  display: inline-block;
+  width: 16px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.cell-atlas-hover {
+  min-height: 1.3em;
+  margin: 0;
+  color: var(--info-text);
+  font-size: var(--fs-sm);
+}
+
+.cell-atlas-empty {
+  color: var(--text-muted);
+}
+
+.cell-atlas-family {
+  margin-top: 14px;
+}
+
+.cell-atlas-family h3 {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  margin: 0 0 6px;
+  padding: 4px 0;
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-lg);
+}
+
+.cell-atlas-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--cell-atlas-card-width), 1fr)
+  );
+  gap: 8px;
+}
+
+.cell-atlas-card {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--surface-muted);
+  color: var(--text);
+  padding: 4px 4px 6px;
+  font: inherit;
+  cursor: pointer;
+  /* Off-screen cards skip layout and paint; C44 bar X has 364 of them. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto var(--cell-atlas-card-width) auto
+    var(--cell-atlas-card-height);
+}
+
+.cell-atlas-card:hover {
+  border-color: var(--border-strong);
+}
+
+.cell-atlas-card:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.cell-atlas-card.is-highlighted {
+  border-color: var(--info-strong);
+  background: var(--info-bg);
+}
+
+.cell-atlas-card.is-selected {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 2px var(--accent-border);
+}
+
+.cell-atlas-card.is-discarded .cell-atlas-svg {
+  opacity: 0.38;
+}
+
+.cell-atlas-svg {
+  display: block;
+  overflow: visible;
+}
+
+.cell-atlas-fill {
+  fill: var(--text);
+  fill-opacity: 0.04;
+  stroke: none;
+}
+
+.cell-atlas-card.is-selected .cell-atlas-fill {
+  fill: var(--accent-border);
+  fill-opacity: 0.12;
+}
+
+.cell-atlas-edge {
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.cell-atlas-side.is-hovered .cell-atlas-edge {
+  stroke-width: 6;
+}
+
+.cell-atlas-hit {
+  stroke: transparent;
+  stroke-width: 12;
+}
+
+.cell-atlas-wall-edge {
+  stroke-width: 9;
+  stroke-dasharray: 5 3;
+  stroke-opacity: 0.85;
+}
+
+.cell-atlas-wall-arc {
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
+
+.cell-atlas-arrow {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+
+.cell-atlas-edge-label,
+.cell-atlas-vertex-label {
+  fill: var(--text);
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: var(--surface-muted);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.cell-atlas-edge-label {
+  font-size: 10px;
+  font-weight: 650;
+  text-anchor: middle;
+}
+
+.cell-atlas-vertex-label {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 10px;
+  fill: var(--text-body);
+}
+
+.cell-atlas-card.is-highlighted .cell-atlas-edge-label,
+.cell-atlas-card.is-highlighted .cell-atlas-vertex-label {
+  stroke: var(--info-bg);
+}
+
+.cell-atlas-corner.is-hovered .cell-atlas-vertex-label {
+  fill: var(--info-strong);
+  font-weight: 750;
+}
+
+.cell-atlas-vertex {
+  fill: var(--text);
+}
+
+.cell-atlas-corner.is-hovered .cell-atlas-vertex {
+  fill: var(--info-strong);
+}
+
+.cell-atlas-source {
+  fill: var(--success-strong);
+  stroke: var(--surface);
+  stroke-width: 1;
+}
+
+.cell-atlas-sink {
+  fill: var(--danger-text);
+  stroke: var(--surface);
+  stroke-width: 1;
+}
+
+.cell-atlas-card-caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 8px;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.cell-atlas-status {
+  color: var(--caution-text);
+  font-weight: 650;
+}
+
+.cell-atlas-status.is-lawful {
+  color: var(--success-text);
+}

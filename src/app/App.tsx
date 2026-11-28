@@ -98,6 +98,13 @@ import {
   withSourceSelection,
 } from "./sourceComplexScene";
 import { buildWallScene, wallLabel } from "./wallScene";
+import { CellAtlas } from "./CellAtlas";
+import {
+  buildUnitCellScene,
+  cachedUnitCellBase,
+  unitCellBadge,
+  unitCellInspectorSummary,
+} from "./unitCellScene";
 import { createQuotientValidationClient } from "./quotientValidationClient";
 import { CoverAnalysisClient } from "./coverAnalysisClient";
 import { useCoverAnalysis } from "./useCoverAnalysis";
@@ -182,6 +189,13 @@ export function App() {
   const [uiMode, setUiMode] = useState<UiMode>("teaching");
   const [colorScheme, setColorScheme] = useState<ColorScheme>(readColorScheme);
   const [viewerOnly, setViewerOnly] = useState(false);
+  // hat X and bar X can be read as a 3D drawing or as a flat atlas of their
+  // relation cells. Session state only; the default is the 3D drawing.
+  const [coverView, setCoverView] = useState<"3d" | "atlas">("3d");
+  // With a cover loaded, the Davis model can show the Cayley ball or a unit
+  // cell (fundamental domain of H) with its gluings. Session state only.
+  const [davisView, setDavisView] = useState<"ball" | "unit-cell">("ball");
+  const [showUnitCellCopies, setShowUnitCellCopies] = useState(false);
   const [tourOpen, setTourOpen] = useState(shouldAutoStartTour);
   const [exampleId, setExampleId] = useState("I2_5");
   const [model, setModel] = useState<TopLevelModelId>("bar-x");
@@ -220,6 +234,11 @@ export function App() {
   const [showNodeLabels, setShowNodeLabels] = useState(true);
   const [showEdgeLabels, setShowEdgeLabels] = useState(true);
   const [focusOnSelection, setFocusOnSelection] = useState(false);
+  // Crowded cover scenes fill only the cells in focus and draw the rest
+  // as faint outlines; these switch back to the dense drawings.
+  const [fillAllCells, setFillAllCells] = useState(false);
+  const [bigonsAsTwoEdges, setBigonsAsTwoEdges] = useState(false);
+  const [allInducedArrows, setAllInducedArrows] = useState(false);
   const [linkLens, setLinkLens] = useState<"none" | "ascending" | "descending">(
     "none",
   );
@@ -441,6 +460,15 @@ export function App() {
   // Each model's scene is built only while that model is shown; a click in
   // the Davis view must not rebuild hidden cover scenes, and vice versa.
   const sourceModelActive = model === "davis" || model === "projection";
+  const unitCellActive =
+    model === "davis" && davisView === "unit-cell" && Boolean(cover);
+  const unitCellBase = useMemo(
+    () =>
+      unitCellActive && cover
+        ? measure("unit-cell-base", () => cachedUnitCellBase(cover))
+        : undefined,
+    [cover, unitCellActive],
+  );
   const geometricSource = model === "projection";
   // Projection needs validated reflection data. Without it the button is
   // disabled instead of drawing a layout inside a ball it does not live in.
@@ -467,6 +495,8 @@ export function App() {
     if (model === "projection" && !projectionStatus.ok) {
       badges.push("No reflection data: showing the Davis drawing instead");
     }
+    const unitCellText = unitCellBase ? unitCellBadge(unitCellBase) : undefined;
+    if (unitCellText) badges.push(unitCellText);
     if (model === "davis" && system.geometry) {
       badges.push("Positions from the hyperbolic reflection orbit (a drawing)");
     } else if (model === "davis") {
@@ -474,6 +504,7 @@ export function App() {
     }
     if (
       sourceModelActive &&
+      !unitCellBase &&
       generation.ball?.metadata.deduplication === "rounded-matrix"
     ) {
       badges.push("Elements identified by rounded matrices (approximate)");
@@ -486,12 +517,13 @@ export function App() {
     sourceModelActive,
     system.geometry,
     generation.ball,
+    unitCellBase,
   ]);
   // Placement and labels depend only on (system, ball, projection).  The
   // selected node is highlighted by the renderer, so clicks reuse this base.
   const sourceBase = useMemo(
     () =>
-      !sourceModelActive
+      !sourceModelActive || unitCellActive
         ? undefined
         : generation.ball
           ? measure("source-scene", () =>
@@ -508,12 +540,33 @@ export function App() {
       projection,
       sourceModelActive,
       system,
+      unitCellActive,
     ],
   );
   const sourceScene = useMemo(
     () =>
       sourceBase ? withSourceSelection(sourceBase, selectedCellId) : undefined,
     [selectedCellId, sourceBase],
+  );
+  const unitCellScene = useMemo(
+    () =>
+      unitCellBase
+        ? buildUnitCellScene(unitCellBase, {
+            showCopies: showUnitCellCopies,
+            colorScheme,
+            selectedNodeId,
+            selectedEdgeId,
+            selectedCellId,
+          })
+        : undefined,
+    [
+      colorScheme,
+      selectedCellId,
+      selectedEdgeId,
+      selectedNodeId,
+      showUnitCellCopies,
+      unitCellBase,
+    ],
   );
   const gammaScene = useMemo(
     () => (model === "gamma" ? buildDefiningGraphScene(system) : undefined),
@@ -529,10 +582,21 @@ export function App() {
                 selectedVertexId: selectedNodeId,
                 selectedCellId,
                 showRelationCells: showCells,
+                cellEmphasis: fillAllCells ? "all" : "focus",
+                mergeBigons: !bigonsAsTwoEdges,
               }),
             )
           : emptyScene(coverMessage),
-    [cover, coverMessage, model, selectedCellId, selectedNodeId, showCells],
+    [
+      bigonsAsTwoEdges,
+      cover,
+      coverMessage,
+      fillAllCells,
+      model,
+      selectedCellId,
+      selectedNodeId,
+      showCells,
+    ],
   );
   const barScene = useMemo(
     () =>
@@ -554,7 +618,16 @@ export function App() {
                 coorientation,
                 lawfulSubcomplex,
                 selectedVertexId: activeBarVertexId,
+                // The link lens falls back to the first vertex, but cells and
+                // labels are emphasised only around a vertex the reader chose.
+                emphasisVertexId: cover.barX.vertices.some(
+                  (vertex) => vertex.id === selectedNodeId,
+                )
+                  ? selectedNodeId
+                  : null,
                 linkLens,
+                cellEmphasis: fillAllCells ? "all" : "focus",
+                inducedArrows: allInducedArrows ? "all" : "focus",
               }),
             )
           : emptyScene(coverMessage),
@@ -577,6 +650,9 @@ export function App() {
       showWalls,
       wallDisplayMode,
       wallSystem,
+      selectedNodeId,
+      fillAllCells,
+      allInducedArrows,
     ],
   );
   const scene = useMemo<RenderScene>(() => {
@@ -592,8 +668,15 @@ export function App() {
         warnings: gammaScene.warnings,
       };
     }
-    return hatScene ?? barScene ?? sourceScene ?? emptyScene();
-  }, [barScene, gammaScene, hatScene, sourceScene, system.generators]);
+    return hatScene ?? barScene ?? unitCellScene ?? sourceScene ?? emptyScene();
+  }, [
+    barScene,
+    gammaScene,
+    hatScene,
+    sourceScene,
+    system.generators,
+    unitCellScene,
+  ]);
 
   const focusActive = focusOnSelection && Boolean(selectedNodeId);
   const displayScene = useMemo<RenderScene>(() => {
@@ -613,22 +696,31 @@ export function App() {
   const currentModel = modelExplanations[model];
   const inspectorSummary = useMemo(
     () =>
-      measure("inspector-summary", () =>
-        buildInspectorSummary({
-          model,
-          systemName: system.name,
-          scene,
-          selectedNodeId,
-          selectedCellId,
-          selectedEdgeId,
-          selectedWallId: activeSelectedWallId,
-          cover,
-          wallSystem,
-          lawfulSubcomplex,
-          morseLinks,
-          linkLens,
-          selectedBarVertexId: activeBarVertexId,
-        }),
+      measure(
+        "inspector-summary",
+        () =>
+          (unitCellBase
+            ? unitCellInspectorSummary(unitCellBase, {
+                selectedNodeId,
+                selectedEdgeId,
+                selectedCellId,
+              })
+            : undefined) ??
+          buildInspectorSummary({
+            model,
+            systemName: system.name,
+            scene,
+            selectedNodeId,
+            selectedCellId,
+            selectedEdgeId,
+            selectedWallId: activeSelectedWallId,
+            cover,
+            wallSystem,
+            lawfulSubcomplex,
+            morseLinks,
+            linkLens,
+            selectedBarVertexId: activeBarVertexId,
+          }),
       ),
     [
       activeBarVertexId,
@@ -643,6 +735,7 @@ export function App() {
       selectedCellId,
       selectedNodeId,
       system.name,
+      unitCellBase,
       wallSystem,
     ],
   );
@@ -695,11 +788,15 @@ export function App() {
     wallDisplayMode,
     wallDisplayMode === "selected" ? (activeSelectedWallId ?? "") : "",
     showInducedDirections ? 1 : 0,
+    allInducedArrows ? 1 : 0,
+    fillAllCells ? 1 : 0,
+    bigonsAsTwoEdges ? 1 : 0,
     colorEdgesByWall ? 1 : 0,
     linkLens,
     linkLens === "none" ? "" : (activeBarVertexId ?? ""),
     // Edge fading in focus mode is built with the edges.
     focusActive ? `focus:${selectedNodeId}` : "",
+    unitCellActive ? `unit-cell:${showUnitCellCopies ? 1 : 0}` : "",
   ].join(":");
   const appearanceVersion = [
     selectedNodeId ?? "",
@@ -718,6 +815,8 @@ export function App() {
     colorEdgesByWall ? 1 : 0,
     linkLens,
     colorScheme,
+    // Unit-cell stubs highlight their partner when an edge is selected.
+    unitCellActive ? (selectedEdgeId ?? "") : "",
   ].join(":");
 
   const handleExampleChange = useCallback(
@@ -1774,6 +1873,24 @@ export function App() {
     setSelectedEdgeId(edgeId);
   }, []);
 
+  // An atlas click selects the same cell id as the 3D scene. If the bar X
+  // relation-family filter hides that cell's family, switch the filter to it,
+  // so the 3D view and the inspector (which read the scene) can show it.
+  const handleAtlasSelectCell = useCallback(
+    (cellId: string, familyId: BarXRelationFamilyId) => {
+      setSelectedEdgeId(undefined);
+      setSelectedCellId(cellId);
+      if (
+        model === "bar-x" &&
+        activeBarRelationPair &&
+        familyId !== activeBarRelationFamily
+      ) {
+        setBarRelationFamily(familyId);
+      }
+    },
+    [activeBarRelationFamily, activeBarRelationPair, model],
+  );
+
   const handleSelectBarVertex = useCallback((vertexId: string) => {
     setSelectedNodeId(vertexId);
     setSelectedCellId(undefined);
@@ -2066,6 +2183,8 @@ export function App() {
           onShowWallsChange={setShowWalls}
           onWallDisplayModeChange={setWallDisplayMode}
           onShowInducedDirectionsChange={setShowInducedDirections}
+          allInducedArrows={allInducedArrows}
+          onAllInducedArrowsChange={setAllInducedArrows}
           onColorEdgesByWallChange={setColorEdgesByWall}
           onShowCellsChange={setShowCells}
           onShowDiscardedCellsChange={setShowDiscardedCells}
@@ -2088,6 +2207,58 @@ export function App() {
             title="Dims everything more than one edge away from the selected vertex"
             onChange={setFocusOnSelection}
           />
+          {model === "hat-x" || model === "bar-x" ? (
+            <Toggle
+              checked={fillAllCells}
+              label="Fill all cells"
+              title="By default crowded covers fill only the selected cell and the cells at the selected vertex; hover any outline to fill it"
+              onChange={setFillAllCells}
+            />
+          ) : null}
+          {unitCellActive && cover ? (
+            <>
+              <Toggle
+                checked={showUnitCellCopies}
+                label="Show neighbouring copies"
+                title="Draws faint translates h D of the unit cell across its gluings, so the tiling around it is visible"
+                onChange={setShowUnitCellCopies}
+              />
+              {/* Keyboard route to a chamber; the same id as the bar X vertex. */}
+              <label className="field" htmlFor="unit-cell-chamber">
+                <span>Unit-cell chamber</span>
+                <select
+                  id="unit-cell-chamber"
+                  value={
+                    cover.barX.vertices.some(
+                      (vertex) => vertex.id === selectedNodeId,
+                    )
+                      ? selectedNodeId
+                      : ""
+                  }
+                  onChange={(event) =>
+                    event.target.value
+                      ? handleSelectBarVertex(event.target.value)
+                      : setSelectedNodeId(undefined)
+                  }
+                >
+                  <option value="">None selected</option>
+                  {cover.barX.vertices.map((vertex) => (
+                    <option key={vertex.id} value={vertex.id}>
+                      {vertex.label ?? vertex.id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </>
+          ) : null}
+          {model === "hat-x" ? (
+            <Toggle
+              checked={bigonsAsTwoEdges}
+              label="Show bigons as two edges"
+              title="Each generator bigon is the pair of lifts x to xs and xs to x; by default the pair is drawn as one rail"
+              onChange={setBigonsAsTwoEdges}
+            />
+          ) : null}
         </Panel>
       </aside>
 
@@ -2176,8 +2347,13 @@ export function App() {
             localCellRenderMode="in-graph"
             cellOpacity={model === "bar-x" ? 0.16 : 0.24}
             topologyMode={model === "hat-x" || model === "bar-x"}
-            cameraFocusTarget={coverCameraOffset ? SCENE_ORIGIN : undefined}
-            cameraFocusOffset={coverCameraOffset}
+            cameraFocusTarget={
+              unitCellBase?.camera?.target ??
+              (coverCameraOffset ? SCENE_ORIGIN : undefined)
+            }
+            cameraFocusOffset={
+              unitCellBase?.camera?.offset ?? coverCameraOffset
+            }
             cameraPreset="global"
             occlusionMode={focusActive ? "fade-far" : "hide-far"}
             semanticLabelsOnly={
@@ -2213,6 +2389,70 @@ export function App() {
               <Minimize2 size={15} /> Show controls (U)
             </button>
           ) : null}
+          {(model === "hat-x" || model === "bar-x") && cover ? (
+            <div
+              className={`cover-view-switch${viewerOnly ? " below-ui-toggle" : ""}`}
+              role="group"
+              aria-label="Cover view"
+            >
+              <button
+                type="button"
+                aria-pressed={coverView === "3d"}
+                onClick={() => setCoverView("3d")}
+              >
+                3D
+              </button>
+              <button
+                type="button"
+                aria-pressed={coverView === "atlas"}
+                onClick={() => setCoverView("atlas")}
+              >
+                Cell atlas
+              </button>
+            </div>
+          ) : null}
+          {model === "davis" && cover ? (
+            <div
+              className={`cover-view-switch${viewerOnly ? " below-ui-toggle" : ""}`}
+              role="group"
+              aria-label="Davis view"
+            >
+              <button
+                type="button"
+                aria-pressed={davisView === "ball"}
+                onClick={() => setDavisView("ball")}
+              >
+                Ball
+              </button>
+              <button
+                type="button"
+                aria-pressed={davisView === "unit-cell"}
+                title="A fundamental domain of H in the Davis complex, with its gluings"
+                onClick={() => setDavisView("unit-cell")}
+              >
+                Unit cell
+              </button>
+            </div>
+          ) : null}
+          {/* The atlas covers the canvas instead of replacing it: SceneView
+              stays mounted, so returning to 3D keeps the camera and skips a
+              full scene rebuild (seconds for C44's 364 cells). */}
+          {(model === "hat-x" || model === "bar-x") &&
+          cover &&
+          coverView === "atlas" ? (
+            <CellAtlas
+              cover={cover}
+              complex={model}
+              wallSystem={wallSystem}
+              coorientation={coorientation}
+              lawfulSubcomplex={lawfulSubcomplex}
+              selectedWallId={activeSelectedWallId}
+              generators={scene.generators}
+              colorScheme={colorScheme}
+              selectedCellId={selectedCellId}
+              onSelectCell={handleAtlasSelectCell}
+            />
+          ) : null}
           {viewerBadges.length > 0 && !sceneEmpty ? (
             <ul className="viewer-badges" aria-label="Drawing status">
               {viewerBadges.map((badge) => (
@@ -2222,11 +2462,20 @@ export function App() {
           ) : null}
           {sceneEmpty ? (
             <div className="viewer-empty-overlay">
-              <strong>No {currentModel.teachingLabel} data is loaded.</strong>
-              <span>{coverMessage ?? generation.error}</span>
+              <strong>
+                {unitCellBase?.unavailableReason
+                  ? "The unit cell cannot be drawn for this system."
+                  : `No ${currentModel.teachingLabel} data is loaded.`}
+              </strong>
+              <span>
+                {unitCellBase?.unavailableReason ??
+                  coverMessage ??
+                  generation.error}
+              </span>
             </div>
           ) : null}
           {generation.pending &&
+          !unitCellActive &&
           (model === "davis" || model === "projection") ? (
             <div className="viewer-progress">Generating radius {radius}…</div>
           ) : null}

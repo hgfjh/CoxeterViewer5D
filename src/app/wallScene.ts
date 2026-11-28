@@ -7,6 +7,8 @@ import type {
 } from "../walls/types";
 import {
   buildBarXScene,
+  SMALL_SCENE_EDGE_LIMIT,
+  type CellEmphasis,
   type CompressedComplexScene,
   type SceneLineStyle,
   type StyledSceneEdge,
@@ -21,12 +23,28 @@ export interface WallSceneOptions {
   showWalls?: boolean;
   focusSelectedWall?: boolean;
   showInducedDirections?: boolean;
+  /**
+   * Which induced-direction arrowheads are drawn when showInducedDirections
+   * is on. "focus" (default): in scenes above SMALL_SCENE_EDGE_LIMIT edges,
+   * only the selected wall's dual edges, the selected cell's boundary and the
+   * edges at the selected vertex. "all": every directed edge. Directions stay
+   * on every edge as data either way.
+   */
+  inducedArrows?: "focus" | "all";
+  /** Default "focus"; see CellEmphasis. */
+  cellEmphasis?: CellEmphasis;
   colorEdgesByWall?: boolean;
   showRelationCells?: boolean;
   showDiscardedCells?: boolean;
   coorientation?: WallCoorientation;
   lawfulSubcomplex?: LawfulSubcomplexEvaluation;
   selectedVertexId?: string;
+  /**
+   * Vertex whose cells, labels and arrowheads are emphasised. Omitted:
+   * selectedVertexId. null: none (selectedVertexId is then only the link-lens
+   * vertex).
+   */
+  emphasisVertexId?: string | null;
   linkLens?: "none" | "ascending" | "descending";
 }
 
@@ -132,13 +150,27 @@ export function buildWallScene(
     options.spreadRelationCells !== true &&
     options.relationFamily === undefined &&
     barX.relationCells.length > 24;
+  const selectedVertexId =
+    options.emphasisVertexId === undefined
+      ? options.selectedVertexId
+      : (options.emphasisVertexId ?? undefined);
+  const selectedCell = barX.relationCells.find(
+    (cell) => cell.id === options.selectedCellId,
+  );
   for (const cell of barX.relationCells) {
+    // In a dense overview the cells through the selected vertex are the ones
+    // being read, so they keep the "incident" weight.
+    const atSelectedVertex =
+      selectedVertexId !== undefined &&
+      cell.boundaryOccurrences.some(
+        (occurrence) => occurrence.sourceVertexId === selectedVertexId,
+      );
     cellRoles.set(
       cell.id,
       cell.id === options.selectedCellId
         ? "focus"
         : retainedCells.has(cell.id)
-          ? denseOverview
+          ? denseOverview && !atSelectedVertex
             ? "context"
             : "incident"
           : "context",
@@ -153,7 +185,13 @@ export function buildWallScene(
     : undefined;
   const base = buildBarXScene(barX, {
     selectedVertexId: options.selectedVertexId,
+    emphasisVertexId: options.emphasisVertexId,
     selectedCellId: options.selectedCellId,
+    cellEmphasis: options.cellEmphasis,
+    // In "Selected wall" mode the selected wall's dual edges are what the
+    // reader follows, so their generator labels are kept.
+    labelEdgeIds:
+      options.focusSelectedWall === true ? selectedWallEdgeSet : undefined,
     relationFamily: options.relationFamily,
     spreadRelationCells: options.spreadRelationCells,
     showRelationCells: options.showRelationCells ?? true,
@@ -172,8 +210,28 @@ export function buildWallScene(
       `${wallSystem.walls.length} walls exceed the ${WALL_STYLE_CAPACITY} distinct colour and line-style pairs; walls W${WALL_STYLE_CAPACITY + 1} onward repeat a pair. Use Selected wall to isolate one wall.`,
     );
   }
-  if (options.showInducedDirections === false) {
-    for (const edge of base.edges) edge.directed = false;
+  // Arrowheads: direction data stays on every edge (the link lens reads it);
+  // only the drawing is thinned. Hiding arrows used to clear `directed`,
+  // which also dropped the edges from the semantic renderer.
+  const crowdedEdges = barX.geometricEdges.length > SMALL_SCENE_EDGE_LIMIT;
+  const focusArrows =
+    (options.inducedArrows ?? "focus") === "focus" && crowdedEdges;
+  const arrowEdgeIds = new Set<string>([
+    ...selectedWallEdgeIds,
+    ...(selectedCell?.boundaryOccurrences.map(
+      (occurrence) => occurrence.edgeId,
+    ) ?? []),
+  ]);
+  for (const edge of base.edges) {
+    if (edge.drawingOnly) continue;
+    const atSelectedVertex =
+      selectedVertexId !== undefined &&
+      (edge.source === selectedVertexId || edge.target === selectedVertexId);
+    if (options.showInducedDirections === false) {
+      edge.hideArrow = true;
+    } else if (focusArrows && !arrowEdgeIds.has(edge.id) && !atSelectedVertex) {
+      edge.hideArrow = true;
+    }
   }
 
   const wallIndexById = new Map(
@@ -259,6 +317,7 @@ export function buildWallScene(
       options.focusSelectedWall !== true ||
       !selectedWall ||
       selectedWall.id === wallId;
+    const bold = !crowdedEdges || selectedWall?.id === wallId;
     midpointNodes.push({
       id: nodeId,
       length: 0,
@@ -268,7 +327,7 @@ export function buildWallScene(
         (source[2] + target[2]) / 2,
       ],
       colorHint: wallStyle(wallIndex).color,
-      nodeScale: focused ? 0.34 : 0.16,
+      nodeScale: focused && bold ? 0.34 : 0.16,
       drawingOnly: true,
       ghost: linkLensActive || (!focused && selectedWall !== undefined),
     });
@@ -300,6 +359,10 @@ export function buildWallScene(
       selectedWall.id === segment.wallId;
     const firstSegmentForWall =
       wallSystem.walls[wallIndex]?.crossingSegmentIds[0] === segment.id;
+    // In a crowded scene every wall's arcs stay visible ("All walls"), but
+    // only the selected wall is drawn bold and above the cells; the others
+    // are thin, faint and depth tested so they recede behind the selection.
+    const bold = !crowdedEdges || selectedWall?.id === segment.wallId;
     segmentEdges.push({
       id: `drawing:${segment.id}`,
       source: firstNodeId,
@@ -317,7 +380,8 @@ export function buildWallScene(
         selectedWall?.id === segment.wallId && firstSegmentForWall
       ),
       drawingOnly: true,
-      readabilityOverlay: true,
+      readabilityOverlay: bold,
+      faint: bold ? undefined : true,
       ghost: linkLensActive || (!focused && selectedWall !== undefined),
     });
   }
@@ -341,6 +405,11 @@ export function buildWallScene(
         : [
             "Arrowheads on dual bar-X edges show the induced wall coorientation; the wall arcs themselves are not directed.",
           ]),
+      ...(focusArrows && options.showInducedDirections !== false
+        ? [
+            "Arrowheads are drawn only on the selected wall's dual edges, the selected cell's boundary and the edges at the selected vertex; every other edge keeps its induced direction as data.",
+          ]
+        : []),
     ],
   };
 }

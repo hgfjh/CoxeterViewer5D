@@ -61,6 +61,9 @@ export interface CoversWallsPanelProps {
   showWalls: boolean;
   wallDisplayMode: "all" | "selected";
   showInducedDirections: boolean;
+  /** Arrowheads on every edge instead of only around the selection. */
+  allInducedArrows?: boolean;
+  onAllInducedArrowsChange?: (value: boolean) => void;
   colorEdgesByWall: boolean;
   showCells: boolean;
   showDiscardedCells: boolean;
@@ -155,6 +158,8 @@ export const CoversWallsPanel = memo(function CoversWallsPanel({
   onShowWallsChange,
   onWallDisplayModeChange,
   onShowInducedDirectionsChange,
+  allInducedArrows = false,
+  onAllInducedArrowsChange,
   onColorEdgesByWallChange,
   onShowCellsChange,
   onShowDiscardedCellsChange,
@@ -1016,6 +1021,14 @@ export const CoversWallsPanel = memo(function CoversWallsPanel({
               label="Show induced edge arrows"
               onChange={onShowInducedDirectionsChange}
             />
+            {showInducedDirections && onAllInducedArrowsChange ? (
+              <Toggle
+                checked={allInducedArrows}
+                label="Arrows on every edge"
+                title="By default arrows are drawn only on the selected wall's dual edges and around the selection"
+                onChange={onAllInducedArrowsChange}
+              />
+            ) : null}
             <ul className="legend-list wall-reader-key">
               <li className="legend-item">
                 <span

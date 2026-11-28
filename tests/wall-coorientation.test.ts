@@ -75,10 +75,12 @@ describe("bar-X walls and lawful coorientations", () => {
       coorientation,
       showInducedDirections: false,
     });
+    // Hiding arrows is a drawing choice: the induced direction stays on each
+    // edge (link lenses read it), only the arrowhead is suppressed.
     expect(
       arrowsHidden.edges
         .filter((edge) => !edge.drawingOnly)
-        .every((edge) => edge.directed === false),
+        .every((edge) => edge.directed === true && edge.hideArrow === true),
     ).toBe(true);
     expect(coorientation.edgeDirections).toEqual(
       createWallCoorientation(walls).edgeDirections,
