@@ -52,19 +52,6 @@ wall pathology checks, finite link connectivity, and a completed local search.
 The paper's incoherence and Morse conclusions require additional hypotheses.
 Passing the finite checks does not establish those hypotheses automatically.
 
-## Exact Scores Without A Certificate
-
-The low-barycentric scorer (`pnpm lowbary:score`, `pnpm lowbary:search`;
-see low-barycentric-morse.md) computes exact
-first-gate and second-gate failure counts for a wall orientation; vertices
-whose collapse search ran out of budget are counted as undecided, not as
-failures, although the search objective adds them to its second component.
-The run emits no replayable certificate: no collapse sequences
-and no independent verifier. It reports the period gcd of the orientation's
-wall cocycle (gcd 0 means a zero class), but gives no Schreier/Bezout
-certificate of the image. Treat a score as a research result, not as certified
-data.
-
 ## Drawings
 
 The following never change the mathematical complex:

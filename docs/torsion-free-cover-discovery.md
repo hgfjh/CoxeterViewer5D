@@ -42,8 +42,6 @@ corepack pnpm cover:fiber:user-action -- --example I2_5 --action my-action.json 
 corepack pnpm cover:import:compact-action -- --example compact_5_prism_makarov \
   --input IMPORT.json --action-output ACTION.json --h1-job-dir H1-JOB --receipt RECEIPT.json
 pnpm bench:pipeline --system SYSTEM.json --manifest action.manifest.json --workers 8 --stages load,torsion,oracle,h1
-pnpm lowbary:score --system SYSTEM.json --manifest action.manifest.json --orientation orientation.json
-pnpm lowbary:search --system SYSTEM.json --manifest action.manifest.json --start orientation.json
 ```
 
 Every path recertifies torsion-freeness by the spherical-orbit test below; a
@@ -711,9 +709,7 @@ assignment was searched.
 The current repository supplies the symbolic data model and synthetic
 promotion tests. It does not yet contain a positive compact-5-cube symbolic
 fibering artifact satisfying this entire chain, so no symbolic compact-cube
-fibering claim is made here. The materialized 34,560-chamber cube cover is a
-separate, non-symbolic case: its low-barycentric first gate is recorded in
-cube-manifold-gate1.md.
+fibering claim is made here.
 
 ## Scale Benchmark Before Candidate Materialization
 
@@ -802,20 +798,16 @@ Those are separate claims. A torsion-free action does not itself prove virtual
 algebraic fibering, finite generation of `ker(phi)`, a manifold statement, or a
 topological bundle.
 
-There are three post-cover routes: Track A
-([virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)), Track B
-([full-davis-fibering-certification.md](full-davis-fibering-certification.md)),
-and the low-barycentric objective
-(low-barycentric-morse.md). Track A and the
-low-barycentric wall-orientation search start from a wall orientation, so they
-need every wall to be two-sided. (The low-barycentric scorer also accepts IMM
-status assignments, for which walls play no role; see
-low-barycentric-morse.md.)
+There are two post-cover routes: Track A
+([virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)) and Track B
+([full-davis-fibering-certification.md](full-davis-fibering-certification.md)).
+Track A starts from a wall orientation, so it needs every wall to be
+two-sided.
 A cover can certify torsion-free and still have
 one-sided walls: the H5-P7-22 cover of index 39,628,800 has 10 one-sided
 walls among 20. The repository has no generic, scalable step that passes from
 such a cover to a further cover where every wall is two-sided; for H5-P7-22
-this was a one-off Python script (`scripts/h5_p7_22/build_action.py --linear`).
+this was a one-off research script.
 
 ## Current Scope
 

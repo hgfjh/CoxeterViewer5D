@@ -92,7 +92,7 @@ const primaryExamples: ExampleRecord[] = [
   },
   {
     id: "compact_5_prism_h5_p7_22",
-    label: "Compact 5-prism H5-P7-22 — cover studied, no wall fibering",
+    label: "Compact 5-prism H5-P7-22 — cover studied",
     system: parseCoxeterSystemInput(compact5PrismH5P722),
     role: "compact",
   },
@@ -106,7 +106,7 @@ const primaryExamples: ExampleRecord[] = [
   // with the smallest vertex-group LCM (1920) of any bundled compact 5-polytope.
   {
     id: "q55_icosahedral_truncation",
-    label: "Q55 (G12221 H3xA1 unfolding) — preferred fibering target",
+    label: "Q55 (G12221 H3xA1 unfolding)",
     system: parseCoxeterSystemInput(q55IcosahedralTruncation),
     role: "compact",
   },

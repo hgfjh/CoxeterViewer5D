@@ -190,7 +190,7 @@ export function buildIdealHyperbolic3CubeS4Cover(
 
 /**
  * The Coxeter matrix of the compact hyperbolic tetrahedron C(4,4;2,2;3,3) in
- * the labelling of docs/C44_2233_3D_Coxeter_Wall_Fibering_Writeup.md.
+ * the labelling used by the bundled compact_3_tetrahedron_c44_2233 example.
  */
 export const C44_2233_COXETER_MATRIX = [
   [1, 3, 4, 2],
@@ -288,7 +288,7 @@ export function createC44Psl27Action(
     backend: "bundled-exact-psl27-action",
     backendVersion: "1.0.0",
     source:
-      "Explicit map W -> PSL(2,7) x C2 from docs/C44_2233_3D_Coxeter_Wall_Fibering_Writeup.md section 2 (after Zimmermann).",
+      "Explicit map W -> PSL(2,7) x C2 after Zimmermann (arXiv:2003.00730).",
     notes: [
       "The four projective involutions have pair-product orders equal to the Coxeter matrix and generate PSL(2,7); with parity the image has order 336.",
       "Every maximal spherical subgroup is B3 of order 48 and maps injectively, so the kernel is torsion-free; the in-repo certificate checks this exactly.",

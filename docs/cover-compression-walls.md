@@ -155,8 +155,8 @@ ascending and descending links. The map is not called an algebraic fibration
 unless the hypotheses for finite generation of its kernel carry evidence.
 
 The lawful subcomplex is the Track A route. The same wall orientation can
-instead be scored on the full Davis quotient (Track B) or on its
-low-barycentric subdivision; see [math.md](math.md#three-analysis-routes).
+instead be scored on the full Davis quotient (Track B); see
+[math.md](math.md#two-analysis-routes).
 
 ## Theorem Boundary
 

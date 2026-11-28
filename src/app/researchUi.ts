@@ -158,9 +158,9 @@ export const compactResearchCatalogueNotices: CompactResearchCatalogueNotice[] =
     {
       id: "h5-p7-22",
       label: "H5-P7-22",
-      status: "cover studied / no wall fibering",
+      status: "cover studied / fibering in progress",
       summary:
-        "The certified source is bundled. Its index-39,628,800 torsion-free cover has one-sided walls; on the two-sided index-79,257,600 cover, CP-SAT shows every wall orientation leaves at least 818,128 chambers failing the first low-barycentric gate. Other covers and non-wall cocycles remain open. The large action is not bundled; see h5-p7-22_index39628800/.",
+        "The certified source is bundled. Its index-39,628,800 torsion-free cover has one-sided walls, and its index-79,257,600 double cover has two-sided walls. Further fibering work on this example is in progress and not yet published. The large action is not bundled.",
       sourceAvailability: "bundled-source",
     },
   ];
@@ -291,7 +291,7 @@ export function defaultGalleryEntries(): ExampleGalleryEntry[] {
       label: "Closed 3D C(4,4;2,2;3,3)",
       family: "compact",
       summary:
-        "Golden closed example: a 336-sheet PSL(2,7) cover with a wall orientation passing both low-barycentric gates.",
+        "Closed example: a 336-sheet PSL(2,7) cover whose 42 quotient walls are all two-sided.",
       actionLabel: "Open example",
     },
   ];

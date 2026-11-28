@@ -73,8 +73,7 @@ formulas are documented in
     extra optimization objective of maximizing retained lawful cells over all
     coorientations.
   - Repo use: the definitions and the lawful-subcomplex argument behind
-    Track A ([virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)),
-    and the wall vocabulary used by the low-barycentric scorer.
+    Track A ([virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)).
   - arXiv abstract: https://arxiv.org/abs/1503.03102
   - PDF: https://arxiv.org/pdf/1503.03102
 
@@ -122,8 +121,7 @@ formulas are documented in
     kernel-transfer records.
   - Repo use: the first gate. Nonempty, connected ascending and descending
     links at every vertex give a finitely generated kernel, that is, a virtual
-    algebraic fibration. Track A, Track B and the low-barycentric scorer all
-    test this gate.
+    algebraic fibration. Track A and Track B both test this gate.
   - DOI: https://doi.org/10.1007/s002220050168
   - Author-hosted scan: https://people.math.osu.edu/davis.12/courses/8800-20/Bestvina-Brady.pdf
 
@@ -149,11 +147,8 @@ formulas are documented in
     for their explicit cellulation and subdivision, including the new vertex
     types introduced by the subdivision. They call the I/O label of a facet
     its status.
-  - Repo use: the second gate (both directed links collapsible) and the
-    low-barycentric subdivision convention of
-    docs/low-barycentric-morse.md, including the
-    face link / coface link join. The manifold hypotheses of Theorem 8 are
-    argued in the docs, not machine-checked. The app records collapsibility as
+  - Repo use: the second gate (both directed links collapsible). The
+    manifold hypotheses of Theorem 8 are not machine-checked. The app records collapsibility as
     a stronger diagnostic and does not transfer the fibration conclusion to an
     arbitrary Davis quotient.
   - arXiv abstract: https://arxiv.org/abs/2105.14795
@@ -205,8 +200,8 @@ produced by the repo is explicit rather than new. They do not apply to the
 two-dimensional toy examples, whose first L²-Betti number is nonzero. None of
 them supplies an explicit character or cover. Agol's theorem that every closed
 hyperbolic 3-manifold virtually fibers (I. Agol, _The virtual Haken
-conjecture_, Doc. Math. 18 (2013), 1045–1087, arXiv:1204.2810) is cited in the
-C44 writeup to place that 3-dimensional example as a calibration of the method.
+conjecture_, Doc. Math. 18 (2013), 1045–1087, arXiv:1204.2810) is the
+3-dimensional context for the bundled C(4,4;2,2;3,3) example.
 
 - Dawid Kielak, **Residually finite rationally solvable groups and virtual
   fibring**, _Journal of the American Mathematical Society_ 33 (2020),
@@ -245,8 +240,7 @@ C44 writeup to place that 3-dimensional example as a calibration of the method.
   - Question 7.2 (as cited by IMM, arXiv:2105.14795; the text of the question
     was not checked here) asks for a hyperbolic group with a non-hyperbolic
     subgroup of finite type. IMM answer it in Corollary 2 with a group obtained
-    by Dehn filling a cusped 5-manifold. Repo use: literature framing in
-    `cube-manifold-gate1.md`.
+    by Dehn filling a cusped 5-manifold. Repo use: literature framing only.
 
 - Claudio Llosa Isenrich and Pierre Py, **Subgroups of hyperbolic groups,
   finiteness properties and complex hyperbolic lattices**, arXiv:2204.05788.
@@ -260,8 +254,7 @@ C44 writeup to place that 3-dimensional example as a calibration of the method.
 - Jonathan A. Barmak and Elias Gabriel Minian, **Strong homotopy types, nerves
   and collapses**, _Discrete & Computational Geometry_ 47 (2012).
   - Removing a beat point of a finite poset is a strong collapse of its order
-    complex. `beatPointCore` in `src/fibering/lowBarycentricLinks.ts` uses this
-    to shrink descending face links before testing collapsibility.
+    complex, a cheap reduction before testing collapsibility.
 
 - Michael W. Davis, _The Geometry and Topology of Coxeter Groups_, London
   Mathematical Society Monographs 32, Princeton University Press, 2008.
@@ -374,9 +367,8 @@ does not assert that this particular index-24 kernel is a smallest cover.
   3-manifolds and equivariant Heegaard splittings**, arXiv:2003.00730 (2020).
   - Supplies the `C(4,4;2,2;3,3)` tetrahedral group, its `PSL(2,7)` quotient,
     and the index-336 torsion-free kernel used by the bundled
-    `compact_3_tetrahedron_c44_2233` example and
-    the C44 writeup.
-  - The writeup gives the journal as _Rendiconti dell'Istituto di Matematica
+    `compact_3_tetrahedron_c44_2233` example.
+  - The journal is recorded as _Rendiconti dell'Istituto di Matematica
     dell'Universita di Trieste_ 52 (2020), 601--612, DOI
     10.13137/2464-8728/30923. The arXiv page carries no journal reference, and
     that DOI did not resolve through Crossref when checked on 2026-11-27, so

@@ -92,38 +92,6 @@ only one hypothesis of the relevant manifold theorem. The repository does not
 yet replay a source-bound compact-smooth-manifold, compatible PL, and smoothing
 certificate, so legacy caller-supplied IMM-style booleans are ignored.
 
-## Low-Barycentric Route Limits
-
-The low-barycentric scorer and search
-(low-barycentric-morse.md) give exact scores, not
-certificates. As of 2026-10-04:
-
-1. The route produces no replayable certificate: it records no collapse
-   sequences per link class, and there is no independent verifier.
-2. `pnpm lowbary:score` and `pnpm lowbary:search` report the period gcd of the
-   orientation's wall cocycle (`periods`): gcd 0 means a zero class, otherwise
-   `H -> Z` has image `gcd·Z` and dividing by the gcd gives the primitive
-   class. There is no Schreier/Bezout certificate of the image as in Track A
-   step 13.
-3. There is no generic, scalable step that passes from a cover with one-sided
-   walls to a further cover on which they are two-sided (see
-   [math.md](math.md#coorienting-walls)). When they compute wall sides from
-   the action, both CLIs stop on a one-sided wall. For H5-P7-22 this step
-   was one-off Python in `scripts/h5_p7_22/`.
-4. The CP-SAT forced-failure lower bound
-   (`scripts/h5_p7_22/min_forced_failures.py`) is Python-only and needs
-   OR-Tools.
-5. IMM's manifold hypotheses (compact smooth manifold, dimension at most 5,
-   compatible affine structure) are argued in the docs, not machine-checked.
-   An objective of `(0, 0)` is therefore not a fibering certificate.
-
-The search is a local search. It cannot prove that no orientation passes; a
-negative claim needs a separate lower bound. An `undecided` vertex means a
-collapse search ended without a decision, not that the link is
-non-collapsible. The scorer has no rank limit. A cell with more than 128 tied
-minima stops the run, unless the scorer is prepared to count such cells as
-undecided. The packed wall-sides file holds at most 128 walls.
-
 ## Bundled Compact Sources
 
 As of 2026-10-04 every known compact hyperbolic Coxeter 5-polytope with 7, 8 or
@@ -149,21 +117,15 @@ not been checked against Kaplinskaja's paper or Felikson's tables.
 
 ## H5-P7-22
 
-The compact hyperbolic Coxeter 5-prism H5-P7-22 (rank 7) is packaged in
-`h5-p7-22_index39628800/`, and its source is bundled as the viewer example
-`compact_5_prism_h5_p7_22` (the 39.6M-point cover is not part of the example). The certified cover `Γ`, the Sylow-7 pullback in
+The source of the compact hyperbolic Coxeter 5-prism H5-P7-22 (rank 7) is
+bundled as the viewer example `compact_5_prism_h5_p7_22` (the 39.6M-point
+cover is not part of the example). The certified cover `Γ`, the Sylow-7 pullback in
 `PO_6^-(7)`, has index 39,628,800, is torsion-free and has Euler
-characteristic 0. Its action was rebuilt from the mod-7 representation
-(`scripts/h5_p7_22/build_action.py`), and `pnpm bench:pipeline` with 8 workers
-runs on it in about 12 minutes. Ten of its 20 wall classes, every lateral/`s5`
+characteristic 0. Its action was rebuilt from the mod-7 representation.
+Ten of its 20 wall classes, every lateral/`s5`
 wall, are one-sided, so `Γ` has no wall orientation. The linear Sylow pullback
 `Γ+` in `O_6^-(7)` has index 79,257,600 and all 30 of its walls are two-sided.
-A CP-SAT lower bound shows that every orientation of `Γ+` has at least 818,128
-chambers that fail the first gate, so no wall orientation of `Γ+` gives a
-fibering by the low-barycentric construction. The bound is a solver result
-(`scripts/h5_p7_22/min_forced_failures.py`), not an independently replayed
-certificate. It is scoped to that construction and that cover; it says nothing
-about another cover, character or Morse function.
+Further fibering work on this example is in progress and not yet published.
 
 ## Compact Research Registration Limits
 

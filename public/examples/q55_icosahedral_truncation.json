@@ -15941,7 +15941,7 @@
         }
       ]
     ],
-    "source": "Intrinsic icosahedral construction; see bundle README.md"
+    "source": "Intrinsic icosahedral construction"
   },
   "constructionData": {
     "phi": 1.618033988749895,
@@ -16016,7 +16016,7 @@
     "The finite-parabolic counts give f-vector (340,850,786,329,55,1).",
     "Publication-level novelty has not been established.",
     "The Coxeter matrix is isomorphic to the kernel of the retraction W(G12221) -> W(H3 x A1), recomputed from the certified G12221 Gram data (scripts/compact5d/make_g12221_unfoldings.py).",
-    "See docs/compact-5d-target-selection.md for the low-barycentric target screen."
+    "Further fibering work on this example is in progress and not yet published."
   ],
   "sourceRefs": [
     {

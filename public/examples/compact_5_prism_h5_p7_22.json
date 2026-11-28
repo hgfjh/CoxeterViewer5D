@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "H5-P7-22 compact simplicial 5-prism",
-  "description": "Compact hyperbolic Coxeter simplicial 5-prism with 7 facets (Kaplinskaja; Ma--Zheng prism figure, bottom diagram). Its certified Sylow-7 torsion-free cover of index 39,628,800 lives in h5-p7-22_index39628800/.",
+  "description": "Compact hyperbolic Coxeter simplicial 5-prism with 7 facets (Kaplinskaja; Ma--Zheng prism figure, bottom diagram). Its certified Sylow-7 torsion-free cover has index 39,628,800.",
   "rank": 7,
   "generators": [
     {
@@ -351,7 +351,7 @@
   },
   "notes": [
     "This is the third compact simplicial 5-prism, besides Makarov P0 [5,3,3,3,3] and P2 [5,3,3,3,4].",
-    "The large cover is not bundled: see h5-p7-22_index39628800/README.md and docs/low-barycentric-morse.md for the cover, its walls, and the low-barycentric results.",
+    "The large cover is not bundled. Further fibering work on this example is in progress and not yet published.",
     "Normal coordinates and chamber basepoints are computed numerically from normalGram; geometric mode is visualization-grade."
   ],
   "warnings": [

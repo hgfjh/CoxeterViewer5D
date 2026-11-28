@@ -39,7 +39,7 @@ variance does not weaken semantic floors.
 
 This pass targeted two things: interaction latency in the viewer, and running
 the fibering pipeline end to end on the index-39,628,800 torsion-free cover of
-H5-P7-22 (`h5-p7-22_index39628800/`, rank 7, 138,700,800 geometric edges,
+H5-P7-22 (rank 7, 138,700,800 geometric edges,
 471,651,520 Davis cells). Every optimization below either keeps every digest
 byte-identical, or is checked against the old code by an equivalence test.
 
@@ -113,30 +113,6 @@ What changed, by stage:
   time. The exhaustive search is now incremental (Zobrist-hashed states,
   explicit stack) and no longer runs out of memory on order complexes of about
   1000 simplices.
-
-### Low-barycentric scorer on H5-P7-22 Γ+
-
-The pipeline above runs on Γ (index 39,628,800). Ten of its 20 wall classes
-are one-sided, so Γ has no wall orientation. The low-barycentric scorer
-(`pnpm lowbary:score`, `pnpm lowbary:search`; see
-low-barycentric-morse.md) therefore runs on the
-linear Sylow-7 pullback Γ+: 79,257,600 points and 30 two-sided walls. With 16
-workers, the approximate times are:
-
-| Phase                                    |     Time |
-| ---------------------------------------- | -------: |
-| Prepare                                  |    ~23 s |
-| Pass A (`A(x)` bits for every chamber)   |    ~22 s |
-| Chamber aggregation, first evaluation    |    ~50 s |
-| Chamber aggregation, cached              |    0.5 s |
-| Pass B (tied-minimum cells)              |    ~20 s |
-| **One steady-state evaluation in total** | ~39–42 s |
-
-Peak memory is roughly the action rows (2.2 GB), plus the half-panel wall
-sides (0.55 GB), plus the `A`-bits (0.95 GB). The TypeScript scores match the
-Python research scripts in `scripts/h5_p7_22/` exactly. An evaluation of about
-40 s is what makes the single-flip steepest-descent search practical: one sweep
-over the 30 single flips costs about 20 minutes.
 
 ### Large imported covers in the viewer
 

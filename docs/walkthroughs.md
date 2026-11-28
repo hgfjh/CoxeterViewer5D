@@ -234,14 +234,7 @@ Goal: see a closed hyperbolic 3-manifold cover and its 42 walls in the viewer.
 4. Step **4. Find walls** reads 42 opposite-edge classes, and the **Walls**
    count above the scene agrees.
 
-The low-barycentric check of this example is not run in the browser. The
-golden test reproduces it, with an orientation that passes both gates at every
-vertex (see
-low-barycentric-morse.md):
-
-```bash
-corepack pnpm exec vitest run tests/c44-golden-example.test.ts
-```
+Further fibering work on this example is in progress and not yet published.
 
 ## Find The Walls Of bar X
 

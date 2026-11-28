@@ -209,11 +209,6 @@ all-character arrangement currently supports `b1` one through four. No
 source-bound smooth-manifold/PL/smoothing verifier is implemented, so the
 viewer and CLI do not certify smooth fibering.
 
-The low-barycentric (IMM) scorer and orientation search
-(low-barycentric-morse.md) are command-line tools
-only (`pnpm lowbary:score`, `pnpm lowbary:search`). The viewer does not run
-them, and they do not yet emit a replayable certificate.
-
 ## Teaching Mode
 
 Teaching mode keeps the viewer dominant. The left rail contains, top to

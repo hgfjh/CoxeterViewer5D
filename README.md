@@ -166,21 +166,18 @@ intersections.
 ## Theorem Boundaries
 
 Wall data alone do not prove incoherence or fibering. Once a finite
-torsion-free action is in hand, the repository has three ways to turn a wall
+torsion-free action is in hand, the repository has two ways to turn a wall
 orientation, or another integral class, into a theorem-level claim. Each route
 states what it certifies:
 
-| Route                     | Complex and height                                                                          | Certifies                                                                                                                                                                                  | Doc                                                                               |
-| ------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| **Track A**               | lawful subcomplex `Y` of the compression `bar X`, wall cocycle                              | virtual algebraic fibration, by the Bestvina--Brady bounded-height-band argument and the surjection `pi_1(Y) -> H`                                                                         | [virtual-algebraic-fibering.md](docs/virtual-algebraic-fibering.md)               |
-| **Track B**               | full Davis quotient `K = H\Sigma`, pulling triangulation, exact rational cell-local heights | virtual algebraic fibration, with nonempty connected links at every vertex orbit                                                                                                           | [full-davis-fibering-certification.md](docs/full-davis-fibering-certification.md) |
-| **Low-barycentric (IMM)** | `K` with the low-barycentric subdivision `h(F^) = min h + codim(F) eps`                     | exact scores for both gates at every vertex; if every link is collapsible on a compact smooth manifold of dimension at most 5, IMM Theorem 8 makes the map homotopic to a smooth fibration | low-barycentric-morse.md                                                          |
+| Route       | Complex and height                                                                          | Certifies                                                                                                          | Doc                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| **Track A** | lawful subcomplex `Y` of the compression `bar X`, wall cocycle                              | virtual algebraic fibration, by the Bestvina--Brady bounded-height-band argument and the surjection `pi_1(Y) -> H` | [virtual-algebraic-fibering.md](docs/virtual-algebraic-fibering.md)               |
+| **Track B** | full Davis quotient `K = H\Sigma`, pulling triangulation, exact rational cell-local heights | virtual algebraic fibration, with nonempty connected links at every vertex orbit                                   | [full-davis-fibering-certification.md](docs/full-davis-fibering-certification.md) |
 
 Here a **virtual algebraic fibration** means an epimorphism `H -> Z` from a
 finite-index subgroup with a finitely generated kernel. It is not a
-topological or smooth bundle claim. The low-barycentric route currently scores
-and searches orientations, but it does not yet emit a replayable certificate
-(see [Bring Your Own Cover](#bring-your-own-cover)).
+topological or smooth bundle claim.
 [Two-track certification](docs/two-track-fibering-certification.md) explains
 how the routes relate and which evidence each one replays.
 
@@ -223,27 +220,15 @@ torsion-free.
 | Torsion-free check, quotient, and bounded Track A / Track B wall-character search with a replayed certificate             | `corepack pnpm cover:fiber:user-action -- --example I2_5 --action my-action.json --output promotion.json`                      |
 | Packed actions at scale: load, torsion-free certificate, streamed oracle (cells, walls, two-sidedness), `H^1` preparation | `corepack pnpm bench:pipeline --system SYSTEM.json --manifest MANIFEST.json --stages load,torsion,oracle,h1 --workers N`       |
 | Proof-carrying full integral `H^1` and intrinsic Track B                                                                  | `corepack pnpm cover:fiber:scalable-h1 -- --example ... --action ... --rank-certificate ... --kernel-witness ... --output ...` |
-| Low-barycentric score of given wall orientations                                                                          | `corepack pnpm lowbary:score --system ... --manifest ... --wall-sides ... --orientation ... --workers N`                       |
-| Iterated local search over wall orientations                                                                              | `corepack pnpm lowbary:search --system ... --manifest ... --wall-sides ... --start ... --hours H --workers N`                  |
 
 Results and hashes do not depend on `--workers`. A failed or incomplete result
 is a statement about the recorded search family and bounds only.
 
 What is not automated yet:
 
-- **Low-barycentric certificates.** The route counts link classes exactly, but
-  it does not write replayable collapse sequences or have an independent
-  verifier. Both CLIs report the period gcd of the orientation's wall cocycle
-  (gcd 0 means a zero class; otherwise the primitive class is the cocycle
-  divided by the gcd), but there is no Schreier/Bezout certificate of the
-  image as in Track A.
 - **One-sided walls.** If some walls are one-sided, no orientation exists.
   There is no generic, scalable step that passes to a further cover on which
   they become two-sided.
-- **Lower bounds.** The search cannot prove that no orientation passes. The
-  forced-failure lower bound used for H5-P7-22
-  (`scripts/h5_p7_22/min_forced_failures.py`) is a Python/OR-Tools research
-  script.
 - **Manifold hypotheses.** IMM's hypotheses (a compact smooth manifold, of
   dimension at most 5, with a compatible affine structure) are argued in the
   docs, not machine-checked.
@@ -264,15 +249,8 @@ finitely presented or type-`F` kernel would be new. The main results:
 - **H5-P7-22** (a compact 5-prism, rank 7). Its source is bundled as the
   example `compact_5_prism_h5_p7_22`. The certified Sylow-7 cover of index
   39,628,800 is torsion-free with `chi = 0`, and the packed pipeline runs on it
-  in about 12 minutes. Ten of its 20 walls are one-sided. On the two-sided
-  linear cover of index 79,257,600, a CP-SAT lower bound (solver output, not
-  a replayable certificate) says that **every** wall orientation leaves at
-  least 818,128 chambers with an empty or disconnected ascending link. Granting
-  that bound, no wall orientation of that cover fibers by the low-barycentric
-  construction with its present height rule; further covers and other height
-  rules remain open. See
-  the bundle README and
-  low-barycentric-morse.md.
+  in about 12 minutes. Ten of its 20 walls are one-sided; the linear cover of
+  index 79,257,600 has all walls two-sided. Further fibering work on this example is in progress and not yet published.
 - **Compact 5-cube.** The imported action has `H^1 = Z^19`. Its Track B height
   complex obstructs every nonzero integral character, and the bounded rescue
   found no passing original-vertex link system.
@@ -282,15 +260,9 @@ finitely presented or type-`F` kernel would be new. The main results:
   certifies virtual algebraic fibering.
 - **Controls.** The JNW rank-eight right-angled control passes virtual
   algebraic fibering. It is two-dimensional, not a compact hyperbolic
-  5-manifold. The 3-dimensional
-  C(4,4;2,2;3,3) benchmark
-  is reported there to fiber by wall orientation, the low-barycentric
-  subdivision and IMM. It is
-  bundled as the example `compact_3_tetrahedron_c44_2233` with its 336-sheet
-  cover, and `tests/c44-golden-example.test.ts` reproduces the census, the 42
-  two-sided walls and an orientation with score `(0, 0)` and period gcd 2. This
-  is strong in-repo evidence, not a stored certificate; the writeup's original
-  artifacts remain outside this repository.
+  5-manifold. The closed 3-dimensional C(4,4;2,2;3,3) example is bundled as
+  `compact_3_tetrahedron_c44_2233` with its 336-sheet cover; the viewer
+  reproduces its cell census and its 42 two-sided walls. Further fibering work on this example is in progress and not yet published.
 
 [The research portfolio](docs/fibering-research-portfolio.md) has the full
 status table, every per-experiment report, and the commands that reproduce
@@ -494,16 +466,12 @@ Getting a cover:
 From a cover to `H -> Z`:
 
 - [Two-track certification](docs/two-track-fibering-certification.md): how
-  Track A, Track B, and the low-barycentric route relate.
+  Track A and Track B relate.
 - [Virtual algebraic fibering certificate](docs/virtual-algebraic-fibering.md)
   (Track A): Schreier generators, wall periods, primitivity, lawful cells, and
   the PL Morse checklist.
 - [Full Davis-quotient certification](docs/full-davis-fibering-certification.md)
   (Track B).
-- Low-barycentric Morse objective: an exact
-  score for a wall orientation, using the IMM face and coface links at every
-  chamber and barycentre (`pnpm lowbary:score`), and a search over
-  orientations (`pnpm lowbary:search`).
 - [Scalable integral H1](docs/scalable-generic-integral-h1.md) and
   [the external H1 job](docs/generic-h1-external-job.md).
 - [Known limits](docs/known-limits.md).

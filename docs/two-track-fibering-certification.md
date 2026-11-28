@@ -1,9 +1,7 @@
-# Fibering Certification After A Cover: Track A, Track B And The Low-Barycentric Route
+# Fibering Certification After A Cover: Track A And Track B
 
 **Status (as of 2026-10-04).** Track A and Track B are implemented and can
-promote a certificate. The low-barycentric (IMM) route has an exact scorer and
-an orientation search, but it emits no replayable certificate yet and is not
-wired into the certification CLIs.
+promote a certificate.
 
 This note is the map of what the repository can do once a finite torsion-free
 action of a Coxeter group `W` is in hand, that is, a torsion-free finite-index
@@ -13,22 +11,22 @@ compact-action-import.md. Background on
 compressions and walls is in [math.md](math.md); definitions are in
 [glossary.md](glossary.md).
 
-All three routes start from the same subgroup and apply PL Morse theory to
+Both tracks start from the same subgroup and apply PL Morse theory to
 different complexes. None of them is a theorem prover. A run is promoted only
 when its finite artifact contains the data and witnesses listed below. The
 worked numbers in this note come from the compact 5-cube.
 
-## The Three Routes At A Glance
+## The Two Tracks At A Glance
 
-|               | Track A                                                                                                             | Track B                                                                                                     | Low-barycentric (IMM)                                                             |
-| ------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Complex       | lawful subcomplex `Y` (or `Y^up`) of the compression, for one wall orientation                                      | full Davis quotient `K = H\Sigma` with a global pulling triangulation                                       | low-barycentric subdivision of the chamber tessellation, for one wall orientation |
-| Character     | wall cocycle                                                                                                        | wall cocycle, or any primitive class in a certified `H^1(H;Z)`                                              | wall cocycle                                                                      |
-| Local test    | ascending/descending links nonempty and connected                                                                   | ascending/descending links nonempty and connected                                                           | first gate (nonempty, connected) and second gate (collapsible) at every vertex    |
-| Certifies     | virtual algebraic fibration, via the finite-height-band / `pi_1`-surjection argument and the kernel transfer to `H` | virtual algebraic fibration, directly on `K` (direct fixed-character branch and scalable full-`H^1` branch) | nothing yet: an exact score, not a certificate                                    |
-| Canonical doc | [virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)                                                      | [full-davis-fibering-certification.md](full-davis-fibering-certification.md)                                | low-barycentric-morse.md                                                          |
-| Entry points  | `pnpm cover:fiber:user-action`; the Covers + Walls export, checked by `node scripts/validate_virtual_fibering.mjs`  | `pnpm cover:fiber:user-action`, `pnpm cover:fiber:scalable-h1`                                              | `pnpm lowbary:score`, `pnpm lowbary:search`                                       |
-| Status        | implemented; promotes                                                                                               | implemented; promotes                                                                                       | scorer and search implemented; no certificate                                     |
+|               | Track A                                                                                                             | Track B                                                                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Complex       | lawful subcomplex `Y` (or `Y^up`) of the compression, for one wall orientation                                      | full Davis quotient `K = H\Sigma` with a global pulling triangulation                                       |
+| Character     | wall cocycle                                                                                                        | wall cocycle, or any primitive class in a certified `H^1(H;Z)`                                              |
+| Local test    | ascending/descending links nonempty and connected                                                                   | ascending/descending links nonempty and connected                                                           |
+| Certifies     | virtual algebraic fibration, via the finite-height-band / `pi_1`-surjection argument and the kernel transfer to `H` | virtual algebraic fibration, directly on `K` (direct fixed-character branch and scalable full-`H^1` branch) |
+| Canonical doc | [virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)                                                      | [full-davis-fibering-certification.md](full-davis-fibering-certification.md)                                |
+| Entry points  | `pnpm cover:fiber:user-action`; the Covers + Walls export, checked by `node scripts/validate_virtual_fibering.mjs`  | `pnpm cover:fiber:user-action`, `pnpm cover:fiber:scalable-h1`                                              |
+| Status        | implemented; promotes                                                                                               | implemented; promotes                                                                                       |
 
 `pnpm bench:pipeline` runs the packed-manifest stages that come before any of
 these routes at scale: load the action, certify torsion-freeness, build the
@@ -56,15 +54,13 @@ Neither track certifies a topological or smooth bundle. The criterion this
 project uses to conclude that a manifold fibers over `S^1` is IMM Theorem 8: a
 compact smooth manifold of
 dimension at most five with a compatible affine structure, and every directed
-link **collapsible** (the second gate). The low-barycentric route computes that
-second gate, but the manifold hypotheses are argued in the docs and not
-machine-checked, and the route has no certificate yet. So no current artifact
+link **collapsible** (the second gate). The manifold hypotheses are not
+machine-checked. So no current artifact
 certifies a fibration over the circle. A cone link is only a sufficient
 condition for collapsibility.
 
-The rest of this note gives the setup shared by all routes, the Track A and
-Track B promotion policy, a short section on the low-barycentric route, and how
-the routes relate.
+The rest of this note gives the setup shared by both tracks, the Track A and
+Track B promotion policy, and how the tracks relate.
 
 ## Common Setup
 
@@ -378,8 +374,7 @@ A passing lawful certificate does not produce a Morse function on all of
 `K`. It does not compute the full five-dimensional ascending and descending
 links, and it says nothing by itself about collapsibility of those links. It
 does not prove that `ker(phi)` is finitely presented, nor that a manifold
-fibers locally trivially over the circle. The collapsibility (second-gate)
-question is what the low-barycentric route below computes.
+fibers locally trivially over the circle.
 
 Failure also has to be read carefully. If no tested coorientation has enough
 lawful cells, the search may simply be incomplete. Failure of an optional NPC
@@ -648,56 +643,6 @@ links; the current certificate promotes neither. Stronger finiteness or
 manifold-fibration conclusions require their own hypotheses and must be
 stated separately.
 
-## The Low-Barycentric Route (IMM)
-
-The third route keeps the wall orientation but changes the complex and the
-local test. It subdivides the chamber tessellation low-barycentrically, giving
-the barycentre of a face `F` of codimension `k` the height
-`h(F^) = min_C h + k*eps`, and tests every vertex of the subdivision. The link
-of a barycentre is the join `FL(F) * CL(F)` of the IMM face link and coface
-link. The C44 writeup's "face/coface join" is the same join, written in the
-dual cellulation. Each vertex is tested against both gates: the first gate
-(both directed links nonempty and connected) and the second gate (both
-collapsible). The model and the exact objective are in
-low-barycentric-morse.md. A 3-dimensional positive
-benchmark, a closed hyperbolic 3-manifold that fibers this way, is
-the C(4,4;2,2;3,3) writeup.
-Its original artifacts are not in this repository, but the example and its
-336-sheet cover are bundled, and `tests/c44-golden-example.test.ts` reproduces
-an orientation with score `(0, 0)` and a nonzero class (see
-the golden example).
-
-This route can accept orientations that Track A rejects. An unlawful polygon
-is not by itself an obstruction, because the transverse directions in the
-join can repair its directed link.
-
-What exists:
-
-- an exact scorer, `src/fibering/lowBarycentricMorse.ts`, which counts
-  first-gate failures, second-gate failures and undecided vertices for one
-  orientation (`pnpm lowbary:score`), and the period gcd of its wall cocycle;
-- an iterated steepest-descent search over orientations, with checkpoints
-  (`src/fibering/lowBarycentricSearch.ts`, `pnpm lowbary:search`).
-
-What does not exist yet:
-
-- a replayable certificate (collapse sequences per link class) and an
-  independent verifier;
-- a certificate that the orientation's class is nonzero and primitive in
-  `H^1`: the CLIs report the period gcd, which tests nonzero and gives the
-  normalisation, but there is no Schreier/Bezout witness as in Track A;
-- a generic step from a cover with one-sided walls to a further cover where
-  they are two-sided;
-- a machine check of IMM's manifold hypotheses.
-
-So a `(0, 0)` score is evidence for a fibration over the circle, not a
-certificate. A first-gate pass everywhere, together with a nonzero primitive
-class, would be the same Bestvina--Brady finite-generation input that Track A
-and Track B certify, but this route does not yet export it in a promotable
-form. The H5-P7-22 calculation, where no orientation of the two-sided cover
-`Γ+` passes the first gate, is summarized in
-low-barycentric-morse.md.
-
 ## How The Routes Work Together
 
 The intended order for Track A and Track B is:
@@ -748,14 +693,9 @@ Failures in the common algebraic layer are different. If a wall is one-sided,
 a rank-two boundary sum is nonzero, or the resulting character is zero, the
 same wall assignment cannot be repaired merely by changing certification
 tracks. The app must find another wall coorientation, another finite cover, or
-another integral cocycle. One-sided walls also block the low-barycentric
-route. Track B runs that take an intrinsic character instead of a wall
+another integral cocycle. Track B runs that take an intrinsic character instead of a wall
 character, such as the scalable full-`H^1` branch, can still proceed on such a
 cover.
-
-The low-barycentric route sits beside this diagram rather than inside it. Use
-it when the question is collapsibility (the second gate), or when lawfulness
-is too strict a filter. Its results are scores until it gains a certificate.
 
 Every exported result should therefore name its scope explicitly:
 
@@ -763,8 +703,7 @@ Every exported result should therefore name its scope explicitly:
 - **full-Davis certified** means all Track B gates passed;
 - **both tracks certified** means the same primitive character passed both;
 - **candidate only** means an explicit character or favorable link data was
-  found but at least one promotion gate remains unproved. Every
-  low-barycentric result is currently in this class.
+  found but at least one promotion gate remains unproved.
 
 ## Primary References
 
@@ -817,13 +756,11 @@ Every exported result should therefore name its scope explicitly:
 - Giovanni Italiano, Bruno Martelli, and Matteo Migliorini,
   _Hyperbolic 5-manifolds that fiber over `S^1`_, _Inventiones Mathematicae_
   231 (2023), 1--38. Theorem 8 is the collapsible-link fibering criterion
-  behind the second gate, and the low-barycentric route follows their face
-  link / coface link convention. Full details are in
+  behind the second gate. Full details are in
   [references.md](references.md).
 
 The policy itself is a synthesis. Jankiewicz--Wise supply the
 lawful-subcomplex and kernel-quotient argument; Bestvina--Brady supplies the
 Morse finiteness criterion; Davis supplies the full contractible Coxeter-cell
-complex; IMM supply the collapsible-link criterion that the low-barycentric
-route is aiming at. The project-specific responsibility is to turn every
+complex; IMM supply the collapsible-link criterion. The project-specific responsibility is to turn every
 hypothesis in those arguments into finite, independently replayable evidence.

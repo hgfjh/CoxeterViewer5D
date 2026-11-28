@@ -6028,7 +6028,7 @@
   "notes": [
     "Facet labels: A = orbit of u1 (12), C = u5, B = u6, E = u7, D = orbit of u8 (20).",
     "Vertex groups: H3xA1xA1 (60), D4xA1 (40), A3xA1xA1 (30), B2xA1xA1xA1 (20), A1^5 (50); index divisor 1920.",
-    "See docs/compact-5d-target-selection.md for why this class is the preferred 5D fibering target."
+    "Further fibering work on this example is in progress and not yet published."
   ],
   "warnings": [
     "Geometric rendering factors normalGram numerically for visualization.",

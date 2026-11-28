@@ -69,9 +69,7 @@ coorientation. Both mean the same thing: a choice of one of the two transverse
 directions of a two-sided wall. Parity constraints propagate that choice to
 directions on all dual edges. Reversing one wall reverses every edge direction
 belonging to that wall; a wall need not consist of edges carrying one
-generator label. A one-sided wall has no orientation. In the low-barycentric
-scripts an orientation is stored as `highSide[w]`, the side of wall `w` whose
-chambers are higher.
+generator label. A one-sided wall has no orientation.
 
 ## Lawful Cell And Lawful Subcomplex
 
@@ -97,8 +95,7 @@ A vertex of `link(x)` is ascending when its 1-cell is oriented away from `x`
 and descending when it is oriented toward `x` (Jankiewicz--Wise). The
 ascending link `link_up(x)` and descending link `link_down(x)` are the
 subcomplexes those vertices span. In the lawful subcomplex, corners of
-retained lawful cells give the link edges; in a pulled or low-barycentric
-subdivision the links are full subcomplexes spanned by the higher and lower
+retained lawful cells give the link edges; in a pulled subdivision the links are full subcomplexes spanned by the higher and lower
 neighbours. Nonempty and connected links are exact finite diagnostics for the
 chosen data, not by themselves a Morse or incoherence theorem.
 
@@ -119,19 +116,6 @@ game, and Italiano--Martelli--Migliorini use "status (I/O)" for facets.
   structure, to conclude that the map is homotopic to a smooth fibration.
 
 A cone is only a sufficient test for collapsibility.
-
-## Low-Barycentric Subdivision, Face Link, Coface Link
-
-The subdivision that keeps the chambers and adds a barycentre `F^` for each
-face `F`, at height `min_C h + codim(F) * eps`, where `C = x W_T` is the coset
-of chambers around `F`. The link of `F^` is the join `FL(F) * CL(F)`. The
-**face link** `FL(F)` consists of the faces of `F` (spherical `T'' > T`); for a
-chamber it is the whole link. The **coface link** `CL(F)` consists of the faces
-of the tessellation that contain `F` (the cosets inside `C`). This is the IMM
-tessellation picture; the C44 writeup's dual-cell picture exchanges the two
-names. The objective for a wall orientation is the number of vertices of the
-subdivision (chambers and barycentres) whose directed links pass, first gate
-before second; see low-barycentric-morse.md.
 
 ## Cayley Graph And Davis Complex
 
@@ -238,12 +222,9 @@ over `S^1`. Via IMM it needs the second gate plus IMM's manifold hypotheses
 No certificate in the repo makes this claim; the hypotheses are argued in the
 docs, not machine-checked.
 
-## Track A, Track B, Low-Barycentric Route
+## Track A, Track B
 
-The three post-cover routes. **Track A** uses the lawful subcomplex of
+The two post-cover routes. **Track A** uses the lawful subcomplex of
 `bar X`; **Track B** uses the full Davis quotient `H\Sigma` with a pulling
-triangulation; the **low-barycentric route** scores wall orientations on the
-low-barycentric subdivision with both gates. Tracks A and B emit replayable
-certificates; the low-barycentric route does not yet. See
-[two-track-fibering-certification.md](two-track-fibering-certification.md) and
-low-barycentric-morse.md.
+triangulation. Both emit replayable certificates. See
+[two-track-fibering-certification.md](two-track-fibering-certification.md).

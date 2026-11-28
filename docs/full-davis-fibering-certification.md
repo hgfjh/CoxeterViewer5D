@@ -3,8 +3,8 @@
 **Status (as of 2026-10-04).** This is the canonical description of Track B.
 It is implemented, with a direct fixed-character branch
 (`pnpm cover:fiber:user-action`) and a scalable full-`H^1` branch
-(`pnpm cover:fiber:scalable-h1`). How it relates to Track A and to the
-low-barycentric (IMM) route is in the route map,
+(`pnpm cover:fiber:scalable-h1`). How it relates to Track A is in the route
+map,
 [two-track-fibering-certification.md](two-track-fibering-certification.md).
 
 This note specifies the full-dimensional certificate for a virtual algebraic
@@ -534,10 +534,6 @@ in an artifact. Consequently `imm23TopologicalFibrationCertified` is always
 loaded, source-bound, and independently replayed.
 
 The collapsibility checks here are made in the pulling triangulation of `K`.
-The separate low-barycentric route
-(low-barycentric-morse.md) scores the second gate
-in the IMM low-barycentric subdivision instead. It is not part of a Track B
-certificate.
 
 ## 11. The Exact Conclusion
 

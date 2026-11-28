@@ -267,8 +267,8 @@ the wall. The two words mean the same thing here.
 A two-sided wall has two possible coorientations. A one-sided wall has none,
 so a cover with a one-sided wall must be replaced by a further finite cover
 before any orientation exists. The repo has no generic, scalable step that
-finds such a cover; for H5-P7-22 it was handled by one-off Python scripts in
-`scripts/h5_p7_22/`. They assign directions to all
+finds such a cover; for H5-P7-22 it was handled by one-off research scripts
+that are not part of this repository. Such scripts assign directions to all
 dual geometric edges so that opposite edges in each relation polygon have
 opposite directions when read around that polygon.
 
@@ -331,9 +331,8 @@ The app also asks a separate finite optimization question:
 > specified weight, of lawful relation cells?
 
 This is not a definition or theorem from the paper. It is a search over one
-binary choice per two-sided wall. The lawful-cell count is not the fibering
-objective: an orientation is judged by the number of vertices of the
-low-barycentric subdivision whose directed links pass the two gates below.
+binary choice per two-sided wall. The lawful-cell count is not by itself a
+fibering criterion; the directed-link conditions below decide that.
 
 Different coorientations can produce incomparable sets of lawful cells. Thus
 "largest" needs an explicit objective such as retained-cell count or total
@@ -357,8 +356,8 @@ Following Jankiewicz--Wise, a vertex of `link(x)` is **ascending** when its
 1-cell is oriented away from `x`, and **descending** when it is oriented toward
 `x`. The ascending link `link_up(x)` and descending link `link_down(x)` are the
 subcomplexes spanned by these vertices in the complex being tested. Which
-complex that is (the lawful subcomplex, the pulled full Davis quotient, or the
-low-barycentric subdivision) changes the links, so every link result names its
+complex that is (the lawful subcomplex or the pulled full Davis quotient)
+changes the links, so every link result names its
 complex.
 
 ### The two gates
@@ -409,24 +408,17 @@ Schreier generator values. See
 [Certifying a virtual algebraic fibration](virtual-algebraic-fibering.md) for
 the complete dependency chain and the subgroup-presentation definitions.
 
-### Three analysis routes
+### Two analysis routes
 
-On a finite torsion-free action there are three routes after the cover:
+On a finite torsion-free action there are two routes after the cover:
 
 - **Track A**: the lawful subcomplex of `\bar X` for a wall orientation
   (below and [virtual-algebraic-fibering.md](virtual-algebraic-fibering.md)).
 - **Track B**: the full Davis quotient `K = H\Sigma` with a pulling
   triangulation (below and
   [full-davis-fibering-certification.md](full-davis-fibering-certification.md)).
-- **Low-barycentric (IMM)**: an exact scorer and search over wall orientations
-  that tests both gates at every vertex of the low-barycentric subdivision
-  (low-barycentric-morse.md).
 
 Tracks A and B produce replayable virtual-algebraic-fibration certificates.
-The low-barycentric route does not yet emit a certificate, is not wired into
-the certification CLIs, and reports only the period gcd of the wall cocycle
-(nonzero test and normalisation), not a Schreier/Bezout certificate of the
-image.
 
 ### Track A and its generalized model
 
@@ -501,30 +493,6 @@ conclusion.
 See [Full Davis-quotient fibering certification](full-davis-fibering-certification.md)
 for the exact construction and its claim boundary.
 
-### Low-barycentric subdivision
-
-The low-barycentric route keeps the chambers and adds a barycentre `F^` for
-every face `F` of the tessellation, with height
-
-```text
-h(F^) = min_{y in C} h(y) + codim(F) * eps,     0 < eps << 1,
-```
-
-where `C = x W_T` is the coset of chambers around `F`. The link of `F^` is the
-join `FL(F) * CL(F)` of the **face link** (the faces of `F`, i.e. spherical
-`T'' > T`; for a chamber this is the whole link) and the **coface link** (the
-faces of the tessellation that contain `F`, i.e. the cosets inside `C`). These
-names follow IMM's tessellation picture: chambers ("original vertices") have
-only a face link, and barycentres have the join. §12 of the
-C(4,4;2,2;3,3) writeup works in
-the dual Coxeter-cell picture and calls the same join the face/coface join,
-with the two factor names exchanged. The objective for a wall orientation is
-the number of vertices of this subdivision, chambers and barycentres, whose
-directed links pass: the first gate is tested before the second. Unlike the
-lawful-cell count, the low-barycentric score is not invariant under reversing
-every wall, because barycentre heights use cell minima. The definitions, the ascending/descending table, and the
-scorer are in low-barycentric-morse.md.
-
 ## What The Browser Does Not Prove
 
 For Track A, let `Y_psi` be the infinite cyclic cover determined by the lawful
@@ -562,9 +530,6 @@ Therefore:
 - a lawful-cell optimum is not a fibering proof;
 - passing local-link checks do not certify the cover, PL height, finite-band
   argument, or kernel transfer;
-- a low-barycentric score of `(0, 0)` is not yet a certificate (no replayable
-  collapse sequences, no independent verifier, and only a period-gcd check of
-  the `H^1` class);
 - compact 5-dimensional examples remain experiments unless all required
   hypotheses are supplied separately.
 

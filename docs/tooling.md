@@ -247,27 +247,6 @@ process through `NODE_OPTIONS`. A plain `--max-old-space-size` flag stops at
 the tsx parent. `--workers 1` runs everything inline; hashes are the same for
 every worker count.
 
-The low-barycentric (IMM) scorer and orientation search use the same packed
-manifests and the same 16 GiB heap launcher:
-
-```bash
-pnpm lowbary:score --system <system.json> --manifest <action.manifest.json> \
-  [--wall-sides <wall_sides.json>] --orientation <orientation.json> --workers 16
-pnpm lowbary:search --system <system.json> --manifest <action.manifest.json> \
-  [--wall-sides <wall_sides.json>] --start <orientation.json> --hours 8 --workers 16
-```
-
-`lowbary:score` scores each given wall orientation by counting the vertices
-of the low-barycentric subdivision (chambers and barycentres) whose directed
-links fail the first gate (nonempty and connected) and then the second gate
-(collapsible). `lowbary:search` runs a resumable steepest-descent search
-with a checkpoint (`lowbary_search.json` next to the manifest by default).
-Without `--wall-sides` the wall sides are computed from the action, and the
-command stops if any wall is one-sided. Neither command emits a replayable
-certificate or checks that the orientation's class is nonzero in `H^1`. See
-low-barycentric-morse.md for the objective and
-[performance-audit.md](performance-audit.md) for timings on H5-P7-22.
-
 `bench:timed:machine` turns the stored timed benchmark into machine-class
 budgets for `ci-linux-standard`, `local-dev-laptop`, and
 `research-workstation`. CI should hard-gate only the standard class; local

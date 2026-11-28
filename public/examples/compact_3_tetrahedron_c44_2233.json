@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "Compact tetrahedron C(4,4;2,2;3,3)",
-  "description": "Compact hyperbolic Coxeter tetrahedron with dihedral angles pi/2, pi/2, pi/3, pi/3, pi/4, pi/4. Every vertex stabilizer is B3 of order 48. The bundled PSL(2,7) x C2 kernel gives a closed orientable hyperbolic 3-manifold tiled by 336 tetrahedra: the golden closed example for wall orientation plus the low-barycentric (IMM) subdivision in dimension 3.",
+  "description": "Compact hyperbolic Coxeter tetrahedron with dihedral angles pi/2, pi/2, pi/3, pi/3, pi/4, pi/4. Every vertex stabilizer is B3 of order 48. The bundled PSL(2,7) x C2 kernel gives a closed orientable hyperbolic 3-manifold tiled by 336 tetrahedra: the closed 3-dimensional example for wall orientation.",
   "rank": 4,
   "generators": [
     {
@@ -117,15 +117,15 @@
     },
     {
       "id": "c44-writeup",
-      "citation": "docs/C44_2233_3D_Coxeter_Wall_Fibering_Writeup.md (this repository).",
-      "locator": "Sections 1-2 for the Coxeter matrix labelling and the four projective involutions; sections 9-14 for the low-barycentric fibering argument.",
+      "citation": "C(4,4;2,2;3,3) wall-fibering writeup (in preparation, not yet published).",
+      "locator": "Sections 1-2 for the Coxeter matrix labelling and the four projective involutions.",
       "notes": "In-repo writeup; its original computational artifacts are not in this repository."
     }
   ],
   "dataStatus": "verified-source",
   "notes": [
     "The bundled cover is the regular action of the image of s_i -> (r_i, 1) in PSL(2,7) x C2 (order 336); the in-repo certificate checks every spherical B3 restriction before calling the kernel torsion-free.",
-    "All 42 quotient walls are two-sided. tests/c44-golden-example.test.ts records a wall orientation whose low-barycentric subdivision passes both gates at every vertex (nonempty, connected, collapsible) with a nonzero wall class.",
+    "All 42 quotient walls are two-sided. Further fibering work on this example is in progress and not yet published.",
     "Gram signature and compactness are not certified by an in-repo checker for this example; the data status is verified-source, not certified."
   ],
   "warnings": [

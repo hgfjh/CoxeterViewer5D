@@ -3,7 +3,7 @@
 **Status (as of 2026-10-04).** This is the canonical description of Track A,
 the Jankiewicz--Wise lawful-subcomplex route, and its certificate checklist.
 It is implemented and can promote a certificate. For how Track A relates to
-Track B and to the low-barycentric (IMM) route, see the route map in
+Track B, see the route map in
 [two-track-fibering-certification.md](two-track-fibering-certification.md).
 A passing Track A certificate proves a virtual algebraic fibration, not a
 topological or smooth bundle over the circle.

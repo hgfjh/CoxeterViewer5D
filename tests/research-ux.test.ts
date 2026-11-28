@@ -248,7 +248,7 @@ describe("research UI helper data", () => {
         (notice) => notice.id === "h5-p7-22",
       ),
     ).toMatchObject({
-      status: "cover studied / no wall fibering",
+      status: "cover studied / fibering in progress",
       sourceAvailability: "bundled-source",
     });
     expect(

@@ -650,7 +650,7 @@ test("keeps all certified eight-facet examples reachable without crowding the pi
   );
   await expect(campaigns).toContainText("G12221: catalogued / deferred");
   await expect(campaigns).toContainText(
-    "H5-P7-22: cover studied / no wall fibering",
+    "H5-P7-22: cover studied / fibering in progress",
   );
   await expect(campaigns).toContainText(
     "not Track B or P2 fibering in general",
